@@ -8,9 +8,9 @@ export interface SearchResponse {
 }
 
 export async function getSearchResults(query: string): Promise<SearchResponse> {
-  const params = new URLSearchParams({
-    q: query,
+  return await api(`/search`, {
+    searchParams: {
+      q: query,
+    },
   })
-
-  return await api(`/search?${params.toString()}`)
 }

@@ -40,5 +40,7 @@ export default {
   added: 'Added %{lineCode}',
   linesThatUseStop: 'Lines that use this stop',
   stopDirections: 'Directions to this stop',
-  license: 'License',
+  license: 'License %{city}',
+  other: 'Other',
+  city: 'City',
 }

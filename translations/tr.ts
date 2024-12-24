@@ -41,4 +41,6 @@ export default {
   linesThatUseStop: 'Bu durağı kullanan hatlar',
   stopDirections: 'Bu durağa yol tarifi',
   license: 'Lisans',
+  other: 'Diğer',
+  city: 'Şehir',
 }

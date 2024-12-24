@@ -10,7 +10,7 @@ import { UiSheetModal } from './UiSheetModal'
 
 import { colors } from '@/constants/colors'
 
-interface Option<T> {
+export interface Option<T> {
   label: string
   value: T
 }
@@ -19,12 +19,12 @@ interface UiSheetSelectProps<T> {
   title: string
   options: Option<T>[]
   value?: T
-  onValueChange: (value: T) => void
+  onValueChange?: (value: T) => void
   list?: boolean
 }
 
 export const UiSheetSelect = <T,>(
-  props: UiSheetSelectProps<T> & { cRef: RefObject<BottomSheetModal> },
+  props: UiSheetSelectProps<T> & { cRef?: RefObject<BottomSheetModal> },
 ) => {
   const paddings = usePaddings(true)
 

@@ -1,6 +1,7 @@
 import Constants from 'expo-constants'
-import { ScrollView, StyleSheet } from 'react-native'
+import { Linking, ScrollView, StyleSheet } from 'react-native'
 
+import { SettingCity } from '@/components/settings/City'
 import { SettingsCluster } from '@/components/settings/Cluster'
 import { GroupContainer, SettingContainer } from '@/components/settings/Container'
 import { SettingsLocation } from '@/components/settings/Location'
@@ -30,10 +31,18 @@ export const SettingsScreen = () => {
         <SettingsTheme />
       </GroupContainer>
 
-      <GroupContainer title={i18n.t('license')}>
+      <GroupContainer title={i18n.t('other')}>
+        <SettingCity />
+
         <SettingContainer
-          title={i18n.t('license')}
-          href="https://data.ibb.gov.tr/license"
+          type="link"
+          title={i18n.t('license', { city: 'istanbul' })}
+          onPress={() => Linking.openURL('https://data.ibb.gov.tr/license')}
+        />
+        <SettingContainer
+          type="link"
+          title={i18n.t('license', { city: 'izmir' })}
+          onPress={() => Linking.openURL('https://acikveri.bizizmir.com/tr/license')}
         />
       </GroupContainer>
 

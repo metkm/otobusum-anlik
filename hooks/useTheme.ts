@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { colors } from '@/constants/colors'
 import { useSettingsStore } from '@/stores/settings'
+import { createTheme } from '@/utils/createTheme'
 
 type SchemeKeys = {
   [K in keyof Scheme]: Scheme[K] extends number ? K : never
@@ -14,8 +15,19 @@ export function useTheme(theme?: Theme) {
   const storedTheme = useSettingsStore(useShallow(state => state.colorScheme))
   const systemScheme = useColorScheme()
 
-  const mode = useMemo(() => storedTheme ?? systemScheme ?? 'dark', [storedTheme, systemScheme])
-  const scheme = useMemo(() => mode === 'dark' ? theme?.schemes.dark : theme?.schemes.light, [mode, theme?.schemes.dark, theme?.schemes.light])
+  const mode = useMemo(
+    () => storedTheme ?? systemScheme ?? 'dark',
+    [storedTheme, systemScheme],
+  )
+
+  const scheme = useMemo(
+    () => {
+      const th = theme ?? createTheme(colors.primary)
+
+      return mode === 'dark' ? th?.schemes.dark : th?.schemes.light
+    },
+    [mode, theme],
+  )
 
   const colorsTheme = colors[mode]
 

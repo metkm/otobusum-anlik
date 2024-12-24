@@ -17,7 +17,11 @@ const getHslValues = (): [number, number, number] => {
   return [360 * Math.random(), 25 + 70 * Math.random(), 85 + 10 * Math.random()]
 }
 
-export const createTheme = () => {
+export const createTheme = (hex?: string) => {
+  if (hex) {
+    return themeFromSourceColor(argbFromHex(hex))
+  }
+
   const [h, s, l] = getHslValues()
   const colorHex = hslToHex(h, s, l)
 

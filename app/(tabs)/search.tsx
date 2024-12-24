@@ -42,6 +42,10 @@ export const SearchScreen = () => {
   )
 
   const emptyItem = useCallback(() => {
+    if (mutation.error) {
+      return <UiText error>{mutation.error.message}</UiText>
+    }
+
     if (mutation.data) {
       return (
         <UiText info style={styles.empty}>
@@ -59,7 +63,7 @@ export const SearchScreen = () => {
         {i18n.t('searchSomething')}
       </UiText>
     )
-  }, [mutation.data, mutation.isPending])
+  }, [mutation.data, mutation.isPending, mutation.error])
 
   return (
     <View style={styles.container}>

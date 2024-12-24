@@ -7,15 +7,17 @@ import { FontSize, fontSizes } from '@/constants/uiSizes'
 interface Props extends TextProps {
   info?: boolean
   size?: FontSize
+  error?: boolean
 }
 
-export const UiText = ({ style, info, size = 'md', ...rest }: Props) => {
-  const { colorsTheme } = useTheme()
+export const UiText = ({ style, info, size = 'md', error, ...rest }: Props) => {
+  const { colorsTheme, getSchemeColorHex } = useTheme()
 
   const baseStyle: StyleProp<TextStyle> = {
-    color: colorsTheme.color,
+    color: error ? getSchemeColorHex('onError') : undefined,
     fontSize: fontSizes[size],
     flexShrink: 1,
+    backgroundColor: error ? getSchemeColorHex('error') : undefined,
   }
 
   if (info) {

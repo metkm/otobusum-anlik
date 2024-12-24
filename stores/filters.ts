@@ -4,10 +4,12 @@ import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middl
 
 import { queryClient } from '@/api/client'
 import { LineRoute } from '@/api/getAllRoutes'
+import { Cities } from '@/types/cities'
 import { Direction } from '@/types/departure'
 
 export interface FiltersStore {
   selectedRoutes: Record<string, string>
+  selectedCity: Cities
 }
 
 export const useFiltersStore = create(
@@ -15,6 +17,7 @@ export const useFiltersStore = create(
     persist<FiltersStore>(
       () => ({
         selectedRoutes: {},
+        selectedCity: 'istanbul',
       }),
       {
         name: 'filter-storage',

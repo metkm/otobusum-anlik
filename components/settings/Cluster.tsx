@@ -1,8 +1,5 @@
-import { Switch } from 'react-native'
-
 import { SettingContainer } from './Container'
 
-import { colors } from '@/constants/colors'
 import { useSettingsStore } from '@/stores/settings'
 import { i18n } from '@/translations/i18n'
 
@@ -16,13 +13,11 @@ export const SettingsCluster = () => {
   }
 
   return (
-    <SettingContainer title={i18n.t('clusterBusStops')}>
-      <Switch
-        onValueChange={handleClusterStops}
-        value={clusterStops}
-        thumbColor={colors.primary}
-        trackColor={{ true: colors.primaryDarker }}
-      />
-    </SettingContainer>
+    <SettingContainer
+      type="switch"
+      title={i18n.t('clusterBusStops')}
+      value={clusterStops}
+      onChange={handleClusterStops}
+    />
   )
 }

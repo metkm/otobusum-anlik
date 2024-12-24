@@ -1,6 +1,6 @@
 import { Theme } from '@material/material-color-utilities'
 import Ionicons from '@react-native-vector-icons/ionicons'
-import { ComponentProps, useCallback } from 'react'
+import React, { ComponentProps, useCallback } from 'react'
 import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, ViewStyle } from 'react-native'
 import Animated, { AnimatedProps } from 'react-native-reanimated'
 
@@ -28,6 +28,7 @@ interface UiButtonPropsBase {
   animatedIconProps?: Partial<AnimatedProps<typeof Ionicons>>
   variant?: ButtonVariants
   iconTrail?: IconValues
+  children?: React.ReactNode
 }
 
 interface UiButtonPropsWithIcon extends UiButtonPropsBase {
@@ -111,6 +112,7 @@ export const UiButton = ({ iconSize = 'md', variant = 'solid', ...props }: UiBut
       )}
 
       {props.iconTrail && <Icon icon={props.iconTrail} />}
+      {props.children}
     </TouchableOpacity>
   )
 }

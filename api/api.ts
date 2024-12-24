@@ -1,14 +1,23 @@
-const baseUrl = 'https://otobusum.metkm.win'
+import ky, { Options } from 'ky'
 
-export async function api<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${baseUrl}${url}`, {
+import { useFiltersStore } from '@/stores/filters'
+
+export async function api<T>(url: string, options?: Options): Promise<T> {
+  const selectedCity = useFiltersStore.getState().selectedCity
+
+  const params = (options?.searchParams || {}) as Record<string, any>
+
+  const response = await ky.get<T>(`${process.env.BASE_URL}${url}`, {
+    ...options,
     headers: {
-      ...init?.headers,
+      ...options?.headers,
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    ...init,
-  })
-  const parsed: T = await response.json()
+    searchParams: {
+      ...params,
+      city: selectedCity,
+    },
+  }).json()
 
-  return parsed
+  return response
 }
