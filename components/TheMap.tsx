@@ -51,12 +51,11 @@ export const TheMap = ({ style, cRef, ...props }: TheMapProps) => {
     }
   }, [])
 
-  const initial = useSettingsStore.getState().initialMapLocation || {
-    latitude: 39.66770141070046,
-    latitudeDelta: 4.746350767346861,
-    longitude: 28.17840663716197,
-    longitudeDelta: 2.978521026670929,
-  }
+  const state = useSettingsStore.getState().mapState
+  const initial = state?.properties.center || [
+    28.17840663716197,
+    39.66770141070046,
+  ]
 
   return (
     <Animated.View style={animatedStyle}>
@@ -66,9 +65,13 @@ export const TheMap = ({ style, cRef, ...props }: TheMapProps) => {
         scaleBarEnabled={false}
         attributionEnabled={false}
         styleURL="mapbox://styles/mapbox/dark-v11"
+        {...props}
       >
         <Camera
-          centerCoordinate={[initial.longitude, initial.latitude]}
+          defaultSettings={{
+            centerCoordinate: initial,
+            zoomLevel: state?.properties.zoom,
+          }}
         />
 
         {props.children}
@@ -76,20 +79,6 @@ export const TheMap = ({ style, cRef, ...props }: TheMapProps) => {
     </Animated.View>
   )
 }
-{ /* <MapView
-        ref={cRef}
-        style={[styles.map, style]}
-        provider={PROVIDER_GOOGLE}
-        customMapStyle={getMapStyle(mode)}
-        mapPadding={{ top: insets.top, bottom: 10, left: 10, right: 10 }}
-        showsIndoors={false}
-        toolbarEnabled={false}
-        showsTraffic={showTraffic}
-        showsUserLocation={showMyLocation}
-        {...props}
-      >
-        {props.children}
-      </MapView> */ }
 
 const styles = StyleSheet.create({
   map: {

@@ -25,8 +25,8 @@ export const LineMarkers = () => {
     <>
       {filteredCodes.map(lineCode => (
         <View key={lineCode}>
+          <RouteLine lineCode={lineCode} />
           <LineBusMarkersMemoized code={lineCode} />
-
           <LineBusStopMarkers lineCode={lineCode} />
 
           {/* {
@@ -34,8 +34,6 @@ export const LineMarkers = () => {
               ? <LineBusStopMarkersClusteredMemoized lineCode={lineCode} />
               : <LineBusStopMarkersMemoized lineCode={lineCode} />
           } */}
-
-          <RouteLine lineCode={lineCode} />
         </View>
       ))}
     </>

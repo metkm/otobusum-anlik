@@ -1,3 +1,4 @@
+import { MapState } from '@rnmapbox/maps'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -73,8 +74,8 @@ export const HomeScreen = () => {
     SplashScreen.hideAsync()
   }
 
-  const handleRegionChangeComplete = (region: Region) => {
-    useSettingsStore.setState(() => ({ initialMapLocation: region }))
+  const handleMapIdle = (state: MapState) => {
+    useSettingsStore.setState(() => ({ mapState: state }))
   }
 
   return (
@@ -82,6 +83,7 @@ export const HomeScreen = () => {
       <MapContext.Provider value={map}>
         <SheetContext.Provider value={sheetContext}>
           <TheMap
+            onMapIdle={handleMapIdle}
             // cRef={map}
             // onMapReady={handleOnMapReady}
             // onRegionChangeComplete={handleRegionChangeComplete}

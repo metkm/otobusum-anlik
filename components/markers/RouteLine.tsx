@@ -96,10 +96,6 @@ export const RouteLine = ({ lineCode }: RouteLineProps) => {
         shape={{
           type: 'LineString',
           coordinates: transformed,
-          // geometry: {
-          //   type: 'LineString',
-          //   coordinates: [[10, 10]],
-          // },
         }}
       >
         <LineLayer
