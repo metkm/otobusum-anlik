@@ -27,7 +27,7 @@ export const LineMarkers = () => {
         <View key={lineCode}>
 
           <RouteLine lineCode={lineCode} />
-          <LineBusStopMarkers lineCode={lineCode} />
+          <LineBusStopMarkersMemoized lineCode={lineCode} />
 
           <LineBusMarkersMemoized code={lineCode} />
 

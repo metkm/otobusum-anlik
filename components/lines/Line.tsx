@@ -57,21 +57,13 @@ const Line = ({ lineCode, variant = 'solid', ...props }: LineProps) => {
 
         const routeCode = getSelectedRouteCode(lineCode)
 
-        const coords = queryClient
+        const coords: [number, number][] | undefined = queryClient
           .getQueryData<Awaited<ReturnType<typeof getLineBusStops>>>([`stop-locations`, routeCode])
-          ?.map(coords => ({
-            latitude: coords.y_coord,
-            longitude: coords.x_coord,
-          }))
+          ?.map(coords => ([coords.x_coord, coords.y_coord]))
 
-        map?.current?.fitToCoordinates(coords, {
-          edgePadding: {
-            bottom: 250,
-            top: 0,
-            left: 0,
-            right: 0,
-          },
-        })
+        if (!coords) return
+
+        map?.fitInsideBounds(coords)
       },
       {
         fireImmediately: true,

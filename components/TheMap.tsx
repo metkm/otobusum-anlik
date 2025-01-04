@@ -1,5 +1,6 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { MapView, Camera, Images, Image } from '@rnmapbox/maps'
+import { CameraRef } from '@rnmapbox/maps/lib/typescript/src/components/Camera'
 import { RefObject, ComponentProps } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
 // import MapView, { MapViewProps, PROVIDER_GOOGLE } from 'react-native-maps'
@@ -14,12 +15,12 @@ import { getMapStyle } from '@/constants/mapStyles'
 import { useSettingsStore } from '@/stores/settings'
 
 interface TheMapProps extends ComponentProps<typeof MapView> {
-  cRef?: RefObject<MapView>
+  cameraRef?: RefObject<CameraRef>
 }
 
 const screen = Dimensions.get('screen')
 
-export const TheMap = ({ style, cRef, ...props }: TheMapProps) => {
+export const TheMap = ({ style, cameraRef, ...props }: TheMapProps) => {
   const { mode } = useTheme()
   const sheetContext = useSheetModal()
 
@@ -69,6 +70,7 @@ export const TheMap = ({ style, cRef, ...props }: TheMapProps) => {
         {...props}
       >
         <Camera
+          ref={cameraRef}
           defaultSettings={{
             centerCoordinate: initial,
             zoomLevel: state?.properties.zoom,

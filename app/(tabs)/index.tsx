@@ -1,8 +1,8 @@
 import { MapState } from '@rnmapbox/maps'
+import { CameraRef } from '@rnmapbox/maps/lib/typescript/src/components/Camera'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
-import MapView, { Region } from 'react-native-maps'
 import { useSharedValue } from 'react-native-reanimated'
 
 import { LinesMomoizedFr } from '@/components/lines/Lines'
@@ -21,7 +21,7 @@ import { useLinesStore } from '@/stores/lines'
 import { useSettingsStore } from '@/stores/settings'
 
 export const HomeScreen = () => {
-  const map = useRef<MapView>(null)
+  const camera = useRef<CameraRef>(null)
 
   useEffect(() => {
     const unsub = useLinesStore.subscribe(
@@ -45,20 +45,20 @@ export const HomeScreen = () => {
           queryFn: () => getLineBusStops(routeCode),
         })
 
-        map.current?.fitToCoordinates(
-          busStops?.map(stop => ({
-            longitude: stop.x_coord,
-            latitude: stop.y_coord,
-          })),
-          {
-            edgePadding: {
-              bottom: 200,
-              left: 0,
-              right: 0,
-              top: 0,
-            },
-          },
-        )
+        // map.current?.fitToCoordinates(
+        //   busStops?.map(stop => ({
+        //     longitude: stop.x_coord,
+        //     latitude: stop.y_coord,
+        //   })),
+        //   {
+        //     edgePadding: {
+        //       bottom: 200,
+        //       left: 0,
+        //       right: 0,
+        //       top: 0,
+        //     },
+        //   },
+        // )
       },
     )
 
@@ -80,9 +80,13 @@ export const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <MapContext.Provider value={map}>
+      <MapContext.Provider value={{
+        camera,
+      }}
+      >
         <SheetContext.Provider value={sheetContext}>
           <TheMap
+            cameraRef={camera}
             onMapIdle={handleMapIdle}
             // cRef={map}
             // onMapReady={handleOnMapReady}
@@ -107,7 +111,7 @@ export const HomeScreen = () => {
             <LinesMomoizedFr />
           </View>
 
-          <TheStopInfo cRef={map} />
+          {/* <TheStopInfo cRef={map} /> */}
         </SheetContext.Provider>
       </MapContext.Provider>
     </View>
