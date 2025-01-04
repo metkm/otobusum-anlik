@@ -8,7 +8,7 @@ const config: ExpoConfig = {
   icon: './assets/icon.png',
   scheme: 'otobusum-anlik',
   userInterfaceStyle: 'automatic',
-  newArchEnabled: false,
+  newArchEnabled: true,
   extra: {
     eas: {
       projectId: '2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
