@@ -31,11 +31,6 @@ const config: ExpoConfig = {
     translucent: true,
   },
   android: {
-    config: {
-      googleMaps: {
-        apiKey: process.env.EXPO_PUBLIC_MAP_API,
-      },
-    },
     softwareKeyboardLayoutMode: 'pan',
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
@@ -52,6 +47,13 @@ const config: ExpoConfig = {
       {
         image: './assets/icon.png',
         backgroundColor: '#0a0a0a',
+      },
+    ],
+    [
+      '@rnmapbox/maps',
+      {
+        RNMapboxMapsDownloadToken: process.env.EXPO_PUBLIC_MAP_API,
+        RNMapboxMapsVersion: '11.0.0',
       },
     ],
   ],

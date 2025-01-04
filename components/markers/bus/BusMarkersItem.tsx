@@ -1,4 +1,5 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
+import { PointAnnotation } from '@rnmapbox/maps'
 import { memo } from 'react'
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { MapMarkerProps } from 'react-native-maps'
@@ -17,11 +18,11 @@ import { getTheme, useLinesStore } from '@/stores/lines'
 import { i18n } from '@/translations/i18n'
 
 interface LineBusMarkersItemProps extends Omit<MapMarkerProps, 'coordinate'> {
-  location: BusLocation
+  bus: BusLocation
   lineCode: string
 }
 
-export const LineBusMarkersItem = ({ location, lineCode }: LineBusMarkersItemProps) => {
+export const LineBusMarkersItem = ({ bus, lineCode }: LineBusMarkersItemProps) => {
   const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
   const { getSchemeColorHex } = useTheme(lineTheme)
   const { query: { dataUpdatedAt } } = useLine(lineCode)
@@ -39,45 +40,57 @@ export const LineBusMarkersItem = ({ location, lineCode }: LineBusMarkersItemPro
   }
 
   return (
-    <MarkerLazyCallout
-      calloutProps={{
-        children: (
-          <View style={[styles.calloutContainer, dynamicCalloutContainer]}>
-            {location.route_code && (
-              <UiText style={textStyle}>
-                {location.route_code}
-              </UiText>
-            )}
-
-            <UiText style={textStyle}>
-              {i18n.t('doorNo')}
-              {': '}
-              {location.bus_id}
-            </UiText>
-            <UiText style={textStyle}>
-              {i18n.t('lastUpdate')}
-              {': '}
-              {new Date(dataUpdatedAt).toLocaleTimeString()}
-            </UiText>
-          </View>
-        ),
-      }}
-      markerProps={{
-        coordinate: {
-          latitude: location.lat,
-          longitude: location.lng,
-        },
-        tracksInfoWindowChanges: false,
-        tracksViewChanges: false,
-        anchor: { x: 0.5, y: 0.5 },
-        zIndex: 2,
-      }}
+    <PointAnnotation
+      id={`${bus.bus_id}-${bus.route_code}-${bus.lat}-${bus.lng}`}
+      key={`${bus.bus_id}-${bus.route_code}-${bus.lat}-${bus.lng}`}
+      coordinate={[bus.lng, bus.lat]}
     >
       <View style={[styles.iconContainer, { backgroundColor }]}>
         <Ionicons name="bus" color={textColor} />
       </View>
-    </MarkerLazyCallout>
+    </PointAnnotation>
   )
+
+  // return (
+  //   <MarkerLazyCallout
+  //     calloutProps={{
+  //       children: (
+  //         <View style={[styles.calloutContainer, dynamicCalloutContainer]}>
+  //           {location.route_code && (
+  //             <UiText style={textStyle}>
+  //               {location.route_code}
+  //             </UiText>
+  //           )}
+
+  //           <UiText style={textStyle}>
+  //             {i18n.t('doorNo')}
+  //             {': '}
+  //             {location.bus_id}
+  //           </UiText>
+  //           <UiText style={textStyle}>
+  //             {i18n.t('lastUpdate')}
+  //             {': '}
+  //             {new Date(dataUpdatedAt).toLocaleTimeString()}
+  //           </UiText>
+  //         </View>
+  //       ),
+  //     }}
+  //     markerProps={{
+  //       coordinate: {
+  //         latitude: location.lat,
+  //         longitude: location.lng,
+  //       },
+  //       tracksInfoWindowChanges: false,
+  //       tracksViewChanges: false,
+  //       anchor: { x: 0.5, y: 0.5 },
+  //       zIndex: 2,
+  //     }}
+  //   >
+  //     <View style={[styles.iconContainer, { backgroundColor }]}>
+  //       <Ionicons name="bus" color={textColor} />
+  //     </View>
+  //   </MarkerLazyCallout>
+  // )
 }
 
 export const LineBusMarkersItemMemoized = memo(LineBusMarkersItem)

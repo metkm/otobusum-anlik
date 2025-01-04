@@ -82,20 +82,21 @@ export const HomeScreen = () => {
       <MapContext.Provider value={map}>
         <SheetContext.Provider value={sheetContext}>
           <TheMap
-            cRef={map}
-            onMapReady={handleOnMapReady}
-            onRegionChangeComplete={handleRegionChangeComplete}
-            initialRegion={
-              useSettingsStore.getState().initialMapLocation || {
-                latitude: 39.66770141070046,
-                latitudeDelta: 4.746350767346861,
-                longitude: 28.17840663716197,
-                longitudeDelta: 2.978521026670929,
-              }
-            }
-            moveOnMarkerPress={false}
+            // cRef={map}
+            // onMapReady={handleOnMapReady}
+            // onRegionChangeComplete={handleRegionChangeComplete}
+            // initialRegion={
+            //   useSettingsStore.getState().initialMapLocation || {
+            //     latitude: 39.66770141070046,
+            //     latitudeDelta: 4.746350767346861,
+            //     longitude: 28.17840663716197,
+            //     longitudeDelta: 2.978521026670929,
+            //   }
+            // }
+            // moveOnMarkerPress={false}
           >
             <LineMarkers />
+
           </TheMap>
 
           <TheMapButtons />

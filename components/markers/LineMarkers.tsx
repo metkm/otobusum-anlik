@@ -3,7 +3,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { LineBusMarkersMemoized } from './bus/BusMarkers'
 import { RouteLine } from './RouteLine'
-import { LineBusStopMarkersMemoized } from './stop/StopMarkers'
+import { LineBusStopMarkers, LineBusStopMarkersMemoized } from './stop/StopMarkers'
 import { LineBusStopMarkersClusteredMemoized } from './stop/StopMarkersClustered'
 
 import { useFiltersStore } from '@/stores/filters'
@@ -27,11 +27,13 @@ export const LineMarkers = () => {
         <View key={lineCode}>
           <LineBusMarkersMemoized code={lineCode} />
 
-          {
+          <LineBusStopMarkers lineCode={lineCode} />
+
+          {/* {
             clusterStops
               ? <LineBusStopMarkersClusteredMemoized lineCode={lineCode} />
               : <LineBusStopMarkersMemoized lineCode={lineCode} />
-          }
+          } */}
 
           <RouteLine lineCode={lineCode} />
         </View>

@@ -14,14 +14,14 @@ export const LineBusMarkers = (props: Props) => {
   const { query } = useLine(props.code)
   const routeCode = useFiltersStore(() => getSelectedRouteCode(props.code))
 
-  const filtered = query.data?.filter(loc => loc.route_code === routeCode) || []
+  const busses = query.data?.filter(loc => loc.route_code === routeCode) || []
 
   return (
     <>
-      {filtered?.map(loc => (
+      {busses.map(bus => (
         <LineBusMarkersItemMemoized
-          key={`${loc.bus_id}-${loc.route_code}-${loc.lat}-${loc.lng}`}
-          location={loc}
+          key={`${bus.bus_id}-${bus.route_code}-${bus.lat}-${bus.lng}`}
+          bus={bus}
           lineCode={props.code}
         />
       ))}

@@ -1,3 +1,4 @@
+import { PointAnnotation } from '@rnmapbox/maps'
 import { router } from 'expo-router'
 import { memo, useMemo } from 'react'
 import { StyleProp, ViewStyle, TextStyle, View, StyleSheet } from 'react-native'
@@ -79,23 +80,36 @@ export const LineBusStopMarkersItem = ({
     })
   }
 
-  const coords: LatLng
-    = type === 'cluster'
-      ? coordinate
-      : {
-          latitude: stop?.y_coord,
-          longitude: stop?.x_coord,
-        }
+  // const coords: LatLng
+  //   = type === 'cluster'
+  //     ? coordinate
+  //     : {
+  //         latitude: stop?.y_coord,
+  //         longitude: stop?.x_coord,
+  //       }
 
   return (
-    <Marker
-      coordinate={coords}
-      tracksInfoWindowChanges={false}
-      tracksViewChanges={false}
-      onPress={handleOnPress}
-      anchor={{ x: 0.5, y: 0.5 }}
-      zIndex={1}
-      {...props}
+  // <Marker
+  //   coordinate={coords}
+  //   tracksInfoWindowChanges={false}
+  //   tracksViewChanges={false}
+  //   onPress={handleOnPress}
+  //   anchor={{ x: 0.5, y: 0.5 }}
+  //   zIndex={1}
+  //   {...props}
+  // >
+  //   <View style={[styles.busStop, borderStyle, backgroundStyle, viewStyle]}>
+  //     {label && (
+  //       <UiText style={textStyle} size="sm" info>
+  //         {label}
+  //       </UiText>
+  //     )}
+  //   </View>
+  // </Marker>
+
+    <PointAnnotation
+      id={`${stop!.x_coord}, ${stop!.y_coord}`}
+      coordinate={[stop!.x_coord, stop!.y_coord]}
     >
       <View style={[styles.busStop, borderStyle, backgroundStyle, viewStyle]}>
         {label && (
@@ -104,7 +118,11 @@ export const LineBusStopMarkersItem = ({
           </UiText>
         )}
       </View>
-    </Marker>
+
+      {/* <View style={[styles.iconContainer, { backgroundColor }]}>
+        <Ionicons name="bus" color={textColor} />
+      </View> */}
+    </PointAnnotation>
   )
 }
 

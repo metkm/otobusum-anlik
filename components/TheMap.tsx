@@ -1,6 +1,7 @@
-import { RefObject } from 'react'
+import { MapView, Camera } from '@rnmapbox/maps'
+import { RefObject, ComponentProps } from 'react'
 import { Dimensions, StyleSheet } from 'react-native'
-import MapView, { MapViewProps, PROVIDER_GOOGLE } from 'react-native-maps'
+// import MapView, { MapViewProps, PROVIDER_GOOGLE } from 'react-native-maps'
 import Animated, { clamp, Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useShallow } from 'zustand/react/shallow'
@@ -11,7 +12,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { getMapStyle } from '@/constants/mapStyles'
 import { useSettingsStore } from '@/stores/settings'
 
-interface TheMapProps extends MapViewProps {
+interface TheMapProps extends ComponentProps<typeof MapView> {
   cRef?: RefObject<MapView>
 }
 
@@ -50,9 +51,32 @@ export const TheMap = ({ style, cRef, ...props }: TheMapProps) => {
     }
   }, [])
 
+  const initial = useSettingsStore.getState().initialMapLocation || {
+    latitude: 39.66770141070046,
+    latitudeDelta: 4.746350767346861,
+    longitude: 28.17840663716197,
+    longitudeDelta: 2.978521026670929,
+  }
+
   return (
     <Animated.View style={animatedStyle}>
       <MapView
+        style={styles.map}
+        logoEnabled={false}
+        scaleBarEnabled={false}
+        attributionEnabled={false}
+        styleURL="mapbox://styles/mapbox/dark-v11"
+      >
+        <Camera
+          centerCoordinate={[initial.longitude, initial.latitude]}
+        />
+
+        {props.children}
+      </MapView>
+    </Animated.View>
+  )
+}
+{ /* <MapView
         ref={cRef}
         style={[styles.map, style]}
         provider={PROVIDER_GOOGLE}
@@ -65,10 +89,7 @@ export const TheMap = ({ style, cRef, ...props }: TheMapProps) => {
         {...props}
       >
         {props.children}
-      </MapView>
-    </Animated.View>
-  )
-}
+      </MapView> */ }
 
 const styles = StyleSheet.create({
   map: {

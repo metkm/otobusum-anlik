@@ -1,7 +1,8 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
+import { PointAnnotation, ShapeSource, LineLayer } from '@rnmapbox/maps'
 import { useMemo } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
-import { LatLng, Marker, Polyline } from 'react-native-maps'
+// import { LatLng, Marker, Polyline } from 'react-native-maps'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useRoutes } from '@/hooks/queries/useRoutes'
@@ -26,18 +27,19 @@ export const RouteLine = ({ lineCode }: RouteLineProps) => {
 
   const route = getRouteFromCode()
 
-  const transformed: LatLng[] = useMemo(
-    () =>
-      route?.route_path?.map(path => ({
-        latitude: path.lat,
-        longitude: path.lng,
-      })) || [],
+  const transformed: any[] = useMemo(
+    () => route?.route_path?.map(path => [path.lng, path.lat]) || [],
+
+    // route?.route_path?.map(path => ({
+    //   latitude: path.lat,
+    //   longitude: path.lng,
+    // })) || [],
     [route],
   )
 
   const arrows = useMemo(() => {
     const chunkSize = transformed.length / (transformed.length / 14)
-    const arrows: { coordinates: LatLng, angle: number }[] = []
+    const arrows: { coordinates: any[], angle: number }[] = []
 
     for (let index = 0; index < transformed.length; index += chunkSize) {
       const chunk = transformed.slice(index, index + chunkSize)
@@ -59,7 +61,7 @@ export const RouteLine = ({ lineCode }: RouteLineProps) => {
       }
 
       const result = Math.atan2(totalY, totalX)
-      let degrees = (result * 180 / Math.PI + 360) % 360
+      let degrees = ((result * 180) / Math.PI + 360) % 360
 
       // not sure why we need this
       if (selectedCity === 'istanbul') {
@@ -89,13 +91,33 @@ export const RouteLine = ({ lineCode }: RouteLineProps) => {
 
   return (
     <>
-      <Polyline
+      <ShapeSource
+        id="line"
+        shape={{
+          type: 'LineString',
+          coordinates: transformed,
+          // geometry: {
+          //   type: 'LineString',
+          //   coordinates: [[10, 10]],
+          // },
+        }}
+      >
+        <LineLayer
+          id="line-layer"
+          style={{
+            lineColor: getSchemeColorHex('primary'),
+            lineWidth: 3,
+          }}
+        />
+      </ShapeSource>
+
+      {/* <Polyline
         coordinates={transformed}
         strokeWidth={6}
         strokeColor={getSchemeColorHex('primary')}
-      />
+      /> */}
 
-      <MarkersInView
+      {/* <MarkersInView
         zoomLimit={15}
         data={arrows}
         renderItem={item => (
@@ -122,7 +144,7 @@ export const RouteLine = ({ lineCode }: RouteLineProps) => {
             </View>
           </Marker>
         )}
-      />
+      /> */}
     </>
   )
 }

@@ -38,19 +38,32 @@ export const LineBusStopMarkers = (props: Props) => {
   )
 
   return (
-    <MarkersInView
-      zoomLimit={route?.route_path ? 13 : 0}
-      data={stops}
-      renderItem={item => (
+    <>
+      {stops.map(stop => (
         <LineBusStopMarkersItemMemoized
+          key={`${stop.x_coord}-${stop.y_coord}-${props.lineCode}-${stop.stop_code}`}
           type="point"
-          key={`${item.x_coord}-${item.y_coord}-${props.lineCode}-${item.stop_code}`}
-          stop={item}
+          stop={stop}
           lineCode={props.lineCode}
         />
-      )}
-    />
+      ))}
+    </>
   )
+
+  // return (
+  //   <MarkersInView
+  //     zoomLimit={route?.route_path ? 13 : 0}
+  //     data={stops}
+  //     renderItem={item => (
+  //       <LineBusStopMarkersItemMemoized
+  //         type="point"
+  //         key={`${item.x_coord}-${item.y_coord}-${props.lineCode}-${item.stop_code}`}
+  //         stop={item}
+  //         lineCode={props.lineCode}
+  //       />
+  //     )}
+  //   />
+  // )
 }
 
 export const LineBusStopMarkersMemoized = memo(LineBusStopMarkers)

@@ -1,5 +1,6 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { DarkTheme, DefaultTheme, Theme, ThemeProvider } from '@react-navigation/native'
+import { setAccessToken, setTelemetryEnabled } from '@rnmapbox/maps'
 import { DehydrateOptions } from '@tanstack/react-query'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { Stack } from 'expo-router'
@@ -15,7 +16,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { persister, queryClient } from '@/api/client'
 import { i18n } from '@/translations/i18n'
 
-SplashScreen.preventAutoHideAsync()
+// SplashScreen.preventAutoHideAsync()
 
 SplashScreen.setOptions({
   duration: 150,
@@ -24,6 +25,9 @@ SplashScreen.setOptions({
 
 enableFreeze(true)
 enableScreens(true)
+
+setAccessToken(process.env.EXPO_PUBLIC_MAP_API || '')
+setTelemetryEnabled(false)
 
 export const RootLayout = () => {
   const { colorsTheme, mode } = useTheme()
