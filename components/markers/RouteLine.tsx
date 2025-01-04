@@ -90,57 +90,20 @@ export const RouteLine = ({ lineCode }: RouteLineProps) => {
   }
 
   return (
-    <>
-      <ShapeSource
-        id="line"
-        shape={{
-          type: 'LineString',
-          coordinates: transformed,
+    <ShapeSource
+      id="line"
+      shape={{
+        type: 'LineString',
+        coordinates: transformed,
+      }}
+    >
+      <LineLayer
+        id="line-layer"
+        style={{
+          lineColor: getSchemeColorHex('primary'),
+          lineWidth: 3,
         }}
-      >
-        <LineLayer
-          id="line-layer"
-          style={{
-            lineColor: getSchemeColorHex('primary'),
-            lineWidth: 3,
-          }}
-        />
-      </ShapeSource>
-
-      {/* <Polyline
-        coordinates={transformed}
-        strokeWidth={6}
-        strokeColor={getSchemeColorHex('primary')}
-      /> */}
-
-      {/* <MarkersInView
-        zoomLimit={15}
-        data={arrows}
-        renderItem={item => (
-          <Marker
-            key={`${item.coordinates.latitude}-${item.coordinates.longitude}-${route.route_code}`}
-            coordinate={item.coordinates}
-            tracksViewChanges={false}
-            tracksInfoWindowChanges={false}
-            anchor={{ x: 0.5, y: 0.5 }}
-            zIndex={1}
-          >
-            <View style={arrowBackground}>
-              <Ionicons
-                name="arrow-up"
-                size={10}
-                style={{
-                  transform: [
-                    {
-                      rotate: `${item.angle}deg`,
-                    },
-                  ],
-                }}
-              />
-            </View>
-          </Marker>
-        )}
-      /> */}
-    </>
+      />
+    </ShapeSource>
   )
 }

@@ -1,5 +1,5 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
-import { PointAnnotation } from '@rnmapbox/maps'
+import Mapbox, { Image, PointAnnotation, ShapeSource, SymbolLayer } from '@rnmapbox/maps'
 import { memo } from 'react'
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { MapMarkerProps } from 'react-native-maps'
@@ -25,7 +25,9 @@ interface LineBusMarkersItemProps extends Omit<MapMarkerProps, 'coordinate'> {
 export const LineBusMarkersItem = ({ bus, lineCode }: LineBusMarkersItemProps) => {
   const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
   const { getSchemeColorHex } = useTheme(lineTheme)
-  const { query: { dataUpdatedAt } } = useLine(lineCode)
+  const {
+    query: { dataUpdatedAt },
+  } = useLine(lineCode)
 
   const textColor = getSchemeColorHex('onPrimaryContainer')
   const backgroundColor = getSchemeColorHex('primaryContainer')
@@ -42,12 +44,15 @@ export const LineBusMarkersItem = ({ bus, lineCode }: LineBusMarkersItemProps) =
   return (
     <PointAnnotation
       id={`${bus.bus_id}-${bus.route_code}-${bus.lat}-${bus.lng}`}
-      key={`${bus.bus_id}-${bus.route_code}-${bus.lat}-${bus.lng}`}
       coordinate={[bus.lng, bus.lat]}
+      style={{ zIndex: 999 }}
     >
-      <View style={[styles.iconContainer, { backgroundColor }]}>
-        <Ionicons name="bus" color={textColor} />
-      </View>
+      <Ionicons
+        name="bus"
+        color={textColor}
+        size={16}
+        style={[styles.iconContainer, { backgroundColor }]}
+      />
     </PointAnnotation>
   )
 
@@ -93,14 +98,16 @@ export const LineBusMarkersItem = ({ bus, lineCode }: LineBusMarkersItemProps) =
   // )
 }
 
-export const LineBusMarkersItemMemoized = memo(LineBusMarkersItem)
+export const LineBusMarkersItemMemoized = LineBusMarkersItem
 
 const styles = StyleSheet.create({
   iconContainer: {
     borderRadius: 999,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 8,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    width: 28,
+    height: 28,
+    backgroundColor: 'red',
   },
   icon: {
     width: 10,

@@ -1,14 +1,14 @@
 import { memo, useMemo } from 'react'
 import { LatLng } from 'react-native-maps'
+import { useShallow } from 'zustand/react/shallow'
 
 import { useLineBusStops } from '@/hooks/queries/useLineBusStops'
 import { useRoutes } from '@/hooks/queries/useRoutes'
 
-import { MarkersInView } from '../MarkersInView'
-
 import { LineBusStopMarkersItemMemoized } from './StopMarkersItem'
 
 import { useFiltersStore, getSelectedRouteCode } from '@/stores/filters'
+import { useSettingsStore } from '@/stores/settings'
 
 interface Props {
   lineCode: string
@@ -16,6 +16,7 @@ interface Props {
 
 export const LineBusStopMarkers = (props: Props) => {
   const routeCode = useFiltersStore(() => getSelectedRouteCode(props.lineCode))
+  const mapZoom = useSettingsStore(useShallow(state => state.mapState))?.properties.zoom
 
   const { getRouteFromCode } = useRoutes(props.lineCode)
   const { query } = useLineBusStops(routeCode)
@@ -36,6 +37,11 @@ export const LineBusStopMarkers = (props: Props) => {
     },
     [query.data],
   )
+
+  if (!route?.route_path || !mapZoom || mapZoom < 12) {
+  // if (route?.route_path || !mapZoom || mapZoom < 8) {
+    return null
+  }
 
   return (
     <>

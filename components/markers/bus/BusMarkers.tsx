@@ -1,4 +1,7 @@
+import Ionicons from '@react-native-vector-icons/ionicons'
+import { Image, Images } from '@rnmapbox/maps'
 import { memo } from 'react'
+import { View } from 'react-native'
 
 import { useLine } from '@/hooks/queries/useLine'
 
@@ -29,4 +32,4 @@ export const LineBusMarkers = (props: Props) => {
   )
 }
 
-export const LineBusMarkersMemoized = memo(LineBusMarkers)
+export const LineBusMarkersMemoized = LineBusMarkers
