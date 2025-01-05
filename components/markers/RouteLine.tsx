@@ -91,14 +91,14 @@ export const RouteLine = ({ lineCode }: RouteLineProps) => {
 
   return (
     <ShapeSource
-      id="line"
+      id={`line-shape-source-${lineCode}`}
       shape={{
         type: 'LineString',
         coordinates: transformed,
       }}
     >
       <LineLayer
-        id="line-layer"
+        id={`line-layer-${lineCode}`}
         style={{
           lineColor: getSchemeColorHex('primary'),
           lineWidth: 3,

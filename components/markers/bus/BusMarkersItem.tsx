@@ -1,5 +1,6 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { Callout, PointAnnotation } from '@rnmapbox/maps'
+import { useState } from 'react'
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { MapMarkerProps } from 'react-native-maps'
 import { useShallow } from 'zustand/react/shallow'
@@ -21,10 +22,10 @@ interface LineBusMarkersItemProps extends Omit<MapMarkerProps, 'coordinate'> {
 
 export const LineBusMarkersItem = ({ bus, lineCode }: LineBusMarkersItemProps) => {
   const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
+  const [renderCallout, setRenderCallout] = useState(false)
+
   const { getSchemeColorHex } = useTheme(lineTheme)
-  const {
-    query: { dataUpdatedAt },
-  } = useLine(lineCode)
+  const { query } = useLine(lineCode)
 
   const textColor = getSchemeColorHex('onPrimaryContainer')
   const backgroundColor = getSchemeColorHex('primaryContainer')
@@ -40,9 +41,10 @@ export const LineBusMarkersItem = ({ bus, lineCode }: LineBusMarkersItemProps) =
 
   return (
     <PointAnnotation
-      id={`${bus.bus_id}-${bus.route_code}-${bus.lat}-${bus.lng}`}
+      id="bus-markers"
       coordinate={[bus.lng, bus.lat]}
-      style={{ zIndex: 52 }}
+      onSelected={() => setRenderCallout(true)}
+      style={{ zIndex: 999 }}
     >
       <Ionicons
         name="bus"
@@ -51,26 +53,30 @@ export const LineBusMarkersItem = ({ bus, lineCode }: LineBusMarkersItemProps) =
         style={[styles.iconContainer, { backgroundColor }]}
       />
 
-      <Callout title="deneme callout">
-        <View style={[styles.calloutContainer, dynamicCalloutContainer]}>
-          {bus.route_code && (
-            <UiText style={textStyle}>
-              {bus.route_code}
-            </UiText>
-          )}
+      {renderCallout
+        ? (
+            <Callout ref={call => call?._renderCustomCallout()} title="deneme callout">
+              <View style={[styles.calloutContainer, dynamicCalloutContainer]}>
+                {bus.route_code && (
+                  <UiText style={textStyle}>
+                    {bus.route_code}
+                  </UiText>
+                )}
 
-          <UiText style={textStyle}>
-            {i18n.t('doorNo')}
-            {': '}
-            {bus.bus_id}
-          </UiText>
-          <UiText style={textStyle}>
-            {i18n.t('lastUpdate')}
-            {': '}
-            {new Date(dataUpdatedAt).toLocaleTimeString()}
-          </UiText>
-        </View>
-      </Callout>
+                <UiText style={textStyle}>
+                  {i18n.t('doorNo')}
+                  {': '}
+                  {bus.bus_id}
+                </UiText>
+                <UiText style={textStyle}>
+                  {i18n.t('lastUpdate')}
+                  {': '}
+                  {new Date(query.dataUpdatedAt).toLocaleTimeString()}
+                </UiText>
+              </View>
+            </Callout>
+          )
+        : <></>}
     </PointAnnotation>
   )
 }

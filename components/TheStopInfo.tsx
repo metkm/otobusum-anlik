@@ -129,7 +129,7 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
                 }}
               />
 
-              <LineBusStopMarkersItem type="point" stop={query.data.stop} />
+              {/* <LineBusStopMarkersItem type="point" stop={query.data.stop} /> */}
             </TheMap>
           )}
         </View>

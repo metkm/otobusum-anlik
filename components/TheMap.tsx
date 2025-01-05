@@ -1,8 +1,8 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { MapView, Camera, Images, Image, UserLocation } from '@rnmapbox/maps'
 import { CameraRef } from '@rnmapbox/maps/lib/typescript/src/components/Camera'
-import { RefObject, ComponentProps } from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { RefObject, ComponentProps, useMemo } from 'react'
+import { Dimensions, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 // import MapView, { MapViewProps, PROVIDER_GOOGLE } from 'react-native-maps'
 import Animated, { clamp, Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -11,6 +11,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useSheetModal } from '@/hooks/contexts/useSheetModal'
 import { useTheme } from '@/hooks/useTheme'
 
+import { colors } from '@/constants/colors'
 import { getMapStyle } from '@/constants/mapStyles'
 import { useSettingsStore } from '@/stores/settings'
 
@@ -21,7 +22,7 @@ interface TheMapProps extends ComponentProps<typeof MapView> {
 const screen = Dimensions.get('screen')
 
 export const TheMap = ({ style, cameraRef, ...props }: TheMapProps) => {
-  const { mode } = useTheme()
+  const { mode, getSchemeColorHex } = useTheme()
   const sheetContext = useSheetModal()
 
   const insets = useSafeAreaInsets()
@@ -59,6 +60,20 @@ export const TheMap = ({ style, cameraRef, ...props }: TheMapProps) => {
     39.66770141070046,
   ]
 
+  const backgroundStyle: StyleProp<ViewStyle> = useMemo(
+    () => ({
+      backgroundColor: getSchemeColorHex('onPrimary') || colors.primary,
+    }),
+    [getSchemeColorHex],
+  )
+
+  const borderStyle: StyleProp<ViewStyle> = useMemo(
+    () => ({
+      borderColor: getSchemeColorHex('outlineVariant'),
+    }),
+    [getSchemeColorHex],
+  )
+
   return (
     <Animated.View style={animatedStyle}>
       <MapView
@@ -89,5 +104,13 @@ const styles = StyleSheet.create({
   map: {
     flexGrow: 1,
     flexShrink: 0,
+  },
+  busStop: {
+    width: 14,
+    height: 14,
+    borderWidth: 2,
+    borderRadius: 1000,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })
