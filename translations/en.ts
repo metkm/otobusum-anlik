@@ -40,7 +40,6 @@ export default {
   appTheme: 'App Theme',
   changeTheme: 'Change theme',
   system: 'System',
-  clusterBusStops: 'Cluster bus stops for improved performance',
   addedToGroup: 'Added %{lineCode} to group',
   added: 'Added %{lineCode}',
   linesThatUseStop: 'Lines that use this stop',

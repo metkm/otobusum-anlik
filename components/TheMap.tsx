@@ -1,18 +1,13 @@
-import Ionicons from '@react-native-vector-icons/ionicons'
-import { MapView, Camera, Images, Image, UserLocation } from '@rnmapbox/maps'
+import { MapView, Camera, UserLocation } from '@rnmapbox/maps'
 import { CameraRef } from '@rnmapbox/maps/lib/typescript/src/components/Camera'
-import { RefObject, ComponentProps, useMemo } from 'react'
-import { Dimensions, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-// import MapView, { MapViewProps, PROVIDER_GOOGLE } from 'react-native-maps'
+import { RefObject, ComponentProps } from 'react'
+import { Dimensions, StyleSheet } from 'react-native'
 import Animated, { clamp, Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useSheetModal } from '@/hooks/contexts/useSheetModal'
 import { useTheme } from '@/hooks/useTheme'
 
-import { colors } from '@/constants/colors'
-import { getMapStyle } from '@/constants/mapStyles'
 import { useSettingsStore } from '@/stores/settings'
 
 interface TheMapProps extends ComponentProps<typeof MapView> {
@@ -22,12 +17,11 @@ interface TheMapProps extends ComponentProps<typeof MapView> {
 const screen = Dimensions.get('screen')
 
 export const TheMap = ({ style, cameraRef, ...props }: TheMapProps) => {
-  const { mode, getSchemeColorHex } = useTheme()
+  const { mode } = useTheme()
   const sheetContext = useSheetModal()
 
-  const insets = useSafeAreaInsets()
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
-  const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
+  // const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
 
   const animatedStyle = useAnimatedStyle(() => {
     let heightFrombottom = screen.height - ((sheetContext?.height.value || 0) + 49) - 49
@@ -60,20 +54,6 @@ export const TheMap = ({ style, cameraRef, ...props }: TheMapProps) => {
     39.66770141070046,
   ]
 
-  const backgroundStyle: StyleProp<ViewStyle> = useMemo(
-    () => ({
-      backgroundColor: getSchemeColorHex('onPrimary') || colors.primary,
-    }),
-    [getSchemeColorHex],
-  )
-
-  const borderStyle: StyleProp<ViewStyle> = useMemo(
-    () => ({
-      borderColor: getSchemeColorHex('outlineVariant'),
-    }),
-    [getSchemeColorHex],
-  )
-
   return (
     <Animated.View style={animatedStyle}>
       <MapView
@@ -81,7 +61,7 @@ export const TheMap = ({ style, cameraRef, ...props }: TheMapProps) => {
         logoEnabled={false}
         scaleBarEnabled={false}
         attributionEnabled={false}
-        styleURL="mapbox://styles/mapbox/dark-v11"
+        styleURL={`mapbox://styles/mapbox/${mode}-v11`}
         {...props}
       >
         <Camera

@@ -54,7 +54,7 @@ export const LineBusStopMarkers = ({ lineCode }: LineBusStopMarkersProps) => {
 
   const backgroundStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
-      backgroundColor: getSchemeColorHex('onPrimary') || colors.primary,
+      backgroundColor: getSchemeColorHex('primary') || colors.primary,
     }),
     [getSchemeColorHex],
   )

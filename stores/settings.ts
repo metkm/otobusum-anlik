@@ -5,12 +5,10 @@ import { create } from 'zustand'
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 
 export interface SettingsStore {
-  // initialMapLocation?: Region
   mapState?: MapState
   showMyLocation: boolean
   showTraffic: boolean
   colorScheme?: ColorSchemeName
-  clusterStops: boolean
 }
 
 export const useSettingsStore = create(
@@ -22,7 +20,6 @@ export const useSettingsStore = create(
         showMyLocation: false,
         showTraffic: true,
         colorScheme: undefined,
-        clusterStops: false,
       }),
       {
         name: 'settings-storage',
