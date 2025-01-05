@@ -71,10 +71,7 @@ export const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <MapContext.Provider value={{
-        camera,
-      }}
-      >
+      <MapContext.Provider value={{ camera }}>
         <SheetContext.Provider value={sheetContext}>
           <TheMap
             cameraRef={camera}
@@ -91,7 +88,7 @@ export const HomeScreen = () => {
             <LinesMomoizedFr />
           </View>
 
-          {/* <TheStopInfo cRef={map} /> */}
+          <TheStopInfo cRef={camera} />
         </SheetContext.Provider>
       </MapContext.Provider>
     </View>

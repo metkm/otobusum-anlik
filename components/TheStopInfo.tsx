@@ -1,28 +1,27 @@
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet'
+import { MapState, Camera } from '@rnmapbox/maps'
+import { CameraRef } from '@rnmapbox/maps/lib/typescript/src/components/Camera'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { RefObject, useEffect, useRef } from 'react'
 import { Linking, StyleSheet, View } from 'react-native'
-import MapView, { Region } from 'react-native-maps'
 import { useShallow } from 'zustand/react/shallow'
-
-import { useTheme } from '@/hooks/useTheme'
 
 import { LineGroups } from './lines/groups/LineGroups'
 import { LineBusStopMarkersItem } from './markers/stop/StopMarkersItem'
+import { TheMap } from './TheMap'
 import { UiSheetModal } from './ui/sheet/UiSheetModal'
 import { UiActivityIndicator } from './ui/UiActivityIndicator'
 import { UiButton } from './ui/UiButton'
 import { UiText } from './ui/UiText'
 
 import { getStop } from '@/api/getStop'
-import { getMapStyle } from '@/constants/mapStyles'
 import { addLine, getTheme, useLinesStore } from '@/stores/lines'
 import { useSettingsStore } from '@/stores/settings'
 import { i18n } from '@/translations/i18n'
 
 interface TheStopInfoProps {
-  cRef: RefObject<MapView>
+  cRef: RefObject<CameraRef>
 }
 
 const StopLine = ({ lineCode }: { lineCode: string }) => {
@@ -53,9 +52,8 @@ const StopLine = ({ lineCode }: { lineCode: string }) => {
 
 export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
   const { stopId } = useLocalSearchParams<{ stopId?: string }>()
-  const { mode } = useTheme()
   const bottomSheetModal = useRef<BottomSheetModal>(null)
-  const savedRegion = useRef<Region | undefined>(undefined)
+  const savedMapState = useRef<MapState>()
 
   const query = useQuery({
     queryKey: ['stop', stopId],
@@ -65,18 +63,17 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
   })
 
   useEffect(() => {
-    savedRegion.current = useSettingsStore.getState().initialMapLocation
+    savedMapState.current = useSettingsStore.getState().mapState
     bottomSheetModal.current?.present()
 
-    if (query.data) {
-      cRef.current?.animateCamera({
-        center: {
-          latitude: query.data.stop.y_coord,
-          longitude: query.data.stop.x_coord,
-        },
-        zoom: 16,
-      })
-    }
+    if (!query.data) return
+
+    cRef.current?.setCamera({
+      centerCoordinate: [query.data.stop.x_coord, query.data.stop.y_coord],
+      zoomLevel: 16,
+      animationDuration: 500,
+      animationMode: 'easeTo',
+    })
   }, [query.data, stopId, cRef])
 
   if (!stopId) return null
@@ -105,8 +102,13 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
   }
 
   const handleOnDismiss = () => {
-    if (!savedRegion.current) return
-    cRef.current?.animateToRegion(savedRegion.current)
+    if (!savedMapState.current || !cRef.current) return
+
+    cRef.current.setCamera({
+      centerCoordinate: savedMapState.current.properties.center,
+      zoomLevel: savedMapState.current.properties.zoom,
+      animationDuration: 500,
+    })
   }
 
   return (
@@ -114,24 +116,21 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
       <BottomSheetView style={styles.container}>
         <View style={styles.mapContainer}>
           {query.data && (
-            <MapView
-              liteMode
-              style={styles.map}
-              customMapStyle={getMapStyle(mode)}
-              showsIndoors={false}
-              toolbarEnabled={false}
-              initialCamera={{
-                center: {
-                  latitude: query.data?.stop.y_coord,
-                  longitude: query.data?.stop.x_coord,
-                },
-                heading: 0,
-                pitch: 0,
-                zoom: 16,
-              }}
+            <TheMap
+              zoomEnabled={false}
+              pitchEnabled={false}
+              rotateEnabled={false}
+              scrollEnabled={false}
             >
+              <Camera
+                defaultSettings={{
+                  centerCoordinate: [query.data?.stop.x_coord, query.data?.stop.y_coord],
+                  zoomLevel: 16,
+                }}
+              />
+
               <LineBusStopMarkersItem type="point" stop={query.data.stop} />
-            </MapView>
+            </TheMap>
           )}
         </View>
 
