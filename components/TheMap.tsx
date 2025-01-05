@@ -1,5 +1,5 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
-import { MapView, Camera, Images, Image } from '@rnmapbox/maps'
+import { MapView, Camera, Images, Image, UserLocation } from '@rnmapbox/maps'
 import { CameraRef } from '@rnmapbox/maps/lib/typescript/src/components/Camera'
 import { RefObject, ComponentProps } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
@@ -76,6 +76,8 @@ export const TheMap = ({ style, cameraRef, ...props }: TheMapProps) => {
             zoomLevel: state?.properties.zoom,
           }}
         />
+
+        {showMyLocation && <UserLocation visible={true} />}
 
         {props.children}
       </MapView>
