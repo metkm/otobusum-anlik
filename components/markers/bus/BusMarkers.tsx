@@ -1,8 +1,3 @@
-import Ionicons from '@react-native-vector-icons/ionicons'
-import { Image, Images } from '@rnmapbox/maps'
-import { memo } from 'react'
-import { View } from 'react-native'
-
 import { useLine } from '@/hooks/queries/useLine'
 
 import { LineBusMarkersItemMemoized } from './BusMarkersItem'

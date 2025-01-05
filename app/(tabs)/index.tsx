@@ -11,7 +11,7 @@ import { TheMap } from '@/components/TheMap'
 import { TheMapButtons } from '@/components/TheMapButtons'
 import { TheStopInfo } from '@/components/TheStopInfo'
 
-import { MapContext } from '@/hooks/contexts/useMap'
+import { getNECoordinates, getSWCoordinates, MapContext } from '@/hooks/contexts/useMap'
 import { SheetContext, sheetContextValues } from '@/hooks/contexts/useSheetModal'
 
 import { queryClient } from '@/api/client'
@@ -45,20 +45,11 @@ export const HomeScreen = () => {
           queryFn: () => getLineBusStops(routeCode),
         })
 
-        // map.current?.fitToCoordinates(
-        //   busStops?.map(stop => ({
-        //     longitude: stop.x_coord,
-        //     latitude: stop.y_coord,
-        //   })),
-        //   {
-        //     edgePadding: {
-        //       bottom: 200,
-        //       left: 0,
-        //       right: 0,
-        //       top: 0,
-        //     },
-        //   },
-        // )
+        const coords = busStops.map(stop => ([stop.x_coord, stop.y_coord])) as [number, number][]
+        const ne = getNECoordinates(coords)
+        const sw = getSWCoordinates(coords)
+
+        camera.current?.fitBounds(ne, sw, [250, 20], 500)
       },
     )
 
@@ -70,7 +61,7 @@ export const HomeScreen = () => {
     index: useSharedValue(-1),
   }
 
-  const handleOnMapReady = () => {
+  const handleOnMapLoaded = () => {
     SplashScreen.hideAsync()
   }
 
@@ -88,21 +79,10 @@ export const HomeScreen = () => {
           <TheMap
             cameraRef={camera}
             onMapIdle={handleMapIdle}
-            // cRef={map}
-            // onMapReady={handleOnMapReady}
-            // onRegionChangeComplete={handleRegionChangeComplete}
-            // initialRegion={
-            //   useSettingsStore.getState().initialMapLocation || {
-            //     latitude: 39.66770141070046,
-            //     latitudeDelta: 4.746350767346861,
-            //     longitude: 28.17840663716197,
-            //     longitudeDelta: 2.978521026670929,
-            //   }
-            // }
-            // moveOnMarkerPress={false}
+            onDidFinishLoadingMap={handleOnMapLoaded}
+            deselectAnnotationOnTap
           >
             <LineMarkers />
-
           </TheMap>
 
           <TheMapButtons />

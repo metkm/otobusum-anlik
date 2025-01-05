@@ -5,7 +5,7 @@ interface IMapContext {
   camera: RefObject<CameraRef>
 }
 
-function getSWCoordinates(coordinatesCollection: [number, number][]): [number, number] {
+export const getSWCoordinates = (coordinatesCollection: [number, number][]): [number, number] => {
   const lowestLng = Math.min(
     ...coordinatesCollection.map(coordinates => coordinates[0]),
   )
@@ -16,7 +16,7 @@ function getSWCoordinates(coordinatesCollection: [number, number][]): [number, n
   return [lowestLng, lowestLat]
 }
 
-function getNECoordinates(coordinatesCollection: [number, number][]): [number, number] {
+export const getNECoordinates = (coordinatesCollection: [number, number][]): [number, number] => {
   const highestLng = Math.max(
     ...coordinatesCollection.map(coordinates => coordinates[0]),
   )
@@ -36,7 +36,7 @@ export const useMap = () => {
     const sw = getSWCoordinates(positions)
     const ne = getNECoordinates(positions)
 
-    context?.camera.current?.fitBounds(ne, sw, [0, 20], 500)
+    context?.camera.current?.fitBounds(ne, sw, [250, 20], 500)
   }
 
   return {
