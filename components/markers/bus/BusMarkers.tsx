@@ -26,5 +26,3 @@ export const LineBusMarkers = (props: Props) => {
     </>
   )
 }
-
-export const LineBusMarkersMemoized = LineBusMarkers

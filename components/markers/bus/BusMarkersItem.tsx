@@ -41,7 +41,7 @@ export const LineBusMarkersItem = ({ bus, lineCode }: LineBusMarkersItemProps) =
 
   return (
     <PointAnnotation
-      id="bus-markers"
+      id={`bus-marker-${bus.bus_id}`}
       coordinate={[bus.lng, bus.lat]}
       onSelected={() => setRenderCallout(true)}
       style={{ zIndex: 999 }}
