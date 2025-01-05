@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const LineBusStopMarkersClustered = (props: Props) => {
-  const initialLocation = useSettingsStore(state => state.initialMapLocation)
+  const mapState = useSettingsStore(state => state.mapState)
   const routeCode = useFiltersStore(() => getSelectedRouteCode(props.lineCode))
   const { width, height } = useWindowDimensions()
 
@@ -40,10 +40,7 @@ export const LineBusStopMarkersClustered = (props: Props) => {
         type="cluster"
         key={`cluster-${point.properties.cluster_id}`}
         lineCode={props.lineCode}
-        coordinate={{
-          latitude: point.geometry.coordinates[1]!,
-          longitude: point.geometry.coordinates[0]!,
-        }}
+        coordinate={[point.geometry.coordinates[0]!, point.geometry.coordinates[1]!]}
         viewStyle={{
           width: 24,
           height: 24,
@@ -56,7 +53,12 @@ export const LineBusStopMarkersClustered = (props: Props) => {
   return (
     <Clusterer
       data={filteredParsed}
-      region={initialLocation as Region}
+      region={{
+        latitude: mapState?.properties.center[1]!,
+        longitude: mapState?.properties.center[0]!,
+        latitudeDelta: 1,
+        longitudeDelta: 1,
+      }}
       mapDimensions={{
         width,
         height,

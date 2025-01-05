@@ -42,6 +42,7 @@ export const LineBusMarkersItem = ({ bus, lineCode }: LineBusMarkersItemProps) =
     <PointAnnotation
       id={`${bus.bus_id}-${bus.route_code}-${bus.lat}-${bus.lng}`}
       coordinate={[bus.lng, bus.lat]}
+      style={{ zIndex: 52 }}
     >
       <Ionicons
         name="bus"

@@ -103,6 +103,7 @@ export const RouteLine = ({ lineCode }: RouteLineProps) => {
           lineColor: getSchemeColorHex('primary'),
           lineWidth: 3,
         }}
+        layerIndex={50}
       />
     </ShapeSource>
   )

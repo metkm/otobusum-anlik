@@ -99,6 +99,7 @@ export const LineBusStopMarkersItem = ({
       id={`${stop.x_coord}, ${stop.y_coord}`}
       coordinate={[stop.x_coord, stop.y_coord]}
       onSelected={handleOnPress}
+      style={{ zIndex: 51 }}
       {...props}
     >
       <View style={[styles.busStop, borderStyle, backgroundStyle, viewStyle]}>

@@ -38,9 +38,9 @@ export const LineBusStopMarkers = (props: Props) => {
     [query.data],
   )
 
-  if (!route?.route_path || !mapZoom || mapZoom < 12) {
-    return null
-  }
+  // if (!route?.route_path || !mapZoom || mapZoom < 12) {
+  //   return null
+  // }
 
   return (
     <>
