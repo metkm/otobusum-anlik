@@ -1,5 +1,6 @@
-import { MapView, Camera, UserLocation } from '@rnmapbox/maps'
-import { CameraRef } from '@rnmapbox/maps/lib/typescript/src/components/Camera'
+// import { MapView, Camera, UserLocation } from '@rnmapbox/maps'
+import { MapView, Camera, UserLocation, CameraRef } from '@maplibre/maplibre-react-native'
+// import { CameraRef } from '@rnmapbox/maps/lib/typescript/src/components/Camera'
 import { RefObject, ComponentProps } from 'react'
 import { Dimensions, StyleSheet } from 'react-native'
 import Animated, { clamp, Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
@@ -15,6 +16,26 @@ interface TheMapProps extends ComponentProps<typeof MapView> {
 }
 
 const screen = Dimensions.get('screen')
+
+export const mapStyle = JSON.stringify({
+  version: 8,
+  sources: {
+    osm: {
+      type: 'raster',
+      tiles: ['https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'],
+      tileSize: 256,
+      attribution: '&copy; OpenStreetMap Contributors',
+      maxzoom: 19,
+    },
+  },
+  layers: [
+    {
+      id: 'osm',
+      type: 'raster',
+      source: 'osm',
+    },
+  ],
+})
 
 export const TheMap = ({ style, cameraRef, ...props }: TheMapProps) => {
   const { mode } = useTheme()
@@ -58,10 +79,14 @@ export const TheMap = ({ style, cameraRef, ...props }: TheMapProps) => {
     <Animated.View style={animatedStyle}>
       <MapView
         style={styles.map}
+        // logoEnabled={false}
+        // scaleBarEnabled={false}
+        // attributionEnabled={false}
+        // styleURL={`mapbox://styles/mapbox/${mode}-v11`}
+
         logoEnabled={false}
-        scaleBarEnabled={false}
-        attributionEnabled={false}
-        styleURL={`mapbox://styles/mapbox/${mode}-v11`}
+        styleJSON={mapStyle}
+        // styleURL="https://demotiles.maplibre.org/style.json"
         {...props}
       >
         <Camera

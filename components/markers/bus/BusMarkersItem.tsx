@@ -1,5 +1,6 @@
+import { Callout, PointAnnotation } from '@maplibre/maplibre-react-native'
 import Ionicons from '@react-native-vector-icons/ionicons'
-import { Callout, PointAnnotation } from '@rnmapbox/maps'
+// import { Callout, PointAnnotation } from '@rnmapbox/maps'
 import { useState } from 'react'
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { MapMarkerProps } from 'react-native-maps'
@@ -55,7 +56,7 @@ export const LineBusMarkersItem = ({ bus, lineCode }: LineBusMarkersItemProps) =
 
       {renderCallout
         ? (
-            <Callout ref={call => call?._renderCustomCallout()} title="deneme callout">
+            <Callout title="deneme callout">
               <View style={[styles.calloutContainer, dynamicCalloutContainer]}>
                 {bus.route_code && (
                   <UiText style={textStyle}>

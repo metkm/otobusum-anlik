@@ -22,9 +22,9 @@ export const LineMarkers = () => {
     <>
       {filteredCodes.map(lineCode => (
         <View key={lineCode}>
-          <RouteLine lineCode={lineCode} />
+          {/* <RouteLine lineCode={lineCode} />
 
-          <LineBusMarkers code={lineCode} />
+          <LineBusMarkers code={lineCode} /> */}
           <LineBusStopMarkers lineCode={lineCode} />
         </View>
       ))}

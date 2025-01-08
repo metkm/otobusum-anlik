@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.0.5",
+    "@maplibre/maplibre-react-native": "^10.0.0-alpha.28",
     "@material/material-color-utilities": "^0.3.0",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/netinfo": "11.4.1",

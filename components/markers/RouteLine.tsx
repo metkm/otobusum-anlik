@@ -1,5 +1,6 @@
+import { PointAnnotation, ShapeSource, LineLayer } from '@maplibre/maplibre-react-native'
 import Ionicons from '@react-native-vector-icons/ionicons'
-import { PointAnnotation, ShapeSource, LineLayer } from '@rnmapbox/maps'
+// import { PointAnnotation, ShapeSource, LineLayer } from '@rnmapbox/maps'
 import { useMemo } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
 // import { LatLng, Marker, Polyline } from 'react-native-maps'

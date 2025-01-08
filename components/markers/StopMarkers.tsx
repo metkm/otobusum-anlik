@@ -1,5 +1,4 @@
-import { Images, Image, ShapeSource, SymbolLayer } from '@rnmapbox/maps'
-import { OnPressEvent } from '@rnmapbox/maps/lib/typescript/src/types/OnPressEvent'
+import { PointAnnotation } from '@maplibre/maplibre-react-native'
 import { router } from 'expo-router'
 import { memo, useMemo } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
@@ -40,14 +39,13 @@ export const LineBusStopMarkers = ({ lineCode }: LineBusStopMarkersProps) => {
     [query.data],
   )
 
-  const handlePress = (event: OnPressEvent) => {
-    const feature = event.features.at(0)
-    if (!feature) return
+  const handlePress = (event: GeoJSON.Feature) => {
+    if (!event.properties) return
 
     router.navigate({
       pathname: '/(tabs)',
       params: {
-        stopId: feature.id,
+        stopId: event.properties.id,
       },
     })
   }
@@ -68,36 +66,17 @@ export const LineBusStopMarkers = ({ lineCode }: LineBusStopMarkersProps) => {
 
   return (
     <>
-      <Images>
-        <Image name={`bus-stop-${lineCode}`}>
-          <View style={[styles.busStop, borderStyle, backgroundStyle]} />
-        </Image>
-      </Images>
+      {stops.map(stop => (
+        <PointAnnotation
+          key={stop.id}
+          id={stop.stop_code.toString()}
+          coordinate={[stop.x_coord, stop.y_coord]}
+          onSelected={handlePress}
 
-      <ShapeSource
-        id={`stop-markers-shape-source-${lineCode}`}
-        shape={{
-          type: 'FeatureCollection',
-          features: stops.map(stop => ({
-            type: 'Feature',
-            id: stop.stop_code,
-            properties: {
-              stop,
-            },
-            geometry: {
-              type: 'Point',
-              coordinates: [stop.x_coord, stop.y_coord],
-            },
-          })),
-        }}
-        onPress={handlePress}
-      >
-        <SymbolLayer
-          id="bus-stops-symbol-layer"
-          style={{ iconImage: `bus-stop-${lineCode}` }}
-          // belowLayerID={getAnnotationsLayerID('PointAnnotations')}
-        />
-      </ShapeSource>
+        >
+          <View key={stop.stop_code} style={[styles.busStop, borderStyle, backgroundStyle]} />
+        </PointAnnotation>
+      ))}
     </>
   )
 }
@@ -112,5 +91,6 @@ const styles = StyleSheet.create({
     borderRadius: 1000,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'red',
   },
 })

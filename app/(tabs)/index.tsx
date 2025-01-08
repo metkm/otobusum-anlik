@@ -1,5 +1,6 @@
-import { MapState } from '@rnmapbox/maps'
-import { CameraRef } from '@rnmapbox/maps/lib/typescript/src/components/Camera'
+import { CameraRef } from '@maplibre/maplibre-react-native'
+// import { MapState } from '@rnmapbox/maps'
+// import { CameraRef } from '@rnmapbox/maps/lib/typescript/src/components/Camera'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -65,32 +66,32 @@ export const HomeScreen = () => {
     SplashScreen.hideAsync()
   }
 
-  const handleMapIdle = (state: MapState) => {
+  const handleMapIdle = (state: any) => {
     useSettingsStore.setState(() => ({ mapState: state }))
   }
 
   return (
     <View style={styles.container}>
-      <MapContext.Provider value={{ camera }}>
-        <SheetContext.Provider value={sheetContext}>
-          <TheMap
-            cameraRef={camera}
-            onMapIdle={handleMapIdle}
-            onDidFinishLoadingMap={handleOnMapLoaded}
-            deselectAnnotationOnTap
-          >
-            <LineMarkers />
-          </TheMap>
+      {/* <MapContext.Provider value={{ camera }}> */}
+      <SheetContext.Provider value={sheetContext}>
+        <TheMap
+          cameraRef={camera}
+          // onMapIdle={handleMapIdle}
+          onDidFinishLoadingMap={handleOnMapLoaded}
+          // deselectAnnotationOnTap
+        >
+          <LineMarkers />
+        </TheMap>
 
-          <TheMapButtons />
+        <TheMapButtons />
 
-          <View style={styles.linesContainer}>
-            <LinesMomoizedFr />
-          </View>
+        <View style={styles.linesContainer}>
+          <LinesMomoizedFr />
+        </View>
 
-          <TheStopInfo cRef={camera} />
-        </SheetContext.Provider>
-      </MapContext.Provider>
+        {/* <TheStopInfo cRef={camera} /> */}
+      </SheetContext.Provider>
+      {/* </MapContext.Provider> */}
     </View>
   )
 }

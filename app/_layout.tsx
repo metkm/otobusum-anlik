@@ -1,6 +1,6 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+import { setAccessToken } from '@maplibre/maplibre-react-native'
 import { DarkTheme, DefaultTheme, Theme, ThemeProvider } from '@react-navigation/native'
-import { setAccessToken, setTelemetryEnabled } from '@rnmapbox/maps'
 import { DehydrateOptions } from '@tanstack/react-query'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { Stack } from 'expo-router'
@@ -26,8 +26,9 @@ SplashScreen.setOptions({
 enableFreeze(true)
 enableScreens(true)
 
-setAccessToken(process.env.EXPO_PUBLIC_MAP_API || '')
-setTelemetryEnabled(false)
+setAccessToken(null)
+// setAccessToken(process.env.EXPO_PUBLIC_MAP_API || '')
+// setTelemetryEnabled(false)
 
 export const RootLayout = () => {
   const { colorsTheme, mode } = useTheme()
