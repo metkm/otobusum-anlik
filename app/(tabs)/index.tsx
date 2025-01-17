@@ -6,7 +6,7 @@ import { StyleSheet, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 
 import { LinesMomoizedFr } from '@/components/lines/Lines'
-import { TheMap, TheMapRef } from '@/components/map/Map'
+import { TheMap } from '@/components/map/Map'
 import { MarkersLine } from '@/components/markers/line/MarkersLine'
 import { TheMapButtons } from '@/components/TheMapButtons'
 import { TheStopInfo } from '@/components/TheStopInfo'

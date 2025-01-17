@@ -8,8 +8,7 @@ import { Linking, StyleSheet, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { LineGroups } from './lines/line/LineGroups'
-import { TheMap, TheMapRef } from './map/Map'
-import { MarkersStopItem } from './markers/stop/MarkersStopItem'
+import { TheMap } from './map/Map'
 import { UiSheetModal } from './ui/sheet/UiSheetModal'
 import { UiActivityIndicator } from './ui/UiActivityIndicator'
 import { UiButton } from './ui/UiButton'
@@ -21,7 +20,7 @@ import { useSettingsStore } from '@/stores/settings'
 import { i18n } from '@/translations/i18n'
 
 interface TheStopInfoProps {
-  cRef: RefObject<TheMapRef>
+  cRef: RefObject<CameraRef>
 }
 
 const StopLine = ({ lineCode }: { lineCode: string }) => {

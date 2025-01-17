@@ -151,9 +151,10 @@ export const LineBusStops = ({ lineCode, variant = 'solid' }: LineBusStopsProps)
       }
 
       const handleZoomBus = () => {
-        map?.current?.moveTo({
-          latitude: item.y_coord,
-          longitude: item.x_coord,
+        map.camera?.current?.setCamera({
+          centerCoordinate: [item.x_coord, item.y_coord],
+          zoomLevel: 13,
+          animationDuration: 500,
         })
       }
 

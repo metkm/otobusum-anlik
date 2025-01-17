@@ -1,60 +1,103 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
-import { memo } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Callout, PointAnnotation } from '@rnmapbox/maps'
+import { useState } from 'react'
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { MapMarkerProps } from 'react-native-maps'
 import { useShallow } from 'zustand/react/shallow'
 
+import { UiText } from '@/components/ui/UiText'
+
+import { useLine } from '@/hooks/queries/useLine'
 import { useTheme } from '@/hooks/useTheme'
 
-import { MarkersCallout } from '../callout/MarkersCallout'
-
-import { MarkersBusesItemCallout } from './MarkersBusesItemCallout'
-
 import { BusLocation } from '@/api/getLineBusLocations'
+import { colors } from '@/constants/colors'
 import { getTheme, useLinesStore } from '@/stores/lines'
+import { i18n } from '@/translations/i18n'
 
-interface MarkersBusesItemProps extends Omit<MapMarkerProps, 'coordinate'> {
-  location: BusLocation
+interface LineBusMarkersItemProps extends Omit<MapMarkerProps, 'coordinate'> {
+  bus: BusLocation
   lineCode: string
 }
 
-export const MarkersBusesItem = ({ location, lineCode }: MarkersBusesItemProps) => {
+export const MarkersBusesItem = ({ bus, lineCode }: LineBusMarkersItemProps) => {
   const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
+  const [renderCallout, setRenderCallout] = useState(false)
+
   const { getSchemeColorHex } = useTheme(lineTheme)
+  const { query } = useLine(lineCode)
 
   const textColor = getSchemeColorHex('onPrimaryContainer')
   const backgroundColor = getSchemeColorHex('primaryContainer')
 
+  const dynamicCalloutContainer: StyleProp<ViewStyle> = {
+    backgroundColor: getSchemeColorHex('primary'),
+  }
+
+  const textStyle: StyleProp<TextStyle> = {
+    color: getSchemeColorHex('onPrimary'),
+    fontWeight: 'bold',
+  }
+
   return (
-    <MarkersCallout
-      calloutProps={{
-        children: <MarkersBusesItemCallout busLocation={location} lineCode={lineCode} />,
-      }}
-      markerProps={{
-        coordinate: {
-          latitude: location.lat,
-          longitude: location.lng,
-        },
-        tracksInfoWindowChanges: false,
-        tracksViewChanges: false,
-        anchor: { x: 0.5, y: 0.5 },
-        zIndex: 2,
-      }}
+    <PointAnnotation
+      id={`bus-marker-${bus.bus_id}`}
+      coordinate={[bus.lng, bus.lat]}
+      onSelected={() => setRenderCallout(true)}
+      style={{ zIndex: 999 }}
     >
-      <View style={[styles.iconContainer, { backgroundColor }]}>
-        <Ionicons name="bus" color={textColor} />
-      </View>
-    </MarkersCallout>
+      <Ionicons
+        name="bus"
+        color={textColor}
+        size={16}
+        style={[styles.iconContainer, { backgroundColor }]}
+      />
+
+      {renderCallout
+        ? (
+            <Callout ref={call => call?._renderCustomCallout()} title="deneme callout">
+              <View style={[styles.calloutContainer, dynamicCalloutContainer]}>
+                {bus.route_code && (
+                  <UiText style={textStyle}>
+                    {bus.route_code}
+                  </UiText>
+                )}
+
+                <UiText style={textStyle}>
+                  {i18n.t('doorNo')}
+                  {': '}
+                  {bus.bus_id}
+                </UiText>
+                <UiText style={textStyle}>
+                  {i18n.t('lastUpdate')}
+                  {': '}
+                  {new Date(query.dataUpdatedAt).toLocaleTimeString()}
+                </UiText>
+              </View>
+            </Callout>
+          )
+        : <></>}
+    </PointAnnotation>
   )
 }
-
-export const MarkersBusesItemMemoized = memo(MarkersBusesItem)
 
 const styles = StyleSheet.create({
   iconContainer: {
     borderRadius: 999,
-    justifyContent: 'center',
-    alignItems: 'center',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    width: 28,
+    height: 28,
+    backgroundColor: 'red',
+  },
+  icon: {
+    width: 10,
+    height: 10,
+  },
+  calloutContainer: {
+    backgroundColor: colors.dark.surfaceContainer,
     padding: 8,
+    width: 250,
+    borderRadius: 8,
   },
 })
