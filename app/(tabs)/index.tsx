@@ -6,8 +6,8 @@ import { StyleSheet, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 
 import { LinesMomoizedFr } from '@/components/lines/Lines'
-import { LineMarkers } from '@/components/markers/LineMarkers'
-import { TheMap } from '@/components/TheMap'
+import { TheMap, TheMapRef } from '@/components/map/Map'
+import { MarkersLine } from '@/components/markers/line/MarkersLine'
 import { TheMapButtons } from '@/components/TheMapButtons'
 import { TheStopInfo } from '@/components/TheStopInfo'
 
@@ -79,7 +79,7 @@ export const HomeScreen = () => {
             onDidFinishLoadingMap={handleOnMapLoaded}
             deselectAnnotationOnTap
           >
-            <LineMarkers />
+            <MarkersLine />
           </TheMap>
 
           <TheMapButtons />
@@ -102,6 +102,8 @@ const styles = StyleSheet.create({
   linesContainer: {
     position: 'absolute',
     bottom: 0,
+    left: 0,
+    right: 0,
   },
 })
 

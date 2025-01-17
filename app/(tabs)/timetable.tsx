@@ -19,8 +19,8 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useShallow } from 'zustand/react/shallow'
 
+import { LineTimetableMemoized } from '@/components/lines/line/LineTimetable'
 import { LinesMomoizedFr } from '@/components/lines/Lines'
-import { LineTimetableMemoized } from '@/components/lines/LineTimetable'
 import { UiText } from '@/components/ui/UiText'
 
 import { useFiltersStore } from '@/stores/filters'

@@ -1,8 +1,17 @@
-import { ForwardedRef, forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
+import {
+  ForwardedRef,
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from 'react'
 import {
   FlatList,
   FlatListProps,
   ListRenderItem,
+  Platform,
   StyleSheet,
   View,
   ViewStyle,
@@ -10,7 +19,7 @@ import {
 import Animated, { FlatListPropsWithLayout } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
-import { LineMemoized, LineProps } from './Line'
+import { LineMemoized, LineProps } from './line/Line'
 
 import { useFiltersStore } from '@/stores/filters'
 import { getLines, useLinesStore } from '@/stores/lines'
@@ -27,10 +36,11 @@ interface LinesProps {
 // TODO: Some rerender issues are here.
 const Lines = (props: LinesProps, outerRef: ForwardedRef<FlatList>) => {
   const innerRef = useRef<FlatList>(null)
+
   useImperativeHandle(outerRef, () => innerRef.current!, [])
+  useFiltersStore(useShallow(state => state.selectedCity))
 
   const selectedGroup = useFiltersStore(useShallow(state => state.selectedGroup))
-  const selectedCity = useFiltersStore(useShallow(state => state.selectedCity))
   const lines = useLinesStore(() => getLines())
 
   const previouslines = useRef<string[]>(lines)
@@ -49,14 +59,17 @@ const Lines = (props: LinesProps, outerRef: ForwardedRef<FlatList>) => {
     }
   }, [lines])
 
-  const renderItem: ListRenderItem<string> = useCallback(({ item: code }) => {
-    return <LineMemoized lineCode={code} {...props.lineProps} />
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lines, selectedGroup, selectedCity])
+  const renderItem: ListRenderItem<string> = useCallback(
+    ({ item: code }) => {
+      return <LineMemoized lineCode={code} {...props.lineProps} />
+    },
+    [props.lineProps],
+  )
 
   type ViewableItems = FlatListProps<string>['onViewableItemsChanged']
-  const handleOnViewChanged: ViewableItems = ({ viewableItems }) => {
-    if (viewableItems.length < 1) return
+  const handleViewableItemsChanged: ViewableItems = ({ viewableItems }) => {
+    if (viewableItems.length < 1 || Platform.OS === 'web') return
+
     useMiscStore.setState(() => ({ selectedLineScrollIndex: viewableItems.at(0)?.index || 0 }))
   }
 
@@ -69,7 +82,6 @@ const Lines = (props: LinesProps, outerRef: ForwardedRef<FlatList>) => {
         ref={innerRef}
         data={lines}
         renderItem={renderItem}
-        onViewableItemsChanged={handleOnViewChanged}
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
         contentContainerStyle={[styles.codes, props.contentContainerStyle]}
         keyExtractor={keyExtractor}
@@ -79,6 +91,14 @@ const Lines = (props: LinesProps, outerRef: ForwardedRef<FlatList>) => {
         snapToAlignment="center"
         pagingEnabled
         horizontal
+
+        {
+          ...Platform.OS !== 'web'
+            ? {
+                onViewableItemsChanged: handleViewableItemsChanged,
+              }
+            : {}
+        }
       />
     </View>
   )

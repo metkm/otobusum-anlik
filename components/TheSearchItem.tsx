@@ -2,11 +2,12 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { router } from 'expo-router'
 import { memo, useCallback, useRef } from 'react'
-import { StyleSheet, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
+import { StyleSheet, TouchableOpacityProps, View } from 'react-native'
+import { RectButton, RectButtonProps } from 'react-native-gesture-handler'
 
 import { useTheme } from '@/hooks/useTheme'
 
-import { LineGroups } from './lines/groups/LineGroups'
+import { LineGroups } from './lines/line/LineGroups'
 import { UiButton } from './ui/UiButton'
 import { UiLineCode } from './ui/UiLineCode'
 import { UiText } from './ui/UiText'
@@ -15,7 +16,7 @@ import { addLine } from '@/stores/lines'
 import { BusLine, BusStop } from '@/types/bus'
 import { isStop } from '@/utils/isStop'
 
-interface Props extends TouchableOpacityProps {
+interface Props extends RectButtonProps {
   item: BusStop | BusLine
 }
 
@@ -41,7 +42,7 @@ export const TheSearchItem = memo(function SearchItem({ item, ...props }: Props)
   }
 
   return (
-    <TouchableOpacity
+    <RectButton
       style={styles.container}
       onPress={handlePress}
       {...props}
@@ -80,7 +81,7 @@ export const TheSearchItem = memo(function SearchItem({ item, ...props }: Props)
           </LineGroups>
         )
       }
-    </TouchableOpacity>
+    </RectButton>
   )
 })
 

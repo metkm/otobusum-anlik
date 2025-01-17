@@ -12,6 +12,7 @@ import { i18n } from '@/translations/i18n'
 import { Cities } from '@/types/cities'
 import { LineGroup } from '@/types/lineGroup'
 import { createTheme } from '@/utils/createTheme'
+import { notify } from '@/utils/notify'
 
 interface StoreV0 {
   lines: Record<string, object[]>
@@ -99,13 +100,13 @@ export const getLines = () => {
 // Line stuff
 export const deleteLine = (lineCode: string) => useLinesStore.setState((state) => {
   const filtersStore = useFiltersStore.getState()
-  const index = state.lines[filtersStore.selectedCity].indexOf(lineCode)
+  const defaultLinesIndex = state.lines[filtersStore.selectedCity].indexOf(lineCode)
 
   const selectedGroup = useFiltersStore.getState().selectedGroup
   if (selectedGroup) {
     deleteLineFromGroup(selectedGroup, filtersStore.selectedCity, lineCode)
-  } else if (index !== -1) {
-    state.lines[filtersStore.selectedCity].splice(index, 1)
+  } else if (defaultLinesIndex !== -1) {
+    state.lines[filtersStore.selectedCity].splice(defaultLinesIndex, 1)
   }
 
   deleteTheme(lineCode)
@@ -131,7 +132,7 @@ export const addLine = (lineCode: string) => useLinesStore.setState((state) => {
   if (state.lines[filtersStore.selectedCity].includes(lineCode)) return state
 
   addTheme(lineCode)
-  ToastAndroid.show(i18n.t('added', { lineCode: lineCode }), ToastAndroid.SHORT)
+  notify(i18n.t('added', { lineCode: lineCode }))
 
   return {
     lines: {
@@ -221,16 +222,16 @@ export const addLineToGroup = (groupId: string, lineCode: string) => useLinesSto
   if (!group) return state
 
   if (group.lineCodes.includes(lineCode)) {
-    ToastAndroid.show(i18n.t('lineAlreadyInGroup'), ToastAndroid.SHORT)
+    notify(i18n.t('lineAlreadyInGroup'))
     return state
   }
 
   if (group.lineCodes.length > 3) {
-    ToastAndroid.show(i18n.t('lineLimitExceeded'), ToastAndroid.SHORT)
+    notify(i18n.t('lineLimitExceeded'))
     return state
   }
 
-  ToastAndroid.show(i18n.t('addedToGroup', { lineCode: lineCode }), ToastAndroid.SHORT)
+  notify(i18n.t('addedToGroup', { lineCode: lineCode }))
   addTheme(lineCode)
 
   return {
@@ -299,10 +300,9 @@ export const deleteLineFromGroup = (groupId: string, city: Cities, lineCode: str
         ...state.lineGroups[filtersStore.selectedCity],
         [groupId]: {
           ...state.lineGroups[filtersStore.selectedCity][groupId],
-          lineCodes: {
-            ...state.lineGroups[filtersStore.selectedCity][groupId]?.lineCodes,
-          },
-          // lineCodes: [...(state.lineGroups[groupId]!.lineCodes || [])],
+          lineCodes: [
+            ...(state.lineGroups[filtersStore.selectedCity][groupId]?.lineCodes || []),
+          ],
         },
       },
     },

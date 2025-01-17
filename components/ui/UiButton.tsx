@@ -1,7 +1,8 @@
 import { Theme } from '@material/material-color-utilities'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import React, { ComponentProps, useCallback } from 'react'
-import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, ViewStyle } from 'react-native'
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import { BaseButton } from 'react-native-gesture-handler'
 import Animated, { AnimatedProps } from 'react-native-reanimated'
 
 import { useTheme } from '@/hooks/useTheme'
@@ -22,6 +23,7 @@ interface UiButtonPropsBase {
   iconSize?: IconSize
   disabled?: boolean
   containerStyle?: StyleProp<ViewStyle>
+  innerContainerStyle?: StyleProp<ViewStyle>
   iconColor?: string
   textStyle?: StyleProp<TextStyle>
   animatedIconProps?: Partial<AnimatedProps<typeof Ionicons>>
@@ -72,11 +74,6 @@ export const UiButton = ({ iconSize = 'md', variant = 'solid', ...props }: UiBut
         ? { flexGrow: 1, textAlign: 'left' }
         : {}
     ),
-
-    // ...(props.align === 'left')
-
-    // flexGrow: 1,
-    // textAlign: props.align,
   }
 
   const iconColor = dynamicText.color ?? props.iconColor
@@ -111,40 +108,45 @@ export const UiButton = ({ iconSize = 'md', variant = 'solid', ...props }: UiBut
   }, [iconColor, iconSize, props.animatedIconProps, props.isLoading])
 
   return (
-    <TouchableOpacity
+    <BaseButton
       style={[styles.container, dynamicContainer, props.containerStyle, props.square ? styles.square : undefined]}
       onPress={props.onPress}
       onLongPress={props.onLongPress}
+      rippleColor="black"
     >
-      {props.icon && <Icon icon={props.icon} />}
+      <View style={[styles.innerContainer, props.innerContainerStyle]}>
+        {props.icon && <Icon icon={props.icon} />}
 
-      {props.title && (
-        <UiText
-          style={[styles.title, dynamicText, props.textStyle]}
-          numberOfLines={1}
-        >
-          {props.title}
-        </UiText>
-      )}
+        {props.title && (
+          <UiText
+            style={[styles.title, dynamicText, props.textStyle]}
+            numberOfLines={1}
+          >
+            {props.title}
+          </UiText>
+        )}
 
-      {props.iconTrail && <Icon icon={props.iconTrail} />}
-      {props.children}
-    </TouchableOpacity>
+        {props.iconTrail && <Icon icon={props.iconTrail} />}
+        {props.children}
+      </View>
+    </BaseButton>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    minWidth: 48,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 999,
+    flexShrink: 1,
+  },
+  innerContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
-    minWidth: 48,
-    flexShrink: 1,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 999,
   },
   title: {
     textAlign: 'center',

@@ -1,11 +1,13 @@
 import Constants from 'expo-constants'
-import { Linking, ScrollView, StyleSheet } from 'react-native'
+import { Linking, Platform, StyleSheet } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 
-import { SettingCity } from '@/components/settings/City'
-import { GroupContainer, SettingContainer } from '@/components/settings/Container'
-import { SettingsLocation } from '@/components/settings/Location'
-import { SettingsTheme } from '@/components/settings/Theme'
-import { SettingsTraffic } from '@/components/settings/Traffic'
+import { SettingCity } from '@/components/settings/SettingsCity'
+import { SettingsCluster } from '@/components/settings/SettingsCluster'
+import { SettingsGroupContainer, SettingsContainer } from '@/components/settings/SettingsContainer'
+import { SettingsLocation } from '@/components/settings/SettingsLocation'
+import { SettingsTheme } from '@/components/settings/SettingsTheme'
+import { SettingsTraffic } from '@/components/settings/SettingsTraffic'
 import { UiText } from '@/components/ui/UiText'
 
 import { usePaddings } from '@/hooks/usePaddings'
@@ -20,29 +22,33 @@ export const SettingsScreen = () => {
       style={[paddings, styles.scrollContainer]}
       contentContainerStyle={styles.scrollContainer}
     >
-      <GroupContainer title={i18n.t('map')}>
+      <SettingsGroupContainer title={i18n.t('map')}>
         <SettingsLocation />
         <SettingsTraffic />
-      </GroupContainer>
 
-      <GroupContainer title={i18n.t('theme')}>
+        {Platform.OS !== 'web' && (
+          <SettingsCluster />
+        )}
+      </SettingsGroupContainer>
+
+      <SettingsGroupContainer title={i18n.t('theme')}>
         <SettingsTheme />
-      </GroupContainer>
+      </SettingsGroupContainer>
 
-      <GroupContainer title={i18n.t('other')}>
+      <SettingsGroupContainer title={i18n.t('other')}>
         <SettingCity />
 
-        <SettingContainer
+        <SettingsContainer
           type="link"
           title={i18n.t('license', { city: 'istanbul' })}
           onPress={() => Linking.openURL('https://data.ibb.gov.tr/license')}
         />
-        <SettingContainer
+        <SettingsContainer
           type="link"
           title={i18n.t('license', { city: 'izmir' })}
           onPress={() => Linking.openURL('https://acikveri.bizizmir.com/tr/license')}
         />
-      </GroupContainer>
+      </SettingsGroupContainer>
 
       <UiText info style={styles.version}>
         {`${i18n.t('version')} ${Constants.expoConfig?.version}`}

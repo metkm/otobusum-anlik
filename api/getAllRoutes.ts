@@ -16,5 +16,5 @@ export interface LineRoute {
 }
 
 export async function getAllRoutes(lineCode: string) {
-  return await api<LineRoute[]>(`/routes/${lineCode}`)
+  return api<LineRoute[]>(`/routes/${lineCode}`)
 }

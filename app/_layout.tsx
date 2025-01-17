@@ -1,3 +1,5 @@
+import '@/assets/styles.css'
+
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { DarkTheme, DefaultTheme, Theme, ThemeProvider } from '@react-navigation/native'
 import { setAccessToken, setTelemetryEnabled } from '@rnmapbox/maps'
@@ -66,6 +68,7 @@ export const RootLayout = () => {
           <BottomSheetModalProvider>
             <Stack
               screenOptions={{
+                title: 'Otobüsüm Anlık',
                 navigationBarColor: colorsTheme.surfaceContainerLow,
                 animation: 'fade_from_bottom',
               }}

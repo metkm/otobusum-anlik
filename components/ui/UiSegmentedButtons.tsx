@@ -3,7 +3,6 @@ import {
   StyleProp,
   StyleSheet,
   TextStyle,
-  TouchableOpacity,
   TouchableOpacityProps,
   View,
   ViewStyle,
@@ -11,7 +10,7 @@ import {
 
 import { useTheme } from '@/hooks/useTheme'
 
-import { UiText } from './UiText'
+import { UiButton } from './UiButton'
 
 interface Button<T> {
   label: string
@@ -26,15 +25,7 @@ interface UiSegmentedButtonsProps<T> extends TouchableOpacityProps {
 }
 
 export const UiSegmentedButtons = <T,>({ buttons, value, style, onValueChange, theme }: UiSegmentedButtonsProps<T>) => {
-  const { colorsTheme, getSchemeColorHex } = useTheme(theme)
-
-  const baseStyle: StyleProp<ViewStyle> = {
-    backgroundColor: getSchemeColorHex('secondaryContainer') || colorsTheme.surfaceContainerHigh,
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    flexGrow: 1,
-    flexBasis: 100,
-  }
+  const { getSchemeColorHex } = useTheme(theme)
 
   const selectedStyle: StyleProp<ViewStyle> = {
     backgroundColor: getSchemeColorHex('tertiaryContainer'),
@@ -54,18 +45,16 @@ export const UiSegmentedButtons = <T,>({ buttons, value, style, onValueChange, t
         const selected = typeof value === 'number' ? ((button.value as number) & value) : button.value === value
 
         return (
-          <TouchableOpacity
+          <UiButton
             key={button.label}
-            style={[baseStyle, selected ? selectedStyle : undefined]}
+            title={button.label}
+            variant="ghost"
+            theme={theme}
+            containerStyle={[styles.buttonContainer, selected ? selectedStyle : undefined]}
+            textStyle={selected ? selectedTextStyle : textStyle}
             onPress={() => onValueChange?.(button.value)}
-          >
-            <UiText
-              style={[styles.label, textStyle, selected ? selectedTextStyle : undefined]}
-              numberOfLines={1}
-            >
-              {button.label}
-            </UiText>
-          </TouchableOpacity>
+            square
+          />
         )
       })}
     </View>
@@ -76,8 +65,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    gap: 8,
+    marginHorizontal: 8,
   },
-  label: {
-    textAlign: 'center',
+  buttonContainer: {
+    flexGrow: 1,
   },
 })

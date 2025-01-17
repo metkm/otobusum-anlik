@@ -15,7 +15,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { useTheme } from '@/hooks/useTheme'
 
-import { LineGroups } from './lines/groups/LineGroups'
+import { LineGroups } from './lines/line/LineGroups'
 import { UiButton } from './ui/UiButton'
 
 import { colors } from '@/constants/colors'

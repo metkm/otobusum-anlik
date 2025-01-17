@@ -7,9 +7,9 @@ import { RefObject, useEffect, useRef } from 'react'
 import { Linking, StyleSheet, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
-import { LineGroups } from './lines/groups/LineGroups'
-import { LineBusStopMarkersItem } from './markers/stop/StopMarkersItem'
-import { TheMap } from './TheMap'
+import { LineGroups } from './lines/line/LineGroups'
+import { TheMap, TheMapRef } from './map/Map'
+import { MarkersStopItem } from './markers/stop/MarkersStopItem'
 import { UiSheetModal } from './ui/sheet/UiSheetModal'
 import { UiActivityIndicator } from './ui/UiActivityIndicator'
 import { UiButton } from './ui/UiButton'
@@ -21,7 +21,7 @@ import { useSettingsStore } from '@/stores/settings'
 import { i18n } from '@/translations/i18n'
 
 interface TheStopInfoProps {
-  cRef: RefObject<CameraRef>
+  cRef: RefObject<TheMapRef>
 }
 
 const StopLine = ({ lineCode }: { lineCode: string }) => {
@@ -65,6 +65,7 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
   useEffect(() => {
     savedMapState.current = useSettingsStore.getState().mapState
     bottomSheetModal.current?.present()
+    if (!query.data) return
 
     if (!query.data) return
 
@@ -112,7 +113,11 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
   }
 
   return (
-    <UiSheetModal cRef={bottomSheetModal} enableDynamicSizing={true} onDismiss={handleOnDismiss}>
+    <UiSheetModal
+      cRef={bottomSheetModal}
+      enableDynamicSizing={true}
+      onDismiss={handleOnDismiss}
+    >
       <BottomSheetView style={styles.container}>
         <View style={styles.mapContainer}>
           {query.data && (

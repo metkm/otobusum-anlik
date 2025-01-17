@@ -70,6 +70,7 @@ export const TheSearchInput = ({ isLoading, debounce, onSearch, style, ...rest }
         isLoading={isLoading}
         disabled={queryDisabled}
         onPress={debounce ? handleDebouncedButton : handleSearch}
+        innerContainerStyle={styles.button}
         icon="search"
       />
     </View>
@@ -83,6 +84,9 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   input: {
+    flexGrow: 1,
+  },
+  button: {
     flexGrow: 1,
   },
 })
