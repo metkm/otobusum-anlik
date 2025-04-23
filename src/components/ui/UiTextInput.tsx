@@ -14,10 +14,10 @@ interface UiTextInputProps extends TextInputProps {
 }
 
 export const UiTextInput = ({ iconSize = "md", cRef, style, icon, ...props }: UiTextInputProps) => {
-  const { getSchemeColorHex } = useTheme();
+  const { getSchemeColorHex, colorsTheme } = useTheme();
 
   const dynamicStyle: StyleProp<ViewStyle> = {
-    backgroundColor: getSchemeColorHex("surface"),
+    backgroundColor: colorsTheme.surfaceContainerLow,
   };
 
   const inputStyle: StyleProp<TextStyle> = {
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingLeft: 14,
     paddingRight: 14,
-    paddingVertical: 12,
+    paddingVertical: 14,
   },
   iconContainer: {
     position: "absolute",
