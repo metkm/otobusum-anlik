@@ -18,6 +18,7 @@ import { getLineBusStops } from '@/api/getLineBusStops'
 import { getSelectedRouteCode, useFiltersStore } from '@/stores/filters'
 import { useLinesStore } from '@/stores/lines'
 import { useSettingsStore } from '@/stores/settings'
+import { TheSearch } from '@/components/TheSearch'
 
 export const HomeScreen = () => {
   const map = useRef<TheMapRef>(null)
@@ -86,7 +87,8 @@ export const HomeScreen = () => {
           <MarkersLine />
         </TheMap>
 
-        <TheMapButtons />
+        {/* <TheMapButtons /> */}
+        <TheSearch />
 
         <View style={styles.linesContainer}>
           <Lines />

@@ -53,4 +53,5 @@ export default {
   errorGettingBusLocations: 'Error getting bus locations.',
   errorGettingAnnouncements: 'Error getting announcements',
   updateCount: 'update in %{count} seconds',
+  searchPlaceholder: 'KM-12, KM-12...'
 }

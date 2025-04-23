@@ -13,11 +13,6 @@ const screens = [
     icon: 'map',
   },
   {
-    name: 'search',
-    label: 'search',
-    icon: 'search',
-  },
-  {
     name: 'timetable',
     label: 'timetable',
     icon: 'time',

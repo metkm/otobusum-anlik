@@ -1,29 +1,61 @@
-import { StyleSheet, TextInputProps } from 'react-native'
-import { TextInput } from 'react-native-gesture-handler'
+import { StyleProp, StyleSheet, TextInputProps, TextStyle, View, ViewStyle } from "react-native";
+import { TextInput } from "react-native-gesture-handler";
 
-import { useTheme } from '@/hooks/useTheme'
+import { useTheme } from "@/hooks/useTheme";
+import Icon from "@react-native-vector-icons/ionicons";
+import { IconSize, iconSizes } from "@/constants/uiSizes";
+import { IconValue } from "@/types/ui";
+import { Ref } from "react";
 
-export const UiTextInput = ({ style, ...props }: TextInputProps) => {
-  const { getSchemeColorHex } = useTheme()
+interface UiTextInputProps extends TextInputProps {
+  icon?: IconValue;
+  iconSize?: IconSize;
+  cRef?: Ref<TextInput>
+}
 
-  const dynamicStyle = {
-    color: getSchemeColorHex('onSecondaryContainer'),
-    backgroundColor: getSchemeColorHex('secondaryContainer'),
+export const UiTextInput = ({ iconSize = "md", cRef, style, icon, ...props }: UiTextInputProps) => {
+  const { getSchemeColorHex } = useTheme();
+
+  const dynamicStyle: StyleProp<ViewStyle> = {
+    backgroundColor: getSchemeColorHex("surface"),
+  };
+
+  const inputStyle: StyleProp<TextStyle> = {
+    color: getSchemeColorHex('onSurface'),
+    paddingLeft: icon ? 14 * 2 : 14,
   }
 
   return (
-    <TextInput
-      style={[styles.input, dynamicStyle, style]}
-      placeholderTextColor={getSchemeColorHex('onSurface')} // should be less opacity
-      {...props}
-    />
-  )
-}
+    <View style={[styles.input, dynamicStyle]}>
+      <View style={styles.iconContainer}>
+        {icon && (
+          <Icon name={icon} color={getSchemeColorHex("onSurfaceVariant")} size={iconSizes[iconSize]} />
+        )}
+      </View>
+
+      <TextInput
+        ref={cRef}
+        style={[style, inputStyle]}
+        placeholderTextColor={getSchemeColorHex("onSurfaceVariant")} // should be less opacity
+        {...props}
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   input: {
     borderRadius: 999,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
+    paddingLeft: 14,
+    paddingRight: 14,
+    paddingVertical: 12,
   },
-})
+  iconContainer: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    display: "flex",
+    justifyContent: "center",
+    marginLeft: 14,
+  },
+});

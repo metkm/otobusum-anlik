@@ -74,11 +74,6 @@ export const TheMapButtons = () => {
     updateColors(0)
   }, [selectedGroup, updateColors, lines])
 
-  const insetStyle: StyleProp<ViewStyle> = {
-    top: insets.top,
-    right: insets.right,
-  }
-
   const handleChangeAllDirections = () => {
     for (let index = 0; index < lines.length; index++) {
       const lineCode = lines[index]
@@ -112,7 +107,7 @@ export const TheMapButtons = () => {
   })
 
   return (
-    <View style={[styles.container, insetStyle]}>
+    <View style={styles.container}>
       {lines.length > 0 && (
         <Animated.View style={animatedContainerStyle}>
           <UiButton
@@ -158,9 +153,9 @@ export const TheMapButtons = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    position: 'absolute',
-    padding: 12,
+    display: 'flex',
+    alignSelf: 'flex-end',
     gap: 8,
+    marginHorizontal: 8,
   },
 })

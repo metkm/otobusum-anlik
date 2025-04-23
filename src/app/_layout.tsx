@@ -66,13 +66,20 @@ export const RootLayout = () => {
               screenOptions={{
                 title: 'Otobüsüm Anlık',
                 navigationBarColor: colorsTheme.surfaceContainerLow,
-                animation: 'fade_from_bottom',
+                animation: 'fade',
               }}
             >
               <Stack.Screen
                 name="(tabs)"
                 options={{
                   headerShown: false,
+                }}
+              />
+              <Stack.Screen
+                name="modal"
+                options={{
+                  presentation: 'modal',
+                  headerShown: false
                 }}
               />
               <Stack.Screen

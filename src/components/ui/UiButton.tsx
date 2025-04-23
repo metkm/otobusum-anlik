@@ -1,6 +1,6 @@
 import { Theme } from '@material/material-color-utilities'
 import Ionicons from '@react-native-vector-icons/ionicons'
-import React, { ComponentProps, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { BaseButton } from 'react-native-gesture-handler'
 import Animated, { AnimatedProps } from 'react-native-reanimated'
@@ -11,8 +11,7 @@ import { UiActivityIndicator } from './UiActivityIndicator'
 import { UiText } from './UiText'
 
 import { ButtonVariants, IconSize, iconSizes } from '@/constants/uiSizes'
-
-type IconValues = ComponentProps<typeof Ionicons>['name']
+import { IconValue } from '@/types/ui'
 
 interface UiButtonPropsBase {
   theme?: Theme
@@ -28,18 +27,18 @@ interface UiButtonPropsBase {
   textStyle?: StyleProp<TextStyle>
   animatedIconProps?: Partial<AnimatedProps<typeof Ionicons>>
   variant?: ButtonVariants
-  iconTrail?: IconValues
+  iconTrail?: IconValue
   children?: React.ReactNode
   align?: 'left'
 }
 
 interface UiButtonPropsWithIcon extends UiButtonPropsBase {
-  icon: IconValues
+  icon: IconValue
   title?: string
 }
 
 interface UiButtonPropsWithTitle extends UiButtonPropsBase {
-  icon?: IconValues
+  icon?: IconValue
   title: string
 }
 
@@ -83,7 +82,7 @@ export const UiButton = ({ iconSize = 'md', variant = 'solid', ...props }: UiBut
 
   const iconColor = dynamicText.color ?? props.iconColor
 
-  const Icon = useCallback(({ icon }: { icon: IconValues }) => {
+  const Icon = useCallback(({ icon }: { icon: IconValue }) => {
     if (props.isLoading) {
       return (
         <UiActivityIndicator
