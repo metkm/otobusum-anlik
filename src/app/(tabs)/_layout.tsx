@@ -1,31 +1,53 @@
-import Ionicons from '@react-native-vector-icons/ionicons'
-import { Tabs } from 'expo-router'
-import { ComponentProps } from 'react'
+import Ionicons from "@react-native-vector-icons/ionicons";
+import { Tabs } from "expo-router";
+import { ComponentProps } from "react";
 
-import { useTheme } from '@/hooks/useTheme'
+import { useTheme } from "@/hooks/useTheme";
 
-import { i18n } from '@/translations/i18n'
+import { i18n } from "@/translations/i18n";
+import { Pressable, TouchableOpacity, View } from "react-native";
+import { iconSizes } from "@/constants/uiSizes";
 
 const screens = [
   {
-    name: 'index',
-    label: 'map',
-    icon: 'map',
+    name: "index",
+    label: "map",
+    icon: "map",
   },
   {
-    name: 'timetable',
-    label: 'timetable',
-    icon: 'time',
+    name: "timetable",
+    label: "timetable",
+    icon: "time",
   },
   {
-    name: 'settings',
-    label: 'settings',
-    icon: 'settings',
+    name: "settings",
+    label: "settings",
+    icon: "settings",
   },
-]
+];
+
+const TabIcon = ({
+  focused,
+  icon,
+}: {
+  focused: boolean;
+  color: string;
+  size: number;
+  icon: string;
+}) => {
+  const { colorsTheme } = useTheme();
+
+  return (
+    <Ionicons
+      name={(focused ? `${icon}` : `${icon}-outline`) as ComponentProps<typeof Ionicons>["name"]}
+      size={24}
+      color={colorsTheme.color}
+    />
+  );
+};
 
 export const TabsLayout = () => {
-  const { colorsTheme } = useTheme()
+  const { colorsTheme } = useTheme();
 
   return (
     <Tabs
@@ -35,33 +57,43 @@ export const TabsLayout = () => {
         tabBarIconStyle: {
           flex: 1,
         },
-        animation: 'shift',
+        animation: "shift",
         freezeOnBlur: true,
       }}
       detachInactiveScreens
     >
-      {screens.map(screen => (
+      {screens.map((screen) => (
         <Tabs.Screen
           key={screen.name}
           name={screen.name}
           options={{
             tabBarLabel: i18n.t(screen.label),
             tabBarIcon: ({ focused }) => (
-              <Ionicons
-                name={
-                  (focused ? `${screen.icon}` : `${screen.icon}-outline`) as ComponentProps<
-                    typeof Ionicons
-                  >['name']
-                }
-                size={24}
-                color={colorsTheme.color}
-              />
+              <View
+                style={{
+                  backgroundColor: focused ? colorsTheme.surfaceContainerHigh : undefined,
+                  borderRadius: 999,
+                  paddingVertical: 3,
+                  paddingHorizontal: 20,
+                }}
+              >
+                <Ionicons
+                  name={
+                    (focused ? `${screen.icon}` : `${screen.icon}-outline`) as ComponentProps<
+                      typeof Ionicons
+                    >["name"]
+                  }
+                  size={20}
+                  color={colorsTheme.color}
+                  style={{ width: 20 }}
+                />
+              </View>
             ),
           }}
         />
       ))}
     </Tabs>
-  )
-}
+  );
+};
 
-export default TabsLayout
+export default TabsLayout;
