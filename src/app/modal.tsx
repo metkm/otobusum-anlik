@@ -1,11 +1,13 @@
 import { getSearchResults } from '@/api/getSearchResults'
 import { TheSearchItem } from '@/components/TheSearchItem'
 import { UiActivityIndicator } from '@/components/ui/UiActivityIndicator'
+import { UiChip } from '@/components/ui/UiChip'
 import { UiErrorContainer } from '@/components/ui/UiErrorContainer'
 import { UiText } from '@/components/ui/UiText'
 import { UiTextInput } from '@/components/ui/UiTextInput'
 import { usePaddings } from '@/hooks/usePaddings'
 import { useTheme } from '@/hooks/useTheme'
+import { useFiltersStore } from '@/stores/filters'
 import { i18n } from '@/translations/i18n'
 import { BusLine, BusStop } from '@/types/bus'
 import { FlashList } from '@shopify/flash-list'
@@ -17,6 +19,7 @@ import { useDebouncedCallback } from 'use-debounce'
 export const ModalScreen = () => {
   const paddings = usePaddings()
   const { colorsTheme } = useTheme()
+  const selectedCity = useFiltersStore(state => state.selectedCity)
 
   const mutation = useMutation({
     mutationFn: getSearchResults,
@@ -63,41 +66,48 @@ export const ModalScreen = () => {
     [mutation.data, mutation.isPending, mutation.error],
   )
 
-  const handleQueryChange = useCallback((event: NativeSyntheticEvent<TextInputChangeEventData>) => {
-    const text = event.nativeEvent.text
-    if (!text) return
+  const handleQueryChange = useCallback(
+    (event: NativeSyntheticEvent<TextInputChangeEventData>) => {
+      const text = event.nativeEvent.text
+      if (!text) return
 
-    handleSearch(text)
-  }, [handleSearch])
+      handleSearch(text)
+    },
+    [handleSearch],
+  )
 
   return (
     <View style={[paddings, styles.container]}>
-      <UiTextInput
-        placeholder={i18n.t('searchPlaceholder')}
-        icon="search"
-        autoFocus
-        onChange={handleQueryChange}
-        styleContainer={{
-          borderWidth: StyleSheet.hairlineWidth,
-          borderColor: colorsTheme.surfaceContainerHigh,
-        }}
-      />
+      <UiChip>{i18n.t('selectedCity', { city: selectedCity })}</UiChip>
 
-      <View style={styles.list}>
-        {data.length < 1
-          ? (
-              EmptyItem
-            )
-          : (
-              <FlashList
-                data={data}
-                renderItem={renderItem}
-                estimatedItemSize={45}
-                fadingEdgeLength={20}
-                contentContainerStyle={styles.contentStyle}
-                keyboardDismissMode="on-drag"
-              />
-            )}
+      <View style={{ flex: 1 }}>
+        <UiTextInput
+          placeholder={i18n.t('searchPlaceholder')}
+          icon="search"
+          autoFocus
+          onChange={handleQueryChange}
+          styleContainer={{
+            borderWidth: StyleSheet.hairlineWidth,
+            borderColor: colorsTheme.surfaceContainerHigh,
+          }}
+        />
+
+        <View style={styles.list}>
+          {data.length < 1
+            ? (
+                EmptyItem
+              )
+            : (
+                <FlashList
+                  data={data}
+                  renderItem={renderItem}
+                  estimatedItemSize={45}
+                  fadingEdgeLength={20}
+                  contentContainerStyle={styles.contentStyle}
+                  keyboardDismissMode="on-drag"
+                />
+              )}
+        </View>
       </View>
     </View>
   )
@@ -115,11 +125,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contentStyle: {
-    padding: 14,
     paddingTop: 4,
   },
   container: {
     flex: 1,
+    gap: 8,
   },
   list: {
     flex: 1,

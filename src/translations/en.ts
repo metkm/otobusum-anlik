@@ -54,4 +54,5 @@ export default {
   errorGettingAnnouncements: 'Error getting announcements',
   updateCount: 'update in %{count} seconds',
   searchPlaceholder: 'KM-12, KM-12...',
+  selectedCity: 'Selected city: %{city}',
 }

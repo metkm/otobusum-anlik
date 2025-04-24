@@ -54,4 +54,5 @@ export default {
   errorGettingAnnouncements: 'Duyurulari alırken bir hata oluştu.',
   updateCount: '%{count} saniye içinde güncellenecek',
   searchPlaceholder: 'KM-12, KM-12...',
+  selectedCity: 'Seçili şehir: %{city}',
 }
