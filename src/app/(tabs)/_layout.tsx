@@ -5,8 +5,7 @@ import { ComponentProps } from "react";
 import { useTheme } from "@/hooks/useTheme";
 
 import { i18n } from "@/translations/i18n";
-import { Pressable, TouchableOpacity, View } from "react-native";
-import { iconSizes } from "@/constants/uiSizes";
+import { View } from "react-native";
 
 const screens = [
   {
@@ -25,26 +24,6 @@ const screens = [
     icon: "settings",
   },
 ];
-
-const TabIcon = ({
-  focused,
-  icon,
-}: {
-  focused: boolean;
-  color: string;
-  size: number;
-  icon: string;
-}) => {
-  const { colorsTheme } = useTheme();
-
-  return (
-    <Ionicons
-      name={(focused ? `${icon}` : `${icon}-outline`) as ComponentProps<typeof Ionicons>["name"]}
-      size={24}
-      color={colorsTheme.color}
-    />
-  );
-};
 
 export const TabsLayout = () => {
   const { colorsTheme } = useTheme();
