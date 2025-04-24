@@ -6,7 +6,7 @@ import { i18n } from "@/translations/i18n";
 import { TheMapButtons } from "./TheMapButtons";
 import { useTheme } from "@/hooks/useTheme";
 
-export const TheSearch = () => {
+export const TheSearchBar = () => {
   const paddings = usePaddings();
   const router = useRouter();
   const { colorsTheme } = useTheme();
