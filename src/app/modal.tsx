@@ -5,6 +5,7 @@ import { UiErrorContainer } from "@/components/ui/UiErrorContainer";
 import { UiText } from "@/components/ui/UiText";
 import { UiTextInput } from "@/components/ui/UiTextInput";
 import { usePaddings } from "@/hooks/usePaddings";
+import { useTheme } from "@/hooks/useTheme";
 import { i18n } from "@/translations/i18n";
 import { BusLine, BusStop } from "@/types/bus";
 import { FlashList } from "@shopify/flash-list";
@@ -15,6 +16,7 @@ import { useDebouncedCallback } from "use-debounce";
 
 export const ModalScreen = () => {
   const paddings = usePaddings();
+  const { colorsTheme } = useTheme()
 
   const mutation = useMutation({
     mutationFn: getSearchResults,
@@ -69,6 +71,10 @@ export const ModalScreen = () => {
         icon="search"
         autoFocus
         onChange={handleQueryChange}
+        styleContainer={{
+          borderWidth: StyleSheet.hairlineWidth,
+          borderColor: colorsTheme.surfaceContainerHigh,
+        }}
       />
 
       <View style={styles.list}>

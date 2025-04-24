@@ -4,10 +4,12 @@ import { useRouter } from "expo-router";
 import { usePaddings } from "@/hooks/usePaddings";
 import { i18n } from "@/translations/i18n";
 import { TheMapButtons } from "./TheMapButtons";
+import { useTheme } from "@/hooks/useTheme";
 
 export const TheSearch = () => {
   const paddings = usePaddings();
   const router = useRouter();
+  const { colorsTheme } = useTheme();
 
   return (
     <View style={[styles.container, paddings]}>
@@ -18,7 +20,15 @@ export const TheSearch = () => {
           }}
         >
           <View pointerEvents="none">
-            <UiTextInput icon="search" placeholder={i18n.t("searchPlaceholder")} readOnly />
+            <UiTextInput
+              icon="search"
+              placeholder={i18n.t("searchPlaceholder")}
+              readOnly
+              styleContainer={{
+                borderWidth: StyleSheet.hairlineWidth,
+                borderColor: colorsTheme.surfaceContainerHigh,
+              }}
+            />
           </View>
         </Pressable>
       </View>
@@ -33,7 +43,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 0,
     right: 0,
-    display: 'flex',
+    display: "flex",
     gap: 8,
+    elevation: 5,
   },
 });

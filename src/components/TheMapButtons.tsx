@@ -2,7 +2,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { hexFromArgb } from '@material/material-color-utilities'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { useCallback, useEffect, useRef } from 'react'
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import Animated, {
   AnimatedProps,
   useAnimatedProps,
@@ -10,7 +10,6 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useTheme } from '@/hooks/useTheme'
@@ -31,7 +30,6 @@ export const TheMapButtons = () => {
   const lineGroups = useLinesStore(useShallow(state => Object.keys(state.lineGroups[selectedCity])))
   const lines = useLinesStore(useShallow(() => getLines()))
 
-  const insets = useSafeAreaInsets()
   const bgColor = useSharedValue(colors.primary)
   const txtColor = useSharedValue('#ffffff')
   const bottomSheetModalGroups = useRef<BottomSheetModal>(null)
@@ -47,8 +45,8 @@ export const TheMapButtons = () => {
 
       const scheme = theme.schemes[mode]
 
-      const targetBackground = hexFromArgb(scheme.primary)
-      const targetText = hexFromArgb(scheme.onPrimary)
+      const targetBackground = hexFromArgb(scheme.surface)
+      const targetText = hexFromArgb(scheme.onSurface)
 
       bgColor.value = withTiming(targetBackground)
       txtColor.value = withTiming(targetText)

@@ -10,10 +10,11 @@ import { Ref } from "react";
 interface UiTextInputProps extends TextInputProps {
   icon?: IconValue;
   iconSize?: IconSize;
-  cRef?: Ref<TextInput>
+  cRef?: Ref<TextInput>;
+  styleContainer?: StyleProp<ViewStyle>
 }
 
-export const UiTextInput = ({ iconSize = "md", cRef, style, icon, ...props }: UiTextInputProps) => {
+export const UiTextInput = ({ iconSize = "md", cRef, style, styleContainer, icon, ...props }: UiTextInputProps) => {
   const { getSchemeColorHex, colorsTheme } = useTheme();
 
   const dynamicStyle: StyleProp<ViewStyle> = {
@@ -26,7 +27,7 @@ export const UiTextInput = ({ iconSize = "md", cRef, style, icon, ...props }: Ui
   }
 
   return (
-    <View style={[styles.input, dynamicStyle]}>
+    <View style={[styles.input, styleContainer, dynamicStyle]}>
       <View style={styles.iconContainer}>
         {icon && (
           <Icon name={icon} color={getSchemeColorHex("onSurfaceVariant")} size={iconSizes[iconSize]} />
