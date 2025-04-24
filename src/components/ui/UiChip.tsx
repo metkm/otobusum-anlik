@@ -1,6 +1,8 @@
 import { StyleSheet, TextProps, View } from 'react-native'
-import { UiText } from './UiText'
+
 import { useTheme } from '@/hooks/useTheme'
+
+import { UiText } from './UiText'
 
 interface UiChipProps {
   children?: TextProps['children']

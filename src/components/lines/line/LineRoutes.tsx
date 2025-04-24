@@ -4,8 +4,10 @@ import { memo, useCallback, useMemo, useRef } from 'react'
 import { StyleSheet } from 'react-native'
 
 import { UiSheetSelect } from '@/components/ui/sheet/UiSheetSelect'
+import { UiText } from '@/components/ui/UiText'
 
 import { useRoutes } from '@/hooks/queries/useRoutes'
+import { useTheme } from '@/hooks/useTheme'
 
 import { UiButton } from '../../ui/UiButton'
 
@@ -13,8 +15,6 @@ import { RouteCode } from '@/api/getAllRoutes'
 import { selectRoute } from '@/stores/filters'
 import { i18n } from '@/translations/i18n'
 import { Option } from '@/types/sheet'
-import { UiText } from '@/components/ui/UiText'
-import { useTheme } from '@/hooks/useTheme'
 
 interface Props {
   lineCode: string

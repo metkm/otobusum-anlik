@@ -7,6 +7,7 @@ import { useSharedValue } from 'react-native-reanimated'
 import { Lines } from '@/components/lines/Lines'
 import { TheMap, TheMapRef } from '@/components/map/Map'
 import { MarkersLine } from '@/components/markers/line/MarkersLine'
+import { TheSearchBar } from '@/components/TheSearchBar'
 import { TheStopInfo } from '@/components/TheStopInfo'
 
 import { MapContext } from '@/hooks/contexts/useMap'
@@ -17,7 +18,6 @@ import { getLineBusStops } from '@/api/getLineBusStops'
 import { getSelectedRouteCode, useFiltersStore } from '@/stores/filters'
 import { useLinesStore } from '@/stores/lines'
 import { useSettingsStore } from '@/stores/settings'
-import { TheSearchBar } from '@/components/TheSearchBar'
 
 export const HomeScreen = () => {
   const map = useRef<TheMapRef>(null)

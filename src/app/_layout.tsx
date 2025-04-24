@@ -1,27 +1,27 @@
 import '@/assets/styles.css'
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+import { getHeaderTitle } from '@react-navigation/elements'
 import { DarkTheme, DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native'
 import { type NativeStackHeaderProps } from '@react-navigation/native-stack'
-import { getHeaderTitle } from '@react-navigation/elements'
 import { DehydrateOptions } from '@tanstack/react-query'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { setBackgroundColorAsync } from 'expo-system-ui'
+import { View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { enableFreeze, enableScreens } from 'react-native-screens'
 
 import { TheStatusBar } from '@/components/TheStatusBar'
+import { UiButton } from '@/components/ui/UiButton'
+import { UiText } from '@/components/ui/UiText'
 
 import { useTheme } from '@/hooks/useTheme'
 
 import { persister, queryClient } from '@/api/client'
 import { i18n } from '@/translations/i18n'
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context'
-import { View } from 'react-native'
-import { UiText } from '@/components/ui/UiText'
-import { UiButton } from '@/components/ui/UiButton'
 
 SplashScreen.preventAutoHideAsync()
 

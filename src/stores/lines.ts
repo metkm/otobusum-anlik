@@ -1,5 +1,4 @@
 import { type Theme } from '@material/material-color-utilities'
-
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { randomUUID } from 'expo-crypto'
 import { ToastAndroid } from 'react-native'

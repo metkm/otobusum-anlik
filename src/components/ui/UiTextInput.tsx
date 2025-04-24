@@ -1,11 +1,12 @@
+import Icon from '@react-native-vector-icons/ionicons'
+import { Ref } from 'react'
 import { StyleProp, StyleSheet, TextInputProps, TextStyle, View, ViewStyle } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 
 import { useTheme } from '@/hooks/useTheme'
+
 import { IconSize, iconSizes } from '@/constants/uiSizes'
 import { IconValue } from '@/types/ui'
-import { Ref } from 'react'
-import Icon from '@react-native-vector-icons/ionicons'
 
 interface UiTextInputProps extends TextInputProps {
   icon?: IconValue

@@ -1,10 +1,13 @@
-import { Pressable, StyleSheet, View } from 'react-native'
-import { UiTextInput } from './ui/UiTextInput'
 import { useRouter } from 'expo-router'
+import { Pressable, StyleSheet, View } from 'react-native'
+
 import { usePaddings } from '@/hooks/usePaddings'
-import { i18n } from '@/translations/i18n'
-import { TheMapButtons } from './TheMapButtons'
 import { useTheme } from '@/hooks/useTheme'
+
+import { TheMapButtons } from './TheMapButtons'
+import { UiTextInput } from './ui/UiTextInput'
+
+import { i18n } from '@/translations/i18n'
 
 export const TheSearchBar = () => {
   const paddings = usePaddings()

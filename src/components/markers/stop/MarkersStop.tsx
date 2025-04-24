@@ -3,6 +3,7 @@ import { Platform } from 'react-native'
 import { LatLng } from 'react-native-maps'
 
 import { useLineBusStops } from '@/hooks/queries/useLineBusStops'
+
 import { MarkersFiltersZoomMemoized } from '../filters/MarkersFiltersZoom'
 
 import { MarkersStopItemMemoized } from './MarkersStopItem'

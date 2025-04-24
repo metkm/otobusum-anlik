@@ -1,19 +1,22 @@
-import { getSearchResults } from '@/api/getSearchResults'
+import { FlashList } from '@shopify/flash-list'
+import { useMutation } from '@tanstack/react-query'
+import { useCallback, useMemo } from 'react'
+import { NativeSyntheticEvent, StyleSheet, TextInputChangeEventData, View } from 'react-native'
+import { useDebouncedCallback } from 'use-debounce'
+
 import { TheSearchItem } from '@/components/TheSearchItem'
 import { UiActivityIndicator } from '@/components/ui/UiActivityIndicator'
 import { UiChip } from '@/components/ui/UiChip'
 import { UiErrorContainer } from '@/components/ui/UiErrorContainer'
 import { UiText } from '@/components/ui/UiText'
 import { UiTextInput } from '@/components/ui/UiTextInput'
+
 import { usePaddings } from '@/hooks/usePaddings'
+
+import { getSearchResults } from '@/api/getSearchResults'
 import { useFiltersStore } from '@/stores/filters'
 import { i18n } from '@/translations/i18n'
 import { BusLine, BusStop } from '@/types/bus'
-import { FlashList } from '@shopify/flash-list'
-import { useMutation } from '@tanstack/react-query'
-import { useCallback, useMemo } from 'react'
-import { NativeSyntheticEvent, StyleSheet, TextInputChangeEventData, View } from 'react-native'
-import { useDebouncedCallback } from 'use-debounce'
 
 export const ModalScreen = () => {
   const paddings = usePaddings()

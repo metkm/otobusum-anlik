@@ -1,5 +1,4 @@
 import { type Theme } from '@material/material-color-utilities'
-
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { LatLng, Marker } from 'react-native-maps'
 

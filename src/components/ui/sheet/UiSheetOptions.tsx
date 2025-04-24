@@ -1,7 +1,9 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import { UiSheetModal } from './UiSheetModal'
-import { UiButton, UiButtonProps } from '../UiButton'
 import { RefObject } from 'react'
+
+import { UiButton, UiButtonProps } from '../UiButton'
+
+import { UiSheetModal } from './UiSheetModal'
 
 interface UiSheetOptionsProps {
   cRef: RefObject<BottomSheetModal | null>

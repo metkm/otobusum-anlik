@@ -7,13 +7,13 @@ import {
   type BottomSheetModalProps,
 } from '@gorhom/bottom-sheet'
 import { ReactNode, RefObject } from 'react'
+import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native'
 import { Easing } from 'react-native-reanimated'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useSheetModal } from '@/hooks/contexts/useSheetModal'
 import { useSheetBackHandler } from '@/hooks/useSheetBackHandler'
 import { useTheme } from '@/hooks/useTheme'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native'
 
 export interface UiSheetModalProps extends BottomSheetModalProps {
   cRef?: RefObject<BottomSheetModal | null>

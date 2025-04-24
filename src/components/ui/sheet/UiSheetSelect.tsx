@@ -1,9 +1,13 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { RefObject } from 'react'
 import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
+
 import { useTheme } from '@/hooks/useTheme'
+
 import { UiText } from '../UiText'
+
 import { UiSheetModal } from './UiSheetModal'
+
 import { Option } from '@/types/sheet'
 
 interface UiSheetSelectProps<T> {

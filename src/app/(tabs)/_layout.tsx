@@ -1,11 +1,11 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { Tabs } from 'expo-router'
 import { ComponentProps } from 'react'
+import { View } from 'react-native'
 
 import { useTheme } from '@/hooks/useTheme'
 
 import { i18n } from '@/translations/i18n'
-import { View } from 'react-native'
 
 const screens = [
   {
