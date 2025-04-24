@@ -32,11 +32,13 @@ export const TabsLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false,
         tabBarIconStyle: {
           flex: 1,
         },
-        animation: 'shift',
+        tabBarLabelStyle: {
+          color: colorsTheme.color,
+        },
+        animation: 'fade',
         freezeOnBlur: true,
       }}
       detachInactiveScreens
@@ -50,7 +52,7 @@ export const TabsLayout = () => {
             tabBarIcon: ({ focused }) => (
               <View
                 style={{
-                  backgroundColor: focused ? colorsTheme.surfaceContainerHigh : undefined,
+                  backgroundColor: focused ? colorsTheme.surfaceContainerLow : undefined,
                   borderRadius: 999,
                   paddingVertical: 3,
                   paddingHorizontal: 20,

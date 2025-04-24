@@ -16,6 +16,7 @@ import { useTheme } from '@/hooks/useTheme'
 
 import { persister, queryClient } from '@/api/client'
 import { i18n } from '@/translations/i18n'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -36,8 +37,8 @@ export const RootLayout = () => {
     ...targetTheme,
     colors: {
       ...targetTheme.colors,
-      background: colorsTheme.surfaceContainerLow,
-      card: colorsTheme.surfaceContainerLow,
+      background: colorsTheme.surfaceContainerLowest,
+      card: colorsTheme.surfaceContainerLowest,
     },
   }
 
@@ -62,31 +63,33 @@ export const RootLayout = () => {
       <GestureHandlerRootView>
         <ThemeProvider value={modifiedTheme}>
           <BottomSheetModalProvider>
-            <Stack
-              screenOptions={{
-                title: 'Otobüsüm Anlık',
-                navigationBarColor: colorsTheme.surfaceContainerLow,
-                animation: 'fade',
-              }}
-            >
-              <Stack.Screen
-                name="(tabs)"
-                options={{
-                  headerShown: false,
+            <SafeAreaProvider>
+              <Stack
+                screenOptions={{
+                  title: 'Otobüsüm Anlık',
+                  navigationBarColor: colorsTheme.surfaceContainerHighest,
+                  animation: 'fade',
                 }}
-              />
-              <Stack.Screen
-                name="modal"
-                options={{
-                  presentation: 'modal',
-                  headerShown: false,
-                }}
-              />
-              <Stack.Screen
-                name="group/[groupId]/edit"
-                options={{ headerTitle: i18n.t('editGroupTitle') }}
-              />
-            </Stack>
+              >
+                <Stack.Screen
+                  name="(tabs)"
+                  options={{
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="modal"
+                  options={{
+                    presentation: 'modal',
+                    headerShown: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="group/[groupId]/edit"
+                  options={{ headerTitle: i18n.t('editGroupTitle') }}
+                />
+              </Stack>
+            </SafeAreaProvider>
           </BottomSheetModalProvider>
         </ThemeProvider>
       </GestureHandlerRootView>

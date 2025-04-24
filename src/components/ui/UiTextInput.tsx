@@ -2,10 +2,10 @@ import { StyleProp, StyleSheet, TextInputProps, TextStyle, View, ViewStyle } fro
 import { TextInput } from 'react-native-gesture-handler'
 
 import { useTheme } from '@/hooks/useTheme'
-import Icon from '@react-native-vector-icons/ionicons'
 import { IconSize, iconSizes } from '@/constants/uiSizes'
 import { IconValue } from '@/types/ui'
 import { Ref } from 'react'
+import Icon from '@react-native-vector-icons/ionicons'
 
 interface UiTextInputProps extends TextInputProps {
   icon?: IconValue
@@ -24,6 +24,7 @@ export const UiTextInput = ({ iconSize = 'md', cRef, style, styleContainer, icon
   const inputStyle: StyleProp<TextStyle> = {
     color: getSchemeColorHex('onSurface'),
     paddingLeft: icon ? 14 * 2 : 14,
+    display: 'flex',
   }
 
   return (
@@ -50,6 +51,8 @@ const styles = StyleSheet.create({
     paddingLeft: 14,
     paddingRight: 14,
     paddingVertical: 6,
+    position: 'relative',
+    display: 'flex',
   },
   iconContainer: {
     position: 'absolute',
