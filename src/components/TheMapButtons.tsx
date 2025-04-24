@@ -56,7 +56,7 @@ export const TheMapButtons = () => {
 
   useEffect(() => {
     const unsub = useMiscStore.subscribe(
-      state => state.selectedLineScrollIndex,
+      state => state.scrolledLineIndex,
       (index) => {
         updateColors(index)
       },

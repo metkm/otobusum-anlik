@@ -44,7 +44,7 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
   const previouslines = useRef<string[]>(lines)
 
   useEffect(() => {
-    const scrolledToIndex = useMiscStore.getState().selectedLineScrollIndex
+    const scrolledToIndex = useMiscStore.getState().scrolledLineIndex
     if (lines.length === 0 || scrolledToIndex !== lines.length) return
 
     innerRef.current?.scrollToIndex({
@@ -68,7 +68,8 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
   const handleViewableItemsChanged: ViewableItems = ({ viewableItems }) => {
     if (viewableItems.length < 1 || Platform.OS === 'web') return
 
-    useMiscStore.setState(() => ({ selectedLineScrollIndex: viewableItems.at(0)?.index || 0 }))
+    console.log(viewableItems.at(0)?.index)
+    useMiscStore.setState(() => ({ scrolledLineIndex: viewableItems.at(0)?.index || 0 }))
   }
 
   const keyExtractor = useCallback((item: string) => `${item}-${selectedGroup}`, [selectedGroup])

@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 
 export interface MiscStore {
-  selectedLineScrollIndex: number
+  scrolledLineIndex: number
   invisibleLines: string[]
   selectedStopId?: number
 }
@@ -12,7 +12,7 @@ export const useMiscStore = create(
   subscribeWithSelector(
     persist<MiscStore>(
       () => ({
-        selectedLineScrollIndex: 0,
+        scrolledLineIndex: 0,
         invisibleLines: [],
         selectedStopId: undefined,
       }),

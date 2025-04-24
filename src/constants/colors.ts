@@ -1,19 +1,44 @@
-export const colors = {
-  primary: '#F0A300',
+import { Scheme } from "@material/material-color-utilities"
+
+export type SchemePartialKeys = {
+  -readonly [K in keyof Scheme]?: string
+}
+
+// type TargetKeys = 'surface' | 'onSurface' | 'surfaceContainer' | 'surfaceContainerHigh' | 'primary' | 'onPrimary'
+
+export type ColorTheme = {
+  surface: string
+  onSurface: string
+  surfaceContainer: string
+  surfaceContainerHigh: string
+  primary: string
+  onPrimary: string
+}
+
+// export type ColorTheme = {
+//   [K in keyof Scheme]: K extends TargetKeys ? string : never
+// }
+
+export interface ColorThemes {
+  dark: ColorTheme;
+  light: ColorTheme;
+}
+
+export const defaultColorThemes = {
   light: {
-    surfaceContainerLowest: '#fafafa',
-    surfaceContainerLow: '#f5f5f5',
-    surfaceContainer: '#e5e5e5',
-    surfaceContainerHigh: '#d4d4d4',
-    surfaceContainerHighest: '#a3a3a3',
-    color: 'black',
+    surface: "#FFF8F4",
+    onSurface: "#201B13",
+    surfaceContainer: "#FFF8F4",
+    surfaceContainerHigh: "#F3E6DA",
+    primary: "#7F570F",
+    onPrimary: "#FFFFFF",
   },
   dark: {
-    surfaceContainerLowest: '#0a0a0a',
-    surfaceContainerLow: '#171717',
-    surfaceContainer: '#262626',
-    surfaceContainerHigh: '#404040',
-    surfaceContainerHighest: '#525252',
-    color: 'white',
+    surface: "#18120B",
+    onSurface: "#EDE1D4",
+    surfaceContainer: "#251F17",
+    surfaceContainerHigh: "#2F2921",
+    primary: "#F3BD6E",
+    onPrimary: "#442B00",
   },
-}
+} satisfies ColorThemes;
