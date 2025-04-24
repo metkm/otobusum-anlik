@@ -4,8 +4,6 @@ export type SchemePartialKeys = {
   -readonly [K in keyof Scheme]?: string
 }
 
-// type TargetKeys = 'surface' | 'onSurface' | 'surfaceContainer' | 'surfaceContainerHigh' | 'primary' | 'onPrimary'
-
 export type ColorTheme = {
   surface: string
   onSurface: string
@@ -14,10 +12,6 @@ export type ColorTheme = {
   primary: string
   onPrimary: string
 }
-
-// export type ColorTheme = {
-//   [K in keyof Scheme]: K extends TargetKeys ? string : never
-// }
 
 export interface ColorThemes {
   dark: ColorTheme;
