@@ -20,7 +20,7 @@ import { LineGroup } from '@/types/lineGroup'
 
 interface LineGroupsProps extends ViewProps {
   onPressGroup?: (group: LineGroup) => void
-  cRef?: RefObject<BottomSheetModal>
+  cRef?: RefObject<BottomSheetModal | null>
   lineCodeToAdd?: string
 }
 

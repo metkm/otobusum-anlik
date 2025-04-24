@@ -57,10 +57,10 @@ export const LineName = ({ lineCode, variant = 'solid' }: LineNameProps) => {
         <UiText
           style={{
             fontWeight: 'bold',
-            fontSize: 24,
             color,
             lineHeight: 24,
           }}
+          size="xl"
         >
           {lineCode}
         </UiText>

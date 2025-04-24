@@ -14,7 +14,7 @@ import { UiText } from './UiText'
 import { ButtonVariants, IconSize, iconSizes } from '@/constants/uiSizes'
 import { IconValue } from '@/types/ui'
 
-interface UiButtonPropsBase {
+export interface UiButtonPropsBase {
   theme?: Theme
   isLoading?: boolean
   square?: boolean
@@ -33,17 +33,17 @@ interface UiButtonPropsBase {
   align?: 'left'
 }
 
-interface UiButtonPropsWithIcon extends UiButtonPropsBase {
+export interface UiButtonPropsWithIcon extends UiButtonPropsBase {
   icon: IconValue
   title?: string
 }
 
-interface UiButtonPropsWithTitle extends UiButtonPropsBase {
+export interface UiButtonPropsWithTitle extends UiButtonPropsBase {
   icon?: IconValue
   title: string
 }
 
-type UiButtonProps = UiButtonPropsWithTitle | UiButtonPropsWithIcon
+export type UiButtonProps = UiButtonPropsWithTitle | UiButtonPropsWithIcon
 
 const AnimatedIonIcons = Animated.createAnimatedComponent(Ionicons)
 

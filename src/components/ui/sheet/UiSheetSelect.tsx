@@ -1,13 +1,9 @@
-import { BottomSheetModal, BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { RefObject } from 'react'
 import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native'
-
 import { useTheme } from '@/hooks/useTheme'
-
 import { UiText } from '../UiText'
-
 import { UiSheetModal } from './UiSheetModal'
-
 import { Option } from '@/types/sheet'
 
 interface UiSheetSelectProps<T> {
@@ -19,7 +15,7 @@ interface UiSheetSelectProps<T> {
 }
 
 export const UiSheetSelect = <T,>(
-  props: UiSheetSelectProps<T> & { cRef?: RefObject<BottomSheetModal> },
+  props: UiSheetSelectProps<T> & { cRef?: RefObject<BottomSheetModal | null> },
 ) => {
   const { getSchemeColorHex } = useTheme()
 
@@ -52,40 +48,20 @@ export const UiSheetSelect = <T,>(
       cRef={props.cRef}
       enableDynamicSizing={!props.list}
       snapPoints={['50%']}
+      top={() => <UiText>{props.title}</UiText>}
+      containerStyle={{ padding: 0 }}
+      list={props.list}
     >
-      {props.list
-        ? (
-            <View style={[styles.container]}>
-              <UiText info style={styles.title}>
-                {props.title}
-              </UiText>
-
-              <BottomSheetScrollView>
-                {props.options.map(option => (
-                  <SelectItem key={option.label} item={option} />
-                ))}
-              </BottomSheetScrollView>
-            </View>
-          )
-        : (
-            <BottomSheetView style={styles.viewContainer}>
-              <UiText info style={styles.title}>
-                {props.title}
-              </UiText>
-
-              {props.options.map(option => (
-                <SelectItem key={option.label} item={option} />
-              ))}
-            </BottomSheetView>
-          )}
+      {props.options.map(option => (
+        <SelectItem key={option.label} item={option} />
+      ))}
     </UiSheetModal>
   )
 }
 
 const styles = StyleSheet.create({
   item: {
-    padding: 8,
-    gap: 4,
+    padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -97,17 +73,8 @@ const styles = StyleSheet.create({
     padding: 4,
     borderWidth: 2,
   },
-  container: {
-    flex: 1,
-  },
-  viewContainer: {
-    padding: 8,
-  },
   innerCircle: {
     borderRadius: 999,
     flex: 1,
-  },
-  title: {
-    padding: 8,
   },
 })

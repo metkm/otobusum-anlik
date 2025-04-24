@@ -1,4 +1,4 @@
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { memo, useEffect, useMemo, useRef } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -8,7 +8,6 @@ import { useMap } from '@/hooks/contexts/useMap'
 import { useLine } from '@/hooks/queries/useLine'
 import { ThemeContext, useTheme } from '@/hooks/useTheme'
 
-import { UiSheetModal } from '../../ui/sheet/UiSheetModal'
 import { UiButton } from '../../ui/UiButton'
 
 import { LineAnnouncements } from './LineAnnouncements'
@@ -23,6 +22,11 @@ import { changeRouteDirection, getSelectedRouteCode, useFiltersStore } from '@/s
 import { deleteLine, getTheme, useLinesStore } from '@/stores/lines'
 import { toggleLineVisibility, useMiscStore } from '@/stores/misc'
 import { i18n } from '@/translations/i18n'
+import { UiSheetOptions } from '@/components/ui/sheet/UiSheetOptions'
+
+import Ionicons from '@react-native-vector-icons/ionicons'
+import { UiText } from '@/components/ui/UiText'
+import { iconSizes } from '@/constants/uiSizes'
 
 export interface LineProps {
   lineCode: string
@@ -34,7 +38,7 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
   const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
   const selectedCity = useFiltersStore(useShallow(state => state.selectedCity))
 
-  const { getSchemeColorHex } = useTheme(lineTheme)
+  const { getSchemeColorHex, colorsTheme } = useTheme(lineTheme)
   const { lineWidth } = useLine(lineCode)
 
   const map = useMap()
@@ -120,26 +124,29 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
 
             <UiButton onPress={openMenu} icon="menu" variant="soft" />
 
-            <UiSheetModal cRef={uiSheetButtonModal}>
-              <BottomSheetView style={styles.menuSheetContainer}>
-                <UiButton
-                  onPress={openGroupMenu}
-                  title={i18n.t('addToGroup')}
-                  variant="soft"
-                  icon="add-circle-outline"
-                  square
-                  align="left"
-                />
-                <UiButton
-                  onPress={handleDelete}
-                  title={i18n.t('deleteLine')}
-                  variant="soft"
-                  icon="trash-outline"
-                  square
-                  align="left"
-                />
-              </BottomSheetView>
-            </UiSheetModal>
+            <UiSheetOptions
+              cRef={uiSheetButtonModal}
+              options={[
+                {
+                  icon: 'add-circle-outline',
+                  title: i18n.t('addToGroup'),
+                  onPress: openGroupMenu,
+                },
+                {
+                  icon: 'trash-outline',
+                  title: i18n.t('deleteLine'),
+                  onPress: handleDelete,
+                },
+              ]}
+              top={() => (
+                <>
+                  <Ionicons name="bus" size={iconSizes['lg']} color={colorsTheme.color} />
+                  <UiText size="md" style={{ fontWeight: 'bold' }}>
+                    {lineCode}
+                  </UiText>
+                </>
+              )}
+            />
 
             <LineGroups cRef={uiSheetLineGroupsModal} lineCodeToAdd={lineCode} />
           </View>

@@ -87,6 +87,7 @@ export const SettingsContainer = <T,>(props: SettingProps<T>) => {
             value={props.value}
             options={props.options}
             onValueChange={props.onChange}
+            list
           />
 
           <View style={styles.selectedValueContainer}>
