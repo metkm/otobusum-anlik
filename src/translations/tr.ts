@@ -55,4 +55,5 @@ export default {
   updateCount: '%{count} saniye içinde güncellenecek',
   searchPlaceholder: 'KM-12, KM-12...',
   selectedCity: 'Seçili şehir: %{city}',
+  newGroupTitlePlaceholder: 'Yeni grup ismi',
 }

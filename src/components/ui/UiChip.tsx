@@ -11,7 +11,7 @@ export const UiChip = ({ children }: UiChipProps) => {
 
   return (
     <View style={[styles.container, { backgroundColor: colorsTheme.surfaceContainer }]}>
-      <UiText size="sm">
+      <UiText size="sm" info>
         {children}
       </UiText>
     </View>

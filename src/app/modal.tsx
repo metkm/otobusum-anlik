@@ -86,10 +86,6 @@ export const ModalScreen = () => {
           icon="search"
           autoFocus
           onChange={handleQueryChange}
-          styleContainer={{
-            borderWidth: StyleSheet.hairlineWidth,
-            borderColor: colorsTheme.surfaceContainerHigh,
-          }}
         />
 
         <View style={styles.list}>

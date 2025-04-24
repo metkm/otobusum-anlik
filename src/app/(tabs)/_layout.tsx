@@ -32,6 +32,7 @@ export const TabsLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
+        // tabBarShowLabel: false,
         tabBarIconStyle: {
           flex: 1,
         },
@@ -54,7 +55,7 @@ export const TabsLayout = () => {
                 style={{
                   backgroundColor: focused ? colorsTheme.surfaceContainerLow : undefined,
                   borderRadius: 999,
-                  paddingVertical: 3,
+                  paddingVertical: 2,
                   paddingHorizontal: 20,
                 }}
               >
@@ -64,9 +65,9 @@ export const TabsLayout = () => {
                       typeof Ionicons
                     >['name']
                   }
-                  size={20}
+                  size={22}
                   color={colorsTheme.color}
-                  style={{ width: 20 }}
+                  style={{ width: 22 }}
                 />
               </View>
             ),

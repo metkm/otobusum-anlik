@@ -15,14 +15,14 @@ interface UiTextInputProps extends TextInputProps {
 }
 
 export const UiTextInput = ({ iconSize = 'md', cRef, style, styleContainer, icon, ...props }: UiTextInputProps) => {
-  const { getSchemeColorHex, colorsTheme } = useTheme()
+  const { colorsTheme } = useTheme()
 
   const dynamicStyle: StyleProp<ViewStyle> = {
     backgroundColor: colorsTheme.surfaceContainerLow,
   }
 
   const inputStyle: StyleProp<TextStyle> = {
-    color: getSchemeColorHex('onSurface'),
+    color: colorsTheme.color,
     paddingLeft: icon ? 14 * 2 : 14,
     display: 'flex',
   }
@@ -31,14 +31,14 @@ export const UiTextInput = ({ iconSize = 'md', cRef, style, styleContainer, icon
     <View style={[styles.input, styleContainer, dynamicStyle]}>
       <View style={styles.iconContainer}>
         {icon && (
-          <Icon name={icon} color={getSchemeColorHex('onSurfaceVariant')} size={iconSizes[iconSize]} />
+          <Icon name={icon} color={colorsTheme.color} size={iconSizes[iconSize]} />
         )}
       </View>
 
       <TextInput
         ref={cRef}
         style={[style, inputStyle]}
-        placeholderTextColor={getSchemeColorHex('onSurfaceVariant')} // should be less opacity
+        placeholderTextColor={colorsTheme.surfaceContainerHigh}
         {...props}
       />
     </View>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     paddingLeft: 14,
     paddingRight: 14,
-    paddingVertical: 6,
+    paddingVertical: 4,
     position: 'relative',
     display: 'flex',
   },
