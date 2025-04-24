@@ -1,5 +1,4 @@
-import { StyleProp, TextStyle, ViewStyle } from 'react-native'
-import { View } from 'react-native'
+import { StyleProp, TextStyle, ViewStyle, View } from 'react-native'
 
 import { useTheme } from '@/hooks/useTheme'
 

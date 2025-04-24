@@ -1,4 +1,4 @@
-import { BottomSheetModal, BottomSheetModalProps } from '@gorhom/bottom-sheet'
+import { BottomSheetModal, type BottomSheetModalProps } from '@gorhom/bottom-sheet'
 import { useRef, useCallback } from 'react'
 import { NativeEventSubscription, BackHandler } from 'react-native'
 

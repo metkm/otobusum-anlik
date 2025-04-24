@@ -1,7 +1,6 @@
 import { GoogleMapsContext, useMapsLibrary } from '@vis.gl/react-google-maps'
-import type { Ref } from 'react'
+import type { Ref, RefObject } from 'react'
 import {
-  forwardRef,
   useContext,
   useEffect,
   useImperativeHandle,
@@ -34,6 +33,10 @@ type PolylineCustomProps = {
 export type PolylineProps = google.maps.PolylineOptions &
   PolylineEventProps &
   PolylineCustomProps
+
+interface PolylinePropsWithRef extends PolylineProps {
+  cRef?: RefObject<google.maps.Polyline>
+}
 
 export type PolylineRef = Ref<google.maps.Polyline | null>
 
@@ -123,10 +126,10 @@ function usePolyline(props: PolylineProps) {
   return polyline
 }
 
-export const _Polyline = (props: PolylineProps, ref: PolylineRef) => {
+export const Polyline = ({ cRef, ...props }: PolylinePropsWithRef) => {
   const polyline = usePolyline(props)
 
-  useImperativeHandle(ref, () => polyline, [polyline])
+  useImperativeHandle(cRef, () => polyline, [polyline])
 
   return null
 }
@@ -134,7 +137,7 @@ export const _Polyline = (props: PolylineProps, ref: PolylineRef) => {
 /**
  * Component to render a polyline on a map
  */
-export const Polyline = forwardRef(_Polyline)
+// export const Polyline = forwardRef(Polyline)
 
 export const MarkersLinePolyline = ({ lineCode }: { lineCode: string }) => {
   const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))

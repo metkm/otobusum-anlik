@@ -1,8 +1,8 @@
 import {
   AdvancedMarker,
-  AdvancedMarkerProps,
-  InfoWindowProps,
   useAdvancedMarkerRef,
+  type AdvancedMarkerProps,
+  type InfoWindowProps,
 } from '@vis.gl/react-google-maps'
 import React, { useCallback, useState } from 'react'
 

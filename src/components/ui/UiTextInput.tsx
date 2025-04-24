@@ -1,25 +1,25 @@
-import { StyleProp, StyleSheet, TextInputProps, TextStyle, View, ViewStyle } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { StyleProp, StyleSheet, TextInputProps, TextStyle, View, ViewStyle } from 'react-native'
+import { TextInput } from 'react-native-gesture-handler'
 
-import { useTheme } from "@/hooks/useTheme";
-import Icon from "@react-native-vector-icons/ionicons";
-import { IconSize, iconSizes } from "@/constants/uiSizes";
-import { IconValue } from "@/types/ui";
-import { Ref } from "react";
+import { useTheme } from '@/hooks/useTheme'
+import Icon from '@react-native-vector-icons/ionicons'
+import { IconSize, iconSizes } from '@/constants/uiSizes'
+import { IconValue } from '@/types/ui'
+import { Ref } from 'react'
 
 interface UiTextInputProps extends TextInputProps {
-  icon?: IconValue;
-  iconSize?: IconSize;
-  cRef?: Ref<TextInput>;
+  icon?: IconValue
+  iconSize?: IconSize
+  cRef?: Ref<TextInput>
   styleContainer?: StyleProp<ViewStyle>
 }
 
-export const UiTextInput = ({ iconSize = "md", cRef, style, styleContainer, icon, ...props }: UiTextInputProps) => {
-  const { getSchemeColorHex, colorsTheme } = useTheme();
+export const UiTextInput = ({ iconSize = 'md', cRef, style, styleContainer, icon, ...props }: UiTextInputProps) => {
+  const { getSchemeColorHex, colorsTheme } = useTheme()
 
   const dynamicStyle: StyleProp<ViewStyle> = {
     backgroundColor: colorsTheme.surfaceContainerLow,
-  };
+  }
 
   const inputStyle: StyleProp<TextStyle> = {
     color: getSchemeColorHex('onSurface'),
@@ -30,33 +30,33 @@ export const UiTextInput = ({ iconSize = "md", cRef, style, styleContainer, icon
     <View style={[styles.input, styleContainer, dynamicStyle]}>
       <View style={styles.iconContainer}>
         {icon && (
-          <Icon name={icon} color={getSchemeColorHex("onSurfaceVariant")} size={iconSizes[iconSize]} />
+          <Icon name={icon} color={getSchemeColorHex('onSurfaceVariant')} size={iconSizes[iconSize]} />
         )}
       </View>
 
       <TextInput
         ref={cRef}
         style={[style, inputStyle]}
-        placeholderTextColor={getSchemeColorHex("onSurfaceVariant")} // should be less opacity
+        placeholderTextColor={getSchemeColorHex('onSurfaceVariant')} // should be less opacity
         {...props}
       />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   input: {
     borderRadius: 999,
     paddingLeft: 14,
     paddingRight: 14,
-    paddingVertical: 14,
+    paddingVertical: 6,
   },
   iconContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     bottom: 0,
-    display: "flex",
-    justifyContent: "center",
+    display: 'flex',
+    justifyContent: 'center',
     marginLeft: 14,
   },
-});
+})

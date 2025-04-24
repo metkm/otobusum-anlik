@@ -46,16 +46,16 @@ export const MarkersStop = (props: Props) => {
 
   return (
     <>
-      {stops.map((item) => (
+      {stops.map(item => (
         <MarkersFiltersZoomMemoized
           key={`${item.x_coord}-${item.y_coord}-${props.lineCode}-${item.stop_code}`}
           limit={13}
         >
-           <MarkersStopItemMemoized
-             type="point"
-             stop={item}
-             lineCode={props.lineCode}
-           />
+          <MarkersStopItemMemoized
+            type="point"
+            stop={item}
+            lineCode={props.lineCode}
+          />
         </MarkersFiltersZoomMemoized>
       ))}
     </>

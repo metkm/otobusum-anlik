@@ -1,9 +1,9 @@
-import { APIProvider, Map, MapCameraChangedEvent, MapEvent } from '@vis.gl/react-google-maps'
-import { ForwardedRef, forwardRef, useImperativeHandle, useRef } from 'react'
+import { APIProvider, Map, type MapCameraChangedEvent, type MapEvent } from '@vis.gl/react-google-maps'
+import { ForwardedRef, useImperativeHandle, useRef } from 'react'
 import { Dimensions } from 'react-native'
 import { useThrottledCallback } from 'use-debounce'
 
-import { TheMapProps, TheMapRef } from './Map'
+import type { TheMapProps, TheMapRef } from './Map'
 
 const dimensions = Dimensions.get('window')
 
@@ -35,7 +35,7 @@ const getBoundsZoomLevel = (
   return Math.min(latZoom, lngZoom, ZOOM_MAX)
 }
 
-export const _TheMap = (
+export const TheMap = (
   { onMapReady, onMapRegionUpdate, initialRegion, ...props }: TheMapProps,
   ref: ForwardedRef<TheMapRef>,
 ) => {
@@ -161,4 +161,4 @@ export const _TheMap = (
   )
 }
 
-export const TheMap = forwardRef<TheMapRef, TheMapProps>(_TheMap)
+// export const TheMap = forwardRef<TheMapRef, TheMapProps>(TheMap)

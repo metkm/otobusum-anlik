@@ -34,6 +34,7 @@ const config: ExpoConfig = {
     translucent: true,
   },
   android: {
+    edgeToEdgeEnabled: true,
     config: {
       googleMaps: {
         apiKey: process.env.EXPO_PUBLIC_MAP_API,

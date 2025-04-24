@@ -1,4 +1,5 @@
-import { Theme } from '@material/material-color-utilities'
+import { type Theme } from '@material/material-color-utilities'
+
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { AdvancedMarker, AdvancedMarkerAnchorPoint } from '@vis.gl/react-google-maps'
 import { StyleProp, View, ViewStyle } from 'react-native'

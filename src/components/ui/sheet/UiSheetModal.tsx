@@ -1,8 +1,8 @@
 import {
   BottomSheetBackdrop,
-  BottomSheetBackdropProps,
   BottomSheetModal,
-  BottomSheetModalProps,
+  type BottomSheetBackdropProps,
+  type BottomSheetModalProps,
 } from '@gorhom/bottom-sheet'
 import { RefObject } from 'react'
 import { StyleSheet } from 'react-native'

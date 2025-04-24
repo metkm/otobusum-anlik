@@ -1,4 +1,5 @@
-import { Theme } from '@material/material-color-utilities'
+import { type Theme } from '@material/material-color-utilities'
+
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { randomUUID } from 'expo-crypto'
 import { ToastAndroid } from 'react-native'
@@ -175,7 +176,7 @@ export const deleteTheme = (lineCode: string) => useLinesStore.setState((state) 
 
   const shouldDeleteTheme
     = !groupAllLineCodes.includes(lineCode)
-    && state.lines[filtersStore.selectedCity].indexOf(lineCode) === -1
+      && state.lines[filtersStore.selectedCity].indexOf(lineCode) === -1
 
   if (shouldDeleteTheme) {
     delete state.lineTheme[filtersStore.selectedCity][lineCode]

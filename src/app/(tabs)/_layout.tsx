@@ -1,32 +1,32 @@
-import Ionicons from "@react-native-vector-icons/ionicons";
-import { Tabs } from "expo-router";
-import { ComponentProps } from "react";
+import Ionicons from '@react-native-vector-icons/ionicons'
+import { Tabs } from 'expo-router'
+import { ComponentProps } from 'react'
 
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme } from '@/hooks/useTheme'
 
-import { i18n } from "@/translations/i18n";
-import { View } from "react-native";
+import { i18n } from '@/translations/i18n'
+import { View } from 'react-native'
 
 const screens = [
   {
-    name: "index",
-    label: "map",
-    icon: "map",
+    name: 'index',
+    label: 'map',
+    icon: 'map',
   },
   {
-    name: "timetable",
-    label: "timetable",
-    icon: "time",
+    name: 'timetable',
+    label: 'timetable',
+    icon: 'time',
   },
   {
-    name: "settings",
-    label: "settings",
-    icon: "settings",
+    name: 'settings',
+    label: 'settings',
+    icon: 'settings',
   },
-];
+]
 
 export const TabsLayout = () => {
-  const { colorsTheme } = useTheme();
+  const { colorsTheme } = useTheme()
 
   return (
     <Tabs
@@ -36,12 +36,12 @@ export const TabsLayout = () => {
         tabBarIconStyle: {
           flex: 1,
         },
-        animation: "shift",
+        animation: 'shift',
         freezeOnBlur: true,
       }}
       detachInactiveScreens
     >
-      {screens.map((screen) => (
+      {screens.map(screen => (
         <Tabs.Screen
           key={screen.name}
           name={screen.name}
@@ -60,7 +60,7 @@ export const TabsLayout = () => {
                   name={
                     (focused ? `${screen.icon}` : `${screen.icon}-outline`) as ComponentProps<
                       typeof Ionicons
-                    >["name"]
+                    >['name']
                   }
                   size={20}
                   color={colorsTheme.color}
@@ -72,7 +72,7 @@ export const TabsLayout = () => {
         />
       ))}
     </Tabs>
-  );
-};
+  )
+}
 
-export default TabsLayout;
+export default TabsLayout

@@ -6,7 +6,7 @@ import { Linking, StyleSheet, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { LineGroups } from './lines/line/LineGroups'
-import { TheMap, TheMapRef } from './map/Map'
+import { TheMap, type TheMapRef } from './map/Map'
 import { MarkersStopItem } from './markers/stop/MarkersStopItem'
 import { UiSheetModal } from './ui/sheet/UiSheetModal'
 import { UiActivityIndicator } from './ui/UiActivityIndicator'
@@ -85,7 +85,7 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
     )
 
     return unsub
-  }, [])
+  }, [cRef, query.data])
 
   useEffect(() => {
     if (!query.data) return
@@ -96,7 +96,7 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
       latitudeDelta: 0.010,
       longitudeDelta: 0.010,
     })
-  }, [query.data])
+  }, [cRef, query.data])
 
   const openStopDirections = async () => {
     if (!query.data?.stop) return
@@ -111,7 +111,7 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
 
   const handleOnDismiss = () => {
     useMiscStore.setState(() => ({
-      selectedStopId: undefined
+      selectedStopId: undefined,
     }))
 
     cRef.current?.animateCamera(savedRegion.current)

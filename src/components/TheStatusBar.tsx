@@ -1,4 +1,4 @@
-import { StatusBarProps, StatusBar, StatusBarStyle } from 'expo-status-bar'
+import { StatusBar, type StatusBarStyle, type StatusBarProps } from 'expo-status-bar'
 
 import { useTheme } from '@/hooks/useTheme'
 

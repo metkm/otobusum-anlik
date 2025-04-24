@@ -55,7 +55,7 @@ export const MarkersLineRouteLine = ({ lineCode }: RouteLineProps) => {
 
       arrowCoordinates.push({
         angle: brng,
-        coordinates: arrowCoordinate
+        coordinates: arrowCoordinate,
       })
     }
 

@@ -1,4 +1,4 @@
-import { Scheme, Theme, hexFromArgb } from '@material/material-color-utilities'
+import { Scheme, hexFromArgb, type Theme } from '@material/material-color-utilities'
 import { createContext, useCallback, useContext, useMemo } from 'react'
 import { useColorScheme } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'

@@ -1,4 +1,4 @@
-import ky, { Options } from 'ky'
+import ky, { type Options } from 'ky'
 
 import { useFiltersStore } from '@/stores/filters'
 

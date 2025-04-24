@@ -1,14 +1,17 @@
-import stylistic from "@stylistic/eslint-plugin";
+import stylistic from '@stylistic/eslint-plugin'
 import reactPlugin from 'eslint-plugin-react'
 import importPlugin from 'eslint-plugin-import'
+import expoPlugin from 'eslint-config-expo/flat.js'
+import { defineConfig } from 'eslint/config'
 
-export default [
+export default defineConfig([
+  expoPlugin,
   stylistic.configs.recommended,
   reactPlugin.configs.flat.recommended,
   importPlugin.flatConfigs.recommended,
   {
     rules: {
-      "@stylistic/brace-style": ["error", "1tbs"],
+      '@stylistic/brace-style': ['error', '1tbs'],
       // "import/order": [
       //   "error",
       //   {
@@ -34,16 +37,19 @@ export default [
       // ],
       'react/react-in-jsx-scope': ['off'],
       'react/prop-types': ['off'],
-      'react/function-component-definition': ['error', {
-        namedComponents: 'arrow-function',
-        unnamedComponents: 'arrow-function',
-      }],
+      'react/function-component-definition': [
+        'error',
+        {
+          namedComponents: 'arrow-function',
+          unnamedComponents: 'arrow-function',
+        },
+      ],
     },
   },
   {
     ignores: ['dist/*'],
   },
-];
+])
 
 // const stylistic = require('@stylistic/eslint-plugin')
 

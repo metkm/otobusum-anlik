@@ -1,4 +1,5 @@
-import { Theme } from '@material/material-color-utilities'
+import { type Theme } from '@material/material-color-utilities'
+
 import Ionicons from '@react-native-vector-icons/ionicons'
 import React, { useCallback } from 'react'
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'

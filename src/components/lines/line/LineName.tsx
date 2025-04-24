@@ -59,7 +59,7 @@ export const LineName = ({ lineCode, variant = 'solid' }: LineNameProps) => {
             fontWeight: 'bold',
             fontSize: 24,
             color,
-            lineHeight: 24
+            lineHeight: 24,
           }}
         >
           {lineCode}

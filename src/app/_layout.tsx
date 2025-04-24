@@ -1,7 +1,7 @@
 import '@/assets/styles.css'
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
-import { DarkTheme, DefaultTheme, Theme, ThemeProvider } from '@react-navigation/native'
+import { DarkTheme, DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native'
 import { DehydrateOptions } from '@tanstack/react-query'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { Stack } from 'expo-router'
@@ -79,7 +79,7 @@ export const RootLayout = () => {
                 name="modal"
                 options={{
                   presentation: 'modal',
-                  headerShown: false
+                  headerShown: false,
                 }}
               />
               <Stack.Screen
