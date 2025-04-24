@@ -37,9 +37,7 @@ export const GroupEditScreen = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => (
-        <UiButton title={i18n.t("save")} onPress={handleOnPress} variant="ghost" />
-      ),
+      headerRight: () => <UiButton title={i18n.t("save")} onPress={handleOnPress} variant="soft" />,
     });
   }, [navigation, handleOnPress]);
 
