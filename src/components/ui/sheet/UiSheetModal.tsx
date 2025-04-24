@@ -66,9 +66,14 @@ export const UiSheetModal = ({ cRef, top, containerStyle, ...props }: UiSheetMod
       {props.list
         ? (
             <>
-              <BottomSheetView>
-                <TopContainer>{top?.()}</TopContainer>
-              </BottomSheetView>
+              {top
+                ? (
+                    <BottomSheetView>
+                      <TopContainer>{top?.()}</TopContainer>
+                    </BottomSheetView>
+                  )
+                : undefined}
+
               <BottomSheetScrollView contentContainerStyle={{ paddingBottom: insets.bottom }}>
                 {props.children as ReactNode | ReactNode[]}
               </BottomSheetScrollView>
@@ -76,7 +81,7 @@ export const UiSheetModal = ({ cRef, top, containerStyle, ...props }: UiSheetMod
           )
         : (
             <BottomSheetView style={{ paddingBottom: insets.bottom, flex: 1 }}>
-              <TopContainer>{top?.()}</TopContainer>
+              {top ? <TopContainer>{top?.()}</TopContainer> : undefined}
 
               <View style={[styles.container, containerStyle]}>
                 {props.children as ReactNode | ReactNode[]}

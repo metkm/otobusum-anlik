@@ -6,7 +6,6 @@ import { UiErrorContainer } from '@/components/ui/UiErrorContainer'
 import { UiText } from '@/components/ui/UiText'
 import { UiTextInput } from '@/components/ui/UiTextInput'
 import { usePaddings } from '@/hooks/usePaddings'
-import { useTheme } from '@/hooks/useTheme'
 import { useFiltersStore } from '@/stores/filters'
 import { i18n } from '@/translations/i18n'
 import { BusLine, BusStop } from '@/types/bus'
@@ -18,7 +17,6 @@ import { useDebouncedCallback } from 'use-debounce'
 
 export const ModalScreen = () => {
   const paddings = usePaddings()
-  const { colorsTheme } = useTheme()
   const selectedCity = useFiltersStore(state => state.selectedCity)
 
   const mutation = useMutation({
