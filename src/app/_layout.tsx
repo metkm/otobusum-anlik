@@ -106,41 +106,6 @@ export const RootLayout = () => {
                 screenOptions={{
                   animation: 'fade',
                   header: MyHeader,
-
-                  // header: ({ navigation, route, options, back }) => {
-                  //   const insets = useSafeAreaInsets();
-                  //   const { colorsTheme } = useTheme();
-                  //   const title = getHeaderTitle(options, route.name);
-
-                  //   return (
-                  //     <View
-                  //       style={{
-                  //         paddingTop: 8 + insets.top,
-                  //         padding: 8,
-                  //         backgroundColor: colorsTheme.surfaceContainerLow,
-                  //         display: "flex",
-                  //         flexDirection: "row",
-                  //         alignItems: "center",
-                  //         justifyContent: "space-between",
-                  //       }}
-                  //     >
-                  //       <View>
-                  //         {back ? (
-                  //           <UiButton
-                  //             onPress={navigation.goBack}
-                  //             icon="arrow-back"
-                  //             variant="soft"
-                  //           />
-                  //         ) : undefined}
-                  //       </View>
-
-                  //       <UiText>{title}</UiText>
-
-                  //       {/* @ts-ignore */}
-                  //       {options.headerRight?.()}
-                  //     </View>
-                  //   );
-                  // },
                 }}
               >
                 <Stack.Screen
