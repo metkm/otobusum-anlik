@@ -57,4 +57,5 @@ export default {
   selectedCity: 'Selected city: %{city}',
   newGroupTitlePlaceholder: 'New group name',
   announcements: 'Announcements',
+  timetableEmptyRange: 'Timetable for this day is empty',
 }

@@ -200,42 +200,51 @@ export const LineTimetable = ({ lineCode }: LineTimetableProps) => {
           buttons={options[selectedCity]}
         />
 
-        <View style={styles.container}>
-          <ScrollView contentContainerStyle={styles.innerScroll} fadingEdgeLength={40}>
-            <View style={styles.fixed}>
-              {hours.map(hour => (
-                <UiText key={hour} style={[styles.cell, cellStyle]}>
-                  {hour}
-                </UiText>
-              ))}
-            </View>
+        {hours.length > 1
+          ? (
+              <View style={styles.container}>
+                <ScrollView contentContainerStyle={styles.innerScroll} fadingEdgeLength={40}>
+                  <View style={styles.fixed}>
+                    {hours.map(hour => (
+                      <UiText key={hour} style={[styles.cell, cellStyle]}>
+                        {hour}
+                      </UiText>
+                    ))}
+                  </View>
 
-            <ScrollView
-              contentContainerStyle={{ flexDirection: 'column', gap: 4 }}
-              horizontal
-            >
-              {hours.map(hour => (
-                <View key={hour} style={styles.row}>
-                  {groupedByHour[hour]?.map(time => (
-                    <UiText
-                      key={`${lineCode}-${time}-${routeCode}`}
-                      style={[
-                        styles.cell,
-                        textStyle,
-                        cancelledTimes.includes(`${hour}:${time}`) && {
-                          textDecorationLine: 'line-through',
-                          opacity: 0.5,
-                        },
-                      ]}
-                    >
-                      {time}
-                    </UiText>
-                  ))}
-                </View>
-              ))}
-            </ScrollView>
-          </ScrollView>
-        </View>
+                  <ScrollView
+                    contentContainerStyle={{ flexDirection: 'column', gap: 4 }}
+                    horizontal
+                  >
+                    {hours.map(hour => (
+                      <View key={hour} style={styles.row}>
+                        {groupedByHour[hour]?.map(time => (
+                          <UiText
+                            key={`${lineCode}-${time}-${routeCode}`}
+                            style={[
+                              styles.cell,
+                              textStyle,
+                              cancelledTimes.includes(`${hour}:${time}`) && {
+                                textDecorationLine: 'line-through',
+                                opacity: 0.5,
+                              },
+                            ]}
+                          >
+                            {time}
+                          </UiText>
+                        ))}
+                      </View>
+                    ))}
+                  </ScrollView>
+                </ScrollView>
+              </View>
+            )
+          : (
+              <View style={styles.containerEmpty}>
+                <UiText>{i18n.t('timetableEmptyRange')}</UiText>
+              </View>
+            )}
+
       </View>
     </ColorSchemesContext>
   )
@@ -253,6 +262,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flexShrink: 1,
+  },
+  containerEmpty: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
   },
   innerScroll: {
     flexDirection: 'row',
