@@ -46,14 +46,15 @@ export const MarkersStopItem = ({
   const stopStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
       backgroundColor: schemeColor.primary,
-      color: schemeColor.primary,
+      borderColor: schemeColor.secondaryContainer,
     }),
     [schemeColor],
   )
 
   const textStyle: StyleProp<TextStyle> = useMemo(
     () => ({
-      color: schemeColor.primary,
+      color: schemeColor.onPrimary,
+      lineHeight: 10,
     }),
     [schemeColor],
   )
@@ -80,13 +81,13 @@ export const MarkersStopItem = ({
       tracksInfoWindowChanges={false}
       tracksViewChanges={false}
       onPress={handleOnPress}
-      anchor={{ x: 0.2, y: 0.2 }}
-      zIndex={1}
+      // anchor={{ x: 0.2, y: 0.2 }}
+      // zIndex={1}
       {...props}
     >
       <View style={[styles.busStop, stopStyle, viewStyle]}>
         {label && (
-          <UiText style={textStyle} size="sm" info>
+          <UiText style={textStyle} size="xs">
             {label}
           </UiText>
         )}

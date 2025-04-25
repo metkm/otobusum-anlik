@@ -1,6 +1,6 @@
 type Sizes = 'sm' | 'md' | 'lg'
 
-export type FontSize = Sizes | 'xl'
+export type FontSize = Sizes | 'xl' | 'xs'
 export type IconSize = Sizes
 
 export type ButtonVariants = 'solid' | 'soft' | 'ghost'
@@ -12,6 +12,7 @@ export const iconSizes: Record<IconSize, number> = {
 }
 
 export const fontSizes: Record<FontSize, number> = {
+  xs: 8,
   sm: 12,
   md: 14,
   lg: 18,

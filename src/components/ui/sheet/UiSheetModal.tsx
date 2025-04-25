@@ -46,6 +46,7 @@ export const UiSheetModal = ({ cRef, icon, title, containerStyle, ...props }: Ui
       animatedPosition={sheetHeight?.height}
       animatedIndex={sheetHeight?.index}
       onChange={handleSheetPositionChange}
+      topInset={insets.top}
       animationConfigs={{
         duration: 350,
         easing: Easing.out(Easing.exp),
@@ -64,22 +65,24 @@ export const UiSheetModal = ({ cRef, icon, title, containerStyle, ...props }: Ui
       {props.list
         ? (
             <>
-              <BottomSheetView style={[styles.top, {
-                borderColor: schemeColor.surfaceContainerHigh,
-              }]}
-              >
-                {icon && (
-                  <Ionicons
-                    name={icon}
-                    size={iconSizes['lg']}
-                    color={schemeColor.onSurface}
-                  />
-                )}
+              {(icon || title) && (
+                <BottomSheetView style={[styles.top, {
+                  borderColor: schemeColor.surfaceContainerHigh,
+                }]}
+                >
+                  {icon && (
+                    <Ionicons
+                      name={icon}
+                      size={iconSizes['lg']}
+                      color={schemeColor.onSurface}
+                    />
+                  )}
 
-                {title && (
-                  <UiText>{title}</UiText>
-                )}
-              </BottomSheetView>
+                  {title && (
+                    <UiText>{title}</UiText>
+                  )}
+                </BottomSheetView>
+              )}
 
               <BottomSheetScrollView contentContainerStyle={{ paddingBottom: insets.bottom }}>
                 {props.children as ReactNode | ReactNode[]}
@@ -87,23 +90,25 @@ export const UiSheetModal = ({ cRef, icon, title, containerStyle, ...props }: Ui
             </>
           )
         : (
-            <BottomSheetView style={{ paddingBottom: insets.bottom, flex: 1 }}>
-              <View style={[styles.top, {
-                borderColor: schemeColor.surfaceContainerHigh,
-              }]}
-              >
-                {icon && (
-                  <Ionicons
-                    name={icon}
-                    size={iconSizes['lg']}
-                    color={schemeColor.onSurface}
-                  />
-                )}
+            <BottomSheetView style={{ paddingBottom: insets.bottom }}>
+              {(icon || title) && (
+                <View style={[styles.top, {
+                  borderColor: schemeColor.surfaceContainerHigh,
+                }]}
+                >
+                  {icon && (
+                    <Ionicons
+                      name={icon}
+                      size={iconSizes['lg']}
+                      color={schemeColor.onSurface}
+                    />
+                  )}
 
-                {title && (
-                  <UiText>{title}</UiText>
-                )}
-              </View>
+                  {title && (
+                    <UiText>{title}</UiText>
+                  )}
+                </View>
+              )}
 
               <View style={[styles.container, containerStyle]}>
                 {props.children as ReactNode | ReactNode[]}

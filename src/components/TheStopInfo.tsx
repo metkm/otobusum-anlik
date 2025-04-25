@@ -1,4 +1,4 @@
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types'
 import { useQuery } from '@tanstack/react-query'
 import { RefObject, useEffect, useRef } from 'react'
@@ -121,64 +121,62 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
       onDismiss={handleOnDismiss}
       enableDynamicSizing={true}
     >
-      <BottomSheetView style={styles.container}>
-        {query.isPending
-          ? (
-              <View style={styles.loadingContainer}>
-                <UiActivityIndicator size="large" />
-              </View>
-            )
-          : (
-              <>
-                <View style={styles.mapContainer}>
-                  {query.data && (
-                    <TheMap
-                      initialRegion={{
-                        longitude: query.data.stop.x_coord,
-                        latitude: query.data.stop.y_coord,
-                        latitudeDelta: 0.005,
-                        longitudeDelta: 0.005,
-                      }}
-                    >
-                      <MarkersStopItem
-                        type="point"
-                        stop={query.data.stop}
-                      />
-                    </TheMap>
-                  )}
-                </View>
-
-                <UiButton
-                  title={i18n.t('stopDirections')}
-                  onPress={openStopDirections}
-                  variant="solid"
-                  icon="location-outline"
-                />
-
+      {query.isPending
+        ? (
+            <View style={styles.loadingContainer}>
+              <UiActivityIndicator size="large" />
+            </View>
+          )
+        : (
+            <>
+              <View style={styles.mapContainer}>
                 {query.data && (
-                  <View style={styles.content}>
-                    <View>
-                      <UiText>{query.data.stop.stop_code}</UiText>
-                      <UiText size="lg" style={styles.title}>
-                        {query.data.stop.stop_name}
-                      </UiText>
-                      <UiText>{query.data.stop.province}</UiText>
-                    </View>
+                  <TheMap
+                    initialRegion={{
+                      longitude: query.data.stop.x_coord,
+                      latitude: query.data.stop.y_coord,
+                      latitudeDelta: 0.005,
+                      longitudeDelta: 0.005,
+                    }}
+                  >
+                    <MarkersStopItem
+                      type="point"
+                      stop={query.data.stop}
+                    />
+                  </TheMap>
+                )}
+              </View>
 
-                    <View style={styles.linesContainer}>
-                      <UiText info>{i18n.t('linesThatUseStop')}</UiText>
+              <UiButton
+                title={i18n.t('stopDirections')}
+                onPress={openStopDirections}
+                variant="solid"
+                icon="location-outline"
+              />
 
-                      <View style={styles.codeOuter}>
-                        {query.data?.buses.map(lineCode => (
-                          <StopLine key={lineCode} lineCode={lineCode} />
-                        ))}
-                      </View>
+              {query.data && (
+                <View style={styles.content}>
+                  <View>
+                    <UiText>{query.data.stop.stop_code}</UiText>
+                    <UiText size="lg" style={styles.title}>
+                      {query.data.stop.stop_name}
+                    </UiText>
+                    <UiText>{query.data.stop.province}</UiText>
+                  </View>
+
+                  <View style={styles.linesContainer}>
+                    <UiText info>{i18n.t('linesThatUseStop')}</UiText>
+
+                    <View style={styles.codeOuter}>
+                      {query.data?.buses.map(lineCode => (
+                        <StopLine key={lineCode} lineCode={lineCode} />
+                      ))}
                     </View>
                   </View>
-                )}
-              </>
-            )}
-      </BottomSheetView>
+                </View>
+              )}
+            </>
+          )}
     </UiSheetModal>
   )
 }
