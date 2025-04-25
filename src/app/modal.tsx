@@ -50,7 +50,7 @@ export const ModalScreen = () => {
             )
           : mutation.data
             ? (
-                <UiText info style={styles.empty}>
+                <UiText style={styles.empty}>
                   {i18n.t('emptySearch')}
                 </UiText>
               )
@@ -59,7 +59,7 @@ export const ModalScreen = () => {
                   <UiActivityIndicator size="large" />
                 )
               : (
-                  <UiText info style={styles.empty}>
+                  <UiText style={styles.empty}>
                     {i18n.t('searchMessage')}
                   </UiText>
                 )}
@@ -107,7 +107,6 @@ export const ModalScreen = () => {
             )}
       </View>
     </View>
-    // </View>
   )
 }
 

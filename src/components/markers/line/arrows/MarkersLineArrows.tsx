@@ -29,7 +29,7 @@ export const MarkersLineArrows = ({ arrows, lineCode }: MarkersLineArrowsProps) 
             coordinate={item.coordinates}
             tracksViewChanges={false}
             tracksInfoWindowChanges={false}
-            anchor={{ x: 0.2, y: 0.2 }}
+            anchor={{ x: 0.5, y: 0.5 }}
             zIndex={1}
           >
             <Ionicons

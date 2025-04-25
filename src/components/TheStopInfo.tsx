@@ -67,23 +67,13 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
         if (!selectedId) return
 
         savedRegion.current = useSettingsStore.getState().initialMapLocation
-        bottomSheetModal.current?.present()
-
-        if (query.data) {
-          cRef.current?.animateCamera({
-            latitude: query.data.stop.y_coord,
-            longitude: query.data.stop.x_coord,
-            latitudeDelta: 0.010,
-            longitudeDelta: 0.010,
-          })
-        }
       }, {
         equalityFn: () => false,
       },
     )
 
     return unsub
-  }, [cRef, query.data])
+  }, [cRef])
 
   useEffect(() => {
     if (!query.data) return
@@ -94,7 +84,13 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
       latitudeDelta: 0.010,
       longitudeDelta: 0.010,
     })
+
+    bottomSheetModal.current?.present()
   }, [cRef, query.data])
+
+  useEffect(() => {
+    if (!query.data) return
+  }, [query.data])
 
   const openStopDirections = async () => {
     if (!query.data?.stop) return
@@ -165,7 +161,7 @@ export const TheStopInfo = ({ cRef }: TheStopInfoProps) => {
                   </View>
 
                   <View style={styles.linesContainer}>
-                    <UiText info>{i18n.t('linesThatUseStop')}</UiText>
+                    <UiText>{i18n.t('linesThatUseStop')}</UiText>
 
                     <View style={styles.codeOuter}>
                       {query.data?.buses.map(lineCode => (

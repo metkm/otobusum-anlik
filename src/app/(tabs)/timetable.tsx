@@ -89,7 +89,7 @@ export const TimetableScreen = () => {
 
   if (lines.length < 1) {
     return (
-      <UiText style={styles.center} info>
+      <UiText style={styles.center}>
         {i18n.t('timetableEmpty')}
       </UiText>
     )

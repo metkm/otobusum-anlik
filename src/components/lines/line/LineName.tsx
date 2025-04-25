@@ -70,7 +70,7 @@ export const LineName = ({ lineCode, variant = 'solid' }: LineNameProps) => {
         )}
       </View>
 
-      <UiText size="sm" info>{i18n.t('updateCount', { count })}</UiText>
+      <UiText size="sm">{i18n.t('updateCount', { count })}</UiText>
     </View>
   )
 }

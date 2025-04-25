@@ -20,7 +20,6 @@ export function useLineBusStops(
     meta: { persist: true },
   })
 
-  // TODO: These location listeners should moved to their own provider like useMap()
   const handlePositionListener: Location.LocationCallback = useCallback(
     (location) => {
       let currentMinimumDistance

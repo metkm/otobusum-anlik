@@ -43,7 +43,6 @@ export const getSelectedRouteCode = (lineCode: string): RouteCode => {
   const filtersStore = useFiltersStore.getState()
   const selectedRouteCode = filtersStore.selectedRoutes[lineCode] as RouteCode | undefined
 
-  // by default we need to find route a that contains a bus
   if (!selectedRouteCode) {
     const busLocations = queryClient
       .getQueryData<Awaited<ReturnType<typeof getLineBusLocations>>>(['line', lineCode])

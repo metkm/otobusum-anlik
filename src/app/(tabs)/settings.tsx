@@ -50,7 +50,7 @@ export const SettingsScreen = () => {
         />
       </SettingsGroupContainer>
 
-      <UiText info style={styles.version}>
+      <UiText style={styles.version}>
         {`${i18n.t('version')} ${Constants.expoConfig?.version}`}
       </UiText>
     </ScrollView>

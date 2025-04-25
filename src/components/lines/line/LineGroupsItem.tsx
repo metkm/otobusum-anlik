@@ -45,7 +45,7 @@ export const LineGroupsItem = ({ group, ...props }: Props) => {
   )
 
   const emptyItem = useCallback(
-    () => <UiText info size="sm">{i18n.t('emptyGroup')}</UiText>,
+    () => <UiText size="sm">{i18n.t('emptyGroup')}</UiText>,
     [],
   )
 
