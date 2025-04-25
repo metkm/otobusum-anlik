@@ -30,7 +30,7 @@ export const materialThemeToLocalSchemes = (theme: Theme): ColorSchemes => {
   return {
     dark: {
       primary: hexFromArgb(theme.schemes['dark']['primary']),
-      onPrimary: hexFromArgb(theme.schemes['dark']['primary']),
+      onPrimary: hexFromArgb(theme.schemes['dark']['onPrimary']),
       secondaryContainer: hexFromArgb(theme.schemes['dark']['secondaryContainer']),
       onSecondaryContainer: hexFromArgb(theme.schemes['dark']['onSecondaryContainer']),
       secondary: hexFromArgb(theme.schemes['dark']['secondary']),
@@ -46,7 +46,7 @@ export const materialThemeToLocalSchemes = (theme: Theme): ColorSchemes => {
     },
     light: {
       primary: hexFromArgb(theme.schemes['light']['primary']),
-      onPrimary: hexFromArgb(theme.schemes['light']['primary']),
+      onPrimary: hexFromArgb(theme.schemes['light']['onPrimary']),
       secondaryContainer: hexFromArgb(theme.schemes['light']['secondaryContainer']),
       onSecondaryContainer: hexFromArgb(theme.schemes['light']['onSecondaryContainer']),
       secondary: hexFromArgb(theme.schemes['light']['secondary']),

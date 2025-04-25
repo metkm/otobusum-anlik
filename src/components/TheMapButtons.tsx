@@ -30,8 +30,8 @@ export const TheMapButtons = () => {
 
   const { colorScheme, schemeDefault } = useTheme()
 
-  const bgColor = useSharedValue(schemeDefault.primary)
-  const txtColor = useSharedValue('#ffffff')
+  const bgColor = useSharedValue(schemeDefault.surface)
+  const txtColor = useSharedValue(schemeDefault.onSurface)
   const bottomSheetModalGroups = useRef<BottomSheetModal>(null)
 
   const updateColors = useCallback(

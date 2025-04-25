@@ -44,8 +44,8 @@ const LineBusStopsItem = ({ stop, index, busses }: LineBusStopsItemProps) => {
   const showBusIcon = busses.find(bus => bus.closest_stop_code === stop.stop_code)
 
   const colorStyle: ViewStyle = {
-    borderColor: schemeColor.primaryContainer,
-    backgroundColor: showBusIcon ? schemeColor.primaryContainer : undefined,
+    borderColor: schemeColor.primary,
+    backgroundColor: showBusIcon ? schemeColor.primary : undefined,
   }
 
   const handleZoomBus = () => {
@@ -58,13 +58,13 @@ const LineBusStopsItem = ({ stop, index, busses }: LineBusStopsItemProps) => {
   return (
     <View style={styles.item}>
       <View style={styles.itemInner}>
-        <UiText style={[{ color: schemeColor.onPrimary }, styles.itemIndex]}>{index + 1}</UiText>
+        <UiText style={[{ color: schemeColor.onSurface }, styles.itemIndex]}>{index + 1}</UiText>
 
         <View style={[styles.itemCircle, colorStyle]}>
           {showBusIcon && (
             <Ionicons
               name="bus-outline"
-              color={schemeColor.onPrimaryContainer}
+              color={schemeColor.onPrimary}
               size={20}
             />
           )}
