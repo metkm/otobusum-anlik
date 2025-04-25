@@ -15,7 +15,7 @@ export const UiSheetOptions = ({ cRef, top, options }: UiSheetOptionsProps) => {
   return (
     <UiSheetModal cRef={cRef} top={top}>
       {options.map(option => (
-        <UiButton key={option.title} square variant="soft" align="left" {...option} />
+        <UiButton key={option.title} square variant="solid" align="left" {...option} />
       ))}
     </UiSheetModal>
   )

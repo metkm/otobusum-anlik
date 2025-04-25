@@ -28,7 +28,7 @@ export const UiSheetSelect = <T,>(
   }
 
   const dynamicBorder: StyleProp<ViewStyle> = {
-    borderColor: schemeColor.surfaceContainer,
+    borderColor: schemeColor.primary,
   }
 
   const SelectItem = ({ item }: { item: Option<T> }) => {

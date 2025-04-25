@@ -1,4 +1,4 @@
-import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { useRef } from 'react'
 import { StyleSheet, View, ViewProps } from 'react-native'
 
@@ -32,15 +32,14 @@ export const LineAnnouncements = ({ lineCode }: LineAnnouncementsProps) => {
           cRef={bottomSheetModal}
           snapPoints={['50%']}
           enableDynamicSizing={false}
+          list
         >
-          <BottomSheetScrollView contentContainerStyle={styles.contentContainer}>
-            {announcements.map(ann => (
-              <View key={`${ann.GUNCELLEME_SAATI}-${ann.MESAJ}`} style={styles.announcementContainer}>
-                <UiText>{ann.GUNCELLEME_SAATI}</UiText>
-                <UiText>{ann.MESAJ}</UiText>
-              </View>
-            ))}
-          </BottomSheetScrollView>
+          {announcements.map(ann => (
+            <View key={`${ann.GUNCELLEME_SAATI}-${ann.MESAJ}`} style={styles.announcementContainer}>
+              <UiText>{ann.GUNCELLEME_SAATI}</UiText>
+              <UiText>{ann.MESAJ}</UiText>
+            </View>
+          ))}
         </UiSheetModal>
       )}
     </>
@@ -48,11 +47,8 @@ export const LineAnnouncements = ({ lineCode }: LineAnnouncementsProps) => {
 }
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    padding: 8,
-  },
   announcementContainer: {
-    padding: 8,
+    padding: 12,
     flex: 1,
   },
 })

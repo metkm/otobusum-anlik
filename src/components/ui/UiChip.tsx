@@ -12,7 +12,7 @@ export const UiChip = ({ children }: UiChipProps) => {
   const { schemeColor } = useTheme()
 
   return (
-    <View style={[styles.container, { backgroundColor: schemeColor.surfaceContainer }]}>
+    <View style={[styles.container, { backgroundColor: schemeColor.secondaryContainer }]}>
       <UiText size="sm" info>
         {children}
       </UiText>

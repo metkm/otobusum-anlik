@@ -31,6 +31,8 @@ export const materialThemeToLocalSchemes = (theme: Theme) => {
     dark: {
       primary: hexFromArgb(theme.schemes['dark']['primary']),
       onPrimary: hexFromArgb(theme.schemes['dark']['primary']),
+      secondary: hexFromArgb(theme.schemes['dark']['secondary']),
+      onSecondary: hexFromArgb(theme.schemes['dark']['secondary']),
       primaryContainer: hexFromArgb(theme.schemes['dark']['primaryContainer']),
       onPrimaryContainer: hexFromArgb(theme.schemes['dark']['onPrimaryContainer']),
       surface: hexFromArgb(theme.schemes['dark']['surface']),
@@ -43,6 +45,8 @@ export const materialThemeToLocalSchemes = (theme: Theme) => {
     light: {
       primary: hexFromArgb(theme.schemes['light']['primary']),
       onPrimary: hexFromArgb(theme.schemes['light']['primary']),
+      secondary: hexFromArgb(theme.schemes['light']['secondary']),
+      onSecondary: hexFromArgb(theme.schemes['light']['secondary']),
       primaryContainer: hexFromArgb(theme.schemes['light']['primaryContainer']),
       onPrimaryContainer: hexFromArgb(theme.schemes['light']['onPrimaryContainer']),
       surface: hexFromArgb(theme.schemes['light']['surface']),

@@ -19,7 +19,7 @@ export const UiTextInput = ({ iconSize = 'md', cRef, style, styleContainer, icon
   const { schemeColor } = useTheme()
 
   const dynamicStyle: StyleProp<ViewStyle> = {
-    backgroundColor: schemeColor.surface,
+    backgroundColor: schemeColor.surfaceContainerHigh,
   }
 
   const inputStyle: StyleProp<TextStyle> = {
@@ -39,7 +39,7 @@ export const UiTextInput = ({ iconSize = 'md', cRef, style, styleContainer, icon
       <TextInput
         ref={cRef}
         style={[style, inputStyle]}
-        placeholderTextColor={schemeColor.surfaceContainerHigh}
+        placeholderTextColor={schemeColor.onSurface}
         {...props}
       />
     </View>

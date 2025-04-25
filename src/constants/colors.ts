@@ -11,6 +11,10 @@ export type ColorScheme = {
   surfaceContainerHigh: string
   primary: string
   onPrimary: string
+  secondary: string
+  onSecondary: string
+  secondaryContainer: string
+  onSecondaryContainer: string
   error: string
   onError: string
   primaryContainer: string
@@ -31,6 +35,10 @@ export const defaultColorSchemes = {
     surfaceContainerHigh: '#F3E6DA',
     primary: '#7F570F',
     onPrimary: '#FFFFFF',
+    secondary: '#6F5B40',
+    onSecondary: '#FFFFFF',
+    secondaryContainer: '#FADEBC',
+    onSecondaryContainer: '#56442A',
     error: '#BA1A1A',
     onError: '#FFFFFF',
     primaryContainer: '#FFDDB1',
@@ -43,6 +51,10 @@ export const defaultColorSchemes = {
     surfaceContainerHigh: '#2F2921',
     primary: '#F3BD6E',
     onPrimary: '#442B00',
+    secondary: '#DDC2A1',
+    onSecondary: '#3E2E16',
+    secondaryContainer: '#56442A',
+    onSecondaryContainer: '#FADEBC',
     error: '#FFB4AB',
     onError: '#690005',
     primaryContainer: '#624000',

@@ -7,7 +7,7 @@ import {
   type BottomSheetModalProps,
 } from '@gorhom/bottom-sheet'
 import { ReactNode, RefObject } from 'react'
-import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native'
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { Easing } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -26,8 +26,8 @@ export const BackdropComponent = (props: BottomSheetBackdropProps) => {
   return <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />
 }
 
-const TopContainer = (props: ViewProps) => {
-  const { schemeColor } = useTheme()
+const TopContainer = ({ children, lineCode }: { children: ReactNode, lineCode?: string }) => {
+  const { schemeColor } = useTheme(lineCode)
 
   return (
     <View
@@ -38,7 +38,7 @@ const TopContainer = (props: ViewProps) => {
         },
       ]}
     >
-      {props.children}
+      {children}
     </View>
   )
 }
@@ -61,13 +61,13 @@ export const UiSheetModal = ({ cRef, top, containerStyle, ...props }: UiSheetMod
         easing: Easing.out(Easing.exp),
       }}
       handleStyle={{
-        backgroundColor: schemeColor.surface,
+        backgroundColor: schemeColor.surfaceContainer,
       }}
       handleIndicatorStyle={{
-        backgroundColor: schemeColor.surface,
+        backgroundColor: schemeColor.onSurface,
       }}
       backgroundStyle={{
-        backgroundColor: schemeColor.surface,
+        backgroundColor: schemeColor.surfaceContainer,
       }}
       {...props}
     >
