@@ -4,9 +4,10 @@ import { TextInput } from 'react-native-gesture-handler'
 
 import { useTheme } from '@/hooks/useTheme'
 
+import { UiButton } from './UiButton'
+
 import { IconSize } from '@/constants/uiSizes'
 import { IconValue } from '@/types/ui'
-import { UiButton } from './UiButton'
 
 interface UiTextInputProps extends TextInputProps {
   icon?: IconValue

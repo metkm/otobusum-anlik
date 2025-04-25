@@ -25,6 +25,7 @@ export const TheSearchBar = () => {
               icon="search"
               placeholder={i18n.t('searchPlaceholder')}
               readOnly
+              styleContainer={{ elevation: 5 }}
             />
           </View>
         </Pressable>

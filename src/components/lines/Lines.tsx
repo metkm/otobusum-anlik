@@ -109,6 +109,6 @@ const styles = StyleSheet.create({
     gap: 8,
     padding: 8,
     alignItems: 'flex-end',
-    minWidth: Dimensions.get('screen').width
+    minWidth: Dimensions.get('screen').width,
   },
 })

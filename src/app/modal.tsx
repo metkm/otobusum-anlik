@@ -1,5 +1,6 @@
 import { FlashList } from '@shopify/flash-list'
 import { useMutation } from '@tanstack/react-query'
+import { router } from 'expo-router'
 import { useCallback, useMemo } from 'react'
 import { NativeSyntheticEvent, StyleSheet, TextInputChangeEventData, View } from 'react-native'
 import { useDebouncedCallback } from 'use-debounce'
@@ -17,12 +18,10 @@ import { getSearchResults } from '@/api/getSearchResults'
 import { useFiltersStore } from '@/stores/filters'
 import { i18n } from '@/translations/i18n'
 import { BusLine, BusStop } from '@/types/bus'
-import { router, useNavigation } from 'expo-router'
 
 export const ModalScreen = () => {
   const paddings = usePaddings()
   const selectedCity = useFiltersStore(state => state.selectedCity)
-  const navigation = useNavigation()
 
   const mutation = useMutation({
     mutationFn: getSearchResults,
@@ -80,35 +79,34 @@ export const ModalScreen = () => {
   )
 
   return (
-    // <View style={[paddings, styles.container]}>
-      <View style={[paddings, styles.container]}>
-        <UiTextInput
-          placeholder={i18n.t('searchPlaceholder')}
-          icon="arrow-back"
-          iconPress={() => router.back()}
-          autoFocus
-          onChange={handleQueryChange}
-        />
+    <View style={[paddings, styles.container]}>
+      <UiTextInput
+        placeholder={i18n.t('searchPlaceholder')}
+        icon="arrow-back"
+        iconPress={() => router.back()}
+        autoFocus
+        onChange={handleQueryChange}
+      />
 
-        <UiChip>{i18n.t('selectedCity', { city: selectedCity })}</UiChip>
+      <UiChip>{i18n.t('selectedCity', { city: selectedCity })}</UiChip>
 
-        <View style={styles.list}>
-          {data.length < 1
-            ? (
-                EmptyItem
-              )
-            : (
-                <FlashList
-                  data={data}
-                  renderItem={renderItem}
-                  estimatedItemSize={45}
-                  fadingEdgeLength={20}
-                  contentContainerStyle={styles.contentStyle}
-                  keyboardDismissMode="on-drag"
-                />
-              )}
-        </View>
+      <View style={styles.list}>
+        {data.length < 1
+          ? (
+              EmptyItem
+            )
+          : (
+              <FlashList
+                data={data}
+                renderItem={renderItem}
+                estimatedItemSize={45}
+                fadingEdgeLength={20}
+                contentContainerStyle={styles.contentStyle}
+                keyboardDismissMode="on-drag"
+              />
+            )}
       </View>
+    </View>
     // </View>
   )
 }
