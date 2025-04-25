@@ -1,7 +1,7 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { memo, useEffect, useMemo, useRef } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import Animated, { FadeIn, FadeOut, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UiSheetOptions } from '@/components/ui/sheet/UiSheetOptions'
@@ -105,6 +105,8 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
       <Animated.View
         style={[containerStyle, containerAnimatedStyle, styles.container, props.containerStyle]}
         key={lineCode}
+        exiting={FadeOut}
+        entering={FadeIn}
         {...props}
       >
         <View style={styles.titleContainer}>

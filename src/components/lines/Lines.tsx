@@ -6,6 +6,7 @@ import {
   useRef,
 } from 'react'
 import {
+  Dimensions,
   FlatList,
   FlatListProps,
   ListRenderItem,
@@ -14,7 +15,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import Animated, { FlatListPropsWithLayout } from 'react-native-reanimated'
+import Animated, { FlatListPropsWithLayout, LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { LineMemoized, LineProps } from './line/Line'
@@ -77,6 +78,7 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
     <View style={props.containerStyle}>
       <Animated.FlatList
         {...props.listProps}
+        itemLayoutAnimation={LinearTransition}
         ref={cRef}
         data={lines}
         renderItem={renderItem}
@@ -107,5 +109,6 @@ const styles = StyleSheet.create({
     gap: 8,
     padding: 8,
     alignItems: 'flex-end',
+    minWidth: Dimensions.get('screen').width
   },
 })
