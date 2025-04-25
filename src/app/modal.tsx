@@ -17,10 +17,12 @@ import { getSearchResults } from '@/api/getSearchResults'
 import { useFiltersStore } from '@/stores/filters'
 import { i18n } from '@/translations/i18n'
 import { BusLine, BusStop } from '@/types/bus'
+import { router, useNavigation } from 'expo-router'
 
 export const ModalScreen = () => {
   const paddings = usePaddings()
   const selectedCity = useFiltersStore(state => state.selectedCity)
+  const navigation = useNavigation()
 
   const mutation = useMutation({
     mutationFn: getSearchResults,
@@ -78,16 +80,17 @@ export const ModalScreen = () => {
   )
 
   return (
-    <View style={[paddings, styles.container]}>
-      <UiChip>{i18n.t('selectedCity', { city: selectedCity })}</UiChip>
-
-      <View style={{ flex: 1 }}>
+    // <View style={[paddings, styles.container]}>
+      <View style={[paddings, styles.container]}>
         <UiTextInput
           placeholder={i18n.t('searchPlaceholder')}
-          icon="search"
+          icon="arrow-back"
+          iconPress={() => router.back()}
           autoFocus
           onChange={handleQueryChange}
         />
+
+        <UiChip>{i18n.t('selectedCity', { city: selectedCity })}</UiChip>
 
         <View style={styles.list}>
           {data.length < 1
@@ -106,7 +109,7 @@ export const ModalScreen = () => {
               )}
         </View>
       </View>
-    </View>
+    // </View>
   )
 }
 

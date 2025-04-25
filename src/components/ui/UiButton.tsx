@@ -154,8 +154,8 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   square: {
-    borderRadius: 14,
-    paddingVertical: 14,
-    paddingHorizontal: 14,
+    // borderRadius: 14,
+    // paddingVertical: 14,
+    // paddingHorizontal: 14,
   },
 })
