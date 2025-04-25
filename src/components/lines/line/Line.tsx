@@ -38,7 +38,7 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
   const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
   const selectedCity = useFiltersStore(useShallow(state => state.selectedCity))
 
-  const { getSchemeColorHex, colorsTheme } = useTheme(lineTheme)
+  // const { getSchemeColorHex, colorsTheme } = useTheme()
   const { lineWidth } = useLine(lineCode)
 
   const map = useMap()

@@ -4,7 +4,7 @@ export type SchemePartialKeys = {
   -readonly [K in keyof Scheme]?: string
 }
 
-export type ColorTheme = {
+export type ColorScheme = {
   surface: string
   onSurface: string
   surfaceContainer: string
@@ -13,12 +13,12 @@ export type ColorTheme = {
   onPrimary: string
 }
 
-export interface ColorThemes {
-  dark: ColorTheme;
-  light: ColorTheme;
+export interface ColorSchemes {
+  dark: ColorScheme;
+  light: ColorScheme;
 }
 
-export const defaultColorThemes = {
+export const defaultColorSchemes = {
   light: {
     surface: "#FFF8F4",
     onSurface: "#201B13",
@@ -35,4 +35,4 @@ export const defaultColorThemes = {
     primary: "#F3BD6E",
     onPrimary: "#442B00",
   },
-} satisfies ColorThemes;
+} satisfies ColorSchemes;

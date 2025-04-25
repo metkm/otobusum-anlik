@@ -1,59 +1,62 @@
-import { hexFromArgb, themeFromSourceColor, argbFromHex } from '@material/material-color-utilities'
-import { createContext, useState } from 'react'
+import { createContext, use, useState } from 'react'
 import { useColorScheme } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
-import { defaultColorThemes } from '@/constants/colors'
+import { ColorSchemes, defaultColorSchemes } from '@/constants/colors'
 import { useSettingsStore } from '@/stores/settings'
 
 // type SchemeKeys = {
 //   [K in keyof Scheme]: Scheme[K] extends number ? K : never
 // }[keyof Scheme]
 
-// const defaultCreatedTheme = createTheme(colors.primary)
+export const ColorSchemesContext = createContext<ColorSchemes | undefined>(undefined)
 
-export const ThemeContext = createContext(undefined)
+// with typescript maybe make it so you have to give 2 parameters if contextscheme is provided
+// or make it so it takes a linecoed
 
-export function useTheme() {
+export function useTheme(useContextScheme?: boolean) {
   const storedColorScheme = useSettingsStore(useShallow(state => state.colorScheme))
   const systemColorScheme = useColorScheme()
 
   const colorScheme = storedColorScheme ?? systemColorScheme ?? 'dark'
-  const defaultColorTheme = defaultColorThemes[colorScheme]
+  const schemeDefault = defaultColorSchemes[colorScheme]
 
-  const [colorThemes, setColorThemes] = useState(defaultColorThemes)
+  // const [colorSchemes, setColorScheme] = useState(defaultColorSchemes)
 
-  const updateColorTheme = (newPrimaryColor: string) => {
-    const argbPrimaryColor = argbFromHex(newPrimaryColor)
+  const contextTheme = use(ColorSchemesContext) ?? defaultColorSchemes
+  const schemeColor = useContextScheme ? contextTheme[colorScheme] : defaultColorSchemes[colorScheme]
 
-    const newTheme = themeFromSourceColor(argbPrimaryColor)
-    const { neutral } = newTheme.palettes
+  // const updateColorTheme = (newPrimaryColor: string) => {
+  //   const argbPrimaryColor = argbFromHex(newPrimaryColor)
 
-    setColorThemes({
-      dark: {
-        primary: hexFromArgb(newTheme.schemes['dark']['primary']),
-        onPrimary: hexFromArgb(newTheme.schemes['dark']['primary']),
-        surface: hexFromArgb(newTheme.schemes['dark']['surface']),
-        onSurface: hexFromArgb(newTheme.schemes['dark']['onSurface']),
-        surfaceContainer: hexFromArgb(neutral.tone(12)),
-        surfaceContainerHigh: hexFromArgb(neutral.tone(17)),
-      },
-      light: {
-        primary: hexFromArgb(newTheme.schemes['light']['primary']),
-        onPrimary: hexFromArgb(newTheme.schemes['light']['primary']),
-        surface: hexFromArgb(newTheme.schemes['light']['surface']),
-        onSurface: hexFromArgb(newTheme.schemes['light']['onSurface']),
-        surfaceContainer: hexFromArgb(neutral.tone(94)),
-        surfaceContainerHigh: hexFromArgb(neutral.tone(92)),
-      }
-    })
-  }
+  //   const newTheme = themeFromSourceColor(argbPrimaryColor)
+  //   const { neutral } = newTheme.palettes
+
+  //   setColorScheme({
+  //     dark: {
+  //       primary: hexFromArgb(newTheme.schemes['dark']['primary']),
+  //       onPrimary: hexFromArgb(newTheme.schemes['dark']['primary']),
+  //       surface: hexFromArgb(newTheme.schemes['dark']['surface']),
+  //       onSurface: hexFromArgb(newTheme.schemes['dark']['onSurface']),
+  //       surfaceContainer: hexFromArgb(neutral.tone(12)),
+  //       surfaceContainerHigh: hexFromArgb(neutral.tone(17)),
+  //     },
+  //     light: {
+  //       primary: hexFromArgb(newTheme.schemes['light']['primary']),
+  //       onPrimary: hexFromArgb(newTheme.schemes['light']['primary']),
+  //       surface: hexFromArgb(newTheme.schemes['light']['surface']),
+  //       onSurface: hexFromArgb(newTheme.schemes['light']['onSurface']),
+  //       surfaceContainer: hexFromArgb(neutral.tone(94)),
+  //       surfaceContainerHigh: hexFromArgb(neutral.tone(92)),
+  //     }
+  //   })
+  // }
 
   return {
     colorScheme,
-    defaultColorTheme,
-    updateColorTheme,
-    colorThemes,
+    schemeDefault,
+    schemeColor,
+    // updateColorTheme,
   }
 
   // const systemScheme = useColorScheme()
