@@ -3,11 +3,11 @@ import { ActivityIndicator, ActivityIndicatorProps } from 'react-native'
 import { useTheme } from '@/hooks/useTheme'
 
 export const UiActivityIndicator = (props: ActivityIndicatorProps) => {
-  const { colorsTheme } = useTheme()
+  const { schemeColor } = useTheme()
 
   return (
     <ActivityIndicator
-      color={colorsTheme.color}
+      color={schemeColor.onSurface}
       {...props}
     />
   )

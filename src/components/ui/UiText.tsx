@@ -11,16 +11,16 @@ interface Props extends TextProps {
 }
 
 export const UiText = ({ style, info, size = 'md', ...rest }: Props) => {
-  const { colorsTheme } = useTheme()
+  const { schemeColor } = useTheme()
 
   const baseStyle: StyleProp<TextStyle> = {
-    color: colorsTheme.color,
+    color: schemeColor.onSurface,
     fontSize: fontSizes[size],
     flexShrink: 1,
   }
 
   if (info) {
-    baseStyle['color'] = colorsTheme.surfaceContainerHighest
+    // baseStyle['color'] = schemeColor.onSurface
     baseStyle['fontWeight'] = 'bold'
   }
 

@@ -38,16 +38,14 @@ const COLLAPSED = ITEM_SIZE * 3 - (ITEM_SIZE / 2) * 2
 const EXPANDED = COLLAPSED * 2
 
 const LineBusStopsItem = ({ stop, index, busses }: LineBusStopsItemProps) => {
-  const { getSchemeColorHex } = useTheme()
+  const { schemeColor } = useTheme()
   const map = useMap()
-
-  const color = getSchemeColorHex('onSurface')
 
   const showBusIcon = busses.find(bus => bus.closest_stop_code === stop.stop_code)
 
   const colorStyle: ViewStyle = {
-    borderColor: getSchemeColorHex('primaryContainer'),
-    backgroundColor: showBusIcon ? getSchemeColorHex('primaryContainer') : undefined,
+    borderColor: schemeColor.primaryContainer,
+    backgroundColor: showBusIcon ? schemeColor.primaryContainer : undefined,
   }
 
   const handleZoomBus = () => {
@@ -60,19 +58,19 @@ const LineBusStopsItem = ({ stop, index, busses }: LineBusStopsItemProps) => {
   return (
     <View style={styles.item}>
       <View style={styles.itemInner}>
-        <UiText style={[{ color }, styles.itemIndex]}>{index + 1}</UiText>
+        <UiText style={[{ color: schemeColor.onPrimary }, styles.itemIndex]}>{index + 1}</UiText>
 
         <View style={[styles.itemCircle, colorStyle]}>
           {showBusIcon && (
             <Ionicons
               name="bus-outline"
-              color={getSchemeColorHex('onPrimaryContainer')}
+              color={schemeColor.onPrimaryContainer}
               size={20}
             />
           )}
         </View>
 
-        <UiText style={{ color }}>{stop.stop_name}</UiText>
+        <UiText style={{ color: schemeColor.onSurface }}>{stop.stop_name}</UiText>
       </View>
 
       {showBusIcon && map && <UiButton icon="locate" onPress={handleZoomBus} />}
@@ -86,7 +84,7 @@ export const LineBusStops = ({ lineCode }: LineBusStopsProps) => {
   const currentViewableItems = useRef<ViewToken[]>([])
   const flashlistRef = useRef<FlashList<BusStop>>(null)
 
-  const { getSchemeColorHex } = useTheme()
+  const { schemeColor } = useTheme()
   const { query: stops, closestStop } = useLineBusStops(routeCode, true)
   const { query: line } = useLine(lineCode)
 
@@ -153,7 +151,7 @@ export const LineBusStops = ({ lineCode }: LineBusStopsProps) => {
         }}
         fadingEdgeLength={40}
         drawDistance={1}
-        ListEmptyComponent={<UiActivityIndicator color={getSchemeColorHex('onSurface')} />}
+        ListEmptyComponent={<UiActivityIndicator color={schemeColor.onSurface} />}
         {...(Platform.OS !== 'web'
           ? {
               onViewableItemsChanged: ({ viewableItems }) => {

@@ -3,9 +3,9 @@ import { StatusBar, type StatusBarStyle, type StatusBarProps } from 'expo-status
 import { useTheme } from '@/hooks/useTheme'
 
 export const TheStatusBar = (props: StatusBarProps) => {
-  const { mode } = useTheme()
+  const { colorScheme } = useTheme()
 
-  const style: StatusBarStyle = mode === 'dark' ? 'light' : 'dark'
+  const style: StatusBarStyle = colorScheme === 'dark' ? 'light' : 'dark'
 
   return <StatusBar style={style} animated translucent {...props} />
 }

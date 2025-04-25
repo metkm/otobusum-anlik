@@ -27,14 +27,14 @@ export const BackdropComponent = (props: BottomSheetBackdropProps) => {
 }
 
 const TopContainer = (props: ViewProps) => {
-  const { colorsTheme } = useTheme()
+  const { schemeColor } = useTheme()
 
   return (
     <View
       style={[
         styles.top,
         {
-          borderColor: colorsTheme.surfaceContainerHigh,
+          borderColor: schemeColor.surfaceContainerHigh,
         },
       ]}
     >
@@ -44,7 +44,7 @@ const TopContainer = (props: ViewProps) => {
 }
 
 export const UiSheetModal = ({ cRef, top, containerStyle, ...props }: UiSheetModalProps) => {
-  const { bottomSheetStyle } = useTheme()
+  const { schemeColor } = useTheme()
   const { handleSheetPositionChange } = useSheetBackHandler(cRef)
   const sheetHeight = useSheetModal()
   const insets = useSafeAreaInsets()
@@ -60,7 +60,15 @@ export const UiSheetModal = ({ cRef, top, containerStyle, ...props }: UiSheetMod
         duration: 350,
         easing: Easing.out(Easing.exp),
       }}
-      {...bottomSheetStyle}
+      handleStyle={{
+        backgroundColor: schemeColor.surface,
+      }}
+      handleIndicatorStyle={{
+        backgroundColor: schemeColor.surface,
+      }}
+      backgroundStyle={{
+        backgroundColor: schemeColor.surface,
+      }}
       {...props}
     >
       {props.list

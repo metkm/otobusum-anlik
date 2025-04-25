@@ -1,8 +1,9 @@
-import { createContext, use, useState } from 'react'
+import { createContext, use } from 'react'
 import { useColorScheme } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { ColorSchemes, defaultColorSchemes } from '@/constants/colors'
+import { getTheme } from '@/stores/lines'
 import { useSettingsStore } from '@/stores/settings'
 
 // type SchemeKeys = {
@@ -11,20 +12,23 @@ import { useSettingsStore } from '@/stores/settings'
 
 export const ColorSchemesContext = createContext<ColorSchemes | undefined>(undefined)
 
-// with typescript maybe make it so you have to give 2 parameters if contextscheme is provided
-// or make it so it takes a linecoed
-
-export function useTheme(useContextScheme?: boolean) {
+export function useTheme(lineCode?: string) {
   const storedColorScheme = useSettingsStore(useShallow(state => state.colorScheme))
   const systemColorScheme = useColorScheme()
 
   const colorScheme = storedColorScheme ?? systemColorScheme ?? 'dark'
   const schemeDefault = defaultColorSchemes[colorScheme]
 
-  // const [colorSchemes, setColorScheme] = useState(defaultColorSchemes)
-
   const contextTheme = use(ColorSchemesContext) ?? defaultColorSchemes
-  const schemeColor = useContextScheme ? contextTheme[colorScheme] : defaultColorSchemes[colorScheme]
+
+  const storedTheme = lineCode ? getTheme(lineCode) : undefined
+  const schemeColor = lineCode
+    ? storedTheme
+      ? storedTheme[colorScheme]
+      : schemeDefault
+    : contextTheme[colorScheme]
+
+  // const schemeColor = useContextScheme ? contextTheme[colorScheme] : defaultColorSchemes[colorScheme]
 
   // const updateColorTheme = (newPrimaryColor: string) => {
   //   const argbPrimaryColor = argbFromHex(newPrimaryColor)
@@ -56,7 +60,8 @@ export function useTheme(useContextScheme?: boolean) {
     colorScheme,
     schemeDefault,
     schemeColor,
-    // updateColorTheme,
+    storedTheme,
+    contextTheme,
   }
 
   // const systemScheme = useColorScheme()

@@ -1,5 +1,4 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import { hexFromArgb } from '@material/material-color-utilities'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { useCallback, useEffect, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -17,7 +16,6 @@ import { useTheme } from '@/hooks/useTheme'
 import { LineGroups } from './lines/line/LineGroups'
 import { UiButton } from './ui/UiButton'
 
-import { colors } from '@/constants/colors'
 import { changeRouteDirection, selectGroup, unSelectGroup, useFiltersStore } from '@/stores/filters'
 import { getLines, getTheme, useLinesStore } from '@/stores/lines'
 import { useMiscStore } from '@/stores/misc'
@@ -30,10 +28,11 @@ export const TheMapButtons = () => {
   const lineGroups = useLinesStore(useShallow(state => Object.keys(state.lineGroups[selectedCity])))
   const lines = useLinesStore(useShallow(() => getLines()))
 
-  const bgColor = useSharedValue(colors.primary)
+  const { colorScheme, schemeDefault } = useTheme()
+
+  const bgColor = useSharedValue(schemeDefault.primary)
   const txtColor = useSharedValue('#ffffff')
   const bottomSheetModalGroups = useRef<BottomSheetModal>(null)
-  const { mode } = useTheme()
 
   const updateColors = useCallback(
     (index: number) => {
@@ -43,15 +42,15 @@ export const TheMapButtons = () => {
       const theme = getTheme(lineCode)
       if (!theme) return
 
-      const scheme = theme.schemes[mode]
+      const scheme = theme[colorScheme]
 
-      const targetBackground = hexFromArgb(scheme.surface)
-      const targetText = hexFromArgb(scheme.onSurface)
+      const targetBackground = scheme.surface
+      const targetText = scheme.onSurface
 
       bgColor.value = withTiming(targetBackground)
       txtColor.value = withTiming(targetText)
     },
-    [bgColor, mode, lines, txtColor],
+    [bgColor, colorScheme, lines, txtColor],
   )
 
   useEffect(() => {

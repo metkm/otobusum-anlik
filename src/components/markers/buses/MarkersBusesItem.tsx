@@ -2,7 +2,6 @@ import Ionicons from '@react-native-vector-icons/ionicons'
 import { memo } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { MapMarkerProps } from 'react-native-maps'
-import { useShallow } from 'zustand/react/shallow'
 
 import { useTheme } from '@/hooks/useTheme'
 
@@ -11,7 +10,6 @@ import { MarkersCallout } from '../callout/MarkersCallout'
 import { MarkersBusesItemCallout } from './MarkersBusesItemCallout'
 
 import { BusLocation } from '@/api/getLineBusLocations'
-import { getTheme, useLinesStore } from '@/stores/lines'
 
 interface MarkersBusesItemProps extends Omit<MapMarkerProps, 'coordinate'> {
   location: BusLocation
@@ -19,11 +17,7 @@ interface MarkersBusesItemProps extends Omit<MapMarkerProps, 'coordinate'> {
 }
 
 export const MarkersBusesItem = ({ location, lineCode }: MarkersBusesItemProps) => {
-  const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
-  const { getSchemeColorHex } = useTheme(lineTheme)
-
-  const textColor = getSchemeColorHex('onPrimaryContainer')
-  const backgroundColor = getSchemeColorHex('primaryContainer')
+  const { schemeColor } = useTheme(lineCode)
 
   return (
     <MarkersCallout
@@ -41,8 +35,8 @@ export const MarkersBusesItem = ({ location, lineCode }: MarkersBusesItemProps) 
         zIndex: 2,
       }}
     >
-      <View style={[styles.iconContainer, { backgroundColor }]}>
-        <Ionicons name="bus" color={textColor} />
+      <View style={[styles.iconContainer, { backgroundColor: schemeColor.primaryContainer }]}>
+        <Ionicons name="bus" color={schemeColor.onPrimaryContainer} />
       </View>
     </MarkersCallout>
   )

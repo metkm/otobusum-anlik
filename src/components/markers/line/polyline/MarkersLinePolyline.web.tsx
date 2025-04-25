@@ -7,12 +7,9 @@ import {
   useMemo,
   useRef,
 } from 'react'
-import { useShallow } from 'zustand/react/shallow'
 
 import { useRoutes } from '@/hooks/queries/useRoutes'
 import { useTheme } from '@/hooks/useTheme'
-
-import { useLinesStore, getTheme } from '@/stores/lines'
 
 type PolylineEventProps = {
   onClick?: (e: google.maps.MapMouseEvent) => void
@@ -140,8 +137,7 @@ export const Polyline = ({ cRef, ...props }: PolylinePropsWithRef) => {
 // export const Polyline = forwardRef(Polyline)
 
 export const MarkersLinePolyline = ({ lineCode }: { lineCode: string }) => {
-  const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
-  const { getSchemeColorHex } = useTheme(lineTheme)
+  const { schemeColor } = useTheme(lineCode)
 
   const { getRouteFromCode } = useRoutes(lineCode)
   const route = getRouteFromCode()
@@ -149,7 +145,7 @@ export const MarkersLinePolyline = ({ lineCode }: { lineCode: string }) => {
   return (
     <Polyline
       path={route?.route_path || []}
-      strokeColor={getSchemeColorHex('primary')}
+      strokeColor={schemeColor.primary}
       strokeWeight={6}
     />
   )

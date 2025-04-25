@@ -32,7 +32,7 @@ export const TheMap = ({ onMapReady, onMapRegionUpdate, initialRegion, cRef, ...
   const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
 
-  const { mode } = useTheme()
+  const { colorScheme } = useTheme()
   const insets = useSafeAreaInsets()
   const sheetContext = useSheetModal()
 
@@ -99,7 +99,7 @@ export const TheMap = ({ onMapReady, onMapRegionUpdate, initialRegion, cRef, ...
         showsIndoors={false}
         mapPadding={{ top: insets.top, bottom: 10, left: 10, right: 10 }}
         initialRegion={initialRegion}
-        customMapStyle={getMapStyle(mode)}
+        customMapStyle={getMapStyle(colorScheme)}
         showsUserLocation={showMyLocation}
         showsTraffic={showTraffic}
         style={{ flex: 1 }}

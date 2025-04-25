@@ -2,14 +2,11 @@ import { AdvancedMarker, AdvancedMarkerAnchorPoint } from '@vis.gl/react-google-
 import { router } from 'expo-router'
 import { memo, useMemo } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import { useShallow } from 'zustand/react/shallow'
 
 import { useTheme } from '@/hooks/useTheme'
 
 import { MarkersFiltersZoom } from '../filters/MarkersFiltersZoom'
 
-import { colors } from '@/constants/colors'
-import { useLinesStore, getTheme } from '@/stores/lines'
 import { BusStop } from '@/types/bus'
 
 interface StopMarkersItemProps {
@@ -18,8 +15,7 @@ interface StopMarkersItemProps {
 }
 
 export const MarkersStopItem = ({ lineCode, stop }: StopMarkersItemProps) => {
-  const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
-  const { getSchemeColorHex } = useTheme(lineTheme)
+  const { schemeColor } = useTheme(lineCode)
 
   const handleOnPress = () => {
     if (!stop) return
@@ -34,16 +30,16 @@ export const MarkersStopItem = ({ lineCode, stop }: StopMarkersItemProps) => {
 
   const backgroundStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
-      backgroundColor: getSchemeColorHex('onPrimary') || colors.primary,
+      backgroundColor: schemeColor.onPrimary || schemeColor.primary,
     }),
-    [getSchemeColorHex],
+    [schemeColor.onPrimary, schemeColor.primary],
   )
 
   const borderStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
-      borderColor: getSchemeColorHex('outlineVariant'),
+      borderColor: schemeColor.primary,
     }),
-    [getSchemeColorHex],
+    [schemeColor.primary],
   )
 
   return (

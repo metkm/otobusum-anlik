@@ -68,7 +68,7 @@ export const HomeScreen = () => {
   }
 
   return (
-    <MapContext.Provider value={map}>
+    <MapContext value={map}>
       <SheetContext.Provider value={sheetContext}>
         <TheMap
           cRef={map}
@@ -94,7 +94,7 @@ export const HomeScreen = () => {
 
         <TheStopInfo cRef={map} />
       </SheetContext.Provider>
-    </MapContext.Provider>
+    </MapContext>
   )
 }
 

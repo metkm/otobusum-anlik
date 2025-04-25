@@ -25,18 +25,18 @@ interface UiSegmentedButtonsProps<T> extends TouchableOpacityProps {
 }
 
 export const UiSegmentedButtons = <T,>({ buttons, value, style, onValueChange }: UiSegmentedButtonsProps<T>) => {
-  const { getSchemeColorHex } = useTheme()
+  const { schemeColor } = useTheme()
 
   const selectedStyle: StyleProp<ViewStyle> = {
-    backgroundColor: getSchemeColorHex('tertiaryContainer'),
+    backgroundColor: schemeColor.primaryContainer,
   }
 
   const selectedTextStyle: StyleProp<TextStyle> = {
-    color: getSchemeColorHex('onTertiaryContainer'),
+    color: schemeColor.onPrimaryContainer,
   }
 
   const textStyle: StyleProp<TextStyle> = {
-    color: getSchemeColorHex('onSecondaryContainer'),
+    color: schemeColor.onSurface,
   }
 
   return (

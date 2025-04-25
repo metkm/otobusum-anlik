@@ -47,24 +47,23 @@ export type UiButtonProps = UiButtonPropsWithTitle | UiButtonPropsWithIcon
 const AnimatedIonIcons = Animated.createAnimatedComponent(Ionicons)
 
 export const UiButton = ({ iconSize = 'md', variant = 'solid', ...props }: UiButtonProps) => {
-  const { getSchemeColorHex, colorsTheme, contextTheme } = useTheme()
+  const { schemeColor, contextTheme } = useTheme()
 
   const defaultBackground = contextTheme
-    ? getSchemeColorHex('secondaryContainer')
+    ? schemeColor.surfaceContainer
     : variant === 'solid'
-      ? getSchemeColorHex('primary')
+      ? schemeColor.primary
       : variant === 'soft'
-        ? getSchemeColorHex('surface')
+        ? schemeColor.surfaceContainerHigh
         : undefined
 
-  const defaultTextColor
-    = contextTheme
-      ? getSchemeColorHex('onSecondaryContainer')
-      : variant === 'solid'
-        ? getSchemeColorHex('onPrimary')
-        : variant === 'soft'
-          ? getSchemeColorHex('onSurface')
-          : colorsTheme.color
+  const defaultTextColor = contextTheme
+    ? schemeColor.onSurface
+    : variant === 'solid'
+      ? schemeColor.onPrimary
+      : variant === 'soft'
+        ? schemeColor.onSurface
+        : schemeColor.onSurface
 
   const dynamicContainer: StyleProp<ViewStyle> = {
     backgroundColor: defaultBackground,

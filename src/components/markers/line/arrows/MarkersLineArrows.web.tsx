@@ -1,4 +1,3 @@
-import { type Theme } from '@material/material-color-utilities'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { AdvancedMarker, AdvancedMarkerAnchorPoint } from '@vis.gl/react-google-maps'
 import { StyleProp, View, ViewStyle } from 'react-native'
@@ -14,14 +13,14 @@ interface MarkersLineArrowsProps {
     coordinates: LatLng
     angle: number
   }[]
-  lineTheme?: Theme
+  lineCode?: string
 }
 
-export const MarkersLineArrows = ({ arrows, lineTheme }: MarkersLineArrowsProps) => {
-  const { getSchemeColorHex } = useTheme(lineTheme)
+export const MarkersLineArrows = ({ arrows, lineCode }: MarkersLineArrowsProps) => {
+  const { schemeColor } = useTheme(lineCode)
 
   const arrowBackground: StyleProp<ViewStyle> = {
-    backgroundColor: getSchemeColorHex('primary'),
+    backgroundColor: schemeColor.primary,
     borderRadius: 999,
     display: 'flex',
     justifyContent: 'center',

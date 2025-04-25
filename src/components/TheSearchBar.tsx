@@ -12,7 +12,7 @@ import { i18n } from '@/translations/i18n'
 export const TheSearchBar = () => {
   const paddings = usePaddings()
   const router = useRouter()
-  const { colorsTheme } = useTheme()
+  const { schemeColor } = useTheme()
 
   return (
     <View style={[styles.container, paddings]}>
@@ -29,7 +29,7 @@ export const TheSearchBar = () => {
               readOnly
               styleContainer={{
                 borderWidth: StyleSheet.hairlineWidth,
-                borderColor: colorsTheme.surfaceContainerHigh,
+                borderColor: schemeColor.surfaceContainerHigh,
               }}
             />
           </View>

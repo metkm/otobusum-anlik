@@ -22,7 +22,7 @@ interface Props extends RectButtonProps {
 
 export const TheSearchItem = memo(function SearchItem({ item, ...props }: Props) {
   const bottomSheetModal = useRef<BottomSheetModal>(null)
-  const { colorsTheme } = useTheme()
+  const { schemeColor } = useTheme()
 
   const handlePress = useCallback(() => {
     if (isStop(item)) {
@@ -75,7 +75,7 @@ export const TheSearchItem = memo(function SearchItem({ item, ...props }: Props)
             <UiButton
               icon="add-circle-outline"
               onPress={handleAddPress}
-              iconColor={colorsTheme.color}
+              iconColor={schemeColor.onSurface}
               variant="soft"
             />
           </LineGroups>

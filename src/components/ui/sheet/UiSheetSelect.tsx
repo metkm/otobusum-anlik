@@ -21,14 +21,14 @@ interface UiSheetSelectProps<T> {
 export const UiSheetSelect = <T,>(
   props: UiSheetSelectProps<T> & { cRef?: RefObject<BottomSheetModal | null> },
 ) => {
-  const { getSchemeColorHex } = useTheme()
+  const { schemeColor } = useTheme()
 
   const dynamicBackground: StyleProp<ViewStyle> = {
-    backgroundColor: getSchemeColorHex('primary'),
+    backgroundColor: schemeColor.primary,
   }
 
   const dynamicBorder: StyleProp<ViewStyle> = {
-    borderColor: getSchemeColorHex('secondaryContainer'),
+    borderColor: schemeColor.surfaceContainer,
   }
 
   const SelectItem = ({ item }: { item: Option<T> }) => {

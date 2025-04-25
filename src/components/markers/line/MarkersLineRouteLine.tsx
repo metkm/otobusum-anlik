@@ -8,7 +8,6 @@ import { MarkersLineArrows } from './arrows/MarkersLineArrows'
 import { MarkersLinePolyline } from './polyline/MarkersLinePolyline'
 
 import { useFiltersStore } from '@/stores/filters'
-import { getTheme, useLinesStore } from '@/stores/lines'
 import { radiansFromToLatLng } from '@/utils/angleFromCoordinate'
 
 interface RouteLineProps {
@@ -18,11 +17,9 @@ interface RouteLineProps {
 const ARROW_STEP = 16
 
 export const MarkersLineRouteLine = ({ lineCode }: RouteLineProps) => {
-  const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
   const selectedCity = useFiltersStore(useShallow(state => state.selectedCity))
 
   const { query, getRouteFromCode } = useRoutes(lineCode)
-
   const route = getRouteFromCode()
 
   const coordinates: LatLng[] = useMemo(
@@ -72,7 +69,7 @@ export const MarkersLineRouteLine = ({ lineCode }: RouteLineProps) => {
 
       <MarkersLineArrows
         arrows={arrows}
-        lineTheme={lineTheme}
+        lineCode={lineCode}
       />
     </>
   )

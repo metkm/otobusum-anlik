@@ -26,18 +26,17 @@ const screens = [
 ]
 
 export const TabsLayout = () => {
-  const { colorsTheme } = useTheme()
+  const { schemeDefault } = useTheme()
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        // tabBarShowLabel: false,
         tabBarIconStyle: {
           flex: 1,
         },
         tabBarLabelStyle: {
-          color: colorsTheme.color,
+          color: schemeDefault.onSurface,
         },
         animation: 'fade',
         freezeOnBlur: true,
@@ -53,7 +52,7 @@ export const TabsLayout = () => {
             tabBarIcon: ({ focused }) => (
               <View
                 style={{
-                  backgroundColor: focused ? colorsTheme.surfaceContainerLow : undefined,
+                  backgroundColor: focused ? schemeDefault.surface : undefined,
                   borderRadius: 999,
                   paddingVertical: 2,
                   paddingHorizontal: 20,
@@ -66,7 +65,7 @@ export const TabsLayout = () => {
                     >['name']
                   }
                   size={22}
-                  color={colorsTheme.color}
+                  color={schemeDefault.onSurface}
                   style={{ width: 22 }}
                 />
               </View>

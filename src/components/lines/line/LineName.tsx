@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useShallow } from 'zustand/react/shallow'
 
 import { useLine } from '@/hooks/queries/useLine'
 import { useTheme } from '@/hooks/useTheme'
@@ -10,7 +9,6 @@ import { UiText } from '../../ui/UiText'
 
 import { lineUpdateInterval } from '@/constants/app'
 import { iconSizes } from '@/constants/uiSizes'
-import { useLinesStore, getTheme } from '@/stores/lines'
 import { i18n } from '@/translations/i18n'
 
 interface LineNameProps {
@@ -21,13 +19,12 @@ interface LineNameProps {
 const interval = 1_000
 
 export const LineName = ({ lineCode, variant = 'solid' }: LineNameProps) => {
-  const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
   const [count, setCount] = useState(0)
 
-  const { getSchemeColorHex } = useTheme(lineTheme)
+  const { schemeColor } = useTheme()
   const { query } = useLine(lineCode)
 
-  const color = getSchemeColorHex(variant === 'solid' ? 'onPrimary' : 'onSurface')
+  const color = variant === 'solid' ? schemeColor.onPrimary : schemeColor.onSurface
 
   const expected = useRef(Date.now() + interval)
 

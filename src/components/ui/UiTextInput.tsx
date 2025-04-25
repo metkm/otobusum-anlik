@@ -16,14 +16,14 @@ interface UiTextInputProps extends TextInputProps {
 }
 
 export const UiTextInput = ({ iconSize = 'md', cRef, style, styleContainer, icon, ...props }: UiTextInputProps) => {
-  const { colorsTheme } = useTheme()
+  const { schemeColor } = useTheme()
 
   const dynamicStyle: StyleProp<ViewStyle> = {
-    backgroundColor: colorsTheme.surfaceContainerLow,
+    backgroundColor: schemeColor.surface,
   }
 
   const inputStyle: StyleProp<TextStyle> = {
-    color: colorsTheme.color,
+    color: schemeColor.primary,
     paddingLeft: icon ? 14 * 2 : 14,
     display: 'flex',
   }
@@ -32,14 +32,14 @@ export const UiTextInput = ({ iconSize = 'md', cRef, style, styleContainer, icon
     <View style={[styles.input, styleContainer, dynamicStyle]}>
       <View style={styles.iconContainer}>
         {icon && (
-          <Icon name={icon} color={colorsTheme.color} size={iconSizes[iconSize]} />
+          <Icon name={icon} color={schemeColor.primary} size={iconSizes[iconSize]} />
         )}
       </View>
 
       <TextInput
         ref={cRef}
         style={[style, inputStyle]}
-        placeholderTextColor={colorsTheme.surfaceContainerHigh}
+        placeholderTextColor={schemeColor.surfaceContainerHigh}
         {...props}
       />
     </View>

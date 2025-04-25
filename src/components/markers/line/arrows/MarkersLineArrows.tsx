@@ -1,4 +1,3 @@
-import { type Theme } from '@material/material-color-utilities'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { LatLng, Marker } from 'react-native-maps'
 
@@ -12,11 +11,11 @@ interface MarkersLineArrowsProps {
     coordinates: LatLng
     angle: number
   }[]
-  lineTheme?: Theme
+  lineCode?: string
 }
 
-export const MarkersLineArrows = ({ arrows, lineTheme }: MarkersLineArrowsProps) => {
-  const { getSchemeColorHex } = useTheme(lineTheme)
+export const MarkersLineArrows = ({ arrows, lineCode }: MarkersLineArrowsProps) => {
+  const { schemeColor } = useTheme(lineCode)
 
   return (
     <MarkersFiltersInView
@@ -36,7 +35,7 @@ export const MarkersLineArrows = ({ arrows, lineTheme }: MarkersLineArrowsProps)
             <Ionicons
               name="arrow-up"
               size={12}
-              color={getSchemeColorHex('onPrimary')}
+              color={schemeColor.onPrimary}
               style={{
                 transform: [
                   {

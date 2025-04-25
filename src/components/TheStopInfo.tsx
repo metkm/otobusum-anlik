@@ -14,18 +14,17 @@ import { UiButton } from './ui/UiButton'
 import { UiText } from './ui/UiText'
 
 import { getStop } from '@/api/getStop'
-import { addLine, getTheme, useLinesStore } from '@/stores/lines'
+import { addLine } from '@/stores/lines'
 import { useMiscStore } from '@/stores/misc'
 import { useSettingsStore } from '@/stores/settings'
 import { i18n } from '@/translations/i18n'
 
 interface TheStopInfoProps {
-  cRef: RefObject<TheMapRef>
+  cRef: RefObject<TheMapRef | null>
 }
 
 const StopLine = ({ lineCode }: { lineCode: string }) => {
   const bottomSheetModal = useRef<BottomSheetModal>(null)
-  const lineTheme = useLinesStore(useShallow(() => getTheme(lineCode)))
 
   const handlePress = (lineCode: string) => {
     addLine(lineCode)
@@ -41,7 +40,6 @@ const StopLine = ({ lineCode }: { lineCode: string }) => {
         key={lineCode}
         title={lineCode}
         variant="soft"
-        theme={lineTheme}
         onPress={() => handlePress(lineCode)}
         onLongPress={() => handleLongPress()}
       />

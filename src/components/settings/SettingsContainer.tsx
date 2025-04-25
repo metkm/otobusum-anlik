@@ -52,7 +52,7 @@ type SettingProps<T> = SettingSwitchProps | SettingLinkProps | SettingSelectProp
 
 export const SettingsContainer = <T,>(props: SettingProps<T>) => {
   const bottomSheetModal = useRef<BottomSheetModal>(null)
-  const { colorsTheme, getSchemeColorHex } = useTheme()
+  const { schemeColor } = useTheme()
 
   const handlePress = useCallback(() => {
     props.onPress?.()
@@ -70,8 +70,8 @@ export const SettingsContainer = <T,>(props: SettingProps<T>) => {
         <Switch
           value={props.value}
           onChange={props.onChange}
-          thumbColor={getSchemeColorHex('primary')}
-          trackColor={{ true: getSchemeColorHex('primary') }}
+          thumbColor={schemeColor.primary}
+          trackColor={{ true: schemeColor.primary }}
         />
       )
     }
@@ -94,7 +94,7 @@ export const SettingsContainer = <T,>(props: SettingProps<T>) => {
             <UiText>{selectedOption?.label}</UiText>
             <Ionicons
               name="chevron-forward"
-              color={colorsTheme.color}
+              color={schemeColor.onSurface}
               size={18}
             />
           </View>
@@ -103,7 +103,7 @@ export const SettingsContainer = <T,>(props: SettingProps<T>) => {
     }
 
     return null
-  }, [props, colorsTheme.color, getSchemeColorHex])
+  }, [props, schemeColor])
 
   return (
     <UiButton

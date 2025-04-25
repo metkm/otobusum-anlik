@@ -35,7 +35,7 @@ enableScreens(true)
 
 const MyHeader = ({ navigation, route, options, back }: NativeStackHeaderProps) => {
   const insets = useSafeAreaInsets()
-  const { colorsTheme } = useTheme()
+  const { schemeColor } = useTheme()
   const title = getHeaderTitle(options, route.name)
 
   return (
@@ -43,7 +43,7 @@ const MyHeader = ({ navigation, route, options, back }: NativeStackHeaderProps) 
       style={{
         paddingTop: 8 + insets.top,
         padding: 8,
-        backgroundColor: colorsTheme.surfaceContainerLow,
+        backgroundColor: schemeColor.surface,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -67,16 +67,16 @@ const MyHeader = ({ navigation, route, options, back }: NativeStackHeaderProps) 
 }
 
 export const RootLayout = () => {
-  const { colorsTheme, mode } = useTheme()
+  const { schemeColor, colorScheme } = useTheme()
 
-  const targetTheme = mode === 'dark' ? DarkTheme : DefaultTheme
+  const targetTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
   const modifiedTheme: Theme = {
     ...targetTheme,
     colors: {
       ...targetTheme.colors,
-      background: colorsTheme.surfaceContainerLowest,
-      card: colorsTheme.surfaceContainerLow,
+      background: schemeColor.surface,
+      card: schemeColor.surfaceContainer,
     },
   }
 

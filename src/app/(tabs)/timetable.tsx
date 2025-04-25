@@ -51,7 +51,7 @@ export const TimetableScreen = () => {
       const mx = Math.max(
         0,
         Math.min(
-          useMiscStore.getState().selectedLineScrollIndex,
+          useMiscStore.getState().scrolledLineIndex,
           lines.length - 1,
         ),
       )

@@ -5,16 +5,16 @@ import { useTheme } from '@/hooks/useTheme'
 import { UiText } from './UiText'
 
 export const UiErrorContainer = ({ message }: { message: string }) => {
-  const { getSchemeColorHex } = useTheme()
+  const { schemeColor } = useTheme()
 
   const dynamicBackground: StyleProp<ViewStyle> = {
-    backgroundColor: getSchemeColorHex('error'),
+    backgroundColor: schemeColor.error,
     padding: 14,
     borderRadius: 14,
   }
 
   const dynamicText: StyleProp<TextStyle> = {
-    color: getSchemeColorHex('onError'),
+    color: schemeColor.onError,
   }
 
   return (

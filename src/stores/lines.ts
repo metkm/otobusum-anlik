@@ -9,25 +9,26 @@ import { useFiltersStore } from './filters'
 
 import { queryClient } from '@/api/client'
 import { lineUpdateInterval } from '@/constants/app'
+import { ColorSchemes } from '@/constants/colors'
 import { i18n } from '@/translations/i18n'
 import { Cities } from '@/types/cities'
 import { LineGroup } from '@/types/lineGroup'
-import { createTheme } from '@/utils/createTheme'
+import { createTheme, materialThemeToLocalSchemes } from '@/utils/createTheme'
 import { notify } from '@/utils/notify'
 
 interface StoreV0 {
   lines: Record<string, object[]>
 }
 
-interface StoreV1 {
-  lines: string[]
-  lineTheme: Record<string, Theme>
-  lineGroups: Record<string, LineGroup>
+export interface StoreV2 {
+  lines: Record<Cities, string>
+  lineTheme: Record<Cities, Record<string, Theme>>
+  lineGroups: Record<Cities, Record<string, LineGroup>>
 }
 
 export interface LinesStore {
   lines: Record<Cities, string[]>
-  lineTheme: Record<Cities, Record<string, Theme>>
+  lineTheme: Record<Cities, Record<string, ColorSchemes>>
   lineGroups: Record<Cities, Record<string, LineGroup>>
 }
 
@@ -51,7 +52,7 @@ export const useLinesStore = create(
       {
         name: 'line-storage',
         storage: createJSONStorage(() => AsyncStorage),
-        version: 2,
+        version: 3,
         migrate: (persistedStore, version) => {
           const store = persistedStore as LinesStore
 
@@ -62,21 +63,13 @@ export const useLinesStore = create(
             store.lines.istanbul = keys
           }
 
-          if (version === 1) {
-            queryClient.clear()
+          if (version === 2) {
+            const oldStore = persistedStore as unknown as StoreV2
 
-            const oldStore = persistedStore as unknown as StoreV1
-            store.lines = {
-              istanbul: oldStore.lines,
-              izmir: [],
-            }
-            store.lineTheme = {
-              istanbul: oldStore.lineTheme,
-              izmir: {},
-            }
-            store.lineGroups = {
-              istanbul: oldStore.lineGroups,
-              izmir: {},
+            for (const [city, lineThemes] of Object.entries(oldStore.lineTheme)) {
+              for (const [lineCode, lineTheme] of Object.entries(lineThemes)) {
+                store.lineTheme[city as Cities][lineCode] = materialThemeToLocalSchemes(lineTheme)
+              }
             }
           }
 
@@ -341,7 +334,7 @@ const loop = (selectedGroup?: string) => {
   return setTimeout(loop, lineUpdateInterval)
 }
 
-let listener: NodeJS.Timeout
+let listener: number
 const handleStoreUpdate = (selectedGroup?: string) => {
   clearTimeout(listener)
   listener = loop(selectedGroup)
