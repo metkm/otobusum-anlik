@@ -3,17 +3,16 @@ import { RefObject } from 'react'
 
 import { UiButton, UiButtonProps } from '../UiButton'
 
-import { UiSheetModal } from './UiSheetModal'
+import { UiSheetModal, UiSheetModalProps } from './UiSheetModal'
 
-interface UiSheetOptionsProps {
+interface UiSheetOptionsProps extends Omit<UiSheetModalProps, 'children'> {
   cRef: RefObject<BottomSheetModal | null>
   options: UiButtonProps[]
-  top?: () => React.ReactNode
 }
 
-export const UiSheetOptions = ({ cRef, top, options }: UiSheetOptionsProps) => {
+export const UiSheetOptions = ({ cRef, options, ...modalProps }: UiSheetOptionsProps) => {
   return (
-    <UiSheetModal cRef={cRef} top={top}>
+    <UiSheetModal cRef={cRef} {...modalProps}>
       {options.map(option => (
         <UiButton key={option.title} square variant="solid" align="left" {...option} />
       ))}

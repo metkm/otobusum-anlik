@@ -26,11 +26,13 @@ const getHslValues = (): [number, number, number] => {
   return [360 * Math.random(), 25 + 70 * Math.random(), 85 + 10 * Math.random()]
 }
 
-export const materialThemeToLocalSchemes = (theme: Theme) => {
+export const materialThemeToLocalSchemes = (theme: Theme): ColorSchemes => {
   return {
     dark: {
       primary: hexFromArgb(theme.schemes['dark']['primary']),
       onPrimary: hexFromArgb(theme.schemes['dark']['primary']),
+      secondaryContainer: hexFromArgb(theme.schemes['dark']['secondaryContainer']),
+      onSecondaryContainer: hexFromArgb(theme.schemes['dark']['onSecondaryContainer']),
       secondary: hexFromArgb(theme.schemes['dark']['secondary']),
       onSecondary: hexFromArgb(theme.schemes['dark']['secondary']),
       primaryContainer: hexFromArgb(theme.schemes['dark']['primaryContainer']),
@@ -45,6 +47,8 @@ export const materialThemeToLocalSchemes = (theme: Theme) => {
     light: {
       primary: hexFromArgb(theme.schemes['light']['primary']),
       onPrimary: hexFromArgb(theme.schemes['light']['primary']),
+      secondaryContainer: hexFromArgb(theme.schemes['light']['secondaryContainer']),
+      onSecondaryContainer: hexFromArgb(theme.schemes['light']['onSecondaryContainer']),
       secondary: hexFromArgb(theme.schemes['light']['secondary']),
       onSecondary: hexFromArgb(theme.schemes['light']['secondary']),
       primaryContainer: hexFromArgb(theme.schemes['light']['primaryContainer']),

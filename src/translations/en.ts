@@ -56,4 +56,5 @@ export default {
   searchPlaceholder: 'KM-12, KM-12...',
   selectedCity: 'Selected city: %{city}',
   newGroupTitlePlaceholder: 'New group name',
+  announcements: 'Announcements',
 }

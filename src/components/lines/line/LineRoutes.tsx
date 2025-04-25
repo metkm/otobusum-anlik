@@ -89,6 +89,7 @@ export const LineRoutes = memo(function LineRoutes(props: Props) {
       <UiSheetSelect
         cRef={bottomSheetModal}
         title={i18n.t('routes')}
+        icon="git-branch-outline"
         options={routes}
         onValueChange={handleOnSelect}
         value={route?.route_code}

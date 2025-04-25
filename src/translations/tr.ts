@@ -51,9 +51,10 @@ export default {
   deleteLine: 'Hattı sil',
   addToGroup: 'Gruba ekle',
   errorGettingBusLocations: 'Otobüs konumlarını alırken bir hata oluştu.',
-  errorGettingAnnouncements: 'Duyurulari alırken bir hata oluştu.',
+  errorGettingAnnouncements: 'Duyuruları alırken bir hata oluştu.',
   updateCount: '%{count} saniye içinde güncellenecek',
   searchPlaceholder: 'KM-12, KM-12...',
   selectedCity: 'Seçili şehir: %{city}',
   newGroupTitlePlaceholder: 'Yeni grup ismi',
+  announcements: 'Duyurular',
 }

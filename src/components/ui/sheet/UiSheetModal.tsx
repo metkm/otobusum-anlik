@@ -6,6 +6,7 @@ import {
   type BottomSheetBackdropProps,
   type BottomSheetModalProps,
 } from '@gorhom/bottom-sheet'
+import Ionicons from '@react-native-vector-icons/ionicons'
 import { ReactNode, RefObject } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { Easing } from 'react-native-reanimated'
@@ -15,35 +16,24 @@ import { useSheetModal } from '@/hooks/contexts/useSheetModal'
 import { useSheetBackHandler } from '@/hooks/useSheetBackHandler'
 import { useTheme } from '@/hooks/useTheme'
 
+import { UiText } from '../UiText'
+
+import { iconSizes } from '@/constants/uiSizes'
+import { IconValue } from '@/types/ui'
+
 export interface UiSheetModalProps extends BottomSheetModalProps {
   cRef?: RefObject<BottomSheetModal | null>
-  top?: () => React.ReactNode
   containerStyle?: StyleProp<ViewStyle>
   list?: boolean
+  icon?: IconValue
+  title?: string
 }
 
 export const BackdropComponent = (props: BottomSheetBackdropProps) => {
   return <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />
 }
 
-const TopContainer = ({ children, lineCode }: { children: ReactNode, lineCode?: string }) => {
-  const { schemeColor } = useTheme(lineCode)
-
-  return (
-    <View
-      style={[
-        styles.top,
-        {
-          borderColor: schemeColor.surfaceContainerHigh,
-        },
-      ]}
-    >
-      {children}
-    </View>
-  )
-}
-
-export const UiSheetModal = ({ cRef, top, containerStyle, ...props }: UiSheetModalProps) => {
+export const UiSheetModal = ({ cRef, icon, title, containerStyle, ...props }: UiSheetModalProps) => {
   const { schemeColor } = useTheme()
   const { handleSheetPositionChange } = useSheetBackHandler(cRef)
   const sheetHeight = useSheetModal()
@@ -74,13 +64,22 @@ export const UiSheetModal = ({ cRef, top, containerStyle, ...props }: UiSheetMod
       {props.list
         ? (
             <>
-              {top
-                ? (
-                    <BottomSheetView>
-                      <TopContainer>{top?.()}</TopContainer>
-                    </BottomSheetView>
-                  )
-                : undefined}
+              <BottomSheetView style={[styles.top, {
+                borderColor: schemeColor.surfaceContainerHigh,
+              }]}
+              >
+                {icon && (
+                  <Ionicons
+                    name={icon}
+                    size={iconSizes['lg']}
+                    color={schemeColor.onSurface}
+                  />
+                )}
+
+                {title && (
+                  <UiText>{title}</UiText>
+                )}
+              </BottomSheetView>
 
               <BottomSheetScrollView contentContainerStyle={{ paddingBottom: insets.bottom }}>
                 {props.children as ReactNode | ReactNode[]}
@@ -89,7 +88,22 @@ export const UiSheetModal = ({ cRef, top, containerStyle, ...props }: UiSheetMod
           )
         : (
             <BottomSheetView style={{ paddingBottom: insets.bottom, flex: 1 }}>
-              {top ? <TopContainer>{top?.()}</TopContainer> : undefined}
+              <View style={[styles.top, {
+                borderColor: schemeColor.surfaceContainerHigh,
+              }]}
+              >
+                {icon && (
+                  <Ionicons
+                    name={icon}
+                    size={iconSizes['lg']}
+                    color={schemeColor.onSurface}
+                  />
+                )}
+
+                {title && (
+                  <UiText>{title}</UiText>
+                )}
+              </View>
 
               <View style={[styles.container, containerStyle]}>
                 {props.children as ReactNode | ReactNode[]}

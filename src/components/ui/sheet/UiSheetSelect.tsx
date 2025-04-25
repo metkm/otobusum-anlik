@@ -6,21 +6,19 @@ import { useTheme } from '@/hooks/useTheme'
 
 import { UiText } from '../UiText'
 
-import { UiSheetModal } from './UiSheetModal'
+import { UiSheetModal, UiSheetModalProps } from './UiSheetModal'
 
 import { Option } from '@/types/sheet'
 
-interface UiSheetSelectProps<T> {
-  title: string
+interface UiSheetSelectProps<T> extends Omit<UiSheetModalProps, 'children'> {
   options: Option<T>[]
   value?: T
   onValueChange?: (value: T) => void
+  cRef?: RefObject<BottomSheetModal | null>
   list?: boolean
 }
 
-export const UiSheetSelect = <T,>(
-  props: UiSheetSelectProps<T> & { cRef?: RefObject<BottomSheetModal | null> },
-) => {
+export const UiSheetSelect = <T,>({ cRef, list, options, value, onValueChange, ...modalProps }: UiSheetSelectProps<T>) => {
   const { schemeColor } = useTheme()
 
   const dynamicBackground: StyleProp<ViewStyle> = {
@@ -35,13 +33,13 @@ export const UiSheetSelect = <T,>(
     return (
       <TouchableOpacity
         key={`${item.label}-${item.value}`}
-        onPress={() => props.onValueChange?.(item.value)}
+        onPress={() => onValueChange?.(item.value)}
         style={styles.item}
       >
         <UiText key={item.label}>{item.label}</UiText>
 
         <View style={[styles.outerCircle, dynamicBorder]}>
-          {props.value === item.value && <View style={[styles.innerCircle, dynamicBackground]} />}
+          {value === item.value && <View style={[styles.innerCircle, dynamicBackground]} />}
         </View>
       </TouchableOpacity>
     )
@@ -49,14 +47,14 @@ export const UiSheetSelect = <T,>(
 
   return (
     <UiSheetModal
-      cRef={props.cRef}
-      enableDynamicSizing={!props.list}
+      cRef={cRef}
+      enableDynamicSizing={!list}
       snapPoints={['50%']}
-      top={() => <UiText>{props.title}</UiText>}
       containerStyle={{ padding: 0 }}
-      list={props.list}
+      list={list}
+      {...modalProps}
     >
-      {props.options.map(option => (
+      {options.map(option => (
         <SelectItem key={option.label} item={option} />
       ))}
     </UiSheetModal>

@@ -1,12 +1,10 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import Ionicons from '@react-native-vector-icons/ionicons'
 import { memo, useEffect, useMemo, useRef } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UiSheetOptions } from '@/components/ui/sheet/UiSheetOptions'
-import { UiText } from '@/components/ui/UiText'
 
 import { useMap } from '@/hooks/contexts/useMap'
 import { useLine } from '@/hooks/queries/useLine'
@@ -22,7 +20,6 @@ import { LineRoutes } from './LineRoutes'
 
 import { queryClient } from '@/api/client'
 import { getLineBusStops } from '@/api/getLineBusStops'
-import { iconSizes } from '@/constants/uiSizes'
 import { changeRouteDirection, getSelectedRouteCode, useFiltersStore } from '@/stores/filters'
 import { deleteLine } from '@/stores/lines'
 import { toggleLineVisibility, useMiscStore } from '@/stores/misc'
@@ -136,14 +133,8 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
                   onPress: handleDelete,
                 },
               ]}
-              top={() => (
-                <>
-                  <Ionicons name="bus" size={iconSizes['lg']} color={schemeColor.onSurface} />
-                  <UiText size="md" style={{ fontWeight: 'bold' }}>
-                    {lineCode}
-                  </UiText>
-                </>
-              )}
+              title={lineCode}
+              icon="bus"
             />
 
             <LineGroups cRef={uiSheetLineGroupsModal} lineCodeToAdd={lineCode} />

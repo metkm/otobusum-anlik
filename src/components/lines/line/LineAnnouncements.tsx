@@ -8,6 +8,8 @@ import { UiSheetModal } from '../../ui/sheet/UiSheetModal'
 import { UiButton } from '../../ui/UiButton'
 import { UiText } from '../../ui/UiText'
 
+import { i18n } from '@/translations/i18n'
+
 interface LineAnnouncementsProps extends ViewProps {
   lineCode: string
 }
@@ -33,6 +35,8 @@ export const LineAnnouncements = ({ lineCode }: LineAnnouncementsProps) => {
           snapPoints={['50%']}
           enableDynamicSizing={false}
           list
+          title={i18n.t('announcements')}
+          icon="megaphone-outline"
         >
           {announcements.map(ann => (
             <View key={`${ann.GUNCELLEME_SAATI}-${ann.MESAJ}`} style={styles.announcementContainer}>
