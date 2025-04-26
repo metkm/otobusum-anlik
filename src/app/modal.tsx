@@ -84,6 +84,7 @@ export const ModalScreen = () => {
         placeholder={i18n.t('searchPlaceholder')}
         icon="arrow-back"
         iconPress={() => router.back()}
+        styleContainer={{ elevation: 5 }}
         autoFocus
         onChange={handleQueryChange}
       />

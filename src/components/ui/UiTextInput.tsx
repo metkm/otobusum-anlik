@@ -21,11 +21,11 @@ export const UiTextInput = ({ iconSize = 'md', icon, iconPress, cRef, style, sty
   const { schemeColor } = useTheme()
 
   const dynamicStyle: StyleProp<ViewStyle> = {
-    backgroundColor: schemeColor.surfaceContainerHigh,
+    backgroundColor: schemeColor.surfaceContainer,
   }
 
   const inputStyle: StyleProp<TextStyle> = {
-    color: schemeColor.primary,
+    color: schemeColor.onSurface,
     display: 'flex',
   }
 

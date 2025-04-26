@@ -71,7 +71,7 @@ export const SettingsContainer = <T,>(props: SettingProps<T>) => {
           value={props.value}
           onChange={props.onChange}
           thumbColor={schemeColor.primary}
-          trackColor={{ true: schemeColor.primary }}
+          trackColor={{ true: schemeColor.primary, false: schemeColor.surfaceContainerHigh }}
         />
       )
     }

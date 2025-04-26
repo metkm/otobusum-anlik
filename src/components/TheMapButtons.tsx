@@ -93,6 +93,7 @@ export const TheMapButtons = () => {
     () => ({
       backgroundColor: bgColor.value,
       borderRadius: 14,
+      elevation: 5,
     }),
     [],
   )

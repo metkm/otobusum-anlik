@@ -1,7 +1,7 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { memo, useEffect, useMemo, useRef } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import Animated, { FadeIn, FadeOut, LinearTransition, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UiSheetOptions } from '@/components/ui/sheet/UiSheetOptions'
@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     gap: 8,
     flexShrink: 0,
+    elevation: 2,
   },
   titleContainer: {
     flexDirection: 'row',

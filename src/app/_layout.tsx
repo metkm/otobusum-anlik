@@ -107,7 +107,7 @@ export const RootLayout = () => {
                   animation: 'fade',
                   header: MyHeader,
                   navigationBarTranslucent: true,
-                  navigationBarColor: schemeColor.surfaceContainer
+                  navigationBarColor: schemeColor.surfaceContainer,
                 }}
               >
                 <Stack.Screen

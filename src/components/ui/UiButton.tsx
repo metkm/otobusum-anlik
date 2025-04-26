@@ -53,7 +53,7 @@ export const UiButton = ({ iconSize = 'md', variant = 'solid', ...props }: UiBut
     = variant === 'solid'
       ? schemeColor.primary
       : variant === 'soft'
-        ? schemeColor.surfaceContainerHigh
+        ? schemeColor.surfaceContainer
         : undefined
 
   const defaultTextColor

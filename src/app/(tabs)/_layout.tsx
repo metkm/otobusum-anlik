@@ -52,7 +52,7 @@ export const TabsLayout = () => {
             tabBarIcon: ({ focused }) => (
               <View
                 style={{
-                  backgroundColor: focused ? schemeDefault.secondaryContainer : undefined,
+                  backgroundColor: focused ? schemeDefault.surfaceContainerHigh : undefined,
                   borderRadius: 999,
                   paddingVertical: 2,
                   paddingHorizontal: 20,
@@ -65,7 +65,7 @@ export const TabsLayout = () => {
                     >['name']
                   }
                   size={22}
-                  color={focused ? schemeDefault.onSecondaryContainer : schemeDefault.onSurface}
+                  color={schemeDefault.onSurface}
                   style={{ width: 22 }}
                 />
               </View>
