@@ -58,4 +58,5 @@ export default {
   newGroupTitlePlaceholder: 'New group name',
   announcements: 'Announcements',
   timetableEmptyRange: 'Timetable for this day is empty',
+  lineGroups: 'Line Groups',
 }

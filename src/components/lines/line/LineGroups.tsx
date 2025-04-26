@@ -46,7 +46,8 @@ export const LineGroups = ({ onPressGroup, lineCodeToAdd, ...props }: LineGroups
       <UiSheetModal
         cRef={props.cRef}
         snapPoints={['50%']}
-        // list
+        title={i18n.t('lineGroups')}
+        icon="albums"
         enableDynamicSizing={false}
         footer={() => (
           <UiButton icon="add" title={i18n.t('createNewGroup')} onPress={handlePressNewGroup} />
