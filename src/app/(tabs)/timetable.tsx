@@ -16,12 +16,13 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useShallow } from 'zustand/react/shallow'
 
 import { LineTimetableMemoized } from '@/components/lines/line/LineTimetable'
 import { Lines } from '@/components/lines/Lines'
 import { UiText } from '@/components/ui/UiText'
+
+import { usePaddings } from '@/hooks/usePaddings'
 
 import { useFiltersStore } from '@/stores/filters'
 import { getLines, useLinesStore } from '@/stores/lines'
@@ -29,7 +30,8 @@ import { useMiscStore } from '@/stores/misc'
 import { i18n } from '@/translations/i18n'
 
 export const TimetableScreen = () => {
-  const insets = useSafeAreaInsets()
+  const { tabRoutePaddings } = usePaddings(0)
+
   const linesHeight = useSharedValue(0)
   const linesRef = useAnimatedRef<FlatList>()
   const timetablesRef = useAnimatedRef<FlatList>()
@@ -64,8 +66,8 @@ export const TimetableScreen = () => {
   }, [linesRef, lines.length])
 
   const containerStyle: StyleProp<ViewStyle> = {
-    paddingTop: insets.top,
     flex: 1,
+    ...tabRoutePaddings,
   }
 
   const handleOnScroll = useAnimatedScrollHandler(({ contentOffset }) => {
@@ -102,13 +104,6 @@ export const TimetableScreen = () => {
         listProps={{
           onLayout,
           onScroll: handleOnScroll,
-        }}
-        containerStyle={{
-          flexShrink: 0,
-          padding: 0,
-        }}
-        contentContainerStyle={{
-          // paddingBottom: 0,
         }}
         lineProps={{
           variant: 'soft',

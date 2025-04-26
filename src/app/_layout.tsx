@@ -105,7 +105,7 @@ export const RootLayout = () => {
               <Stack
                 screenOptions={{
                   animation: 'fade',
-                  // header: MyHeader,
+                  header: MyHeader,
                   navigationBarTranslucent: true,
                   navigationBarColor: schemeColor.surfaceContainer,
                 }}

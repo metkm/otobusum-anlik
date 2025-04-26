@@ -99,9 +99,6 @@ export const HomeScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   linesContainer: {
     position: 'absolute',
     bottom: 0,

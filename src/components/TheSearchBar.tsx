@@ -9,11 +9,11 @@ import { UiTextInput } from './ui/UiTextInput'
 import { i18n } from '@/translations/i18n'
 
 export const TheSearchBar = () => {
-  const paddings = usePaddings()
+  const { tabRoutePaddings } = usePaddings()
   const router = useRouter()
 
   return (
-    <View style={[styles.container, paddings]}>
+    <View style={[styles.container, tabRoutePaddings]}>
       <View>
         <Pressable
           onPress={() => {

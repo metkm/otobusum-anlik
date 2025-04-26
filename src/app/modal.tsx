@@ -20,7 +20,7 @@ import { i18n } from '@/translations/i18n'
 import { BusLine, BusStop } from '@/types/bus'
 
 export const ModalScreen = () => {
-  const paddings = usePaddings()
+  const { modalRoutePaddings } = usePaddings()
   const selectedCity = useFiltersStore(state => state.selectedCity)
 
   const mutation = useMutation({
@@ -79,7 +79,7 @@ export const ModalScreen = () => {
   )
 
   return (
-    <View style={[paddings, styles.container]}>
+    <View style={[modalRoutePaddings, styles.container]}>
       <UiTextInput
         placeholder={i18n.t('searchPlaceholder')}
         icon="arrow-back"
