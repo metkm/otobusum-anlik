@@ -1,6 +1,7 @@
 import Constants from 'expo-constants'
 import { Linking, Platform, StyleSheet } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { SettingCity } from '@/components/settings/SettingsCity'
 import { SettingsCluster } from '@/components/settings/SettingsCluster'
@@ -10,17 +11,15 @@ import { SettingsTheme } from '@/components/settings/SettingsTheme'
 import { SettingsTraffic } from '@/components/settings/SettingsTraffic'
 import { UiText } from '@/components/ui/UiText'
 
-import { usePaddings } from '@/hooks/usePaddings'
-
 import { i18n } from '@/translations/i18n'
 
 export const SettingsScreen = () => {
-  const paddings = usePaddings()
+  const insets = useSafeAreaInsets()
 
   return (
     <ScrollView
-      style={[paddings, styles.scrollContainer]}
-      contentContainerStyle={styles.scrollContainer}
+      style={{ marginTop: insets.top }}
+      contentContainerStyle={[styles.scrollContainer]}
     >
       <SettingsGroupContainer title={i18n.t('map')}>
         <SettingsLocation />
@@ -59,11 +58,11 @@ export const SettingsScreen = () => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    flex: 1,
     gap: 8,
+    padding: 8,
   },
   version: {
-    marginTop: 'auto',
+    alignSelf: 'flex-end',
   },
 })
 
