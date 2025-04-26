@@ -46,7 +46,7 @@ export const MarkersStopItem = ({
   const stopStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
       backgroundColor: schemeColor.primary,
-      borderColor: schemeColor.secondaryContainer,
+      borderColor: schemeColor.primaryContainer,
     }),
     [schemeColor],
   )

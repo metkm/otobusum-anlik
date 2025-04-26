@@ -108,7 +108,7 @@ export const TimetableScreen = () => {
           padding: 0,
         }}
         contentContainerStyle={{
-          paddingBottom: 0,
+          // paddingBottom: 0,
         }}
         lineProps={{
           variant: 'soft',
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
   listContent: {
     gap: 8,
     padding: 8,
+    paddingTop: 0,
   },
   childrenContainer: {
     flexShrink: 1,

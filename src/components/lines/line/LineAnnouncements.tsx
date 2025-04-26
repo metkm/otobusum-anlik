@@ -27,6 +27,7 @@ export const LineAnnouncements = ({ lineCode }: LineAnnouncementsProps) => {
         disabled={announcements === undefined || announcements.length === 0}
         icon="megaphone-outline"
         variant="soft"
+        accented
       />
 
       {announcements !== undefined && announcements.length > 0 && (

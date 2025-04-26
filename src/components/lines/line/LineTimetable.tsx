@@ -256,6 +256,7 @@ const styles = StyleSheet.create({
   wrapper: {
     borderRadius: 8,
     flexShrink: 1,
+    elevation: 2,
   },
   info: {
     padding: 8,

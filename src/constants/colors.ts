@@ -9,17 +9,16 @@ export type ColorScheme = {
   surfaceContainer: string
   surfaceContainerHigh: string
   onSurface: string
+  onSurfaceDimmed: string
   primary: string
   onPrimary: string
   error: string
   onError: string
 
-  // secondary: string
-  // onSecondary: string
-  // secondaryContainer: string
-  // onSecondaryContainer: string
-  // primaryContainer: string
-  // onPrimaryContainer: string
+  // These 2 fields are exists in material theme but not in the
+  // neutral colors. Only filled when colors are derived from material theme
+  primaryContainer?: string
+  onPrimaryContainer?: string
 }
 
 export interface ColorSchemes {
@@ -65,32 +64,27 @@ export interface ColorSchemes {
 //   },
 // } satisfies ColorSchemes
 
-export const defaultColorSchemes = {
+export const defaultColorSchemes: ColorSchemes = {
   light: {
     surface: '#fafafa',
     surfaceContainer: '#f5f5f5',
     surfaceContainerHigh: '#e5e5e5',
     onSurface: '#404040',
+    onSurfaceDimmed: '#737373',
     primary: '#7F570F',
     onPrimary: '#FFFFFF',
     error: '#BA1A1A',
     onError: '#FFFFFF',
   },
   dark: {
-    surface: '#0a0a0a',
-    surfaceContainer: '#171717',
-    surfaceContainerHigh: '#262626',
+    surface: '#171717',
+    surfaceContainer: '#262626',
+    surfaceContainerHigh: '#404040',
     onSurface: '#e5e5e5',
+    onSurfaceDimmed: '#737373',
     primary: '#F3BD6E',
     onPrimary: '#442B00',
     error: '#FFB4AB',
     onError: '#690005',
-
-    // onPrimaryContainer: 'red',
-    // onSecondary: 'red',
-    // onSecondaryContainer: 'red',
-    // primaryContainer: 'red',
-    // secondary: 'red',
-    // secondaryContainer: 'green',
   },
-} satisfies ColorSchemes
+}

@@ -33,6 +33,7 @@ export const UiSegmentedButtons = <T,>({ buttons, value, style, onValueChange }:
             containerStyle={styles.buttonContainer}
             onPress={() => onValueChange?.(button.value)}
             square
+            accented
           />
         )
       })}
