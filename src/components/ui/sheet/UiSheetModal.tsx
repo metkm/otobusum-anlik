@@ -27,13 +27,14 @@ export interface UiSheetModalProps extends BottomSheetModalProps {
   list?: boolean
   icon?: IconValue
   title?: string
+  footer?: () => ReactNode
 }
 
 export const BackdropComponent = (props: BottomSheetBackdropProps) => {
   return <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />
 }
 
-export const UiSheetModal = ({ cRef, icon, title, containerStyle, ...props }: UiSheetModalProps) => {
+export const UiSheetModal = ({ cRef, icon, title, footer, containerStyle, ...props }: UiSheetModalProps) => {
   const { schemeColor } = useTheme()
   const { handleSheetPositionChange } = useSheetBackHandler(cRef)
   const sheetHeight = useSheetModal()
@@ -47,6 +48,7 @@ export const UiSheetModal = ({ cRef, icon, title, containerStyle, ...props }: Ui
       animatedIndex={sheetHeight?.index}
       onChange={handleSheetPositionChange}
       topInset={insets.top}
+      bottomInset={insets.bottom}
       animationConfigs={{
         duration: 350,
         easing: Easing.out(Easing.exp),
@@ -84,9 +86,13 @@ export const UiSheetModal = ({ cRef, icon, title, containerStyle, ...props }: Ui
                 </BottomSheetView>
               )}
 
-              <BottomSheetScrollView contentContainerStyle={{ paddingBottom: insets.bottom }}>
+              <BottomSheetScrollView>
                 {props.children as ReactNode | ReactNode[]}
               </BottomSheetScrollView>
+
+              <View style={styles.bottom}>
+                {footer?.()}
+              </View>
             </>
           )
         : (
@@ -132,5 +138,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 4,
     alignItems: 'center',
+  },
+  bottom: {
+    padding: 12,
   },
 })

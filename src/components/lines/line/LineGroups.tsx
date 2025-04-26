@@ -1,11 +1,6 @@
-import { BottomSheetFlatList, BottomSheetModal } from '@gorhom/bottom-sheet'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { RefObject, useCallback } from 'react'
-import {
-  StyleSheet,
-  View,
-  ViewProps,
-  ListRenderItem,
-} from 'react-native'
+import { ViewProps } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UiSheetModal } from '@/components/ui/sheet/UiSheetModal'
@@ -44,11 +39,6 @@ export const LineGroups = ({ onPressGroup, lineCodeToAdd, ...props }: LineGroups
     [lineCodeToAdd, props.cRef, onPressGroup],
   )
 
-  const renderItem: ListRenderItem<LineGroup> = useCallback(
-    ({ item }) => <LineGroupsItem group={item} onPress={() => handlePressGroup(item)} />,
-    [handlePressGroup],
-  )
-
   return (
     <>
       {props.children}
@@ -56,37 +46,17 @@ export const LineGroups = ({ onPressGroup, lineCodeToAdd, ...props }: LineGroups
       <UiSheetModal
         cRef={props.cRef}
         snapPoints={['50%']}
+        // list
         enableDynamicSizing={false}
+        footer={() => (
+          <UiButton icon="add" title={i18n.t('createNewGroup')} onPress={handlePressNewGroup} />
+        )}
+        list
       >
-        <View style={styles.container}>
-          <BottomSheetFlatList
-            data={groups}
-            renderItem={renderItem}
-          />
-
-          <View style={styles.buttonContainer}>
-            <UiButton
-              icon="add"
-              title={i18n.t('createNewGroup')}
-              onPress={handlePressNewGroup}
-            />
-          </View>
-        </View>
+        {groups.map(group => (
+          <LineGroupsItem key={group.id} group={group} onPress={() => handlePressGroup(group)} />
+        ))}
       </UiSheetModal>
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  buttonContainer: {
-    padding: 8,
-    paddingTop: 0,
-  },
-  contentContainer: {
-    gap: 4,
-    padding: 8,
-  },
-})
