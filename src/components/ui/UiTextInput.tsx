@@ -27,6 +27,8 @@ export const UiTextInput = ({ iconSize = 'md', icon, iconPress, cRef, style, sty
   const inputStyle: StyleProp<TextStyle> = {
     color: schemeColor.onSurface,
     display: 'flex',
+    paddingHorizontal: icon ? 0 : 8 * 2.5,
+    flex: 1,
   }
 
   return (

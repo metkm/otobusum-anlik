@@ -30,7 +30,7 @@ export interface UiButtonPropsBase {
   iconTrail?: IconValue
   children?: React.ReactNode
   align?: 'left'
-  accented?: boolean
+  error?: boolean
 }
 
 export interface UiButtonPropsWithIcon extends UiButtonPropsBase {
@@ -47,22 +47,26 @@ export type UiButtonProps = UiButtonPropsWithTitle | UiButtonPropsWithIcon
 
 const AnimatedIonIcons = Animated.createAnimatedComponent(Ionicons)
 
-export const UiButton = ({ iconSize = 'md', variant = 'solid', accented, ...props }: UiButtonProps) => {
+export const UiButton = ({ iconSize = 'md', variant = 'solid', error, ...props }: UiButtonProps) => {
   const { schemeColor } = useTheme()
 
   const defaultBackground
     = variant === 'solid'
       ? schemeColor.primary
-      : variant === 'soft'
-        ? schemeColor.surfaceContainer
-        : undefined
+      : variant === 'error'
+        ? schemeColor.error
+        : variant === 'soft'
+          ? schemeColor.surfaceContainer
+          : undefined
 
   const defaultTextColor
     = variant === 'solid'
       ? schemeColor.onPrimary
-      : variant === 'soft'
-        ? schemeColor.onSurface
-        : schemeColor.onSurface
+      : variant === 'error'
+        ? schemeColor.onError
+        : variant === 'soft'
+          ? schemeColor.onSurface
+          : schemeColor.onSurface
 
   const dynamicContainer: StyleProp<ViewStyle> = {
     backgroundColor: defaultBackground,
