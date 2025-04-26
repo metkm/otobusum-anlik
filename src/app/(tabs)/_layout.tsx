@@ -66,7 +66,7 @@ export const TabsLayout = () => {
                   }
                   size={22}
                   color={schemeDefault.onSurface}
-                  style={{ width: 22 }}
+                  style={{ width: 22, height: 22 }}
                 />
               </View>
             ),
