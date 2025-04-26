@@ -16,6 +16,7 @@ import { TheStatusBar } from '@/components/TheStatusBar'
 import { useTheme } from '@/hooks/useTheme'
 
 import { persister, queryClient } from '@/api/client'
+import { fontSizes } from '@/constants/uiSizes'
 import { i18n } from '@/translations/i18n'
 
 SplashScreen.preventAutoHideAsync()
@@ -69,6 +70,11 @@ export const RootLayout = () => {
                   animation: 'fade',
                   navigationBarTranslucent: true,
                   navigationBarColor: schemeColor.surfaceContainer,
+                  headerTitleAlign: 'center',
+                  headerTitleStyle: {
+                    fontSize: fontSizes['md'],
+                  },
+                  headerBackButtonDisplayMode: 'minimal',
                 }}
               >
                 <Stack.Screen
