@@ -79,7 +79,7 @@ export const TheStopInfo = ({ ref }: TheStopInfoProps) => {
     if (!query.data) return
 
     ref.current?.animateCamera({
-      latitude: query.data.stop.y_coord + 0.005,
+      latitude: query.data.stop.y_coord,
       longitude: query.data.stop.x_coord,
       latitudeDelta: 0.010,
       longitudeDelta: 0.010,

@@ -41,8 +41,6 @@ export const TheMap = ({ ref, onMapReady, onMapRegionUpdate, initialRegion, ...p
       animateCamera: (region) => {
         let re = { ...region }
 
-        re.latitude -= 0.004
-
         map.current?.animateToRegion(re)
       },
       moveTo: (latlng) => {
