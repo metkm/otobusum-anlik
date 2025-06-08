@@ -1,14 +1,14 @@
 import { StyleSheet, View } from 'react-native'
 
 import { useLine } from '@/hooks/queries/useLine'
-import { useCountdown } from '@/hooks/useCountdown'
 import { useTheme } from '@/hooks/useTheme'
 
 import { UiActivityIndicator } from '../../ui/UiActivityIndicator'
 import { UiText } from '../../ui/UiText'
 
+import { LineUpdateCountdown } from './LineUpdateCountdown'
+
 import { iconSizes } from '@/constants/uiSizes'
-import { i18n } from '@/translations/i18n'
 
 interface LineNameProps {
   lineCode: string
@@ -18,7 +18,6 @@ interface LineNameProps {
 export const LineName = ({ lineCode, variant = 'solid' }: LineNameProps) => {
   const { schemeColor } = useTheme()
   const { query } = useLine(lineCode)
-  const { count } = useCountdown(query.dataUpdatedAt)
 
   const color = variant === 'solid' ? schemeColor.onPrimary : schemeColor.onSurface
 
@@ -44,7 +43,7 @@ export const LineName = ({ lineCode, variant = 'solid' }: LineNameProps) => {
         )}
       </View>
 
-      <UiText size="sm" dimmed>{i18n.t('updateCount', { count: Math.floor(count / 1_000) })}</UiText>
+      <LineUpdateCountdown lineCode={lineCode} />
     </View>
   )
 }
