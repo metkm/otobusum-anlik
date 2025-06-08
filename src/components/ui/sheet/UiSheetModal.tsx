@@ -34,11 +34,45 @@ export const BackdropComponent = (props: BottomSheetBackdropProps) => {
   return <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />
 }
 
+const TopComponent = ({ icon, title }: { icon?: IconValue, title?: string }) => {
+  const { schemeColor } = useTheme()
+
+  if (!icon && !title) return
+
+  return (
+    <View>
+      <View
+        style={[
+          styles.top,
+          {
+            borderColor: schemeColor.surfaceContainerHigh,
+            borderBottomWidth: StyleSheet.hairlineWidth,
+          },
+        ]}
+      >
+        {icon && (
+          <Ionicons
+            name={icon}
+            size={iconSizes['lg']}
+            color={schemeColor.onSurface}
+          />
+        )}
+
+        {title && (
+          <UiText>{title}</UiText>
+        )}
+      </View>
+    </View>
+  )
+}
+
 export const UiSheetModal = ({ cRef, icon, title, footer, containerStyle, ...props }: UiSheetModalProps) => {
   const { schemeColor } = useTheme()
   const { handleSheetPositionChange } = useSheetBackHandler(cRef)
   const sheetHeight = useSheetModal()
   const insets = useSafeAreaInsets()
+
+  const _footer = footer?.()
 
   return (
     <BottomSheetModal
@@ -48,7 +82,6 @@ export const UiSheetModal = ({ cRef, icon, title, footer, containerStyle, ...pro
       animatedIndex={sheetHeight?.index}
       onChange={handleSheetPositionChange}
       topInset={insets.top}
-      bottomInset={insets.bottom}
       animationConfigs={{
         duration: 350,
         easing: Easing.out(Easing.exp),
@@ -67,54 +100,24 @@ export const UiSheetModal = ({ cRef, icon, title, footer, containerStyle, ...pro
       {props.list
         ? (
             <>
-              {(icon || title) && (
-                <BottomSheetView style={[styles.top, {
-                  borderColor: schemeColor.surfaceContainerHigh,
-                }]}
-                >
-                  {icon && (
-                    <Ionicons
-                      name={icon}
-                      size={iconSizes['lg']}
-                      color={schemeColor.onSurface}
-                    />
-                  )}
-
-                  {title && (
-                    <UiText>{title}</UiText>
-                  )}
-                </BottomSheetView>
-              )}
-
-              <BottomSheetScrollView>
+              <BottomSheetScrollView
+                contentContainerStyle={{ paddingBottom: insets.bottom }}
+                stickyHeaderIndices={[0]}
+              >
+                <TopComponent title={title} icon={icon} />
                 {props.children as ReactNode | ReactNode[]}
               </BottomSheetScrollView>
 
-              <View style={styles.bottom}>
-                {footer?.()}
-              </View>
+              {_footer && (
+                <View style={styles.bottom}>
+                  {footer?.()}
+                </View>
+              )}
             </>
           )
         : (
             <BottomSheetView style={{ paddingBottom: insets.bottom }}>
-              {(icon || title) && (
-                <View style={[styles.top, {
-                  borderColor: schemeColor.surfaceContainerHigh,
-                }]}
-                >
-                  {icon && (
-                    <Ionicons
-                      name={icon}
-                      size={iconSizes['lg']}
-                      color={schemeColor.onSurface}
-                    />
-                  )}
-
-                  {title && (
-                    <UiText>{title}</UiText>
-                  )}
-                </View>
-              )}
+              <TopComponent title={title} icon={icon} />
 
               <View style={[styles.container, containerStyle]}>
                 {props.children as ReactNode | ReactNode[]}
@@ -132,10 +135,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   top: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    padding: 12,
-    display: 'flex',
     flexDirection: 'row',
+    padding: 12,
     gap: 4,
     alignItems: 'center',
   },

@@ -47,18 +47,29 @@ export const MarkersStop = (props: Props) => {
   }
 
   return (
-    <MarkersFiltersInView
-      data={stops}
-      renderItem={item => (
-        <MarkersFiltersZoomMemoized
+    <>
+      {stops.map(item => (
+        <MarkersStopItemMemoized
           key={`${item.x_coord}-${item.y_coord}-${props.lineCode}-${item.stop_code}`}
-          limit={13}
-        >
-          <MarkersStopItemMemoized type="point" stop={item} lineCode={props.lineCode} />
-        </MarkersFiltersZoomMemoized>
-      )}
-    >
-    </MarkersFiltersInView>
+          type="point"
+          stop={item}
+          lineCode={props.lineCode}
+        />
+      ))}
+    </>
+
+  // <MarkersFiltersInView
+  //   data={stops}
+  //   renderItem={item => (
+  //     <MarkersStopItemMemoized
+  //       key={`${item.x_coord}-${item.y_coord}-${props.lineCode}-${item.stop_code}`}
+  //       type="point"
+  //       stop={item}
+  //       lineCode={props.lineCode}
+  //     />
+  //   )}
+  // >
+  // </MarkersFiltersInView>
   )
 }
 

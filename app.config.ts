@@ -8,7 +8,7 @@ const config: ExpoConfig = {
   icon: './src/assets/icon.png',
   scheme: 'otobusum-anlik',
   userInterfaceStyle: 'automatic',
-  newArchEnabled: false,
+  newArchEnabled: true,
   extra: {
     eas: {
       projectId: '2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
@@ -56,6 +56,15 @@ const config: ExpoConfig = {
       {
         image: './src/assets/icon.png',
         backgroundColor: '#0a0a0a',
+      },
+    ],
+    [
+      'react-native-edge-to-edge',
+      {
+        android: {
+          parentTheme: 'Default',
+          enforceNavigationBarContrast: false,
+        },
       },
     ],
   ],
