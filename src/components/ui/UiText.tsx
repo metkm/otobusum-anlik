@@ -19,5 +19,5 @@ export const UiText = ({ style, dimmed, size = 'md', ...rest }: Props) => {
     flexShrink: 1,
   }
 
-  return <Text style={[baseStyle, style]} {...rest} />
+  return <Text style={[baseStyle, style]} ellipsizeMode="tail" {...rest} />
 }

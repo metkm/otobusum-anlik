@@ -22,8 +22,8 @@ export const LineName = ({ lineCode, variant = 'solid' }: LineNameProps) => {
   const color = variant === 'solid' ? schemeColor.onPrimary : schemeColor.onSurface
 
   return (
-    <View>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <View style={styles.nameContainer}>
         <UiText
           style={{
             fontWeight: 'bold',
@@ -50,6 +50,9 @@ export const LineName = ({ lineCode, variant = 'solid' }: LineNameProps) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  nameContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 8,

@@ -10,7 +10,7 @@ import { useTheme } from '@/hooks/useTheme'
 import { UiActivityIndicator } from './UiActivityIndicator'
 import { UiText } from './UiText'
 
-import { ButtonVariants, IconSize, iconSizes } from '@/constants/uiSizes'
+import { ButtonVariants, iconSizes, size } from '@/constants/uiSizes'
 import { IconValue } from '@/types/ui'
 
 export interface UiButtonPropsBase {
@@ -19,7 +19,7 @@ export interface UiButtonPropsBase {
   square?: boolean
   onPress?: () => void
   onLongPress?: () => void
-  iconSize?: IconSize
+  size?: size
   disabled?: boolean
   containerStyle?: StyleProp<ViewStyle>
   innerContainerStyle?: StyleProp<ViewStyle>
@@ -48,7 +48,7 @@ export type UiButtonProps = UiButtonPropsWithTitle | UiButtonPropsWithIcon
 const AnimatedIonIcons = Animated.createAnimatedComponent(Ionicons)
 
 export const UiButton = ({
-  iconSize = 'md',
+  size = 'md',
   variant = 'solid',
   error,
   ...props
@@ -95,15 +95,15 @@ export const UiButton = ({
         return (
           <AnimatedIonIcons
             name={icon}
-            size={iconSizes[iconSize]}
+            size={iconSizes[size]}
             animatedProps={props.animatedIconProps}
           />
         )
       }
 
-      return <Ionicons name={icon} size={iconSizes[iconSize]} color={iconColor} />
+      return <Ionicons name={icon} size={iconSizes[size]} color={iconColor} />
     },
-    [iconColor, iconSize, props.animatedIconProps, props.isLoading],
+    [iconColor, size, props.animatedIconProps, props.isLoading],
   )
 
   return (
@@ -134,7 +134,7 @@ export const UiButton = ({
         {props.icon && <Icon icon={props.icon} />}
 
         {props.title && (
-          <UiText style={[styles.title, dynamicText, props.textStyle]} numberOfLines={1}>
+          <UiText style={[styles.title, dynamicText, props.textStyle]} size={size} numberOfLines={1}>
             {props.title}
           </UiText>
         )}

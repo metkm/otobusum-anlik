@@ -174,6 +174,8 @@ export const deleteTheme = (lineCode: string) =>
       = !groupAllLineCodes.includes(lineCode)
         && state.lines[filtersStore.selectedCity].indexOf(lineCode) === -1
 
+    console.log(groupAllLineCodes, shouldDeleteTheme)
+
     if (shouldDeleteTheme) {
       delete state.lineTheme[filtersStore.selectedCity][lineCode]
     }
@@ -200,6 +202,9 @@ export const createNewGroup = () =>
     const filtersStore = useFiltersStore.getState()
     const id = randomUUID()
 
+    const cityGroups = state.lineGroups[filtersStore.selectedCity]
+    const cityGroupsCount = Object.entries(cityGroups).length + 1
+
     return {
       lineGroups: {
         ...state.lineGroups,
@@ -207,7 +212,7 @@ export const createNewGroup = () =>
           ...state.lineGroups[filtersStore.selectedCity],
           [id]: {
             id,
-            title: `new group ${Object.keys(state.lineGroups).length + 1}`,
+            title: `new group ${cityGroupsCount}`,
             lineCodes: [],
           },
         },
@@ -277,14 +282,17 @@ export const deleteGroup = (groupId: string) =>
     const group = state.lineGroups[filtersStore.selectedCity][groupId]
     if (!group) return state
 
-    group.lineCodes.forEach(lineCode =>
-      deleteLineFromGroup(groupId, filtersStore.selectedCity, lineCode),
-    )
+    group.lineCodes.forEach(lineCode => deleteLineFromGroup(groupId, filtersStore.selectedCity, lineCode))
     delete state.lineGroups[filtersStore.selectedCity][groupId]
+
+    console.log(state.lineGroups)
 
     return {
       lineGroups: {
         ...state.lineGroups,
+        [filtersStore.selectedCity]: {
+          ...state.lineGroups[filtersStore.selectedCity],
+        },
       },
     }
   })
@@ -292,11 +300,12 @@ export const deleteGroup = (groupId: string) =>
 export const deleteLineFromGroup = (groupId: string, city: Cities, lineCode: string) =>
   useLinesStore.setState((state) => {
     const lineIndex = state.lineGroups[city][groupId]?.lineCodes.indexOf(lineCode)
-    const filtersStore = useFiltersStore.getState()
     if (lineIndex === undefined || lineIndex === -1) return state
 
     state.lineGroups[city][groupId]!.lineCodes.splice(lineIndex, 1)
     deleteTheme(lineCode)
+
+    const filtersStore = useFiltersStore.getState()
 
     return {
       lineGroups: {

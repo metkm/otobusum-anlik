@@ -59,4 +59,5 @@ export default {
   announcements: 'Announcements',
   timetableEmptyRange: 'Timetable for this day is empty',
   lineGroups: 'Line Groups',
+  empty: 'Empty',
 }

@@ -3,7 +3,7 @@ import { ExpoConfig } from 'expo/config'
 const config: ExpoConfig = {
   name: 'Otobüsüm Anlık',
   slug: 'otobusum-anlik',
-  version: '1.2.8',
+  version: '1.2.9',
   orientation: 'portrait',
   icon: './src/assets/icon.png',
   scheme: 'otobusum-anlik',

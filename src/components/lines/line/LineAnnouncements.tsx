@@ -38,8 +38,8 @@ export const LineAnnouncements = ({ lineCode }: LineAnnouncementsProps) => {
           title={i18n.t('announcements')}
           icon="megaphone-outline"
         >
-          {announcements.map(ann => (
-            <View key={`${ann.GUNCELLEME_SAATI}-${ann.MESAJ}`} style={styles.announcementContainer}>
+          {announcements.map((ann, index) => (
+            <View key={`${ann.GUNCELLEME_SAATI}-${ann.MESAJ}-${index}`} style={styles.announcementContainer}>
               <UiText>{ann.GUNCELLEME_SAATI}</UiText>
               <UiText>{ann.MESAJ}</UiText>
             </View>
