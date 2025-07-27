@@ -35,9 +35,12 @@ export const MarkersBusesItem = ({ location, lineCode }: MarkersBusesItemProps) 
         zIndex: 2,
       }}
     >
-      <View style={[styles.iconContainer, { backgroundColor: schemeColor.primaryContainer }]}>
-        <Ionicons name="bus" color={schemeColor.onPrimaryContainer} />
-      </View>
+      <Ionicons
+        name="bus"
+        color={schemeColor.onPrimaryContainer}
+        size={14}
+        style={[styles.iconContainer, { backgroundColor: schemeColor.primaryContainer }]}
+      />
     </MarkersCallout>
   )
 }
