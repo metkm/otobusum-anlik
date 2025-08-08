@@ -10,7 +10,7 @@ import { MarkersFiltersZoom } from '../filters/MarkersFiltersZoom'
 import { BusStop } from '@/types/bus'
 
 interface StopMarkersItemProps {
-  lineCode: string
+  lineCode?: string
   stop: BusStop
 }
 

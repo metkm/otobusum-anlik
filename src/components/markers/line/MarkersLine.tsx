@@ -14,7 +14,6 @@ import { useSettingsStore } from '@/stores/settings'
 
 export const MarkersLine = () => {
   const invisibleLines = useMiscStore(state => state.invisibleLines)
-  const clusterStops = useSettingsStore(useShallow(state => state.clusterStops))
 
   useFiltersStore(useShallow(state => state.selectedCity))
   useFiltersStore(useShallow(state => state.selectedGroup))
@@ -27,12 +26,13 @@ export const MarkersLine = () => {
       {filteredCodes.map(lineCode => (
         <View key={lineCode}>
           <MarkersLineRouteLine lineCode={lineCode} />
+          <MarkersStop lineCode={lineCode} />
 
-          {
+          {/* {
             clusterStops && Platform.OS !== 'web'
               ? <MarkersStopClusteredMemoized lineCode={lineCode} />
               : <MarkersStop lineCode={lineCode} />
-          }
+          } */}
 
           <MarkersBuses code={lineCode} />
         </View>
