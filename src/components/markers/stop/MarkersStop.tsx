@@ -1,7 +1,22 @@
-import { PointAnnotation, MarkerView, ShapeSource, SymbolLayer, Images } from '@maplibre/maplibre-react-native'
-import { memo, useMemo } from 'react'
-import { Platform, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
+import {
+  PointAnnotation,
+  MarkerView,
+  ShapeSource,
+  SymbolLayer,
+  Images,
+} from '@maplibre/maplibre-react-native'
+import { memo, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  PixelRatio,
+  Platform,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native'
 import { LatLng } from 'react-native-maps'
+import ViewShot, { captureRef, captureScreen } from 'react-native-view-shot'
 
 import { UiText } from '@/components/ui/UiText'
 
@@ -20,7 +35,15 @@ interface Props {
   lineCode: string
 }
 
+const targetPixelCount = 14
+const pixelRatio = PixelRatio.get()
+
+const pixels = targetPixelCount / pixelRatio
+
 export const MarkersStop = (props: Props) => {
+  const [uri, setUri] = useState(() => '')
+  const ref = useRef<View | null>(null)
+
   const { schemeColor } = useTheme(props.lineCode)
   const invisibleLines = useMiscStore(state => state.invisibleLines)
 
@@ -43,6 +66,10 @@ export const MarkersStop = (props: Props) => {
     [schemeColor],
   )
 
+  useEffect(() => {
+    console.log(uri)
+  }, [uri])
+
   const stops = useMemo(() => {
     const results = query.data?.map(stop => ({
       ...stop,
@@ -54,6 +81,19 @@ export const MarkersStop = (props: Props) => {
 
     return results || []
   }, [query.data])
+
+  // useEffect(() => {
+  //   captureRef(ref, {
+  //     height: pixels,
+  //     width: pixels,
+  //     result: 'tmpfile',
+  //     format: 'png',
+  //     quality: 1,
+  //   }).then((uri) => {
+  //     console.log(uri)
+  //     setUri(uri)
+  //   })
+  // }, [])
 
   if (Platform.OS === 'web') {
     return (
@@ -72,15 +112,15 @@ export const MarkersStop = (props: Props) => {
 
   const features = invisibleLines.includes(props.lineCode)
     ? []
-    : stops.map(stop => ({
-      type: 'Feature',
-      id: stop.stop_code,
-      geometry: {
-        type: 'Point',
-        coordinates: [stop.coordinates.longitude, stop.coordinates.latitude],
-      },
-      properties: {},
-    })) satisfies GeoJSON.FeatureCollection['features']
+    : (stops.map(stop => ({
+        type: 'Feature',
+        id: stop.stop_code,
+        geometry: {
+          type: 'Point',
+          coordinates: [stop.coordinates.longitude, stop.coordinates.latitude],
+        },
+        properties: {},
+      })) satisfies GeoJSON.FeatureCollection['features'])
 
   return (
     <ShapeSource
@@ -94,10 +134,25 @@ export const MarkersStop = (props: Props) => {
       <SymbolLayer
         id="stop-symbol-layer"
         style={{
-          iconImage: require('@/assets/bus.png'),
+          iconImage: 'stop',
           iconAllowOverlap: true,
         }}
       />
+
+      <Images
+        images={{
+          stop: {
+            uri: uri,
+          },
+        }}
+        onImageMissing={(key) => {
+          console.log('missing', key)
+        }}
+      >
+        <ViewShot onCapture={uri => setUri(uri)} captureMode="mount">
+          <View ref={ref} style={{ width: 20, height: 20, backgroundColor: 'red' }} />
+        </ViewShot>
+      </Images>
     </ShapeSource>
   )
 
