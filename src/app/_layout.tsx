@@ -19,7 +19,7 @@ import { persister, queryClient } from '@/api/client'
 import { fontSizes } from '@/constants/uiSizes'
 import { i18n } from '@/translations/i18n'
 
-SplashScreen.preventAutoHideAsync()
+// SplashScreen.preventAutoHideAsync()
 
 SplashScreen.setOptions({
   duration: 50,

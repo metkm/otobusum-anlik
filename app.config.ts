@@ -67,6 +67,7 @@ const config: ExpoConfig = {
         },
       },
     ],
+    '@maplibre/maplibre-react-native',
   ],
   experiments: {
     typedRoutes: true,

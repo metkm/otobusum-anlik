@@ -1,3 +1,4 @@
+import { PointAnnotation, ShapeSource } from '@maplibre/maplibre-react-native'
 import { Platform, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -20,22 +21,18 @@ export const MarkersLine = () => {
   useFiltersStore(useShallow(state => state.selectedGroup))
 
   const lines = useLinesStore(() => getLines())
-  const filteredCodes = lines.filter(lineCode => !invisibleLines.includes(lineCode))
+  // const filteredCodes = lines.filter(lineCode => !invisibleLines.includes(lineCode))
+
+  // return (
+  //   <PointAnnotation id="tea" coordinate={[20, 0]}>
+  //     <View style={{ width: 40, height: 40, backgroundColor: 'red' }} />
+  //   </PointAnnotation>
+  // )
 
   return (
     <>
-      {filteredCodes.map(lineCode => (
-        <View key={lineCode}>
-          <MarkersLineRouteLine lineCode={lineCode} />
-
-          {
-            clusterStops && Platform.OS !== 'web'
-              ? <MarkersStopClusteredMemoized lineCode={lineCode} />
-              : <MarkersStop lineCode={lineCode} />
-          }
-
-          <MarkersBuses code={lineCode} />
-        </View>
+      {lines.map(lineCode => (
+        <MarkersStop key={`${lineCode}-stops`} lineCode={lineCode} />
       ))}
     </>
   )

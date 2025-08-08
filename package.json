@@ -13,6 +13,7 @@
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
     "@gorhom/bottom-sheet": "^5.1.6",
+    "@maplibre/maplibre-react-native": "^11.0.0-alpha.5",
     "@material/material-color-utilities": "^0.3.0",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-native-community/netinfo": "11.4.1",

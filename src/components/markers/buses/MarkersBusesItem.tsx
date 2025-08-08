@@ -1,3 +1,4 @@
+import { PointAnnotation } from '@maplibre/maplibre-react-native'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { memo } from 'react'
 import { StyleSheet, View } from 'react-native'

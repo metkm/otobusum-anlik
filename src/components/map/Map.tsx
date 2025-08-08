@@ -1,6 +1,7 @@
+import { MapView } from '@maplibre/maplibre-react-native'
 import { RefObject, useImperativeHandle, useRef } from 'react'
 import { Dimensions } from 'react-native'
-import MapView, { LatLng, PROVIDER_GOOGLE, Region } from 'react-native-maps'
+import { LatLng, PROVIDER_GOOGLE, Region } from 'react-native-maps'
 import Animated, { clamp, Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useShallow } from 'zustand/react/shallow'
@@ -91,6 +92,14 @@ export const TheMap = ({ ref, onMapReady, onMapRegionUpdate, initialRegion, ...p
   return (
     <Animated.View style={animatedStyle}>
       <MapView
+        style={{ flex: 1 }}
+        mapStyle="https://tiles.openfreemap.org/styles/liberty"
+        compassEnabled={false}
+      >
+        {props.children}
+      </MapView>
+
+      {/* <MapView
         ref={map}
         provider={PROVIDER_GOOGLE}
         onMapReady={onMapReady}
@@ -106,7 +115,7 @@ export const TheMap = ({ ref, onMapReady, onMapRegionUpdate, initialRegion, ...p
         moveOnMarkerPress={false}
       >
         {props.children}
-      </MapView>
+      </MapView> */}
     </Animated.View>
   )
 }
