@@ -5,6 +5,7 @@ import {
   SymbolLayer,
   Images,
 } from '@maplibre/maplibre-react-native'
+import { readAsStringAsync, writeAsStringAsync } from 'expo-file-system'
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import {
   PixelRatio,
@@ -15,7 +16,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import { LatLng } from 'react-native-maps'
+import { LatLng, Marker } from 'react-native-maps'
 import ViewShot, { captureRef, captureScreen } from 'react-native-view-shot'
 
 import { UiText } from '@/components/ui/UiText'
@@ -41,8 +42,9 @@ const pixelRatio = PixelRatio.get()
 const pixels = targetPixelCount / pixelRatio
 
 export const MarkersStop = (props: Props) => {
-  const [uri, setUri] = useState(() => '')
-  const ref = useRef<View | null>(null)
+  const [image, setImage] = useState('')
+  const [uri, setUri] = useState('')
+  // const ref = useRef<View | null>(null)
 
   const { schemeColor } = useTheme(props.lineCode)
   const invisibleLines = useMiscStore(state => state.invisibleLines)
@@ -65,10 +67,6 @@ export const MarkersStop = (props: Props) => {
     }),
     [schemeColor],
   )
-
-  useEffect(() => {
-    console.log(uri)
-  }, [uri])
 
   const stops = useMemo(() => {
     const results = query.data?.map(stop => ({
@@ -122,6 +120,37 @@ export const MarkersStop = (props: Props) => {
         properties: {},
       })) satisfies GeoJSON.FeatureCollection['features'])
 
+  // let content
+  // if (uri) {
+  //   const file =
+  // }
+
+  const handleCapture = async (uri: string) => {
+    let content = await readAsStringAsync(uri, { encoding: 'base64' })
+    content = `data:image/png;base64,${content}`
+
+    setImage(content)
+    setUri(uri)
+  }
+
+  // return (
+  //   <>
+  //     {
+  //       invisibleLines.includes(props.lineCode)
+  //         ? image
+  //           ? stops.map(stop => (
+  //               <Marker key={stop.stop_code} coordinate={stop.coordinates} image={{ uri: image }} />
+  //             ))
+  //           : undefined
+  //         : undefined
+  //     }
+
+  //     <ViewShot onCapture={handleCapture} captureMode="mount">
+  //       <View style={{ width: 20, height: 20, backgroundColor: 'red' }} />
+  //     </ViewShot>
+  //   </>
+  // )
+
   return (
     <ShapeSource
       id="shape-source"
@@ -142,17 +171,17 @@ export const MarkersStop = (props: Props) => {
       <Images
         images={{
           stop: {
-            uri: uri,
+            uri,
           },
         }}
         onImageMissing={(key) => {
           console.log('missing', key)
         }}
-      >
-        <ViewShot onCapture={uri => setUri(uri)} captureMode="mount">
-          <View ref={ref} style={{ width: 20, height: 20, backgroundColor: 'red' }} />
-        </ViewShot>
-      </Images>
+      />
+
+      <ViewShot onCapture={handleCapture} captureMode="mount">
+        <View style={{ width: 20, height: 20, backgroundColor: 'red' }} />
+      </ViewShot>
     </ShapeSource>
   )
 

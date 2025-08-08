@@ -101,7 +101,6 @@ export const TheMap = ({ ref, onMapReady, onMapRegionUpdate, initialRegion, ...p
 
       {/* <MapView
         ref={map}
-        provider={PROVIDER_GOOGLE}
         onMapReady={onMapReady}
         onRegionChangeComplete={onMapRegionUpdate}
         toolbarEnabled={false}

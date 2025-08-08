@@ -50,7 +50,8 @@
     "react-native-web": "^0.20.0",
     "use-debounce": "^10.0.5",
     "zustand": "^5.0.5",
-    "react-native-view-shot": "4.0.3"
+    "react-native-view-shot": "4.0.3",
+    "expo-file-system": "~18.1.11"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
