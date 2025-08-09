@@ -4,7 +4,7 @@ import { Callout, MapCalloutProps, MapMarker, MapMarkerProps, Marker, MarkerPres
 interface MarkersCalloutProps {
   markerProps: MapMarkerProps
   calloutProps?: MapCalloutProps
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 export const MarkersCallout = ({ markerProps, calloutProps, children }: MarkersCalloutProps) => {

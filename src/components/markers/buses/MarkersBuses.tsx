@@ -1,7 +1,7 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { readAsStringAsync } from 'expo-file-system'
 import { memo, useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Marker } from 'react-native-maps'
 import { captureRef } from 'react-native-view-shot'
 
@@ -36,7 +36,7 @@ export const MarkersBuses = (props: Props) => {
 
   return (
     <>
-      {locations.map(location => (
+      {/* {locations.map(location => (
         <MarkersCallout
           key={`${location.bus_id}-${location.route_code}-${location.lat}-${location.lng}`}
           calloutProps={{
@@ -51,27 +51,30 @@ export const MarkersBuses = (props: Props) => {
             tracksViewChanges: false,
             anchor: { x: 0.5, y: 0.5 },
             zIndex: 2,
+            image: { uri: content, width: 14, height: 14 },
           }}
-        >
-          <Ionicons
-            name="bus"
-            color={schemeColor.onPrimaryContainer}
-            size={14}
-            style={[styles.iconContainer, { backgroundColor: schemeColor.primaryContainer }]}
-          />
-        </MarkersCallout>
-      ))}
+        />
+      ))} */}
 
-      <Ionicons
+      <View
         ref={(ref) => {
           if (!ref) return
           captureRef(ref).then(handleCapture)
         }}
-        name="bus"
-        color={schemeColor.onPrimaryContainer}
-        size={14}
-        style={[styles.iconContainer, { backgroundColor: schemeColor.primaryContainer }]}
-      />
+        style={styles.iconContainer}
+      >
+        <Ionicons
+          name="bus"
+          color={schemeColor.onPrimaryContainer}
+          size={14}
+          style={{
+            padding: 4,
+            height: 18,
+            width: 18,
+            backgroundColor: schemeColor.primaryContainer,
+          }}
+        />
+      </View>
     </>
   )
 }
@@ -80,9 +83,19 @@ export const MarkersBusesMemoized = memo(MarkersBuses)
 
 const styles = StyleSheet.create({
   iconContainer: {
-    borderRadius: 999,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 8,
+    width: 14,
+    height: 14,
+    position: 'absolute',
+    padding: 14,
+    overflow: 'hidden',
+
+    // borderRadius: 999,
+    // display: 'flex',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // padding: 8,
+    // width: 14,
+    // height: 14,
+    // backgroundColor: 'red',
   },
 })
