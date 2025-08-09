@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/eslint', '@nuxt/ui', '@nuxt/scripts'],
   ssr: false,
   devtools: { enabled: true },
+  css: ['~/assets/main.css'],
   runtimeConfig: {
     public: {
       scripts: {

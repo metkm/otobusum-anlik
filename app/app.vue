@@ -1,4 +1,6 @@
 <script setup lang="ts">
+/// <reference types="google.maps" />
+
 import { SafeArea } from '@capacitor-community/safe-area'
 
 SafeArea.enable({
@@ -15,7 +17,7 @@ SafeArea.enable({
 </script>
 
 <template>
-  <main class="main p-2 flex flex-col h-screen">
+  <main class="flex flex-col h-screen">
     <NuxtPage />
 
     <!-- <UButton>
@@ -23,12 +25,3 @@ SafeArea.enable({
     </UButton> -->
   </main>
 </template>
-
-<style>
-@import "tailwindcss";
-@import "@nuxt/ui";
-
-.main {
-  padding-top: calc(var(--safe-area-inset-top) + (var(--spacing) * 2));
-}
-</style>

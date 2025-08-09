@@ -1,16 +1,14 @@
 <script setup lang="ts">
+const isReady = ref(false)
 </script>
 
 <template>
-  <div class="-m-2 no-top-margin flex-1">
-    <ScriptGoogleMaps
-      class="flex grow !w-full !h-full !aspect-auto hide-copy"
-      :center="{ lat: 0, lng: 0 }"
-      :map-options="{
-        zoom: 4,
-        disableDefaultUI: true,
-      }"
-    />
+  <div class="flex-1">
+    <TheMap v-model:ready="isReady" />
+
+    <template v-if="isReady">
+      <TheMapOverlay />
+    </template>
   </div>
 </template>
 
@@ -19,7 +17,9 @@
   display: none;
 }
 
-.no-top-margin {
-  margin-top: calc((var(--safe-area-inset-top) + var(--spacing)) * 2 * -1) !important;
+.marker {
+  width: 20px;
+  height: 20px;
+  background-color: red;
 }
 </style>
