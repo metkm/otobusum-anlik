@@ -8,6 +8,6 @@ export const useAPI = <T>(
 
   return useFetch(url, {
     ...options,
-    baseURL: config.public.BASE_URL as string | undefined,
+    baseURL: config.public.baseUrl as string | undefined,
   })
 }

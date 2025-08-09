@@ -7,16 +7,27 @@ const props = defineProps<{
   index: number
 }>()
 
-// const element = useTemplateRef('element')
 const { mapRef } = useMap()
 
-const element = document.createElement('div')
-element.className = 'marker'
+const container = document.createElement('div')
 
 watchEffect(async () => {
-  const marker = await mapRef.value?.createAdvancedMapMarker({
+  await mapRef.value?.createAdvancedMapMarker({
     position: { lat: 0, lng: props.index * 0.9 },
-    content: element,
+    content: container,
   })
 })
 </script>
+
+<template>
+  <Teleport :to="container">
+    <div class="w-4 h-4 bg-red-500 rounded-full" />
+  </Teleport>
+</template>
+
+<!-- <template>
+  <div
+    ref="element"
+    class="w-10 h-10 bg-red-500"
+  />
+</template> -->

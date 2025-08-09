@@ -4,13 +4,17 @@
 
 <template>
   <div class="absolute inset-0 pointer-events-none content-padding">
-    <UInput
-      placeholder="Search"
-      class="w-full max-w-md pointer-events-auto"
-      size="xl"
-      :ui="{ base: 'rounded-full' }"
-      icon="i-lucide-search"
-    />
+    <div
+      class="pointer-events-auto"
+      @click="navigateTo('/search')"
+    >
+      <UInput
+        placeholder="Search"
+        class="w-full max-w-md pointer-events-none"
+        size="xl"
+        icon="i-lucide-search"
+      />
+    </div>
 
     <ol>
       <li

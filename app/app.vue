@@ -1,7 +1,10 @@
 <script setup lang="ts">
 /// <reference types="google.maps" />
 
+import { App } from '@capacitor/app'
 import { SafeArea } from '@capacitor-community/safe-area'
+
+const router = useRouter()
 
 SafeArea.enable({
   config: {
@@ -13,15 +16,13 @@ SafeArea.enable({
   },
 })
 
-// StatusBar.setOverlaysWebView({ overlay: true })
+App.addListener('backButton', () => {
+  router.back()
+})
 </script>
 
 <template>
   <main class="flex flex-col h-screen">
     <NuxtPage />
-
-    <!-- <UButton>
-      sheet yeah
-    </UButton> -->
   </main>
 </template>
