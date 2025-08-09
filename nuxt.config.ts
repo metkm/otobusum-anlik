@@ -11,6 +11,7 @@ export default defineNuxtConfig({
           apiKey: '',
         },
       },
+      baseUrl: '',
     },
   },
   compatibilityDate: '2025-07-15',
