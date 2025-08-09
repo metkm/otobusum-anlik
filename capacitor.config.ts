@@ -1,9 +1,9 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
   appId: 'com.otobusumanlik.app',
   appName: 'Otobüsüm Anlık',
-  webDir: '.output/public'
-};
+  webDir: '.output/public',
+}
 
-export default config;
+export default config

@@ -10,10 +10,14 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@capacitor-community/safe-area": "^7.0.0-alpha.1",
     "@capacitor/android": "^7.4.2",
     "@capacitor/core": "^7.4.2",
+    "@capacitor/status-bar": "^7.0.2",
     "@nuxt/eslint": "^1.8.0",
+    "@nuxt/scripts": "^0.11.10",
     "@nuxt/ui": "^3.3.0",
+    "@unhead/vue": "^2.0.14",
     "eslint": "^9.33.0",
     "nuxt": "^4.0.3",
     "typescript": "^5.9.2",
@@ -21,6 +25,7 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.4.2"
+    "@capacitor/cli": "^7.4.2",
+    "@types/google.maps": "^3.58.1"
   }
 }
