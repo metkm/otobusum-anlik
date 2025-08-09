@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="absolute inset-0 pointer-events-none content-padding">
+  <div class="flex flex-col justify-between absolute inset-0 pointer-events-none content-padding">
     <div
       class="pointer-events-auto"
       @click="navigateTo('/search')"
@@ -16,13 +16,15 @@
       />
     </div>
 
-    <ol>
+    <TheLines class="pointer-events-auto" />
+
+    <!-- <ol>
       <li
         v-for="i in 50"
         :key="i"
       >
         <BusStop :index="i" />
       </li>
-    </ol>
+    </ol> -->
   </div>
 </template>

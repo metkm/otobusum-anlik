@@ -24,10 +24,3 @@ watchEffect(async () => {
     <div class="w-4 h-4 bg-red-500 rounded-full" />
   </Teleport>
 </template>
-
-<!-- <template>
-  <div
-    ref="element"
-    class="w-10 h-10 bg-red-500"
-  />
-</template> -->

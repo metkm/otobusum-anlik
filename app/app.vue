@@ -22,7 +22,7 @@ App.addListener('backButton', () => {
 </script>
 
 <template>
-  <main class="flex flex-col h-screen">
+  <main class="flex flex-col h-screen w-screen overflow-hidden">
     <NuxtPage />
   </main>
 </template>

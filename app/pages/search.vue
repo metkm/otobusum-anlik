@@ -1,4 +1,5 @@
 <script setup lang="tsx">
+import { UButton } from '#components'
 import type { SlotsType } from 'vue'
 import { useAPI } from '~/hooks/useAPI'
 import type { SearchResult } from '~/models/search'
@@ -6,7 +7,9 @@ import type { SearchResult } from '~/models/search'
 const query = useRouteQuery('q', '')
 const queryDebounced = useDebounce(query, 500)
 
-const { data, execute, status, error } = useAPI<SearchResult>('/search', {
+const linesStore = useLinesStore()
+
+const { data, execute, status } = useAPI<SearchResult>('/search', {
   query: {
     q: queryDebounced,
   },
@@ -21,16 +24,16 @@ watch(queryDebounced, () => {
   immediate: true,
 })
 
-const SearchItem = defineComponent((props, { slots }) => {
+const SearchItem = defineComponent((props, { slots, attrs }) => {
   return () => {
     return (
-      <div class="flex items-center gap-2 p-1 hover:bg-elevated/50 transition-colors rounded-(--ui-radius)">
+      <UButton variant="ghost" color="neutral" class="w-full" {...attrs}>
         <div class="flex items-center justify-center bg-muted rounded-full px-4 py-1.5 min-w-20 aspect-[2/1]">
           {slots.default?.()}
         </div>
 
-        <p class="truncate">{props.title}</p>
-      </div>
+        <p>{props.title}</p>
+      </UButton>
     )
   }
 }, {
@@ -41,6 +44,10 @@ const SearchItem = defineComponent((props, { slots }) => {
     default?: () => unknown
   }>,
 })
+
+const onPressLine = (lineCode: string) => {
+  linesStore.addLine(lineCode)
+}
 </script>
 
 <template>
@@ -70,7 +77,10 @@ const SearchItem = defineComponent((props, { slots }) => {
           v-for="line in data?.lines"
           :key="line.code"
         >
-          <SearchItem :title="line.title">
+          <SearchItem
+            :title="line.title"
+            @click="onPressLine(line.code)"
+          >
             {{ line.code }}
           </SearchItem>
         </li>
