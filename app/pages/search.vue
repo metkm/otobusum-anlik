@@ -6,7 +6,7 @@ import type { SearchResult } from '~/models/search'
 const query = useRouteQuery('q', '')
 const queryDebounced = useDebounce(query, 500)
 
-const { data, execute, status } = useAPI<SearchResult>('/search', {
+const { data, execute, status, error } = useAPI<SearchResult>('/search', {
   query: {
     q: queryDebounced,
   },
@@ -29,7 +29,7 @@ const SearchItem = defineComponent((props, { slots }) => {
           {slots.default?.()}
         </div>
 
-        <p>{props.title}</p>
+        <p class="truncate">{props.title}</p>
       </div>
     )
   }
@@ -44,7 +44,7 @@ const SearchItem = defineComponent((props, { slots }) => {
 </script>
 
 <template>
-  <div class="flex flex-col max-w-lg w-full mx-auto items-center gap-2 content-padding">
+  <div class="flex flex-col max-w-xl w-full mx-auto items-center gap-2 content-padding">
     <UInput
       v-model="query"
       icon="i-lucide-search"
@@ -52,6 +52,7 @@ const SearchItem = defineComponent((props, { slots }) => {
       class="w-full"
       :ui="{ leading: 'pl-1' }"
       placeholder="Search"
+      autofocus
     >
       <template #leading>
         <UButton

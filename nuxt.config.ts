@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/scripts',
     '@vueuse/nuxt',
+    '@nuxt/fonts',
   ],
   ssr: false,
   devtools: { enabled: true },

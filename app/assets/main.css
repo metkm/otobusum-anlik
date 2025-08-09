@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+html, body {
+  font-family: Roboto;
+}
+
 :root {
   --ui-top-padding: calc(var(--safe-area-inset-top) + (var(--spacing) * 2));
 }
