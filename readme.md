@@ -1,14 +1,75 @@
-Google Play https://play.google.com/store/apps/details?id=com.anonymous.otobusumanlik
+# Nuxt Minimal Starter
 
-Web Version https://otobusumweb.metkm.win/
+Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-First Reddit post https://www.reddit.com/r/transitTurkey/comments/1gv1ppd/otob%C3%BCs%C3%BCm_nerede_alternatifi_bir_uygulama/
+## Setup
 
-# Preview
-<img src="https://github.com/user-attachments/assets/11cb1216-734e-40bd-863e-f5e02140b2fb" width="250" title="An image of the app that shows map"/>
+Make sure to install dependencies:
 
-# .env.local
+```bash
+# npm
+npm install
 
+# pnpm
+pnpm install
+
+# yarn
+yarn install
+
+# bun
+bun install
 ```
-EXPO_PUBLIC_MAP_API=
+
+## Development Server
+
+Start the development server on `http://localhost:3000`:
+
+```bash
+# npm
+npm run dev
+
+# pnpm
+pnpm dev
+
+# yarn
+yarn dev
+
+# bun
+bun run dev
 ```
+
+## Production
+
+Build the application for production:
+
+```bash
+# npm
+npm run build
+
+# pnpm
+pnpm build
+
+# yarn
+yarn build
+
+# bun
+bun run build
+```
+
+Locally preview production build:
+
+```bash
+# npm
+npm run preview
+
+# pnpm
+pnpm preview
+
+# yarn
+yarn preview
+
+# bun
+bun run preview
+```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
