@@ -27,6 +27,7 @@
     "expo-constants": "~17.1.2",
     "expo-crypto": "~14.1.5",
     "expo-dev-client": "~5.2.4",
+    "expo-file-system": "~18.1.11",
     "expo-linking": "~7.1.7",
     "expo-localization": "~16.1.6",
     "expo-location": "~18.1.6",
@@ -42,15 +43,14 @@
     "react-native": "0.79.5",
     "react-native-clusterer": "^3.0.0",
     "react-native-gesture-handler": "~2.24.0",
-    "react-native-maps": "1.25.0",
+    "react-native-maps": "github:react-native-maps/react-native-maps#pull/5666/head",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
+    "react-native-view-shot": "4.0.3",
     "react-native-web": "^0.20.0",
     "use-debounce": "^10.0.5",
-    "zustand": "^5.0.5",
-    "react-native-view-shot": "4.0.3",
-    "expo-file-system": "~18.1.11"
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.27.4",
