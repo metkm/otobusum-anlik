@@ -1,4 +1,11 @@
 <script setup lang="ts">
+const { lines } = useLinesStore()
+const { invisibleLines } = useFiltersStore()
+
+const visibleLines = computed(
+  () => lines.filter(lineCode => !invisibleLines.includes(lineCode)),
+)
+
 const isReady = ref(false)
 </script>
 
@@ -7,7 +14,13 @@ const isReady = ref(false)
     <TheMap v-model:ready="isReady" />
 
     <template v-if="isReady">
-      <TheMapOverlay />
+      <MarkersStops
+        v-for="lineCode in visibleLines"
+        :key="lineCode"
+        :line-code="lineCode"
+      />
+
+      <MapOverlay />
     </template>
   </div>
 </template>

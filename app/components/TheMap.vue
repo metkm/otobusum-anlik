@@ -22,9 +22,9 @@ const onReady = () => {
     :ref="onGoogleMapsMount"
     class="flex grow !w-full !h-full !aspect-auto hide-copy pointer-events-all transition-all"
     :class="[modelValueIsReady ? 'opacity-100 delay-200' : 'opacity-0']"
-    :center="{ lat: 0, lng: 0 }"
+    :center="{ lat: 40.87, lng: 29.19 }"
     :map-options="{
-      zoom: 4,
+      zoom: 12,
       disableDefaultUI: true,
       colorScheme: 'DARK',
     }"

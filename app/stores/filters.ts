@@ -2,10 +2,27 @@ import type { City } from './lines'
 
 export const useFiltersStore = defineStore('filter', () => {
   const city = ref<City>('istanbul')
+  const invisibleLines = ref<string[]>([])
+
+  const toggleLineVisibility = (lineCode: string) => {
+    const index = invisibleLines.value.indexOf(lineCode)
+    console.log(index)
+
+    if (index !== -1) {
+      invisibleLines.value.splice(index, 1)
+    }
+    else {
+      invisibleLines.value.push(lineCode)
+    }
+  }
 
   return {
     city,
+    toggleLineVisibility,
+    invisibleLines,
   }
 }, {
-  persist: true,
+  persist: {
+    storage: piniaPluginPersistedstate.localStorage(),
+  },
 })

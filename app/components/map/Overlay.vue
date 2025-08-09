@@ -17,14 +17,5 @@
     </div>
 
     <TheLines class="pointer-events-auto" />
-
-    <!-- <ol>
-      <li
-        v-for="i in 50"
-        :key="i"
-      >
-        <BusStop :index="i" />
-      </li>
-    </ol> -->
   </div>
 </template>
