@@ -15,6 +15,13 @@ export const useLinesStore = defineStore('lines', () => {
   )
 
   const addLine = (lineCode: string) => {
+    const isAlreadyAdded = allLines.value[filtersStore.city]
+      .findIndex(_lineCode => _lineCode === lineCode)
+
+    if (isAlreadyAdded !== -1) {
+      return 'Already added'
+    }
+
     allLines.value[filtersStore.city].push(lineCode)
   }
 

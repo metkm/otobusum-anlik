@@ -14,11 +14,11 @@ const isReady = ref(false)
     <TheMap v-model:ready="isReady" />
 
     <template v-if="isReady">
-      <MarkersStops
+      <!-- <MarkersStops
         v-for="lineCode in visibleLines"
         :key="lineCode"
         :line-code="lineCode"
-      />
+      /> -->
 
       <MapOverlay />
     </template>

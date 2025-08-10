@@ -16,6 +16,6 @@
       />
     </div>
 
-    <TheLines class="pointer-events-auto" />
+    <TheLines />
   </div>
 </template>

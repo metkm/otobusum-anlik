@@ -24,6 +24,7 @@
     "@vueuse/nuxt": "^13.6.0",
     "@vueuse/router": "^13.6.0",
     "eslint": "^9.33.0",
+    "motion-v": "^1.7.0",
     "nuxt": "^4.0.3",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.4.1",

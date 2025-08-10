@@ -46,7 +46,11 @@ const SearchItem = defineComponent((props, { slots, attrs }) => {
 })
 
 const onPressLine = (lineCode: string) => {
-  linesStore.addLine(lineCode)
+  const message = linesStore.addLine(lineCode)
+
+  if (message) {
+    console.log(message)
+  }
 }
 </script>
 

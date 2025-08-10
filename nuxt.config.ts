@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
+    'motion-v/nuxt',
   ],
   ssr: false,
   devtools: { enabled: true },
