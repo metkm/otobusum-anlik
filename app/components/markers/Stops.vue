@@ -13,8 +13,6 @@ const { data } = await useAPI<Stop[]>(`/route-stops/${props.lineCode}`, {
     direction: 'G',
   },
 })
-
-console.log(data.value)
 </script>
 
 <template>

@@ -24,5 +24,8 @@ export const useFiltersStore = defineStore('filter', () => {
 }, {
   persist: {
     storage: piniaPluginPersistedstate.localStorage(),
+    afterHydrate: (context) => {
+      console.log(context)
+    },
   },
 })

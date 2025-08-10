@@ -13,7 +13,6 @@ const marker = shallowRef<google.maps.marker.AdvancedMarkerElement>()
 const container = document.createElement('div')
 
 watchEffect(async () => {
-  console.log(mapRef.value)
   marker.value = await mapRef.value?.createAdvancedMapMarker({
     position: props.position,
     content: container,
@@ -21,7 +20,6 @@ watchEffect(async () => {
 })
 
 onUnmounted(() => {
-  console.log('removing marker')
   marker.value?.remove()
 })
 </script>

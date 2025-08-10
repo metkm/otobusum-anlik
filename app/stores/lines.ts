@@ -10,15 +10,28 @@ export const useLinesStore = defineStore('lines', () => {
     izmir: [],
   })
 
-  const lines = computed(() => allLines.value[filtersStore.city])
+  const lines = computed(
+    () => allLines.value[filtersStore.city] || [],
+  )
 
-  const addLine = (lineCode: string) => {
+  const addLine = (lineCode: City) => {
     allLines.value[filtersStore.city].push(lineCode)
+  }
+
+  const deleteLine = (lineCode: City) => {
+    const targetIndex = allLines.value[filtersStore.city]
+      .findIndex(line => line === lineCode)
+
+    if (targetIndex !== -1) {
+      allLines.value[filtersStore.city].splice(targetIndex, 1)
+    }
   }
 
   return {
     lines,
+    allLines,
     addLine,
+    deleteLine,
   }
 }, {
   persist: {
