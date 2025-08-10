@@ -14,11 +14,11 @@ export const useLinesStore = defineStore('lines', () => {
     () => allLines.value[filtersStore.city] || [],
   )
 
-  const addLine = (lineCode: City) => {
+  const addLine = (lineCode: string) => {
     allLines.value[filtersStore.city].push(lineCode)
   }
 
-  const deleteLine = (lineCode: City) => {
+  const deleteLine = (lineCode: string) => {
     const targetIndex = allLines.value[filtersStore.city]
       .findIndex(line => line === lineCode)
 

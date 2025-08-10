@@ -6,7 +6,6 @@ export const useFiltersStore = defineStore('filter', () => {
 
   const toggleLineVisibility = (lineCode: string) => {
     const index = invisibleLines.value.indexOf(lineCode)
-    console.log(index)
 
     if (index !== -1) {
       invisibleLines.value.splice(index, 1)
@@ -24,8 +23,5 @@ export const useFiltersStore = defineStore('filter', () => {
 }, {
   persist: {
     storage: piniaPluginPersistedstate.localStorage(),
-    afterHydrate: (context) => {
-      console.log(context)
-    },
   },
 })

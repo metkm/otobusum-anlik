@@ -3,12 +3,15 @@ const linesStore = useLinesStore()
 </script>
 
 <template>
-  <ol class="flex gap-4 p-4 overflow-x-auto hide-scrollbar pointer-events-auto -mx-4 -mb-4">
-    <li
-      v-for="lineCode in linesStore.lines"
-      :key="lineCode"
-    >
-      <TheLine :line-code="lineCode" />
-    </li>
-  </ol>
+  <UCarousel
+    v-slot="{ item }"
+    :items="linesStore.lines"
+    class="-mx-4 -mb-4"
+    :ui="{ item: 'max-w-lg basis-[90%]', viewport: 'p-4' }"
+    contain-scroll="keepSnaps"
+  >
+    <TheLine
+      :line-code="item"
+    />
+  </UCarousel>
 </template>
