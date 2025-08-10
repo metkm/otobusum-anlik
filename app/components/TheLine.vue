@@ -12,16 +12,19 @@ const isInvisible = computed(() => filtersStore.invisibleLines.includes(props.li
 </script>
 
 <template>
-  <div
-    class="flex flex-col gap-2 p-2 bg-(--ui-bg) rounded-lg h-48 max-w-lg"
-  >
+  <div class="flex flex-col gap-2 p-2 bg-default rounded-lg h-48 max-w-lg">
     <motion.div
       layout
       class="flex items-center justify-between"
     >
-      <p class="font-bold text-xl">
-        {{ props.lineCode }}
-      </p>
+      <div>
+        <p class="font-bold text-xl">
+          {{ props.lineCode }}
+        </p>
+        <p class="text-xs text-muted">
+          update in 0 seconds
+        </p>
+      </div>
 
       <div class="flex gap-2 items-center">
         <UButton
@@ -31,7 +34,11 @@ const isInvisible = computed(() => filtersStore.invisibleLines.includes(props.li
           @click="filtersStore.toggleLineVisibility(lineCode)"
         />
 
-        <UDrawer>
+        <UDrawer
+          should-scale-background
+          set-background-color-on-scale
+          :title="props.lineCode"
+        >
           <UButton
             icon="i-lucide-menu"
             variant="ghost"

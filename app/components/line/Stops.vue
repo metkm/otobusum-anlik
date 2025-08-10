@@ -28,12 +28,19 @@ const { data, status } = await useAPI<Stop[]>(`/route-stops/${props.lineCode}`, 
     </div>
     <ol v-else-if="data">
       <li
-        v-for="stop in data"
+        v-for="(stop, index) in data"
         :key="stop.stop_code"
-        class="flex items-center gap-4 p-1"
+        class="flex items-center gap-2 p-1"
       >
-        <div class="size-10 border-2 rounded-full" />
-        <p>{{ stop.stop_name }}</p>
+        <p class="text-sm font-semibold w-6 text-center">
+          {{ index }}
+        </p>
+
+        <div class="size-10 border-2 rounded-full shrink-0" />
+
+        <p class="text-sm">
+          {{ stop.stop_name }}
+        </p>
       </li>
     </ol>
   </section>
