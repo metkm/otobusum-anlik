@@ -32,7 +32,7 @@ const { data, status } = await useAPI<Stop[]>(`/route-stops/${props.lineCode}`, 
         :key="stop.stop_code"
         class="flex items-center gap-4 p-1"
       >
-        <div class="size-10 border rounded-full" />
+        <div class="size-10 border-2 rounded-full" />
         <p>{{ stop.stop_name }}</p>
       </li>
     </ol>
