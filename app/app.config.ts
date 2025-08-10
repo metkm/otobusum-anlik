@@ -18,5 +18,17 @@ export default defineAppConfig({
         },
       },
     },
+    button: {
+      defaultVariants: {
+        size: 'lg',
+      },
+      variants: {
+        size: {
+          lg: {
+            base: 'py-3',
+          },
+        },
+      },
+    },
   },
 })
