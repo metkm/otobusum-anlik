@@ -8,12 +8,18 @@
       class="pointer-events-auto"
       @click="navigateTo('/search')"
     >
-      <UInput
-        placeholder="Search"
-        class="w-full max-w-md pointer-events-none"
-        size="xl"
-        icon="i-lucide-search"
-      />
+      <Motion
+        layout-id="search-bar"
+        as-child
+      >
+        <UInput
+          placeholder="Search"
+          class="w-full max-w-xl pointer-events-none"
+          size="xl"
+          icon="i-lucide-search"
+          layout-id="search-bar"
+        />
+      </Motion>
     </div>
 
     <TheLines />

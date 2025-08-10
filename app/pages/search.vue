@@ -56,24 +56,29 @@ const onPressLine = (lineCode: string) => {
 
 <template>
   <div class="flex flex-col max-w-xl w-full mx-auto items-center gap-2 content-padding">
-    <UInput
-      v-model="query"
-      icon="i-lucide-search"
-      size="xl"
-      class="w-full"
-      :ui="{ leading: 'pl-1' }"
-      placeholder="Search"
-      autofocus
+    <Motion
+      layout-id="search-bar"
+      as-child
     >
-      <template #leading>
-        <UButton
-          icon="i-lucide-arrow-left"
-          variant="ghost"
-          :loading="status === 'pending'"
-          to="/"
-        />
-      </template>
-    </UInput>
+      <UInput
+        v-model="query"
+        icon="i-lucide-search"
+        size="xl"
+        class="w-full"
+        placeholder="Search"
+        autofocus
+        :ui="{ leading: 'ps-2' }"
+      >
+        <template #leading>
+          <UButton
+            icon="i-lucide-arrow-left"
+            variant="ghost"
+            :loading="status === 'pending'"
+            to="/"
+          />
+        </template>
+      </UInput>
+    </Motion>
 
     <div class="w-full">
       <ol>
