@@ -45,12 +45,15 @@ const SearchItem = defineComponent((props, { slots, attrs }) => {
   }>,
 })
 
-const onPressLine = (lineCode: string) => {
+const onPressLine = async (lineCode: string) => {
   const message = linesStore.addLine(lineCode)
 
   if (message) {
     console.log(message)
+    return
   }
+
+  await navigateTo('/')
 }
 </script>
 
@@ -103,14 +106,6 @@ const onPressLine = (lineCode: string) => {
           <SearchItem :title="stop.stop_name">
             <UIcon name="i-lucide-flag" />
           </SearchItem>
-
-        <!-- <div class="bg-muted rounded-full px-4 py-1.5">
-          <p>stop</p>
-        </div>
-
-        <p>
-          {{ stop.stop_name }}
-        </p> -->
         </li>
       </ol>
     </div>
