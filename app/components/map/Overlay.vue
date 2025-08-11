@@ -22,6 +22,9 @@
       </Motion>
     </div>
 
-    <TheLines />
+    <div class="-mb-2 -mx-2 pointer-events-auto">
+      <TheLines />
+      <!-- <TheNavigation /> -->
+    </div>
   </div>
 </template>

@@ -1,4 +1,9 @@
 <script setup lang="ts">
+definePageMeta({
+  icon: 'i-lucide-map',
+  label: 'Map',
+})
+
 const { lines } = useLinesStore()
 const { invisibleLines } = useFiltersStore()
 
@@ -10,7 +15,7 @@ const isReady = ref(false)
 </script>
 
 <template>
-  <div class="flex-1">
+  <div class="flex-1 relative">
     <TheMap v-model:ready="isReady" />
 
     <template v-if="isReady">

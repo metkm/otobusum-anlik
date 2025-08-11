@@ -1,3 +1,12 @@
+<script setup lang="ts">
+definePageMeta({
+  icon: 'i-lucide-settings',
+  label: 'Settings',
+})
+</script>
+
 <template>
-  <p>settings page</p>
+  <div class="flex-1 relative">
+    <p>settings page</p>
+  </div>
 </template>

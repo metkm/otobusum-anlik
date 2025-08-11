@@ -7,7 +7,6 @@ const linesStore = useLinesStore()
     <UCarousel
       v-slot="{ item }"
       :items="linesStore.lines"
-      class="-mx-2 -mb-2 pointer-events-auto"
       :ui="{
         item: 'max-w-lg basis-[95%] ps-2',
         viewport: 'p-2 overflow-hidden',
