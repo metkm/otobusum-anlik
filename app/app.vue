@@ -27,7 +27,6 @@ App.addListener('backButton', () => {
     data-vaul-drawer-wrapper
   >
     <NuxtPage />
-
     <TheNavigation />
   </main>
 </template>

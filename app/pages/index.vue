@@ -18,15 +18,13 @@ const isReady = ref(false)
   <div class="flex-1 relative">
     <TheMap v-model:ready="isReady" />
 
-    <template v-if="isReady">
-      <!-- <MarkersStops
+    <!-- <MarkersStops
         v-for="lineCode in visibleLines"
         :key="lineCode"
         :line-code="lineCode"
       /> -->
 
-      <MapOverlay />
-    </template>
+    <MapOverlay />
   </div>
 </template>
 
