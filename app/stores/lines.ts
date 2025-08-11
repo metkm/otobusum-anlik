@@ -4,6 +4,7 @@ export type City = 'izmir' | 'istanbul'
 
 export const useLinesStore = defineStore('lines', () => {
   const filtersStore = useFiltersStore()
+  const linesThemeStore = useLinesThemeStore()
 
   const allLines = ref<Record<City, string[]>>({
     istanbul: [],
@@ -22,6 +23,7 @@ export const useLinesStore = defineStore('lines', () => {
       return 'Already added'
     }
 
+    linesThemeStore.createTheme(lineCode)
     allLines.value[filtersStore.city].push(lineCode)
   }
 
@@ -31,6 +33,7 @@ export const useLinesStore = defineStore('lines', () => {
 
     if (targetIndex !== -1) {
       allLines.value[filtersStore.city].splice(targetIndex, 1)
+      linesThemeStore.deleteTheme(lineCode)
     }
   }
 

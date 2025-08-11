@@ -36,7 +36,7 @@ const { data, status } = await useAPI<Stop[]>(`/route-stops/${props.lineCode}`, 
           {{ index }}
         </p>
 
-        <div class="size-10 border-2 rounded-full shrink-0" />
+        <div class="size-10 border-2 border-primary rounded-full shrink-0" />
 
         <p class="text-sm">
           {{ stop.stop_name }}
