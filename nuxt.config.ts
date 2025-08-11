@@ -21,6 +21,7 @@ export default defineNuxtConfig({
         },
       },
       baseUrl: '',
+      mapId: '',
     },
   },
   compatibilityDate: '2025-07-15',

@@ -9,14 +9,8 @@
         id="overlay"
         class="has-first:mr-2"
       />
-      <!-- <UButton
-        icon="i-lucide-menu"
-        variant="soft"
-        color="neutral"
-      /> -->
-
       <div
-        class="pointer-events-auto w-full max-w-xl"
+        class="pointer-events-auto w-full max-w-lg"
         @click="navigateTo('/search')"
       >
         <Motion
@@ -26,9 +20,10 @@
           <UInput
             placeholder="Search"
             class="w-full pointer-events-none"
-            size="xl"
+            size="lg"
             icon="i-lucide-search"
             layout-id="search-bar"
+            :ui="{ base: 'ring-0 shadow bg-default/80 border border-dashed border-muted' }"
           />
         </Motion>
       </div>

@@ -11,9 +11,10 @@ export default defineAppConfig({
       },
       variants: {
         size: {
-          xl: {
-            base: 'py-3',
-            leadingIcon: 'size-5',
+          lg: {
+            base: 'py-2.5',
+            leadingIcon: 'size-4.5 -mt-0.5',
+            leading: 'ps-3.5',
           },
         },
       },

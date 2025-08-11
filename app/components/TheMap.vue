@@ -7,6 +7,7 @@ const modelValueIsReady = defineModel<boolean>('ready', {
 })
 
 const { mapRef } = useMap()
+const config = useRuntimeConfig()
 
 const onGoogleMapsMount = (ref: Element | ComponentPublicInstance | null) => {
   mapRef.value = ref as MapRef
@@ -27,6 +28,7 @@ const onReady = () => {
       zoom: 12,
       disableDefaultUI: true,
       colorScheme: 'DARK',
+      mapId: config.public.mapId,
     }"
     trigger="immediate"
     @ready="onReady"

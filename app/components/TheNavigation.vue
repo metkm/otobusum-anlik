@@ -5,7 +5,6 @@ const route = useRoute()
 const isDesktop = useMediaQuery('(min-width: 768px)')
 
 const routes = router.options.routes.filter(route => !!route.meta?.icon)
-console.log(routes)
 
 const [DefineNavigationTemplate, ReuseNavigationTemplate] = createReusableTemplate()
 </script>
@@ -26,6 +25,7 @@ const [DefineNavigationTemplate, ReuseNavigationTemplate] = createReusableTempla
             :icon="(route.meta!.icon as string)"
             color="neutral"
             class="w-full flex-col gap-0 group"
+            :class="{ 'aspect-square': isDesktop }"
             size="md"
             variant="ghost"
             block
@@ -35,8 +35,11 @@ const [DefineNavigationTemplate, ReuseNavigationTemplate] = createReusableTempla
           >
             <template #leading>
               <div
-                class="flex items-center justify-center rounded-full px-4 h-5 group-hover:bg-accented"
-                :class="{ 'bg-muted': _route.name === route.name }"
+                class="flex items-center justify-center rounded-full px-4 h-5"
+                :class="{
+                  'bg-muted': _route.name === route.name && !isDesktop,
+                  'group-hover:bg-accented': !isDesktop,
+                }"
               >
                 <UIcon
                   :name="(_route.meta?.icon as string)"
@@ -51,7 +54,7 @@ const [DefineNavigationTemplate, ReuseNavigationTemplate] = createReusableTempla
 
     <ReuseNavigationTemplate v-if="!isDesktop" />
     <Teleport
-      v-else
+      v-else-if="route.name === 'index'"
       to="#overlay"
       defer
     >
