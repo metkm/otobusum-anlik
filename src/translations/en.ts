@@ -60,5 +60,5 @@ export default {
   timetableEmptyRange: 'Timetable for this day is empty',
   lineGroups: 'Line Groups',
   empty: 'Empty',
-  emptyGroups: 'Empty groups',
+  emptyGroups: 'No groups found',
 }

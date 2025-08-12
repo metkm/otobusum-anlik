@@ -3,13 +3,14 @@ import { ReactNode, useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
+import { UiButton } from '@/components/ui/UiButton'
 import { UiSheet, UiSheetProps } from '@/components/ui/UiSheet'
 import { UiText } from '@/components/ui/UiText'
 
 import { LineGroupsItem } from './LineGroupsItem'
 
 import { selectGroup, useFiltersStore } from '@/stores/filters'
-import { addLineToGroup, useLinesStore } from '@/stores/lines'
+import { addLineToGroup, createNewGroup, useLinesStore } from '@/stores/lines'
 import { i18n } from '@/translations/i18n'
 import { LineGroup } from '@/types/lineGroup'
 
@@ -48,25 +49,46 @@ export const LineGroups = ({ trigger, lineCode, type, onGroupPress, sheetProps, 
     sheetRef.current?.dismiss()
   }
 
+  const snapPoints = groups.length < 1
+    ? ['50%']
+    : ['100%']
+
   return (
     <UiSheet
       ref={sheetRef}
       trigger={trigger}
       sheetProps={{
-        snapPoints: ['50%', '100%'],
+        snapPoints: snapPoints,
         enableDynamicSizing: false,
         ...sheetProps,
       }}
+      innerContainerStyle={groups.length < 1
+        ? {
+            flexGrow: 1,
+          }
+        : undefined}
       list
     >
       {groups.length < 1
         ? (
             <View style={styles.emptyGroupContainer}>
               <UiText dimmed>{i18n.t('emptyGroups')}</UiText>
+
+              <UiButton
+                icon="add"
+                title={i18n.t('createNewGroup')}
+                onPress={createNewGroup}
+              />
             </View>
           )
         : (
             <BottomSheetScrollView>
+              <UiButton
+                icon="add"
+                title={i18n.t('createNewGroup')}
+                onPress={createNewGroup}
+              />
+
               {groups.map(group => (
                 <LineGroupsItem
                   key={group.id}
@@ -86,5 +108,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexGrow: 1,
+    gap: 14,
   },
 })

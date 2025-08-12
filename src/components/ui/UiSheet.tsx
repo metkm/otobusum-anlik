@@ -20,6 +20,7 @@ export interface UiSheetProps {
   sheetProps?: Omit<BottomSheetModalProps, 'children'>
   list?: boolean
   rootStyle?: StyleProp<ViewStyle>
+  innerContainerStyle?: StyleProp<ViewStyle>
   ref?: RefObject<BottomSheetModal | null>
 }
 
@@ -27,7 +28,7 @@ export const BackdropComponent = (props: BottomSheetBackdropProps) => {
   return <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />
 }
 
-export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, ref }: UiSheetProps) => {
+export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, innerContainerStyle, ref }: UiSheetProps) => {
   const sheet = useRef<BottomSheetModal>(null)
   const { schemeColor } = useTheme()
   const insets = useSafeAreaInsets()
@@ -64,13 +65,13 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, ref }:
         <ColorSchemesContext value={use(ColorSchemesContext)}>
           {!list
             ? (
-                <BottomSheetView style={[styles.innerContainer, { paddingBottom: insets.bottom }]}>
+                <BottomSheetView style={[styles.innerContainer, { paddingBottom: insets.bottom }, innerContainerStyle]}>
                   {children}
                 </BottomSheetView>
               )
             : (
                 <BottomSheetScrollView
-                  contentContainerStyle={[styles.innerContainer, { paddingBottom: insets.bottom }]}
+                  contentContainerStyle={[styles.innerContainer, { paddingBottom: insets.bottom }, innerContainerStyle]}
                 >
                   {children}
                 </BottomSheetScrollView>
@@ -84,7 +85,7 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, ref }:
 const styles = StyleSheet.create({
   innerContainer: {
     paddingHorizontal: 8,
-    paddingTop: 8,
+    // paddingTop: 8,
     gap: 4,
   },
   rootContainer: {

@@ -122,27 +122,25 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
                 />
               )}
             >
-              <View style={{ gap: 8 }}>
-                <LineGroups
-                  type="add"
-                  lineCode={lineCode}
-                  trigger={(
-                    <UiButton
-                      icon="add-circle-outline"
-                      title={i18n.t('addToGroup')}
-                      square
-                    />
-                  )}
-                />
+              <LineGroups
+                type="add"
+                lineCode={lineCode}
+                trigger={(
+                  <UiButton
+                    icon="add-circle-outline"
+                    title={i18n.t('addToGroup')}
+                    square
+                  />
+                )}
+              />
 
-                <UiButton
-                  icon="trash-outline"
-                  title={i18n.t('deleteLine')}
-                  onPress={() => deleteLine(lineCode)}
-                  variant="error"
-                  square
-                />
-              </View>
+              <UiButton
+                icon="trash-outline"
+                title={i18n.t('deleteLine')}
+                onPress={() => deleteLine(lineCode)}
+                variant="error"
+                square
+              />
             </UiSheet>
           </View>
         </View>
