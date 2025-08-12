@@ -63,6 +63,7 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, ref }:
         <ColorSchemesContext value={use(ColorSchemesContext)}>
           {!list
             ? (
+                // insets bottom not working for some reason
                 <BottomSheetView style={[{ paddingBottom: insets.bottom }, styles.innerContainer]}>
                   {children}
                 </BottomSheetView>
