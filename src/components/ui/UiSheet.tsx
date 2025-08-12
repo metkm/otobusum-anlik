@@ -59,18 +59,19 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, ref }:
         backgroundStyle={{
           backgroundColor: schemeColor.surfaceContainer,
         }}
+        {...sheetProps}
       >
         <ColorSchemesContext value={use(ColorSchemesContext)}>
           {!list
             ? (
                 // insets bottom not working for some reason
-                <BottomSheetView style={[{ paddingBottom: insets.bottom }, styles.innerContainer]}>
+                <BottomSheetView style={[styles.innerContainer, { paddingBottom: insets.bottom }]}>
                   {children}
                 </BottomSheetView>
               )
             : (
                 <BottomSheetScrollView
-                  contentContainerStyle={[{ paddingBottom: insets.bottom }, styles.innerContainer]}
+                  contentContainerStyle={[styles.innerContainer, { paddingBottom: insets.bottom }]}
                 >
                   {children}
                 </BottomSheetScrollView>
