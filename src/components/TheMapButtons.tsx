@@ -1,159 +1,107 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import Ionicons from '@react-native-vector-icons/ionicons'
-import { useCallback, useEffect, useRef } from 'react'
-import { StyleSheet, View } from 'react-native'
-import Animated, {
-  AnimatedProps,
-  useAnimatedProps,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated'
-import { useShallow } from 'zustand/react/shallow'
+import { useRouter } from "expo-router";
+import { StyleSheet, View } from "react-native";
 
-import { useTheme } from '@/hooks/useTheme'
+import { usePaddings } from "@/hooks/usePaddings";
 
-import { LineGroups } from './lines/line/LineGroups'
-import { UiButton } from './ui/UiButton'
-
-import { changeRouteDirection, selectGroup, unSelectGroup, useFiltersStore } from '@/stores/filters'
-import { getLines, getTheme, useLinesStore } from '@/stores/lines'
-import { useMiscStore } from '@/stores/misc'
-import { LineGroup } from '@/types/lineGroup'
+import { UiButton } from "./ui/UiButton";
+import { getLines, useLinesStore } from "@/stores/lines";
+import { changeRouteDirection, selectGroup, unSelectGroup, useFiltersStore } from "@/stores/filters";
+import { useShallow } from "zustand/react/shallow";
+import { useRef } from "react";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { LineGroups } from "./lines/line/LineGroups";
+import { LineGroup } from "@/types/lineGroup";
 
 export const TheMapButtons = () => {
-  const selectedCity = useFiltersStore(useShallow(state => state.selectedCity))
-  const selectedGroup = useFiltersStore(state => state.selectedGroup)
+  const { tabRoutePaddings } = usePaddings();
+  const sheetGroups = useRef<BottomSheetModal>(null);
+  const router = useRouter();
 
-  const lineGroups = useLinesStore(useShallow(state => Object.keys(state.lineGroups[selectedCity])))
-  const lines = useLinesStore(useShallow(() => getLines()))
+  const selectedCity = useFiltersStore(useShallow((state) => state.selectedCity));
+  const selectedGroup = useFiltersStore((state) => state.selectedGroup);
 
-  const { colorScheme, schemeDefault } = useTheme()
+  const lineGroups = useLinesStore(
+    useShallow((state) => Object.keys(state.lineGroups[selectedCity]))
+  );
+  const lines = useLinesStore(useShallow(() => getLines()));
 
-  const bgColor = useSharedValue(schemeDefault.surface)
-  const txtColor = useSharedValue(schemeDefault.onSurface)
-  const bottomSheetModalGroups = useRef<BottomSheetModal>(null)
-
-  const updateColors = useCallback(
-    (index: number) => {
-      const lineCode = lines.at(index)
-      if (lineCode === undefined) return
-
-      const theme = getTheme(lineCode)
-      if (!theme) return
-
-      const scheme = theme[colorScheme]
-
-      const targetBackground = scheme.surface
-      const targetText = scheme.onSurface
-
-      bgColor.value = withTiming(targetBackground)
-      txtColor.value = withTiming(targetText)
-    },
-    [bgColor, colorScheme, lines, txtColor],
-  )
-
-  useEffect(() => {
-    const unsub = useMiscStore.subscribe(
-      state => state.scrolledLineIndex,
-      (index) => {
-        updateColors(index)
-      },
-      {
-        fireImmediately: true,
-      },
-    )
-
-    return unsub
-  }, [updateColors])
-
-  useEffect(() => {
-    updateColors(0)
-  }, [selectedGroup, updateColors, lines])
-
-  const handleChangeAllDirections = () => {
+  const changeRouteDirections = () => {
     for (let index = 0; index < lines.length; index++) {
-      const lineCode = lines[index]
-      if (!lineCode) continue
+      const lineCode = lines[index];
+      if (!lineCode) continue;
 
-      changeRouteDirection(lineCode)
+      changeRouteDirection(lineCode);
     }
-  }
+  };
 
-  const handleLineGroupsSelect = () => {
-    bottomSheetModalGroups.current?.present()
-  }
+  const openGroupSelection = () => {
+    sheetGroups.current?.present();
+  };
 
-  const handlePressGroup = (group: LineGroup) => {
+  const selectLineGroup = (group: LineGroup) => {
     selectGroup(group.id)
-    bottomSheetModalGroups.current?.dismiss()
+    sheetGroups.current?.dismiss()
   }
-
-  const animatedContainerStyle = useAnimatedStyle(
-    () => ({
-      backgroundColor: bgColor.value,
-      borderRadius: 14,
-      elevation: 5,
-    }),
-    [],
-  )
-
-  const animatedIconProps = useAnimatedProps(() => {
-    return {
-      color: txtColor.value,
-    } as Partial<AnimatedProps<typeof Ionicons>>
-  })
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, tabRoutePaddings]}>
+      <UiButton
+        onPress={() => router.navigate("/modal")}
+        icon="search"
+        variant="soft"
+        square
+        containerStyle={styles.buttonContainer}
+      />
+
       {lines.length > 0 && (
-        <Animated.View style={animatedContainerStyle}>
-          <UiButton
-            icon="repeat"
-            onPress={handleChangeAllDirections}
-            animatedIconProps={animatedIconProps}
-            variant="ghost"
-            square
-          />
-        </Animated.View>
+        <UiButton
+          icon="repeat"
+          onPress={changeRouteDirections}
+          variant="soft"
+          square
+          containerStyle={styles.buttonContainer}
+        />
       )}
 
       {lineGroups.length > 0 && (
         <>
-          <Animated.View style={animatedContainerStyle}>
+          <UiButton
+            icon="albums"
+            onPress={openGroupSelection}
+            variant="soft"
+            square
+            containerStyle={styles.buttonContainer}
+          />
+
+          <LineGroups
+            cRef={sheetGroups}
+            onPressGroup={selectLineGroup}
+          />
+
+          {selectedGroup && (
             <UiButton
-              icon="albums"
-              onPress={handleLineGroupsSelect}
-              animatedIconProps={animatedIconProps}
-              variant="ghost"
+              icon="close"
+              onPress={unSelectGroup}
+              variant="soft"
               square
+              containerStyle={styles.buttonContainer}
             />
-          </Animated.View>
-
-          {!!selectedGroup && (
-            <Animated.View style={animatedContainerStyle}>
-              <UiButton
-                icon="close"
-                onPress={unSelectGroup}
-                animatedIconProps={animatedIconProps}
-                variant="ghost"
-                square
-              />
-            </Animated.View>
           )}
-
-          <LineGroups cRef={bottomSheetModalGroups} onPressGroup={handlePressGroup} />
         </>
       )}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    alignSelf: 'flex-end',
-    gap: 8,
-    marginHorizontal: 8,
+    position: "absolute",
+    top: 0,
+    right: 0,
+    gap: 4,
+    pointerEvents: 'auto',
   },
-})
+  buttonContainer: {
+    elevation: 2,
+  },
+});
