@@ -51,7 +51,7 @@ export const LineGroups = ({ trigger, lineCode, type, onGroupPress, sheetProps, 
 
   const snapPoints = groups.length < 1
     ? ['50%']
-    : ['100%']
+    : ['50%', '100%']
 
   return (
     <UiSheet
