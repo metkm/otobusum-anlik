@@ -38,7 +38,6 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
   const { lineWidth } = useLine(lineCode)
 
   const map = useMap()
-
   const isVisible = useSharedValue(true)
 
   useEffect(() => {
@@ -67,9 +66,6 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
 
     return unsub
   }, [isVisible, lineCode, map])
-
-  const handleVisibility = () => toggleLineVisibility(lineCode)
-  const handleRouteChange = () => changeRouteDirection(lineCode)
 
   const containerStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
@@ -105,7 +101,11 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
           <LineName lineCode={lineCode} variant={variant} />
 
           <View style={styles.titleContainer}>
-            <UiButton onPress={handleVisibility} icon="eye-outline" variant="soft" />
+            <UiButton
+              onPress={() => toggleLineVisibility(lineCode)}
+              icon="eye-outline"
+              variant="soft"
+            />
 
             {selectedCity === 'istanbul' && (
               <LineAnnouncements
@@ -150,7 +150,12 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
         <LineBusStops lineCode={lineCode} />
 
         <View style={styles.lineButtonsContainer}>
-          <UiButton onPress={handleRouteChange} icon="repeat" variant="soft" />
+          <UiButton
+            onPress={() => changeRouteDirection(lineCode)}
+            icon="repeat"
+            variant="soft"
+          />
+
           <LineRoutes lineCode={lineCode} />
         </View>
       </Animated.View>
@@ -177,8 +182,9 @@ const styles = StyleSheet.create({
   lineButtonsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
     flexGrow: 1,
+    gap: 4,
+    flexShrink: 1,
   },
   menuSheetContainer: {
     padding: 8,

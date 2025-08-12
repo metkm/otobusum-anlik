@@ -1,7 +1,7 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { memo, useMemo, useRef } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import { UiSheet } from '@/components/ui/UiSheet'
 import { UiText } from '@/components/ui/UiText'
@@ -71,7 +71,7 @@ export const LineRoutes = memo(function LineRoutes(props: Props) {
                 <UiText>{i18n.t('loading')}</UiText>
               )
             : (
-                <>
+                <View style={{ flexDirection: 'row', gap: 4, flexShrink: 1 }}>
                   <UiText size="sm" numberOfLines={1} style={{ color }}>
                     {leftTitle}
                   </UiText>
@@ -79,7 +79,7 @@ export const LineRoutes = memo(function LineRoutes(props: Props) {
                   <UiText size="sm" numberOfLines={1} style={{ color }}>
                     {rightTitle}
                   </UiText>
-                </>
+                </View>
               )}
         </UiButton>
       )}

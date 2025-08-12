@@ -157,5 +157,3 @@ export const TheMap = ({ ref, onMapReady, onMapRegionUpdate, initialRegion, ...p
     </APIProvider>
   )
 }
-
-// export const TheMap = forwardRef<TheMapRef, TheMapProps>(TheMap)

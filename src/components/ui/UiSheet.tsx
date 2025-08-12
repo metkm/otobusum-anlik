@@ -39,8 +39,8 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, ref }:
   }
 
   return (
-    <View style={rootStyle}>
-      <Pressable onPress={openSheet}>{trigger}</Pressable>
+    <View style={[rootStyle, styles.rootContainer]}>
+      <Pressable onPress={openSheet} style={styles.pressableContainer}>{trigger}</Pressable>
 
       <BottomSheetModal
         ref={sheet}
@@ -64,7 +64,6 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, ref }:
         <ColorSchemesContext value={use(ColorSchemesContext)}>
           {!list
             ? (
-                // insets bottom not working for some reason
                 <BottomSheetView style={[styles.innerContainer, { paddingBottom: insets.bottom }]}>
                   {children}
                 </BottomSheetView>
@@ -86,5 +85,11 @@ const styles = StyleSheet.create({
   innerContainer: {
     padding: 8,
     gap: 4,
+  },
+  rootContainer: {
+    flexShrink: 1,
+  },
+  pressableContainer: {
+    flexShrink: 1,
   },
 })

@@ -82,7 +82,13 @@ export const UiButton = ({ size = 'md', variant = 'solid', error, ...props }: Ui
         return <UiActivityIndicator size="small" color={iconColor} />
       }
 
-      return <Ionicons name={icon} size={iconSizes[size]} color={iconColor} />
+      return (
+        <Ionicons
+          name={icon}
+          size={iconSizes[size]}
+          color={iconColor}
+        />
+      )
     },
     [iconColor, size, props.isLoading],
   )
@@ -134,19 +140,17 @@ export const UiButton = ({ size = 'md', variant = 'solid', error, ...props }: Ui
 
 const styles = StyleSheet.create({
   container: {
+    minWidth: 48,
     borderRadius: 999,
     pointerEvents: 'auto',
-    flexShrink: 1,
   },
   innerContainer: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 8,
+    gap: 4,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 999,
   },
   title: {
     textAlign: 'center',
