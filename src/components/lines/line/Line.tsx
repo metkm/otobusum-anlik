@@ -122,7 +122,7 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
                 />
               )}
             >
-              <BottomSheetView style={{ gap: 8 }}>
+              <View style={{ gap: 8 }}>
                 <LineGroups
                   type="add"
                   lineCode={lineCode}
@@ -142,7 +142,7 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
                   variant="error"
                   square
                 />
-              </BottomSheetView>
+              </View>
             </UiSheet>
           </View>
         </View>

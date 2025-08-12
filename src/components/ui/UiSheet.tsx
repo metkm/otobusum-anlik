@@ -83,7 +83,8 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, ref }:
 
 const styles = StyleSheet.create({
   innerContainer: {
-    padding: 8,
+    paddingHorizontal: 8,
+    paddingTop: 8,
     gap: 4,
   },
   rootContainer: {
