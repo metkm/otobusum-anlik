@@ -1,4 +1,3 @@
-import { BottomSheetView } from '@gorhom/bottom-sheet'
 import { memo, useEffect, useMemo } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'

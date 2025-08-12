@@ -1,14 +1,9 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { router } from 'expo-router'
-import { memo, useCallback, useRef } from 'react'
+import { memo, useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { RectButton, RectButtonProps } from 'react-native-gesture-handler'
 
-import { useTheme } from '@/hooks/useTheme'
-
-import { LineGroups } from './lines/line/LineGroups'
-import { UiButton } from './ui/UiButton'
 import { UiLineCode } from './ui/UiLineCode'
 import { UiText } from './ui/UiText'
 
@@ -21,9 +16,6 @@ interface Props extends RectButtonProps {
 }
 
 export const TheSearchItem = memo(function SearchItem({ item, ...props }: Props) {
-  const bottomSheetModal = useRef<BottomSheetModal>(null)
-  const { schemeColor } = useTheme()
-
   const handlePress = useCallback(() => {
     if (isStop(item)) {
       router.navigate({
@@ -36,10 +28,6 @@ export const TheSearchItem = memo(function SearchItem({ item, ...props }: Props)
       addLine(item.code)
     }
   }, [item])
-
-  const handleAddPress = () => {
-    bottomSheetModal.current?.present()
-  }
 
   return (
     <RectButton
@@ -64,23 +52,6 @@ export const TheSearchItem = memo(function SearchItem({ item, ...props }: Props)
               </>
             )}
       </View>
-
-      {/* {
-        !isStop(item)
-        && (
-          <LineGroups
-            cRef={bottomSheetModal}
-            lineCodeToAdd={item.code}
-          >
-            <UiButton
-              icon="add-circle-outline"
-              onPress={handleAddPress}
-              iconColor={schemeColor.onSurface}
-              variant="soft"
-            />
-          </LineGroups>
-        )
-      } */}
     </RectButton>
   )
 })
