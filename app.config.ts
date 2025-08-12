@@ -58,6 +58,15 @@ const config: ExpoConfig = {
         backgroundColor: '#0a0a0a',
       },
     ],
+    [
+      'react-native-edge-to-edge',
+      {
+        android: {
+          parentTheme: 'Default',
+          enforceNavigationBarContrast: false,
+        },
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,

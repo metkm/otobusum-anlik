@@ -22,7 +22,7 @@ import { i18n } from '@/translations/i18n'
 SplashScreen.preventAutoHideAsync()
 
 SplashScreen.setOptions({
-  duration: 150,
+  duration: 50,
   fade: true,
 })
 
@@ -68,8 +68,6 @@ export const RootLayout = () => {
               <Stack
                 screenOptions={{
                   animation: 'fade',
-                  navigationBarTranslucent: true,
-                  navigationBarColor: schemeColor.surfaceContainer,
                   headerTitleAlign: 'center',
                   headerTitleStyle: {
                     fontSize: fontSizes['md'],
