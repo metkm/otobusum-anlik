@@ -4,12 +4,15 @@
 
 <template>
   <div class="flex flex-col justify-between absolute inset-0 pointer-events-none content-padding">
-    <div class="flex items-center w-full pointer-events-auto">
+    <div class="flex w-full pointer-events-auto">
       <div
         id="overlay"
-        class="has-first:mr-2"
+        class="has-first:mr-2 mt-0.5"
       />
-      <div
+
+      <MapSearch />
+
+      <!-- <div
         class="pointer-events-auto w-full max-w-lg"
         @click="navigateTo('/search')"
       >
@@ -26,7 +29,7 @@
             :ui="{ base: 'ring-0 shadow bg-default/80 border border-dashed border-muted' }"
           />
         </Motion>
-      </div>
+      </div> -->
     </div>
 
     <div class="-mb-2 -mx-2 pointer-events-auto">

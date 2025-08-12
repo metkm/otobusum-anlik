@@ -2,7 +2,7 @@
 @import "@nuxt/ui";
 
 html, body {
-  font-family: Roboto;
+  font-family: Inter;
 }
 
 :root {
