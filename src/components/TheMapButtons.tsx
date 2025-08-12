@@ -1,42 +1,43 @@
-import { useRouter } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
+import { useRouter } from 'expo-router'
+import { useRef } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { useShallow } from 'zustand/react/shallow'
 
-import { usePaddings } from "@/hooks/usePaddings";
+import { usePaddings } from '@/hooks/usePaddings'
 
-import { UiButton } from "./ui/UiButton";
-import { getLines, useLinesStore } from "@/stores/lines";
-import { changeRouteDirection, selectGroup, unSelectGroup, useFiltersStore } from "@/stores/filters";
-import { useShallow } from "zustand/react/shallow";
-import { useRef } from "react";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { LineGroups } from "./lines/line/LineGroups";
-import { LineGroup } from "@/types/lineGroup";
+import { LineGroups } from './lines/line/LineGroups'
+import { UiButton } from './ui/UiButton'
+
+import { changeRouteDirection, selectGroup, unSelectGroup, useFiltersStore } from '@/stores/filters'
+import { getLines, useLinesStore } from '@/stores/lines'
+import { LineGroup } from '@/types/lineGroup'
 
 export const TheMapButtons = () => {
-  const { tabRoutePaddings } = usePaddings();
-  const sheetGroups = useRef<BottomSheetModal>(null);
-  const router = useRouter();
+  const { tabRoutePaddings } = usePaddings()
+  const sheetGroups = useRef<BottomSheetModal>(null)
+  const router = useRouter()
 
-  const selectedCity = useFiltersStore(useShallow((state) => state.selectedCity));
-  const selectedGroup = useFiltersStore((state) => state.selectedGroup);
+  const selectedCity = useFiltersStore(useShallow(state => state.selectedCity))
+  const selectedGroup = useFiltersStore(state => state.selectedGroup)
 
   const lineGroups = useLinesStore(
-    useShallow((state) => Object.keys(state.lineGroups[selectedCity]))
-  );
-  const lines = useLinesStore(useShallow(() => getLines()));
+    useShallow(state => Object.keys(state.lineGroups[selectedCity])),
+  )
+  const lines = useLinesStore(useShallow(() => getLines()))
 
   const changeRouteDirections = () => {
     for (let index = 0; index < lines.length; index++) {
-      const lineCode = lines[index];
-      if (!lineCode) continue;
+      const lineCode = lines[index]
+      if (!lineCode) continue
 
-      changeRouteDirection(lineCode);
+      changeRouteDirection(lineCode)
     }
-  };
+  }
 
   const openGroupSelection = () => {
-    sheetGroups.current?.present();
-  };
+    sheetGroups.current?.present()
+  }
 
   const selectLineGroup = (group: LineGroup) => {
     selectGroup(group.id)
@@ -46,7 +47,7 @@ export const TheMapButtons = () => {
   return (
     <View style={[styles.container, tabRoutePaddings]}>
       <UiButton
-        onPress={() => router.navigate("/modal")}
+        onPress={() => router.navigate('/modal')}
         icon="search"
         variant="soft"
         square
@@ -90,12 +91,12 @@ export const TheMapButtons = () => {
         </>
       )}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     right: 0,
     gap: 4,
@@ -104,4 +105,4 @@ const styles = StyleSheet.create({
   buttonContainer: {
     elevation: 2,
   },
-});
+})

@@ -1,3 +1,5 @@
+/* eslint-disable import/default */
+// eslint-disable-next-line import/namespace, import/no-named-as-default, import/no-named-as-default-member
 import stylistic from '@stylistic/eslint-plugin'
 import expoPlugin from 'eslint-config-expo/flat.js'
 import importPlugin from 'eslint-plugin-import'
@@ -5,9 +7,9 @@ import reactPlugin from 'eslint-plugin-react'
 
 export default [
   ...expoPlugin,
-  stylistic.configs.recommended,
   reactPlugin.configs.flat.recommended,
   importPlugin.flatConfigs.recommended,
+  stylistic.configs.recommended,
   {
     rules: {
       '@stylistic/brace-style': ['error', '1tbs'],
