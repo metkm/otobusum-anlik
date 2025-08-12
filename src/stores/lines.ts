@@ -174,8 +174,6 @@ export const deleteTheme = (lineCode: string) =>
       = !groupAllLineCodes.includes(lineCode)
         && state.lines[filtersStore.selectedCity].indexOf(lineCode) === -1
 
-    console.log(groupAllLineCodes, shouldDeleteTheme)
-
     if (shouldDeleteTheme) {
       delete state.lineTheme[filtersStore.selectedCity][lineCode]
     }
@@ -284,8 +282,6 @@ export const deleteGroup = (groupId: string) =>
 
     group.lineCodes.forEach(lineCode => deleteLineFromGroup(groupId, filtersStore.selectedCity, lineCode))
     delete state.lineGroups[filtersStore.selectedCity][groupId]
-
-    console.log(state.lineGroups)
 
     return {
       lineGroups: {

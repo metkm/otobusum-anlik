@@ -1,12 +1,11 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import Ionicons from '@react-native-vector-icons/ionicons'
 import React, { useCallback, useMemo, useRef } from 'react'
 import { StyleSheet, Switch, View } from 'react-native'
 
 import { useTheme } from '@/hooks/useTheme'
 
-import { UiSheetSelect } from '../ui/sheet/UiSheetSelect'
 import { UiButton } from '../ui/UiButton'
+import { UiSheet } from '../ui/UiSheet'
 import { UiText } from '../ui/UiText'
 
 import { Option } from '@/types/sheet'
@@ -51,14 +50,14 @@ type SettingSelectProps<T> = SettingContainerBaseProps & {
 type SettingProps<T> = SettingSwitchProps | SettingLinkProps | SettingSelectProps<T>
 
 export const SettingsContainer = <T,>(props: SettingProps<T>) => {
-  const bottomSheetModal = useRef<BottomSheetModal>(null)
+  const sheetRef = useRef<BottomSheetModal>(null)
   const { schemeColor } = useTheme()
 
   const handlePress = useCallback(() => {
     props.onPress?.()
 
     if (props.type === 'select') {
-      bottomSheetModal.current?.present()
+      sheetRef.current?.present()
     } else if (props.type === 'switch') {
       props.onChange?.()
     }
@@ -80,25 +79,27 @@ export const SettingsContainer = <T,>(props: SettingProps<T>) => {
       const selectedOption = props.options.find(opt => opt.value === props.value)
 
       return (
-        <>
-          <UiSheetSelect
-            cRef={bottomSheetModal}
-            title={props.title}
-            value={props.value}
-            options={props.options}
-            onValueChange={props.onChange}
-            list
-          />
-
-          <View style={styles.selectedValueContainer}>
-            <UiText>{selectedOption?.label}</UiText>
-            <Ionicons
-              name="chevron-forward"
-              color={schemeColor.onSurface}
-              size={18}
+        <UiSheet
+          ref={sheetRef}
+          trigger={(
+            <UiButton
+              title={selectedOption?.label || ''}
+              variant="ghost"
+              iconTrail="chevron-forward"
             />
-          </View>
-        </>
+          )}
+          list
+        >
+          {props.options.map(option => (
+            <UiButton
+              key={option.label}
+              title={option.label}
+              onPress={() => props.onChange?.(option.value)}
+              variant="ghost"
+              iconTrail={option.value === selectedOption?.value ? 'checkmark' : undefined}
+            />
+          ))}
+        </UiSheet>
       )
     }
 
@@ -128,11 +129,6 @@ const styles = StyleSheet.create({
     marginLeft: 14,
   },
   outerContainer: {
-    gap: 8,
-  },
-  selectedValueContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
     gap: 8,
   },
 })

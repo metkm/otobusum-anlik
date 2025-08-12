@@ -1,6 +1,4 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { useRouter } from 'expo-router'
-import { useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -9,13 +7,11 @@ import { usePaddings } from '@/hooks/usePaddings'
 import { LineGroups } from './lines/line/LineGroups'
 import { UiButton } from './ui/UiButton'
 
-import { changeRouteDirection, selectGroup, unSelectGroup, useFiltersStore } from '@/stores/filters'
+import { changeRouteDirection, unSelectGroup, useFiltersStore } from '@/stores/filters'
 import { getLines, useLinesStore } from '@/stores/lines'
-import { LineGroup } from '@/types/lineGroup'
 
 export const TheMapButtons = () => {
   const { tabRoutePaddings } = usePaddings()
-  const sheetGroups = useRef<BottomSheetModal>(null)
   const router = useRouter()
 
   const selectedCity = useFiltersStore(useShallow(state => state.selectedCity))
@@ -33,15 +29,6 @@ export const TheMapButtons = () => {
 
       changeRouteDirection(lineCode)
     }
-  }
-
-  const openGroupSelection = () => {
-    sheetGroups.current?.present()
-  }
-
-  const selectLineGroup = (group: LineGroup) => {
-    selectGroup(group.id)
-    sheetGroups.current?.dismiss()
   }
 
   return (
@@ -66,17 +53,16 @@ export const TheMapButtons = () => {
 
       {lineGroups.length > 0 && (
         <>
-          <UiButton
-            icon="albums"
-            onPress={openGroupSelection}
-            variant="soft"
-            square
-            containerStyle={styles.buttonContainer}
-          />
-
           <LineGroups
-            cRef={sheetGroups}
-            onPressGroup={selectLineGroup}
+            type="select"
+            trigger={(
+              <UiButton
+                variant="soft"
+                square
+                containerStyle={styles.buttonContainer}
+                icon="albums"
+              />
+            )}
           />
 
           {selectedGroup && (

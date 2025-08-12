@@ -135,6 +135,8 @@ export const UiButton = ({ size = 'md', variant = 'solid', error, ...props }: Ui
 const styles = StyleSheet.create({
   container: {
     borderRadius: 999,
+    pointerEvents: 'auto',
+    flexShrink: 1,
   },
   innerContainer: {
     display: 'flex',

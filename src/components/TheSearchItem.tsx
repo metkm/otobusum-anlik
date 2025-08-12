@@ -65,7 +65,7 @@ export const TheSearchItem = memo(function SearchItem({ item, ...props }: Props)
             )}
       </View>
 
-      {
+      {/* {
         !isStop(item)
         && (
           <LineGroups
@@ -80,7 +80,7 @@ export const TheSearchItem = memo(function SearchItem({ item, ...props }: Props)
             />
           </LineGroups>
         )
-      }
+      } */}
     </RectButton>
   )
 })

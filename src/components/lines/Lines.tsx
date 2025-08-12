@@ -79,10 +79,10 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
 
   const keyExtractor = useCallback((item: string) => `${item}-${selectedGroup}`, [selectedGroup])
 
-  const handlePressGroup = (group: LineGroup) => {
-    selectGroup(group.id)
-    bottomSheetModalGroups.current?.dismiss()
-  }
+  // const handlePressGroup = (group: LineGroup) => {
+  //   selectGroup(group.id)
+  //   bottomSheetModalGroups.current?.dismiss()
+  // }
 
   const isGroupEmpty = !group ? true : Object.values(group).length > 0 ? false : true
 
@@ -90,17 +90,20 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
     <View style={props.containerStyle}>
       {!!group && (
         <View style={[styles.groupTitleContainer]}>
-          <LineGroups cRef={bottomSheetModalGroups} onPressGroup={handlePressGroup} />
-
-          <UiButton
-            icon="albums"
-            title={isGroupEmpty ? `${group.title}` : `${group.title} (${i18n.t('empty')})`}
-            size="sm"
-            variant="soft"
-            onPress={() => {
-              bottomSheetModalGroups.current?.present()
-            }}
+          <LineGroups
+            type="select"
+            trigger={(
+              <UiButton
+                icon="albums"
+                title={isGroupEmpty ? `${group.title}` : `${group.title} (${i18n.t('empty')})`}
+                size="sm"
+                variant="soft"
+              />
+            )}
+            // cRef={bottomSheetModalGroups}
+            // onPressGroup={handlePressGroup}
           />
+
         </View>
       )}
 
