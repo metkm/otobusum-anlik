@@ -1,14 +1,14 @@
 import {
   BottomSheetBackdrop,
-  type BottomSheetBackdropProps,
   BottomSheetFlatList,
   BottomSheetModal,
   type BottomSheetModalProps,
+  type BottomSheetBackdropProps,
   BottomSheetView,
 } from '@gorhom/bottom-sheet'
 import { ReactNode, RefObject, use, useImperativeHandle, useRef } from 'react'
 import { FlatListProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import { Pressable } from 'react-native-gesture-handler'
+import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import { Easing } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -35,11 +35,18 @@ export const UiSheet = <T,>({ children, trigger, sheetProps, rootStyle, innerCon
   const { handleSheetPositionChange } = useSheetBackHandler(sheet)
   const insets = useSafeAreaInsets()
 
+  const tap = Gesture.Tap()
+
   useImperativeHandle(ref, () => sheet.current!)
 
   const openSheet = () => {
+    console.log('opensheet')
     sheet.current?.present()
   }
+
+  tap
+    .runOnJS(true)
+    .onStart(openSheet)
 
   const containerPadding = {
     paddingBottom: insets.bottom + 8,
@@ -47,12 +54,11 @@ export const UiSheet = <T,>({ children, trigger, sheetProps, rootStyle, innerCon
 
   return (
     <View style={[rootStyle, styles.rootContainer]}>
-      <Pressable
-        onPress={openSheet}
-        style={styles.pressableContainer}
-      >
-        {trigger}
-      </Pressable>
+      {trigger && (
+        <GestureDetector gesture={tap}>
+          {trigger}
+        </GestureDetector>
+      )}
 
       <BottomSheetModal
         ref={sheet}

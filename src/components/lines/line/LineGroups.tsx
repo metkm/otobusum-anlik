@@ -1,6 +1,7 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { ReactNode, useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
+import { Gesture } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UiButton } from '@/components/ui/UiButton'
@@ -38,6 +39,12 @@ export const LineGroups = <T,>({ trigger, lineCode, type, sheetProps }: LineGrou
 
   const selectedCity = useFiltersStore(useShallow(state => state.selectedCity))!
   const groups = useLinesStore(useShallow(state => Object.values(state.lineGroups[selectedCity])))
+
+  const tap = Gesture.Tap()
+
+  tap
+    .runOnJS(true)
+    .onBegin(createNewGroup)
 
   const handleSelectGroup = (group: LineGroup) => {
     if (type === 'add') {
