@@ -3,6 +3,8 @@ import { router } from 'expo-router'
 import { useCallback } from 'react'
 import { ListRenderItem, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { FlatList, RectButton } from 'react-native-gesture-handler'
+import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable'
+import Reanimated, { SharedValue, useAnimatedStyle } from 'react-native-reanimated'
 
 import { UiButton } from '@/components/ui/UiButton'
 import { UiLineCode } from '@/components/ui/UiLineCode'
@@ -10,6 +12,7 @@ import { UiText } from '@/components/ui/UiText'
 
 import { useTheme } from '@/hooks/useTheme'
 
+import { deleteGroup } from '@/stores/lines'
 import { i18n } from '@/translations/i18n'
 import { LineGroup } from '@/types/lineGroup'
 
@@ -17,6 +20,37 @@ interface LineGroupsItemProps {
   group: LineGroup
   containerStyle?: StyleProp<ViewStyle>
   onPress?: () => void
+}
+
+const ACTION_HEIGHT = 90
+
+const RightAction = ({
+  drag,
+  groupId,
+}: {
+  drag: SharedValue<number>
+  groupId: string
+}) => {
+  const styleAnimation = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: drag.value + ACTION_HEIGHT }],
+      padding: 8,
+    }
+  })
+
+  return (
+    <Reanimated.View
+      style={styleAnimation}
+    >
+      <UiButton
+        icon="trash-bin"
+        square
+        containerStyle={{ width: ACTION_HEIGHT - 8 * 2, height: ACTION_HEIGHT - 8 * 2 }}
+        variant="error"
+        onPress={() => deleteGroup(groupId)}
+      />
+    </Reanimated.View>
+  )
 }
 
 export const LineGroupsItem = ({ group, containerStyle, onPress }: LineGroupsItemProps) => {
@@ -54,29 +88,37 @@ export const LineGroupsItem = ({ group, containerStyle, onPress }: LineGroupsIte
   )
 
   return (
-    <RectButton
-      style={[styles.container, containerStyle]}
-      onLongPress={handleLongPress}
-      onPress={onPress}
+    <Swipeable
+      friction={1}
+      renderRightActions={(_, drag) => {
+        return <RightAction drag={drag} groupId={group.id} />
+      }}
     >
-      <View style={styles.top}>
-        <UiText size="lg" style={{ fontWeight: 'bold' }}>{group.title}</UiText>
+      <RectButton
+        style={[styles.container, containerStyle]}
+        onLongPress={handleLongPress}
+        onPress={onPress}
+      >
+        <View style={styles.top}>
+          <UiText size="lg" style={{ fontWeight: 'bold' }}>{group.title}</UiText>
 
-        <UiButton
-          icon="pencil"
-          onPress={handleLongPress}
-          size="sm"
+          <UiButton
+            icon="pencil"
+            onPress={handleLongPress}
+            size="sm"
+          />
+        </View>
+
+        <FlatList
+          data={group?.lineCodes}
+          renderItem={renderItem}
+          ListEmptyComponent={emptyItem}
+          contentContainerStyle={[styles.itemsContainer, { backgroundColor: schemeColor.surfaceContainer }]}
+          horizontal
         />
-      </View>
+      </RectButton>
+    </Swipeable>
 
-      <FlatList
-        data={group?.lineCodes}
-        renderItem={renderItem}
-        ListEmptyComponent={emptyItem}
-        contentContainerStyle={[styles.itemsContainer, { backgroundColor: schemeColor.surfaceContainer }]}
-        horizontal
-      />
-    </RectButton>
   )
 }
 
