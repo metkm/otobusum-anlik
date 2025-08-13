@@ -134,7 +134,7 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
               />
 
               <UiButton
-                icon="trash-outline"
+                icon="trash-bin"
                 title={i18n.t('deleteLine')}
                 onPress={() => deleteLine(lineCode)}
                 variant="error"
