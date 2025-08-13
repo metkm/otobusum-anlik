@@ -89,18 +89,19 @@ export const SettingsContainer = <T,>(props: SettingProps<T>) => {
               size="sm"
             />
           )}
-          list
-        >
-          {props.options.map(option => (
-            <UiButton
-              key={option.label}
-              title={option.label}
-              onPress={() => props.onChange?.(option.value)}
-              variant="ghost"
-              iconTrail={option.value === selectedOption?.value ? 'checkmark' : undefined}
-            />
-          ))}
-        </UiSheet>
+          flatlistProps={{
+            data: props.options,
+            renderItem: ({ item }) => (
+              <UiButton
+                key={item.label}
+                title={item.label}
+                onPress={() => props.onChange?.(item.value)}
+                variant="ghost"
+                iconTrail={item.value === selectedOption?.value ? 'checkmark' : undefined}
+              />
+            ),
+          }}
+        />
       )
     }
 

@@ -1,34 +1,34 @@
 import {
   BottomSheetBackdrop,
   type BottomSheetBackdropProps,
+  BottomSheetFlatList,
   BottomSheetModal,
   type BottomSheetModalProps,
-  BottomSheetScrollView,
   BottomSheetView,
 } from '@gorhom/bottom-sheet'
 import { ReactNode, RefObject, use, useImperativeHandle, useRef } from 'react'
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import { FlatListProps, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { Pressable } from 'react-native-gesture-handler'
 import { Easing } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { ColorSchemesContext, useTheme } from '@/hooks/useTheme'
 
-export interface UiSheetProps {
+export interface UiSheetProps<T> {
   children?: ReactNode
   trigger?: ReactNode
   sheetProps?: Omit<BottomSheetModalProps, 'children'>
-  list?: boolean
   rootStyle?: StyleProp<ViewStyle>
   innerContainerStyle?: StyleProp<ViewStyle>
   ref?: RefObject<BottomSheetModal | null>
+  flatlistProps?: FlatListProps<T>
 }
 
 export const BackdropComponent = (props: BottomSheetBackdropProps) => {
   return <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />
 }
 
-export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, innerContainerStyle, ref }: UiSheetProps) => {
+export const UiSheet = <T,>({ children, trigger, sheetProps, rootStyle, innerContainerStyle, flatlistProps, ref }: UiSheetProps<T>) => {
   const sheet = useRef<BottomSheetModal>(null)
   const { schemeColor } = useTheme()
   const insets = useSafeAreaInsets()
@@ -40,12 +40,17 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, innerC
   }
 
   const containerPadding = {
-    paddingBottom: insets.bottom + 9,
+    paddingBottom: insets.bottom + 8,
   }
 
   return (
     <View style={[rootStyle, styles.rootContainer]}>
-      <Pressable onPress={openSheet} style={styles.pressableContainer}>{trigger}</Pressable>
+      <Pressable
+        onPress={openSheet}
+        style={styles.pressableContainer}
+      >
+        {trigger}
+      </Pressable>
 
       <BottomSheetModal
         ref={sheet}
@@ -56,29 +61,30 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, innerC
           easing: Easing.out(Easing.exp),
         }}
         handleStyle={{
-          backgroundColor: schemeColor.surfaceContainer,
+          backgroundColor: schemeColor.surface,
         }}
         handleIndicatorStyle={{
           backgroundColor: schemeColor.onSurface,
         }}
         backgroundStyle={{
-          backgroundColor: schemeColor.surfaceContainer,
+          backgroundColor: schemeColor.surface,
         }}
         {...sheetProps}
       >
         <ColorSchemesContext value={use(ColorSchemesContext)}>
-          {!list
+          {!flatlistProps
             ? (
                 <BottomSheetView style={[styles.innerContainer, containerPadding, innerContainerStyle]}>
                   {children}
                 </BottomSheetView>
               )
             : (
-                <BottomSheetScrollView
-                  contentContainerStyle={[styles.innerContainer, containerPadding, innerContainerStyle]}
-                >
-                  {children}
-                </BottomSheetScrollView>
+                <BottomSheetFlatList
+                  {...flatlistProps}
+                  ItemSeparatorComponent={() => (
+                    <View style={[styles.seperator, { backgroundColor: schemeColor.surfaceContainerHigh }]} />
+                  )}
+                />
               )}
         </ColorSchemesContext>
       </BottomSheetModal>
@@ -89,7 +95,6 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, innerC
 const styles = StyleSheet.create({
   innerContainer: {
     paddingHorizontal: 8,
-    // paddingTop: 8,
     gap: 4,
   },
   rootContainer: {
@@ -97,5 +102,8 @@ const styles = StyleSheet.create({
   },
   pressableContainer: {
     flexShrink: 1,
+  },
+  seperator: {
+    height: 1,
   },
 })

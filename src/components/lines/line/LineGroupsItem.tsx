@@ -1,23 +1,27 @@
 import { useBottomSheetModal } from '@gorhom/bottom-sheet'
-import { FlashList, ListRenderItem } from '@shopify/flash-list'
 import { router } from 'expo-router'
 import { useCallback } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { RectButton, RectButtonProps } from 'react-native-gesture-handler'
+import { ListRenderItem, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import { FlatList, RectButton } from 'react-native-gesture-handler'
 
 import { UiButton } from '@/components/ui/UiButton'
 import { UiLineCode } from '@/components/ui/UiLineCode'
 import { UiText } from '@/components/ui/UiText'
 
+import { useTheme } from '@/hooks/useTheme'
+
 import { i18n } from '@/translations/i18n'
 import { LineGroup } from '@/types/lineGroup'
 
-interface Props extends RectButtonProps {
+interface LineGroupsItemProps {
   group: LineGroup
+  containerStyle?: StyleProp<ViewStyle>
+  onPress?: () => void
 }
 
-export const LineGroupsItem = ({ group, ...props }: Props) => {
+export const LineGroupsItem = ({ group, containerStyle, onPress }: LineGroupsItemProps) => {
   const { dismissAll } = useBottomSheetModal()
+  const { schemeColor } = useTheme()
 
   const handleLongPress = useCallback(
     () => {
@@ -51,24 +55,25 @@ export const LineGroupsItem = ({ group, ...props }: Props) => {
 
   return (
     <RectButton
-      style={styles.container}
+      style={[styles.container, containerStyle]}
       onLongPress={handleLongPress}
-      {...props}
+      onPress={onPress}
     >
       <View style={styles.top}>
-        <UiText>{group.title}</UiText>
+        <UiText size="lg" style={{ fontWeight: 'bold' }}>{group.title}</UiText>
+
         <UiButton
           icon="pencil"
           onPress={handleLongPress}
-          variant="soft"
+          size="sm"
         />
       </View>
 
-      <FlashList
+      <FlatList
         data={group?.lineCodes}
         renderItem={renderItem}
-        estimatedItemSize={70}
         ListEmptyComponent={emptyItem}
+        contentContainerStyle={[styles.itemsContainer, { backgroundColor: schemeColor.surfaceContainer }]}
         horizontal
       />
     </RectButton>
@@ -78,6 +83,7 @@ export const LineGroupsItem = ({ group, ...props }: Props) => {
 const styles = StyleSheet.create({
   container: {
     padding: 8,
+    gap: 8,
   },
   top: {
     flexDirection: 'row',
@@ -90,5 +96,10 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     marginHorizontal: 4,
+  },
+  itemsContainer: {
+    borderRadius: 8,
+    minWidth: '100%',
+    padding: 8,
   },
 })

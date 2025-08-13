@@ -1,4 +1,4 @@
-import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { ReactNode, useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
@@ -14,26 +14,26 @@ import { addLineToGroup, createNewGroup, useLinesStore } from '@/stores/lines'
 import { i18n } from '@/translations/i18n'
 import { LineGroup } from '@/types/lineGroup'
 
-interface LineGroupsTypeAddProps {
+interface LineGroupsTypeAddProps<T> extends LineGroupsBaseProps<T> {
   type: 'add'
   lineCode: string
 }
 
-interface LineGroupsTypeSelectProps {
+interface LineGroupsTypeSelectProps<T> extends LineGroupsBaseProps<T> {
   type: 'select'
   lineCode?: string
 }
 
-interface LineGroupsBaseProps {
+interface LineGroupsBaseProps<T> {
   trigger?: ReactNode
   onGroupPress?: (group: LineGroup) => void
-  sheetProps?: Omit<UiSheetProps, 'children'>
+  sheetProps?: Omit<UiSheetProps<T>, 'children'>
   ref?: BottomSheetModal
 }
 
-type LineGroupsProps = LineGroupsBaseProps & (LineGroupsTypeAddProps | LineGroupsTypeSelectProps)
+type LineGroupsProps<T> = LineGroupsTypeAddProps<T> | LineGroupsTypeSelectProps<T>
 
-export const LineGroups = ({ trigger, lineCode, type, onGroupPress, sheetProps, ref }: LineGroupsProps) => {
+export const LineGroups = <T,>({ trigger, lineCode, type, sheetProps }: LineGroupsProps<T>) => {
   const sheetRef = useRef<BottomSheetModal>(null)
 
   const selectedCity = useFiltersStore(useShallow(state => state.selectedCity))!
@@ -49,7 +49,8 @@ export const LineGroups = ({ trigger, lineCode, type, onGroupPress, sheetProps, 
     sheetRef.current?.dismiss()
   }
 
-  const snapPoints = groups.length < 1
+  const isList = groups.length > 0
+  const snapPoints = !isList
     ? ['50%']
     : ['50%', '100%']
 
@@ -62,42 +63,32 @@ export const LineGroups = ({ trigger, lineCode, type, onGroupPress, sheetProps, 
         enableDynamicSizing: false,
         ...sheetProps,
       }}
-      innerContainerStyle={groups.length < 1
+      innerContainerStyle={!isList && { flexGrow: 1 }}
+      flatlistProps={isList
         ? {
-            flexGrow: 1,
+            data: groups,
+            renderItem: ({ item }) => {
+              return (
+                <LineGroupsItem
+                  group={item}
+                  onPress={() => handleSelectGroup(item)}
+                />
+              )
+            },
           }
         : undefined}
-      list
     >
-      {groups.length < 1
-        ? (
-            <View style={styles.emptyGroupContainer}>
-              <UiText dimmed>{i18n.t('emptyGroups')}</UiText>
+      {!isList && (
+        <View style={styles.emptyGroupContainer}>
+          <UiText dimmed>{i18n.t('emptyGroups')}</UiText>
 
-              <UiButton
-                icon="add"
-                title={i18n.t('createNewGroup')}
-                onPress={createNewGroup}
-              />
-            </View>
-          )
-        : (
-            <BottomSheetScrollView>
-              <UiButton
-                icon="add"
-                title={i18n.t('createNewGroup')}
-                onPress={createNewGroup}
-              />
-
-              {groups.map(group => (
-                <LineGroupsItem
-                  key={group.id}
-                  group={group}
-                  onPress={() => handleSelectGroup(group)}
-                />
-              ))}
-            </BottomSheetScrollView>
-          )}
+          <UiButton
+            icon="add"
+            title={i18n.t('createNewGroup')}
+            onPress={createNewGroup}
+          />
+        </View>
+      )}
     </UiSheet>
   )
 }

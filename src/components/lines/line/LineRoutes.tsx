@@ -87,18 +87,20 @@ export const LineRoutes = memo(function LineRoutes(props: Props) {
         snapPoints: ['50%', '100%'],
         enableDynamicSizing: false,
       }}
-      list
-    >
-      {routes.map(route => (
-        <UiButton
-          key={route.value}
-          title={route.label}
-          variant="ghost"
-          onPress={() => handleSelectRoute(route.value)}
-          iconTrail={route.value === lineRoute?.route_code ? 'checkmark' : undefined}
-        />
-      ))}
-    </UiSheet>
+      flatlistProps={{
+        data: routes,
+        renderItem: ({ item }) => (
+          <UiButton
+            key={item.value}
+            title={item.label}
+            variant="ghost"
+            onPress={() => handleSelectRoute(item.value)}
+            iconTrail={item.value === lineRoute?.route_code ? 'checkmark' : undefined}
+            square
+          />
+        ),
+      }}
+    />
   )
 })
 

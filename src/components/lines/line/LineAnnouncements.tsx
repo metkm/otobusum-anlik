@@ -31,15 +31,16 @@ export const LineAnnouncements = ({ lineCode }: LineAnnouncementsProps) => {
       sheetProps={{
         snapPoints: ['50%'],
       }}
-      list
-    >
-      {announcements.map((ann, index) => (
-        <View key={`${ann.GUNCELLEME_SAATI}-${ann.MESAJ}-${index}`} style={styles.announcementContainer}>
-          <UiText>{ann.GUNCELLEME_SAATI}</UiText>
-          <UiText>{ann.MESAJ}</UiText>
-        </View>
-      ))}
-    </UiSheet>
+      flatlistProps={{
+        data: announcements,
+        renderItem: ({ item, index }) => (
+          <View key={`${item.GUNCELLEME_SAATI}-${item.MESAJ}-${index}`} style={styles.announcementContainer}>
+            <UiText>{item.GUNCELLEME_SAATI}</UiText>
+            <UiText>{item.MESAJ}</UiText>
+          </View>
+        ),
+      }}
+    />
   )
 }
 
