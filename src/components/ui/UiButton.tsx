@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    flex: 1,
+    flexGrow: 1,
   },
   title: {
     textAlign: 'center',

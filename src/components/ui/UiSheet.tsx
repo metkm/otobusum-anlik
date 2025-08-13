@@ -59,6 +59,7 @@ export const UiSheet = <T,>({ children, trigger, sheetProps, rootStyle, innerCon
         topInset={insets.top}
         backdropComponent={BackdropComponent}
         onChange={handleSheetPositionChange}
+        stackBehavior="replace"
         animationConfigs={{
           duration: 350,
           easing: Easing.out(Easing.exp),
