@@ -86,14 +86,12 @@ export const RootLayout = () => {
                   options={{
                     presentation: 'modal',
                     headerShown: false,
-                    navigationBarColor: schemeColor.surface,
                   }}
                 />
                 <Stack.Screen
                   name="group/[groupId]/edit"
                   options={{
                     headerTitle: i18n.t('editGroupTitle'),
-                    navigationBarColor: schemeColor.surface,
                   }}
                 />
               </Stack>
