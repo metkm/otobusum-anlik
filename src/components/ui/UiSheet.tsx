@@ -59,7 +59,7 @@ export const UiSheet = <T,>({ children, trigger, sheetProps, rootStyle, innerCon
         topInset={insets.top}
         backdropComponent={BackdropComponent}
         onChange={handleSheetPositionChange}
-        stackBehavior="replace"
+        // stackBehavior="replace" for some reason this causes rerender to not work.
         animationConfigs={{
           duration: 350,
           easing: Easing.out(Easing.exp),
@@ -76,19 +76,19 @@ export const UiSheet = <T,>({ children, trigger, sheetProps, rootStyle, innerCon
         {...sheetProps}
       >
         <ColorSchemesContext value={use(ColorSchemesContext)}>
-          {!flatlistProps
+          {flatlistProps && flatlistProps.data && flatlistProps.data.length > 0
             ? (
-                <BottomSheetView style={[styles.innerContainer, containerPadding, innerContainerStyle]}>
-                  {children}
-                </BottomSheetView>
-              )
-            : (
                 <BottomSheetFlatList
                   {...flatlistProps}
                   ItemSeparatorComponent={() => (
                     <View style={[styles.seperator, { backgroundColor: schemeColor.surfaceContainerHigh }]} />
                   )}
                 />
+              )
+            : (
+                <BottomSheetView style={[styles.innerContainer, containerPadding, innerContainerStyle]}>
+                  {children}
+                </BottomSheetView>
               )}
         </ColorSchemesContext>
       </BottomSheetModal>

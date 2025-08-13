@@ -143,6 +143,9 @@ const styles = StyleSheet.create({
     minWidth: 48,
     borderRadius: 999,
     pointerEvents: 'auto',
+    flexGrow: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   innerContainer: {
     flexDirection: 'row',
@@ -151,7 +154,6 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    flexGrow: 1,
   },
   title: {
     textAlign: 'center',

@@ -75,6 +75,15 @@ export const LineGroups = <T,>({ trigger, lineCode, type, sheetProps }: LineGrou
                 />
               )
             },
+            ListHeaderComponent: () => (
+              <View style={{ padding: 8 }}>
+                <UiButton
+                  icon="add"
+                  title={i18n.t('createNewGroup')}
+                  onPress={createNewGroup}
+                />
+              </View>
+            ),
           }
         : undefined}
     >
