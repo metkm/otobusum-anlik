@@ -80,6 +80,7 @@ export const UiSheet = <T,>({ children, trigger, sheetProps, rootStyle, innerCon
             ? (
                 <BottomSheetFlatList
                   {...flatlistProps}
+                  contentContainerStyle={{ paddingBottom: insets.bottom }}
                   ItemSeparatorComponent={() => (
                     <View style={[styles.seperator, { backgroundColor: schemeColor.surfaceContainerHigh }]} />
                   )}
