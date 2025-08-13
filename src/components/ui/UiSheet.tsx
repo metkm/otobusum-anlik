@@ -39,6 +39,10 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, innerC
     sheet.current?.present()
   }
 
+  const containerPadding = {
+    paddingBottom: insets.bottom + 9,
+  }
+
   return (
     <View style={[rootStyle, styles.rootContainer]}>
       <Pressable onPress={openSheet} style={styles.pressableContainer}>{trigger}</Pressable>
@@ -65,13 +69,13 @@ export const UiSheet = ({ children, trigger, list, sheetProps, rootStyle, innerC
         <ColorSchemesContext value={use(ColorSchemesContext)}>
           {!list
             ? (
-                <BottomSheetView style={[styles.innerContainer, { paddingBottom: insets.bottom }, innerContainerStyle]}>
+                <BottomSheetView style={[styles.innerContainer, containerPadding, innerContainerStyle]}>
                   {children}
                 </BottomSheetView>
               )
             : (
                 <BottomSheetScrollView
-                  contentContainerStyle={[styles.innerContainer, { paddingBottom: insets.bottom }, innerContainerStyle]}
+                  contentContainerStyle={[styles.innerContainer, containerPadding, innerContainerStyle]}
                 >
                   {children}
                 </BottomSheetScrollView>
