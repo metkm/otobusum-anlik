@@ -40,7 +40,6 @@ export const UiSheet = <T,>({ children, trigger, sheetProps, rootStyle, innerCon
   useImperativeHandle(ref, () => sheet.current!)
 
   const openSheet = () => {
-    console.log('opensheet')
     sheet.current?.present()
   }
 
