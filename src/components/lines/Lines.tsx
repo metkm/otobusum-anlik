@@ -75,7 +75,7 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
 
   const keyExtractor = useCallback((item: string) => `${item}-${selectedGroup}`, [selectedGroup])
 
-  const isGroupEmpty = !group ? true : Object.values(group).length > 0 ? false : true
+  const isGroupEmpty = !group ? true : group.lineCodes.length > 0 ? false : true
 
   return (
     <View style={props.containerStyle}>
@@ -86,7 +86,7 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
             trigger={(
               <UiButton
                 icon="albums"
-                title={isGroupEmpty ? `${group.title}` : `${group.title} (${i18n.t('empty')})`}
+                title={!isGroupEmpty ? `${group.title}` : `${group.title} (${i18n.t('empty')})`}
                 size="sm"
                 variant="soft"
               />
