@@ -12,6 +12,7 @@ import { Pressable } from 'react-native-gesture-handler'
 import { Easing } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
+import { useSheetBackHandler } from '@/hooks/useSheetBackHandler'
 import { ColorSchemesContext, useTheme } from '@/hooks/useTheme'
 
 export interface UiSheetProps<T> {
@@ -31,6 +32,7 @@ export const BackdropComponent = (props: BottomSheetBackdropProps) => {
 export const UiSheet = <T,>({ children, trigger, sheetProps, rootStyle, innerContainerStyle, flatlistProps, ref }: UiSheetProps<T>) => {
   const sheet = useRef<BottomSheetModal>(null)
   const { schemeColor } = useTheme()
+  const { handleSheetPositionChange } = useSheetBackHandler(sheet)
   const insets = useSafeAreaInsets()
 
   useImperativeHandle(ref, () => sheet.current!)
@@ -56,6 +58,7 @@ export const UiSheet = <T,>({ children, trigger, sheetProps, rootStyle, innerCon
         ref={sheet}
         topInset={insets.top}
         backdropComponent={BackdropComponent}
+        onChange={handleSheetPositionChange}
         animationConfigs={{
           duration: 350,
           easing: Easing.out(Easing.exp),
