@@ -115,8 +115,8 @@ export const UiButton = ({ size = 'md', variant = 'solid', error, ...props }: Ui
           : {})}
         style={[
           styles.innerContainer,
-          props.innerContainerStyle,
           props.square ? styles.square : undefined,
+          props.innerContainerStyle,
         ]}
       >
         {props.icon && <Icon icon={props.icon} />}

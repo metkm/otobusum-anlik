@@ -86,6 +86,7 @@ export const SettingsContainer = <T,>(props: SettingProps<T>) => {
               title={selectedOption?.label || ''}
               variant="ghost"
               iconTrail="chevron-forward"
+              size="sm"
             />
           )}
           list
@@ -122,6 +123,8 @@ export const SettingsContainer = <T,>(props: SettingProps<T>) => {
 const styles = StyleSheet.create({
   settingInnerContainer: {
     justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 60,
   },
   title: {
     fontSize: 18,
