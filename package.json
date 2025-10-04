@@ -40,7 +40,6 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.5",
-    "react-native-clusterer": "^3.0.0",
     "react-native-gesture-handler": "~2.27.0",
     "react-native-maps": "1.20.1",
     "react-native-reanimated": "~3.17.4",
