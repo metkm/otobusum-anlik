@@ -49,7 +49,7 @@ export const GroupEditScreen = () => {
 
       <UiButton
         title={i18n.t('deleteGroup')}
-        icon="trash-outline"
+        icon="trash-bin"
         variant="error"
         onPress={handleDeleteGroup}
         square

@@ -1,62 +1,120 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import { RefObject, useCallback } from 'react'
-import { ViewProps } from 'react-native'
+import { ReactNode, useRef } from 'react'
+import { View, StyleSheet } from 'react-native'
+import { Gesture } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
-import { UiSheetModal } from '@/components/ui/sheet/UiSheetModal'
 import { UiButton } from '@/components/ui/UiButton'
+import { UiSheet, UiSheetProps } from '@/components/ui/UiSheet'
+import { UiText } from '@/components/ui/UiText'
 
 import { LineGroupsItem } from './LineGroupsItem'
 
-import { useFiltersStore } from '@/stores/filters'
+import { selectGroup, useFiltersStore } from '@/stores/filters'
 import { addLineToGroup, createNewGroup, useLinesStore } from '@/stores/lines'
 import { i18n } from '@/translations/i18n'
 import { LineGroup } from '@/types/lineGroup'
 
-interface LineGroupsProps extends ViewProps {
-  onPressGroup?: (group: LineGroup) => void
-  cRef?: RefObject<BottomSheetModal | null>
-  lineCodeToAdd?: string
+interface LineGroupsTypeAddProps<T> extends LineGroupsBaseProps<T> {
+  type: 'add'
+  lineCode: string
 }
 
-export const LineGroups = ({ onPressGroup, lineCodeToAdd, ...props }: LineGroupsProps) => {
+interface LineGroupsTypeSelectProps<T> extends LineGroupsBaseProps<T> {
+  type: 'select'
+  lineCode?: string
+}
+
+interface LineGroupsBaseProps<T> {
+  trigger?: ReactNode
+  onGroupPress?: (group: LineGroup) => void
+  sheetProps?: Omit<UiSheetProps<T>, 'children'>
+  ref?: BottomSheetModal
+}
+
+type LineGroupsProps<T> = LineGroupsTypeAddProps<T> | LineGroupsTypeSelectProps<T>
+
+export const LineGroups = <T,>({ trigger, lineCode, type, sheetProps }: LineGroupsProps<T>) => {
+  const sheetRef = useRef<BottomSheetModal>(null)
+
   const selectedCity = useFiltersStore(useShallow(state => state.selectedCity))!
   const groups = useLinesStore(useShallow(state => Object.values(state.lineGroups[selectedCity])))
 
-  const handlePressNewGroup = useCallback(() => {
-    createNewGroup()
-  }, [])
+  const tap = Gesture.Tap()
 
-  const handlePressGroup = useCallback(
-    (group: LineGroup) => {
-      onPressGroup?.(group)
-      if (!lineCodeToAdd) return
+  tap
+    .runOnJS(true)
+    .onBegin(createNewGroup)
 
-      addLineToGroup(group.id, lineCodeToAdd)
-      props.cRef?.current?.dismiss()
-    },
-    [lineCodeToAdd, props.cRef, onPressGroup],
-  )
+  const handleSelectGroup = (group: LineGroup) => {
+    if (type === 'add') {
+      addLineToGroup(group.id, lineCode)
+    } else {
+      selectGroup(group.id)
+    }
+
+    sheetRef.current?.dismiss()
+  }
+
+  const isList = groups.length > 0
+  const snapPoints = !isList
+    ? ['50%']
+    : ['50%', '100%']
 
   return (
-    <>
-      {props.children}
+    <UiSheet
+      ref={sheetRef}
+      trigger={trigger}
+      sheetProps={{
+        snapPoints: snapPoints,
+        enableDynamicSizing: false,
+        ...sheetProps,
+      }}
+      innerContainerStyle={!isList && { flexGrow: 1 }}
+      flatlistProps={isList
+        ? {
+            data: groups,
+            renderItem: ({ item }) => {
+              return (
+                <LineGroupsItem
+                  group={item}
+                  onPress={() => handleSelectGroup(item)}
+                />
+              )
+            },
+            ListHeaderComponent: () => (
+              <View style={{ padding: 8 }}>
+                <UiButton
+                  icon="add"
+                  title={i18n.t('createNewGroup')}
+                  onPress={createNewGroup}
+                />
+              </View>
+            ),
+          }
+        : undefined}
+    >
+      {!isList && (
+        <View style={styles.emptyGroupContainer}>
+          <UiText dimmed>{i18n.t('emptyGroups')}</UiText>
 
-      <UiSheetModal
-        cRef={props.cRef}
-        snapPoints={['50%']}
-        title={i18n.t('lineGroups')}
-        icon="albums"
-        enableDynamicSizing={false}
-        footer={() => (
-          <UiButton icon="add" title={i18n.t('createNewGroup')} onPress={handlePressNewGroup} />
-        )}
-        list
-      >
-        {groups.map(group => (
-          <LineGroupsItem key={group.id} group={group} onPress={() => handlePressGroup(group)} />
-        ))}
-      </UiSheetModal>
-    </>
+          <UiButton
+            icon="add"
+            title={i18n.t('createNewGroup')}
+            onPress={createNewGroup}
+          />
+        </View>
+      )}
+    </UiSheet>
   )
 }
+
+const styles = StyleSheet.create({
+  emptyGroupContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexGrow: 1,
+    gap: 14,
+  },
+})

@@ -1,4 +1,3 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { ForwardedRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
 import {
   Dimensions,
@@ -10,7 +9,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import Animated, { FlatListPropsWithLayout, LinearTransition } from 'react-native-reanimated'
+import Animated, { FlatListPropsWithLayout } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UiButton } from '../ui/UiButton'
@@ -18,11 +17,10 @@ import { UiButton } from '../ui/UiButton'
 import { LineMemoized, LineProps } from './line/Line'
 import { LineGroups } from './line/LineGroups'
 
-import { selectGroup, useFiltersStore } from '@/stores/filters'
+import { useFiltersStore } from '@/stores/filters'
 import { getLines, useLinesStore } from '@/stores/lines'
 import { useMiscStore } from '@/stores/misc'
 import { i18n } from '@/translations/i18n'
-import { LineGroup } from '@/types/lineGroup'
 
 interface LinesProps {
   cRef?: ForwardedRef<FlatList>
@@ -32,10 +30,8 @@ interface LinesProps {
   listProps?: Omit<FlatListPropsWithLayout<string>, 'data' | 'renderItem'>
 }
 
-// TODO: Some rerender issues are here.
 export const Lines = ({ cRef, ...props }: LinesProps) => {
   const innerRef = useRef<FlatList>(null)
-  const bottomSheetModalGroups = useRef<BottomSheetModal>(null)
 
   useImperativeHandle(cRef, () => innerRef.current!, [])
 
@@ -79,34 +75,28 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
 
   const keyExtractor = useCallback((item: string) => `${item}-${selectedGroup}`, [selectedGroup])
 
-  const handlePressGroup = (group: LineGroup) => {
-    selectGroup(group.id)
-    bottomSheetModalGroups.current?.dismiss()
-  }
-
-  const isGroupEmpty = !group ? true : Object.values(group).length > 0 ? false : true
+  const isGroupEmpty = !group ? true : group.lineCodes.length > 0 ? false : true
 
   return (
     <View style={props.containerStyle}>
       {!!group && (
         <View style={[styles.groupTitleContainer]}>
-          <LineGroups cRef={bottomSheetModalGroups} onPressGroup={handlePressGroup} />
-
-          <UiButton
-            icon="albums"
-            title={isGroupEmpty ? `${group.title}` : `${group.title} (${i18n.t('empty')})`}
-            size="sm"
-            variant="soft"
-            onPress={() => {
-              bottomSheetModalGroups.current?.present()
-            }}
+          <LineGroups
+            type="select"
+            trigger={(
+              <UiButton
+                icon="albums"
+                title={!isGroupEmpty ? `${group.title}` : `${group.title} (${i18n.t('empty')})`}
+                size="sm"
+                variant="soft"
+              />
+            )}
           />
         </View>
       )}
 
       <Animated.FlatList
         {...props.listProps}
-        itemLayoutAnimation={LinearTransition}
         ref={cRef}
         data={lines}
         renderItem={renderItem}
@@ -137,8 +127,6 @@ const styles = StyleSheet.create({
     minWidth: Dimensions.get('screen').width,
   },
   groupTitleContainer: {
-    // padding: 8,
-    // paddingHorizontal: 12,
     marginLeft: 8,
     alignSelf: 'flex-start',
     borderRadius: 999,

@@ -1,10 +1,9 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import { memo, useEffect, useMemo, useRef } from 'react'
+import { memo, useEffect, useMemo } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
-import { UiSheetOptions } from '@/components/ui/sheet/UiSheetOptions'
+import { UiSheet } from '@/components/ui/UiSheet'
 
 import { useMap } from '@/hooks/contexts/useMap'
 import { useLine } from '@/hooks/queries/useLine'
@@ -38,9 +37,6 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
   const { lineWidth } = useLine(lineCode)
 
   const map = useMap()
-  const uiSheetButtonModal = useRef<BottomSheetModal>(null)
-  const uiSheetLineGroupsModal = useRef<BottomSheetModal>(null)
-
   const isVisible = useSharedValue(true)
 
   useEffect(() => {
@@ -69,13 +65,6 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
 
     return unsub
   }, [isVisible, lineCode, map])
-
-  const handleVisibility = () => toggleLineVisibility(lineCode)
-  const handleDelete = () => deleteLine(lineCode)
-  const handleRouteChange = () => changeRouteDirection(lineCode)
-
-  const openMenu = () => uiSheetButtonModal.current?.present()
-  const openGroupMenu = () => uiSheetLineGroupsModal.current?.present()
 
   const containerStyle: StyleProp<ViewStyle> = useMemo(
     () => ({
@@ -111,40 +100,59 @@ const Line = ({ lineCode, variant = 'soft', ...props }: LineProps) => {
           <LineName lineCode={lineCode} variant={variant} />
 
           <View style={styles.titleContainer}>
-            <UiButton onPress={handleVisibility} icon="eye-outline" variant="soft" />
-
-            {selectedCity === 'istanbul' && (
-              <LineAnnouncements lineCode={lineCode} style={buttonContainerStyle} />
-            )}
-
-            <UiButton onPress={openMenu} icon="menu" variant="soft" />
-
-            <UiSheetOptions
-              cRef={uiSheetButtonModal}
-              options={[
-                {
-                  icon: 'add-circle-outline',
-                  title: i18n.t('addToGroup'),
-                  onPress: openGroupMenu,
-                },
-                {
-                  icon: 'trash-outline',
-                  title: i18n.t('deleteLine'),
-                  onPress: handleDelete,
-                },
-              ]}
-              title={lineCode}
-              icon="bus"
+            <UiButton
+              onPress={() => toggleLineVisibility(lineCode)}
+              icon="eye-outline"
+              variant="soft"
             />
 
-            <LineGroups cRef={uiSheetLineGroupsModal} lineCodeToAdd={lineCode} />
+            {selectedCity === 'istanbul' && (
+              <LineAnnouncements
+                lineCode={lineCode}
+                style={buttonContainerStyle}
+              />
+            )}
+
+            <UiSheet
+              trigger={(
+                <UiButton
+                  icon="menu"
+                  variant="soft"
+                />
+              )}
+            >
+              <LineGroups
+                type="add"
+                lineCode={lineCode}
+                trigger={(
+                  <UiButton
+                    icon="add-circle-outline"
+                    title={i18n.t('addToGroup')}
+                    square
+                  />
+                )}
+              />
+
+              <UiButton
+                icon="trash-bin"
+                title={i18n.t('deleteLine')}
+                onPress={() => deleteLine(lineCode)}
+                variant="error"
+                square
+              />
+            </UiSheet>
           </View>
         </View>
 
         <LineBusStops lineCode={lineCode} />
 
         <View style={styles.lineButtonsContainer}>
-          <UiButton onPress={handleRouteChange} icon="repeat" variant="soft" />
+          <UiButton
+            onPress={() => changeRouteDirection(lineCode)}
+            icon="repeat"
+            variant="soft"
+          />
+
           <LineRoutes lineCode={lineCode} />
         </View>
       </Animated.View>
@@ -171,8 +179,9 @@ const styles = StyleSheet.create({
   lineButtonsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
     flexGrow: 1,
+    gap: 4,
+    flexShrink: 1,
   },
   menuSheetContainer: {
     padding: 8,

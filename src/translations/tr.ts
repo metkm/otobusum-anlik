@@ -60,4 +60,5 @@ export default {
   timetableEmptyRange: 'Bu gün için zaman tarifesi bulunamadı',
   lineGroups: 'Hat Grupları',
   empty: 'Boş',
+  emptyGroups: 'Grupların boş',
 }

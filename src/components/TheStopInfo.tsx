@@ -1,20 +1,20 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types'
 import { useQuery } from '@tanstack/react-query'
 import { RefObject, useEffect, useRef } from 'react'
 import { Linking, StyleSheet, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
+import { useTheme } from '@/hooks/useTheme'
+
 import { LineGroups } from './lines/line/LineGroups'
 import { TheMap, type TheMapRef } from './map/Map'
-import { MarkersStopItem } from './markers/stop/MarkersStopItem.web'
-import { UiSheetModal } from './ui/sheet/UiSheetModal'
+import { MarkersStopItem } from './markers/stop/MarkersStopItem'
 import { UiActivityIndicator } from './ui/UiActivityIndicator'
 import { UiButton } from './ui/UiButton'
+import { UiSheet } from './ui/UiSheet'
 import { UiText } from './ui/UiText'
 
 import { getStop } from '@/api/getStop'
-import { addLine } from '@/stores/lines'
 import { useMiscStore } from '@/stores/misc'
 import { useSettingsStore } from '@/stores/settings'
 import { i18n } from '@/translations/i18n'
@@ -24,33 +24,28 @@ interface TheStopInfoProps {
 }
 
 const StopLine = ({ lineCode }: { lineCode: string }) => {
-  const bottomSheetModal = useRef<BottomSheetModal>(null)
-
-  const handlePress = (lineCode: string) => {
-    addLine(lineCode)
-  }
-
-  const handleLongPress = () => {
-    bottomSheetModal.current?.present()
-  }
+  const { schemeColor } = useTheme(lineCode)
 
   return (
-    <LineGroups cRef={bottomSheetModal} lineCodeToAdd={lineCode}>
-      <UiButton
-        key={lineCode}
-        title={lineCode}
-        variant="soft"
-        onPress={() => handlePress(lineCode)}
-        onLongPress={() => handleLongPress()}
-      />
-    </LineGroups>
+    <LineGroups
+      type="add"
+      trigger={(
+        <UiButton
+          key={lineCode}
+          title={lineCode}
+          variant="ghost"
+          innerContainerStyle={{ borderWidth: StyleSheet.hairlineWidth, backgroundColor: schemeColor.surfaceContainer }}
+        />
+      )}
+      lineCode={lineCode}
+    />
   )
 }
 
 export const TheStopInfo = ({ ref }: TheStopInfoProps) => {
   const selectedStopId = useMiscStore(useShallow(state => state.selectedStopId))
 
-  const bottomSheetModal = useRef<BottomSheetModalMethods>(null)
+  const sheetRef = useRef<BottomSheetModalMethods>(null)
   const savedRegion = useRef<any | undefined>(undefined)
 
   const query = useQuery({
@@ -85,7 +80,7 @@ export const TheStopInfo = ({ ref }: TheStopInfoProps) => {
       longitudeDelta: 0.010,
     })
 
-    bottomSheetModal.current?.present()
+    sheetRef.current?.present()
   }, [ref, query.data])
 
   useEffect(() => {
@@ -112,10 +107,11 @@ export const TheStopInfo = ({ ref }: TheStopInfoProps) => {
   }
 
   return (
-    <UiSheetModal
-      cRef={bottomSheetModal}
-      onDismiss={handleOnDismiss}
-      enableDynamicSizing={true}
+    <UiSheet
+      ref={sheetRef}
+      sheetProps={{
+        onDismiss: handleOnDismiss,
+      }}
     >
       {query.isPending
         ? (
@@ -141,7 +137,6 @@ export const TheStopInfo = ({ ref }: TheStopInfoProps) => {
                   </TheMap>
                 )}
               </View>
-
               <UiButton
                 title={i18n.t('stopDirections')}
                 onPress={openStopDirections}
@@ -158,10 +153,8 @@ export const TheStopInfo = ({ ref }: TheStopInfoProps) => {
                     </UiText>
                     <UiText>{query.data.stop.province}</UiText>
                   </View>
-
                   <View style={styles.linesContainer}>
                     <UiText>{i18n.t('linesThatUseStop')}</UiText>
-
                     <View style={styles.codeOuter}>
                       {query.data?.buses.map(lineCode => (
                         <StopLine key={lineCode} lineCode={lineCode} />
@@ -172,7 +165,7 @@ export const TheStopInfo = ({ ref }: TheStopInfoProps) => {
               )}
             </>
           )}
-    </UiSheetModal>
+    </UiSheet>
   )
 }
 
