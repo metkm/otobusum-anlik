@@ -1,4 +1,4 @@
-import { readAsStringAsync } from 'expo-file-system'
+import { readAsStringAsync } from 'expo-file-system/legacy'
 import { memo, useMemo, useState } from 'react'
 import { Platform, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import { LatLng, Marker } from 'react-native-maps'
@@ -7,7 +7,7 @@ import { captureRef } from 'react-native-view-shot'
 import { useLineBusStops } from '@/hooks/queries/useLineBusStops'
 import { useTheme } from '@/hooks/useTheme'
 
-import { MarkersStopItemMemoized } from './MarkersStopItem.web'
+import { MarkersStopItemMemoized } from './MarkersStopItem'
 
 import { useFiltersStore, getSelectedRouteCode } from '@/stores/filters'
 import { useMiscStore } from '@/stores/misc'
