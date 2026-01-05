@@ -9,7 +9,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import Animated, { FlatListPropsWithLayout } from 'react-native-reanimated'
+import Animated, { FlatListPropsWithLayout, LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UiButton } from '../ui/UiButton'
@@ -99,6 +99,7 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
         {...props.listProps}
         ref={cRef}
         data={lines}
+        itemLayoutAnimation={LinearTransition}
         renderItem={renderItem}
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
         contentContainerStyle={[styles.codes, props.contentContainerStyle]}
