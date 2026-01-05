@@ -66,10 +66,12 @@ export const changeRouteDirection = (lineCode: string) => useFiltersStore.setSta
   const routeCode = getSelectedRouteCode(lineCode)
 
   const [left, dir, right] = routeCode.split('_')
-  if (!right || !dir) return state
+  if (!right || !dir)
+    return state
 
   const allRoutes = queryClient.getQueryData<LineRoute[]>(['line-routes', lineCode])
-  if (!allRoutes) return state
+  if (!allRoutes)
+    return state
 
   const dCode = parseInt(right.substring(1))
 
@@ -84,7 +86,8 @@ export const changeRouteDirection = (lineCode: string) => useFiltersStore.setSta
     route => route.route_code === oneLess || route.route_code === oneMore || route.route_code === equal,
   )
 
-  if (!otherRoute) return state
+  if (!otherRoute)
+    return state
 
   return {
     selectedRoutes: {

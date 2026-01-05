@@ -8,7 +8,7 @@ const config: ExpoConfig = {
   icon: './src/assets/icon.png',
   scheme: 'otobusum-anlik',
   userInterfaceStyle: 'automatic',
-  newArchEnabled: false,
+  // newArchEnabled: false,
   extra: {
     eas: {
       projectId: '2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
@@ -33,8 +33,10 @@ const config: ExpoConfig = {
     barStyle: 'light-content',
     translucent: true,
   },
+  androidNavigationBar: {
+    enforceContrast: false,
+  },
   android: {
-    edgeToEdgeEnabled: true,
     config: {
       googleMaps: {
         apiKey: process.env.EXPO_PUBLIC_MAP_API,
@@ -56,15 +58,6 @@ const config: ExpoConfig = {
       {
         image: './src/assets/icon.png',
         backgroundColor: '#0a0a0a',
-      },
-    ],
-    [
-      'react-native-edge-to-edge',
-      {
-        android: {
-          parentTheme: 'Default',
-          enforceNavigationBarContrast: false,
-        },
       },
     ],
   ],

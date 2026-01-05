@@ -1,7 +1,7 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
-import { FlashList, ListRenderItem, ViewToken } from '@shopify/flash-list'
 import { useCallback, useMemo, useRef } from 'react'
-import { Platform, StyleSheet, View, ViewStyle } from 'react-native'
+import { Platform, StyleSheet, View, ViewStyle, ViewToken, type ListRenderItem } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler'
 import Animated, {
   withTiming,
   useSharedValue,
@@ -82,7 +82,7 @@ export const LineBusStops = ({ lineCode }: LineBusStopsProps) => {
   const routeCode = useFiltersStore(() => getSelectedRouteCode(lineCode))
   const containerHeight = useSharedValue(COLLAPSED)
   const currentViewableItems = useRef<ViewToken[]>([])
-  const flashlistRef = useRef<FlashList<BusStop>>(null)
+  const flatlistRef = useRef<FlatList<BusStop>>(null)
 
   const { schemeColor } = useTheme()
   const { query: stops, closestStop } = useLineBusStops(routeCode, true)
@@ -122,8 +122,8 @@ export const LineBusStops = ({ lineCode }: LineBusStopsProps) => {
       stop => stop.stop_code === busInView?.closest_stop_code,
     )
 
-    if (stopIndex !== undefined) {
-      flashlistRef.current?.scrollToIndex({
+    if (stopIndex !== undefined && stopIndex !== -1) {
+      flatlistRef.current?.scrollToIndex({
         animated: true,
         index: stopIndex,
         viewPosition: 0.5,
@@ -133,14 +133,10 @@ export const LineBusStops = ({ lineCode }: LineBusStopsProps) => {
 
   return (
     <Animated.View style={animatedStyle}>
-      <FlashList
-        ref={flashlistRef}
+      <FlatList
+        ref={flatlistRef}
         data={stops.data}
         renderItem={renderItem}
-        estimatedItemSize={ITEM_SIZE}
-        overrideItemLayout={(layout) => {
-          layout.size = ITEM_SIZE
-        }}
         onScrollBeginDrag={() => {
           containerHeight.value = withTiming(EXPANDED)
         }}
@@ -150,7 +146,6 @@ export const LineBusStops = ({ lineCode }: LineBusStopsProps) => {
           })
         }}
         fadingEdgeLength={40}
-        drawDistance={1}
         ListEmptyComponent={<UiActivityIndicator color={schemeColor.onSurface} />}
         {...(Platform.OS !== 'web'
           ? {

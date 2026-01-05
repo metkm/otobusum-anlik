@@ -92,7 +92,7 @@ export const UiSheet = <T,>({ children, trigger, sheetProps, rootStyle, innerCon
                 />
               )
             : (
-                <BottomSheetView style={[styles.innerContainer, containerPadding, innerContainerStyle]}>
+                <BottomSheetView style={[styles.innerContainer, { ...containerPadding, ...innerContainerStyle }]}>
                   {children}
                 </BottomSheetView>
               )}

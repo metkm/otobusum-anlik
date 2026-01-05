@@ -27,9 +27,9 @@ type PolylineCustomProps = {
   encodedPath?: string
 }
 
-export type PolylineProps = google.maps.PolylineOptions &
-  PolylineEventProps &
-  PolylineCustomProps
+export type PolylineProps = google.maps.PolylineOptions
+  & PolylineEventProps
+  & PolylineCustomProps
 
 interface PolylinePropsWithRef extends PolylineProps {
   cRef?: RefObject<google.maps.Polyline>

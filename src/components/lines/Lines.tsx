@@ -50,7 +50,7 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
     if (lines.length === 0 || scrolledToIndex !== lines.length) return
 
     innerRef.current?.scrollToIndex({
-      index: lines.length - 1,
+      index: Math.max(0, lines.length - 1),
       animated: true,
     })
 

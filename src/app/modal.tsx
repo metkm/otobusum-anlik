@@ -1,8 +1,8 @@
-import { FlashList } from '@shopify/flash-list'
 import { useMutation } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { useCallback, useMemo } from 'react'
 import { NativeSyntheticEvent, StyleSheet, TextInputChangeEventData, View } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler'
 import { useDebouncedCallback } from 'use-debounce'
 
 import { TheSearchItem } from '@/components/TheSearchItem'
@@ -97,10 +97,9 @@ export const ModalScreen = () => {
               EmptyItem
             )
           : (
-              <FlashList
+              <FlatList
                 data={data}
                 renderItem={renderItem}
-                estimatedItemSize={45}
                 fadingEdgeLength={20}
                 contentContainerStyle={styles.contentStyle}
                 keyboardDismissMode="on-drag"
