@@ -102,6 +102,7 @@ export const TheMap = ({ ref, onMapReady, onMapRegionUpdate, initialRegion, ...p
         showsTraffic={showTraffic}
         style={{ flex: 1 }}
         moveOnMarkerPress={false}
+        showsBuildings={false}
       >
         {props.children}
       </MapView>

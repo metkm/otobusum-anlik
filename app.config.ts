@@ -3,7 +3,7 @@ import { ExpoConfig } from 'expo/config'
 const config: ExpoConfig = {
   name: 'Otobüsüm Anlık',
   slug: 'otobusum-anlik',
-  version: '1.2.8',
+  version: '1.3.1',
   orientation: 'portrait',
   icon: './src/assets/icon.png',
   scheme: 'otobusum-anlik',
@@ -56,6 +56,15 @@ const config: ExpoConfig = {
       {
         image: './src/assets/icon.png',
         backgroundColor: '#0a0a0a',
+      },
+    ],
+    [
+      'react-native-edge-to-edge',
+      {
+        android: {
+          parentTheme: 'Default',
+          enforceNavigationBarContrast: false,
+        },
       },
     ],
   ],

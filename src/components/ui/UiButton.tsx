@@ -3,14 +3,13 @@ import Ionicons from '@react-native-vector-icons/ionicons'
 import React, { useCallback } from 'react'
 import { Platform, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import { BaseButton } from 'react-native-gesture-handler'
-import Animated, { AnimatedProps } from 'react-native-reanimated'
 
 import { useTheme } from '@/hooks/useTheme'
 
 import { UiActivityIndicator } from './UiActivityIndicator'
 import { UiText } from './UiText'
 
-import { ButtonVariants, IconSize, iconSizes } from '@/constants/uiSizes'
+import { ButtonVariants, iconSizes, size } from '@/constants/uiSizes'
 import { IconValue } from '@/types/ui'
 
 export interface UiButtonPropsBase {
@@ -19,13 +18,12 @@ export interface UiButtonPropsBase {
   square?: boolean
   onPress?: () => void
   onLongPress?: () => void
-  iconSize?: IconSize
+  size?: size
   disabled?: boolean
   containerStyle?: StyleProp<ViewStyle>
   innerContainerStyle?: StyleProp<ViewStyle>
   iconColor?: string
   textStyle?: StyleProp<TextStyle>
-  animatedIconProps?: Partial<AnimatedProps<typeof Ionicons>>
   variant?: ButtonVariants
   iconTrail?: IconValue
   children?: React.ReactNode
@@ -45,14 +43,7 @@ export interface UiButtonPropsWithTitle extends UiButtonPropsBase {
 
 export type UiButtonProps = UiButtonPropsWithTitle | UiButtonPropsWithIcon
 
-const AnimatedIonIcons = Animated.createAnimatedComponent(Ionicons)
-
-export const UiButton = ({
-  iconSize = 'md',
-  variant = 'solid',
-  error,
-  ...props
-}: UiButtonProps) => {
+export const UiButton = ({ size = 'md', variant = 'solid', error, ...props }: UiButtonProps) => {
   const { schemeColor } = useTheme()
 
   const defaultBackground
@@ -91,28 +82,24 @@ export const UiButton = ({
         return <UiActivityIndicator size="small" color={iconColor} />
       }
 
-      if (props.animatedIconProps) {
-        return (
-          <AnimatedIonIcons
-            name={icon}
-            size={iconSizes[iconSize]}
-            animatedProps={props.animatedIconProps}
-          />
-        )
-      }
-
-      return <Ionicons name={icon} size={iconSizes[iconSize]} color={iconColor} />
+      return (
+        <Ionicons
+          name={icon}
+          size={iconSizes[size]}
+          color={iconColor}
+        />
+      )
     },
-    [iconColor, iconSize, props.animatedIconProps, props.isLoading],
+    [iconColor, size, props.isLoading],
   )
 
   return (
     <BaseButton
       style={[
-        styles.container,
         dynamicContainer,
+        styles.container,
         props.containerStyle,
-        props.square ? styles.square : undefined,
+        props.square ? styles.squareRadius : undefined,
       ]}
       onPress={props.onPress}
       onLongPress={props.onLongPress}
@@ -120,21 +107,26 @@ export const UiButton = ({
       enabled={!props.disabled}
     >
       <View
-        {
-          ...Platform.OS !== 'web'
-            ? {
-                accessible: true,
-                accessibilityRole: 'button',
-              }
-            : {}
-        }
-
-        style={[styles.innerContainer, props.innerContainerStyle]}
+        {...(Platform.OS !== 'web'
+          ? {
+              accessible: true,
+              accessibilityRole: 'button',
+            }
+          : {})}
+        style={[
+          styles.innerContainer,
+          props.square ? styles.square : undefined,
+          props.innerContainerStyle,
+        ]}
       >
         {props.icon && <Icon icon={props.icon} />}
 
         {props.title && (
-          <UiText style={[styles.title, dynamicText, props.textStyle]} numberOfLines={1}>
+          <UiText
+            style={[styles.title, dynamicText, props.textStyle]}
+            size={size}
+            numberOfLines={1}
+          >
             {props.title}
           </UiText>
         )}
@@ -149,17 +141,19 @@ export const UiButton = ({
 const styles = StyleSheet.create({
   container: {
     minWidth: 48,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
     borderRadius: 999,
-    flexShrink: 1,
+    pointerEvents: 'auto',
+    flexGrow: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   innerContainer: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 8,
+    gap: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
   title: {
     textAlign: 'center',
@@ -169,5 +163,8 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingVertical: 14,
     paddingHorizontal: 14,
+  },
+  squareRadius: {
+    borderRadius: 14,
   },
 })

@@ -90,7 +90,7 @@ export const LineTimetable = ({ lineCode }: LineTimetableProps) => {
   const { routeCode, getRouteFromCode } = useRoutes(lineCode)
 
   const route = getRouteFromCode()
-  const [leftTitle] = route?.route_long_name?.trim().split('-') ?? ['', ''] ?? ['', '']
+  const [leftTitle] = route?.route_long_name?.trim().split('-') ?? ['', '']
 
   const { lineWidth } = useLine(lineCode)
   const { query } = useTimetable(lineCode)

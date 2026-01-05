@@ -1,11 +1,4 @@
-import Ionicons from '@react-native-vector-icons/ionicons'
-import {
-  ForwardedRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-} from 'react'
+import { ForwardedRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
 import {
   Dimensions,
   FlatList,
@@ -16,19 +9,18 @@ import {
   View,
   ViewStyle,
 } from 'react-native'
-import Animated, { FlatListPropsWithLayout, LinearTransition } from 'react-native-reanimated'
+import Animated, { FlatListPropsWithLayout } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useTheme } from '@/hooks/useTheme'
-
-import { UiText } from '../ui/UiText'
+import { UiButton } from '../ui/UiButton'
 
 import { LineMemoized, LineProps } from './line/Line'
+import { LineGroups } from './line/LineGroups'
 
-import { iconSizes } from '@/constants/uiSizes'
 import { useFiltersStore } from '@/stores/filters'
 import { getLines, useLinesStore } from '@/stores/lines'
 import { useMiscStore } from '@/stores/misc'
+import { i18n } from '@/translations/i18n'
 
 interface LinesProps {
   cRef?: ForwardedRef<FlatList>
@@ -38,14 +30,13 @@ interface LinesProps {
   listProps?: Omit<FlatListPropsWithLayout<string>, 'data' | 'renderItem'>
 }
 
-// TODO: Some rerender issues are here.
 export const Lines = ({ cRef, ...props }: LinesProps) => {
   const innerRef = useRef<FlatList>(null)
+
   useImperativeHandle(cRef, () => innerRef.current!, [])
 
   useFiltersStore(useShallow(state => state.selectedCity))
 
-  const { schemeDefault } = useTheme()
   const selectedGroup = useFiltersStore(useShallow(state => state.selectedGroup))
   const selectedCity = useFiltersStore(useShallow(state => state.selectedCity))!
   const lineGroups = useLinesStore(useShallow(state => state.lineGroups))
@@ -84,18 +75,28 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
 
   const keyExtractor = useCallback((item: string) => `${item}-${selectedGroup}`, [selectedGroup])
 
+  const isGroupEmpty = !group ? true : group.lineCodes.length > 0 ? false : true
+
   return (
     <View style={props.containerStyle}>
       {!!group && (
-        <View style={[styles.groupTitleContainer, { backgroundColor: schemeDefault.surfaceContainer }]}>
-          <Ionicons name="albums" size={iconSizes['sm']} />
-          <UiText size="sm">{group?.title}</UiText>
+        <View style={[styles.groupTitleContainer]}>
+          <LineGroups
+            type="select"
+            trigger={(
+              <UiButton
+                icon="albums"
+                title={!isGroupEmpty ? `${group.title}` : `${group.title} (${i18n.t('empty')})`}
+                size="sm"
+                variant="soft"
+              />
+            )}
+          />
         </View>
       )}
 
       <Animated.FlatList
         {...props.listProps}
-        itemLayoutAnimation={LinearTransition}
         ref={cRef}
         data={lines}
         renderItem={renderItem}
@@ -108,14 +109,11 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
         snapToAlignment="center"
         pagingEnabled
         horizontal
-
-        {
-          ...Platform.OS !== 'web'
-            ? {
-                onViewableItemsChanged: handleViewableItemsChanged,
-              }
-            : {}
-        }
+        {...(Platform.OS !== 'web'
+          ? {
+              onViewableItemsChanged: handleViewableItemsChanged,
+            }
+          : {})}
       />
     </View>
   )
@@ -129,8 +127,6 @@ const styles = StyleSheet.create({
     minWidth: Dimensions.get('screen').width,
   },
   groupTitleContainer: {
-    padding: 8,
-    paddingHorizontal: 12,
     marginLeft: 8,
     alignSelf: 'flex-start',
     borderRadius: 999,

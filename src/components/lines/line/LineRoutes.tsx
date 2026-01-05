@@ -1,9 +1,9 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import Ionicons from '@react-native-vector-icons/ionicons'
-import { memo, useCallback, useMemo, useRef } from 'react'
-import { StyleSheet } from 'react-native'
+import { memo, useMemo, useRef } from 'react'
+import { StyleSheet, View } from 'react-native'
 
-import { UiSheetSelect } from '@/components/ui/sheet/UiSheetSelect'
+import { UiSheet } from '@/components/ui/UiSheet'
 import { UiText } from '@/components/ui/UiText'
 
 import { useRoutes } from '@/hooks/queries/useRoutes'
@@ -21,15 +21,15 @@ interface Props {
 }
 
 export const LineRoutes = memo(function LineRoutes(props: Props) {
+  const sheetRef = useRef<BottomSheetModal>(null)
+
   const { query, getRouteFromCode } = useRoutes(props.lineCode)
   const { schemeColor } = useTheme()
 
   const color = schemeColor.onSurface
+  const lineRoute = getRouteFromCode()
 
-  const route = getRouteFromCode()
-  const bottomSheetModal = useRef<BottomSheetModal>(null)
-
-  const [leftTitle, rightTitle] = route?.route_long_name?.trim().split('-') ?? ['', ''] ?? ['', '']
+  const [leftTitle, rightTitle] = lineRoute?.route_long_name?.trim().split('-') ?? ['', '']
 
   const routes = useMemo(() => {
     if (!query.data) return []
@@ -50,66 +50,61 @@ export const LineRoutes = memo(function LineRoutes(props: Props) {
     return [...defaults, ...filtered]
   }, [query.data])
 
-  const handleOnSelect = (value: RouteCode) => {
-    selectRoute(props.lineCode, value)
+  const handleSelectRoute = (routeCode: RouteCode) => {
+    selectRoute(props.lineCode, routeCode)
+    sheetRef.current?.close()
   }
 
-  const handleOnPress = useCallback(() => {
-    bottomSheetModal.current?.present()
-  }, [])
-
   return (
-    <>
-      <UiButton
-        onPress={handleOnPress}
-        containerStyle={styles.grow}
-        icon="git-branch-outline"
-        variant="soft"
-        isLoading={query.isPending}
-      >
-        {query.isPending
-          ? (
-              <UiText>{i18n.t('loading')}</UiText>
-            )
-          : (
-              <>
-                <UiText size="sm" numberOfLines={1} style={{ color }}>
-                  {leftTitle}
-                </UiText>
-
-                <Ionicons name="arrow-forward" size={18} color={color} />
-
-                <UiText size="sm" numberOfLines={1} style={{ color }}>
-                  {rightTitle}
-                </UiText>
-              </>
-            )}
-      </UiButton>
-
-      <UiSheetSelect
-        cRef={bottomSheetModal}
-        title={i18n.t('routes')}
-        icon="git-branch-outline"
-        options={routes}
-        onValueChange={handleOnSelect}
-        value={route?.route_code}
-        list
-      />
-    </>
+    <UiSheet
+      ref={sheetRef}
+      rootStyle={styles.grow}
+      trigger={(
+        <UiButton
+          containerStyle={styles.grow}
+          icon="git-branch-outline"
+          variant="soft"
+          isLoading={query.isPending}
+        >
+          {query.isPending
+            ? (
+                <UiText>{i18n.t('loading')}</UiText>
+              )
+            : (
+                <View style={{ flexDirection: 'row', gap: 4, flexShrink: 1 }}>
+                  <UiText size="sm" numberOfLines={1} style={{ color }}>
+                    {leftTitle}
+                  </UiText>
+                  <Ionicons name="arrow-forward" size={18} color={color} />
+                  <UiText size="sm" numberOfLines={1} style={{ color }}>
+                    {rightTitle}
+                  </UiText>
+                </View>
+              )}
+        </UiButton>
+      )}
+      sheetProps={{
+        snapPoints: ['50%', '100%'],
+        enableDynamicSizing: false,
+      }}
+      flatlistProps={{
+        data: routes,
+        renderItem: ({ item }) => (
+          <UiButton
+            key={item.value}
+            title={item.label}
+            variant="ghost"
+            onPress={() => handleSelectRoute(item.value)}
+            iconTrail={item.value === lineRoute?.route_code ? 'checkmark' : undefined}
+            square
+          />
+        ),
+      }}
+    />
   )
 })
 
 const styles = StyleSheet.create({
-  item: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 12,
-  },
-  title: {
-    fontSize: 24,
-    padding: 8,
-  },
   grow: {
     flexGrow: 1,
   },

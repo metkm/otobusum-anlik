@@ -58,5 +58,7 @@ export default {
   newGroupTitlePlaceholder: 'Yeni grup ismi',
   announcements: 'Duyurular',
   timetableEmptyRange: 'Bu gün için zaman tarifesi bulunamadı',
-  lineGroups: 'Hat Gruplerı',
+  lineGroups: 'Hat Grupları',
+  empty: 'Boş',
+  emptyGroups: 'Grupların boş',
 }

@@ -23,8 +23,8 @@ export const LineName = ({ lineCode, variant = 'solid' }: LineNameProps) => {
   const color = variant === 'solid' ? schemeColor.onPrimary : schemeColor.onSurface
 
   return (
-    <View>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <View style={styles.nameContainer}>
         <UiText
           style={{
             fontWeight: 'bold',
@@ -44,13 +44,16 @@ export const LineName = ({ lineCode, variant = 'solid' }: LineNameProps) => {
         )}
       </View>
 
-      <UiText size="sm" dimmed>{i18n.t('updateCount', { count: Math.floor(count / 1_000) })}</UiText>
+      <UiText size="sm" dimmed numberOfLines={1}>{i18n.t('updateCount', { count: Math.floor(count / 1_000) })}</UiText>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  nameContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 8,
