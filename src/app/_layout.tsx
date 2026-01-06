@@ -67,7 +67,6 @@ export const RootLayout = () => {
             <SafeAreaProvider>
               <Stack
                 screenOptions={{
-                  animation: 'fade',
                   headerTitleAlign: 'center',
                   headerTitleStyle: {
                     fontSize: fontSizes['md'],

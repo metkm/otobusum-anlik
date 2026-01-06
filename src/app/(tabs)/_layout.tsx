@@ -36,12 +36,11 @@ export const TabsLayout = () => {
           flex: 1,
         },
         tabBarShowLabel: Platform.OS !== 'web',
-        tabBarLabelPosition: 'below-icon',
         tabBarLabelStyle: {
           color: schemeDefault.onSurface,
         },
-        animation: 'fade',
         freezeOnBlur: true,
+        animation: 'shift',
       }}
       detachInactiveScreens
     >
