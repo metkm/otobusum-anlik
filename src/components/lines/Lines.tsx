@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
+import { RefObject, useCallback, useImperativeHandle, useRef } from 'react'
 import {
   Dimensions,
   FlatList,
@@ -43,21 +43,22 @@ export const Lines = ({ ref, ...props }: LinesProps) => {
   const lines = useLinesStore(() => getLines())
 
   const group = selectedGroup ? lineGroups[selectedCity][selectedGroup] : undefined
-  const previouslines = useRef<string[]>(lines)
+  // const previouslines = useRef<string[]>(lines)
 
-  useEffect(() => {
-    const scrolledToIndex = useMiscStore.getState().scrolledLineIndex
-    if (lines.length === 0 || scrolledToIndex !== lines.length) return
+  // useEffect(() => {
+  //   // const scrolledToIndex = useMiscStore.getState().scrolledLineIndex
+  //   // if (lines.length === 0 || scrolledToIndex !== lines.length) return
 
-    innerRef.current?.scrollToIndex({
-      index: Math.max(0, lines.length - 1),
-      animated: true,
-    })
+  //   // innerRef.current?.scrollToIndex({
+  //   //   index: Math.max(0, scrolledToIndex),
+  //   //   viewPosition: 0.5,
+  //   //   animated: true,
+  //   // })
 
-    if (lines.length !== previouslines.current.length) {
-      previouslines.current = lines
-    }
-  }, [ref, lines])
+  //   // if (lines.length !== previouslines.current.length) {
+  //   //   previouslines.current = lines
+  //   // }
+  // }, [ref, lines])
 
   const renderItem: ListRenderItem<string> = useCallback(
     ({ item: code }) => {
@@ -97,7 +98,7 @@ export const Lines = ({ ref, ...props }: LinesProps) => {
 
       <Animated.FlatList
         {...props.listProps}
-        ref={ref}
+        ref={innerRef}
         data={lines}
         renderItem={renderItem}
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}
