@@ -1,4 +1,4 @@
-import { Ref } from 'react'
+import { RefObject } from 'react'
 import { Platform, StyleProp, StyleSheet, TextInputProps, TextStyle, View, ViewStyle } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 
@@ -13,11 +13,11 @@ interface UiTextInputProps extends TextInputProps {
   icon?: IconValue
   iconSize?: IconSize
   iconPress?: () => void
-  cRef?: Ref<TextInput>
+  ref?: RefObject<TextInput>
   styleContainer?: StyleProp<ViewStyle>
 }
 
-export const UiTextInput = ({ iconSize = 'md', icon, iconPress, cRef, style, styleContainer, ...props }: UiTextInputProps) => {
+export const UiTextInput = ({ iconSize = 'md', icon, iconPress, ref, style, styleContainer, ...props }: UiTextInputProps) => {
   const { schemeColor } = useTheme()
 
   const dynamicStyle: StyleProp<ViewStyle> = {
@@ -43,7 +43,7 @@ export const UiTextInput = ({ iconSize = 'md', icon, iconPress, cRef, style, sty
         </View>
       )}
       <TextInput
-        ref={cRef}
+        ref={ref}
         style={[style, inputStyle]}
         placeholderTextColor={schemeColor.onSurface}
         {...props}
