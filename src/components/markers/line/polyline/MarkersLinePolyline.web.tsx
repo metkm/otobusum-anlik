@@ -32,7 +32,7 @@ export type PolylineProps = google.maps.PolylineOptions
   & PolylineCustomProps
 
 interface PolylinePropsWithRef extends PolylineProps {
-  cRef?: RefObject<google.maps.Polyline>
+  ref?: RefObject<google.maps.Polyline>
 }
 
 export type PolylineRef = Ref<google.maps.Polyline | null>
@@ -123,10 +123,10 @@ function usePolyline(props: PolylineProps) {
   return polyline
 }
 
-export const Polyline = ({ cRef, ...props }: PolylinePropsWithRef) => {
+export const Polyline = ({ ref, ...props }: PolylinePropsWithRef) => {
   const polyline = usePolyline(props)
 
-  useImperativeHandle(cRef, () => polyline, [polyline])
+  useImperativeHandle(ref, () => polyline, [polyline])
 
   return null
 }
