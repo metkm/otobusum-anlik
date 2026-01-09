@@ -1,4 +1,4 @@
-import { ForwardedRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
+import { RefObject, useCallback, useEffect, useImperativeHandle, useRef } from 'react'
 import {
   Dimensions,
   FlatList,
@@ -23,17 +23,17 @@ import { useMiscStore } from '@/stores/misc'
 import { i18n } from '@/translations/i18n'
 
 interface LinesProps {
-  cRef?: ForwardedRef<FlatList>
+  ref?: RefObject<FlatList | null>
   containerStyle?: ViewStyle
   contentContainerStyle?: ViewStyle
   lineProps?: Partial<LineProps>
   listProps?: Omit<FlatListPropsWithLayout<string>, 'data' | 'renderItem'>
 }
 
-export const Lines = ({ cRef, ...props }: LinesProps) => {
+export const Lines = ({ ref, ...props }: LinesProps) => {
   const innerRef = useRef<FlatList>(null)
 
-  useImperativeHandle(cRef, () => innerRef.current!, [])
+  useImperativeHandle(ref, () => innerRef.current!, [innerRef])
 
   useFiltersStore(useShallow(state => state.selectedCity))
 
@@ -57,7 +57,7 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
     if (lines.length !== previouslines.current.length) {
       previouslines.current = lines
     }
-  }, [cRef, lines])
+  }, [ref, lines])
 
   const renderItem: ListRenderItem<string> = useCallback(
     ({ item: code }) => {
@@ -97,7 +97,7 @@ export const Lines = ({ cRef, ...props }: LinesProps) => {
 
       <Animated.FlatList
         {...props.listProps}
-        ref={cRef}
+        ref={ref}
         data={lines}
         renderItem={renderItem}
         viewabilityConfig={{ itemVisiblePercentThreshold: 70 }}

@@ -85,7 +85,7 @@ export const TimetableScreen = () => {
   return (
     <View style={containerStyle}>
       <Lines
-        cRef={linesRef}
+        ref={linesRef}
         listProps={{
           onLayout,
           onScroll: Platform.OS !== 'web' ? handleOnScroll : undefined,
