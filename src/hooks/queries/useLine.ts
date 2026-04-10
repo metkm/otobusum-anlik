@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { DEFAULT_PAGE_PADDING } from '../usePaddings'
 
 import { getLineBusLocations } from '@/api/getLineBusLocations'
+import { lineUpdateInterval } from '@/constants/app'
 import { getLines, useLinesStore } from '@/stores/lines'
 import { i18n } from '@/translations/i18n'
 
@@ -21,6 +22,7 @@ export function useLine(lineCode: string) {
     meta: {
       errorMessage: i18n.t('errorGettingBusLocations'),
     },
+    refetchInterval: lineUpdateInterval,
   })
 
   return {

@@ -1,14 +1,12 @@
 import { type Theme } from '@material/material-color-utilities'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { randomUUID } from 'expo-crypto'
-import { AppState, AppStateStatus, ToastAndroid } from 'react-native'
+import { ToastAndroid } from 'react-native'
 import { create } from 'zustand'
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 
 import { useFiltersStore } from './filters'
 
-import { queryClient } from '@/api/client'
-import { lineUpdateInterval } from '@/constants/app'
 import { ColorSchemes } from '@/constants/colors'
 import { i18n } from '@/translations/i18n'
 import { Cities } from '@/types/cities'
@@ -324,56 +322,56 @@ export const deleteLineFromGroup = (groupId: string, city: Cities, lineCode: str
 //
 //
 //
-const updateLines = () => {
-  const linesStore = useLinesStore.getState()
-  const filtersStore = useFiltersStore.getState()
+// const updateLines = () => {
+//   const linesStore = useLinesStore.getState()
+//   const filtersStore = useFiltersStore.getState()
 
-  const lines = filtersStore.selectedGroup
-    ? linesStore.lineGroups[filtersStore.selectedCity][filtersStore.selectedGroup]?.lineCodes
-    : linesStore.lines[filtersStore.selectedCity]
+//   const lines = filtersStore.selectedGroup
+//     ? linesStore.lineGroups[filtersStore.selectedCity][filtersStore.selectedGroup]?.lineCodes
+//     : linesStore.lines[filtersStore.selectedCity]
 
-  const lineCodes = lines || []
-  for (let index = 0; index < lineCodes.length; index++) {
-    const key = lineCodes[index]
-    if (!key) continue
+//   const lineCodes = lines || []
+//   for (let index = 0; index < lineCodes.length; index++) {
+//     const key = lineCodes[index]
+//     if (!key) continue
 
-    queryClient.invalidateQueries({
-      queryKey: ['line', key],
-      exact: true,
-    })
-  }
-}
+//     queryClient.invalidateQueries({
+//       queryKey: ['line', key],
+//       exact: true,
+//     })
+//   }
+// }
 
-let listener: number | undefined
-let appState: AppStateStatus = AppState.currentState
-let expectedUpdateTime = Date.now() + lineUpdateInterval
+// let listener: number | undefined
+// let appState: AppStateStatus = AppState.currentState
+// let expectedUpdateTime = Date.now() + lineUpdateInterval
 
-const updateLoop = () => {
-  updateLines()
-  expectedUpdateTime = Date.now() + lineUpdateInterval
+// const updateLoop = () => {
+//   updateLines()
+//   expectedUpdateTime = Date.now() + lineUpdateInterval
 
-  return setTimeout(updateLoop, lineUpdateInterval)
-}
+//   return setTimeout(updateLoop, lineUpdateInterval)
+// }
 
-const startUpdateLoop = () => {
-  AppState.addEventListener('change', (newAppState) => {
-    if (appState.match(/inactive|background/) && newAppState === 'active') {
-      const drift = Date.now() - expectedUpdateTime
+// const startUpdateLoop = () => {
+//   AppState.addEventListener('change', (newAppState) => {
+//     if (appState.match(/inactive|background/) && newAppState === 'active') {
+//       const drift = Date.now() - expectedUpdateTime
 
-      if (drift > lineUpdateInterval) {
-        clearTimeout(listener)
-        listener = updateLoop()
-      }
-    } else if (newAppState.match(/background|inactive/) && appState === 'active') {
-      clearTimeout(listener)
-    }
+//       if (drift > lineUpdateInterval) {
+//         clearTimeout(listener)
+//         listener = updateLoop()
+//       }
+//     } else if (newAppState.match(/background|inactive/) && appState === 'active') {
+//       clearTimeout(listener)
+//     }
 
-    appState = newAppState
-  })
+//     appState = newAppState
+//   })
 
-  listener = updateLoop()
-}
+//   listener = updateLoop()
+// }
 
-if (!__DEV__) {
-  useLinesStore.persist.onFinishHydration(startUpdateLoop)
-}
+// if (!__DEV__) {
+//   useLinesStore.persist.onFinishHydration(startUpdateLoop)
+// }
