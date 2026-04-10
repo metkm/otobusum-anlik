@@ -1,11 +1,11 @@
+import { type LngLatBounds } from '@maplibre/maplibre-react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ColorSchemeName } from 'react-native'
-import { Region } from 'react-native-maps'
 import { create } from 'zustand'
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 
 export interface SettingsStore {
-  initialMapLocation?: Region
+  initialMapBounds?: LngLatBounds
   showMyLocation: boolean
   showTraffic: boolean
   colorScheme?: ColorSchemeName
@@ -16,7 +16,7 @@ export const useSettingsStore = create(
   subscribeWithSelector(
     persist<SettingsStore>(
       () => ({
-        initialMapLocation: undefined,
+        initialMapBounds: undefined,
         showMyLocation: false,
         showTraffic: true,
         colorScheme: undefined,

@@ -20,13 +20,10 @@ import { getSelectedRouteCode, useFiltersStore } from '@/stores/filters'
 import { useLinesStore } from '@/stores/lines'
 import { useSettingsStore } from '@/stores/settings'
 
-const ANNOTATION_SIZE = 256
-
 export const HomeScreen = () => {
   const map = useRef<TheMapRef | null>(null)
-  const viewAnnotationRef = useRef<ViewAnnotationRef>(null)
 
-  // const settingsStoreState = useSettingsStore.getState()
+  const settingsStoreState = useSettingsStore.getState()
 
   // useEffect(() => {
   //   const unsub = useLinesStore.subscribe(
@@ -74,7 +71,7 @@ export const HomeScreen = () => {
   return (
     <MapContext value={map}>
       <SheetContext.Provider value={sheetContext}>
-        <TheMap>
+        <TheMap initialViewState={{ bounds: settingsStoreState.initialMapBounds ?? [26.218823938242565, 36.08430119633523, 30.10080291867854, 42.351104713710356] }}>
           <MarkersLine />
         </TheMap>
 
@@ -82,7 +79,7 @@ export const HomeScreen = () => {
           <Lines />
         </View>
 
-        {/* <TheMapButtons /> */}
+        <TheMapButtons />
 
         {/* <View style={styles.linesContainer}>
           <Lines />

@@ -1,4 +1,4 @@
-import { ViewAnnotation } from '@maplibre/maplibre-react-native'
+import { Layer, ViewAnnotation } from '@maplibre/maplibre-react-native'
 import { memo } from 'react'
 import { View, Image } from 'react-native'
 
@@ -10,13 +10,13 @@ import { MarkersBusesItemMemoized } from './MarkersBusesItem'
 
 import { getSelectedRouteCode, useFiltersStore } from '@/stores/filters'
 
-interface Props {
-  code: string
+interface MarkersBussedProps {
+  lineCode: string
 }
 
-export const MarkersBuses = (props: Props) => {
-  const { query } = useLine(props.code)
-  const routeCode = useFiltersStore(() => getSelectedRouteCode(props.code))
+export const MarkersBuses = ({ lineCode }: MarkersBussedProps) => {
+  const { query } = useLine(lineCode)
+  const routeCode = useFiltersStore(() => getSelectedRouteCode(lineCode))
 
   const filtered = query.data?.filter(loc => loc.route_code === routeCode) || []
 
@@ -37,7 +37,7 @@ export const MarkersBuses = (props: Props) => {
         <MarkersBusesItemMemoized
           key={`${loc.bus_id}-${loc.route_code}-${loc.lat}-${loc.lng}`}
           location={loc}
-          lineCode={props.code}
+          lineCode={lineCode}
         />
       ))}
     </>

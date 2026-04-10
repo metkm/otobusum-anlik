@@ -21,20 +21,12 @@ interface MarkersBusesItemProps extends Omit<MapMarkerProps, 'coordinate'> {
 
 export const MarkersBusesItem = ({ location, lineCode }: MarkersBusesItemProps) => {
   const { schemeColor } = useTheme(lineCode)
-  const viewAnnotationRef = useRef<ViewAnnotationRef>(null)
 
   return (
     <ViewAnnotation lngLat={[location.lng, location.lat]}>
       <View style={[styles.iconContainer, { backgroundColor: schemeColor.primaryContainer }]}>
         <Ionicons name="bus" color={schemeColor.onPrimaryContainer} />
       </View>
-
-      {/* <Image
-          source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}
-          style={{ width: ANNOTATION_SIZE, height: ANNOTATION_SIZE }}
-          onLoad={() => viewAnnotationRef.current?.refresh()}
-          fadeDuration={0}
-        /> */}
     </ViewAnnotation>
 
   // <MarkersCallout

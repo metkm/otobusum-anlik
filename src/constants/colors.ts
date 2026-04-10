@@ -1,4 +1,5 @@
 import { Scheme } from '@material/material-color-utilities'
+import { ColorSchemeName } from 'react-native'
 
 export type SchemePartialKeys = {
   -readonly [K in keyof Scheme]?: string
@@ -21,9 +22,8 @@ export type ColorScheme = {
   onPrimaryContainer?: string
 }
 
-export interface ColorSchemes {
-  dark: ColorScheme
-  light: ColorScheme
+export type ColorSchemes = {
+  [key in ColorSchemeName]: ColorScheme
 }
 
 // #F0A300
@@ -77,6 +77,17 @@ export const defaultColorSchemes: ColorSchemes = {
     onError: '#FFFFFF',
   },
   dark: {
+    surface: '#171717',
+    surfaceContainer: '#262626',
+    surfaceContainerHigh: '#404040',
+    onSurface: '#e5e5e5',
+    onSurfaceDimmed: '#737373',
+    primary: '#F3BD6E',
+    onPrimary: '#442B00',
+    error: '#FFB4AB',
+    onError: '#690005',
+  },
+  unspecified: {
     surface: '#171717',
     surfaceContainer: '#262626',
     surfaceContainerHigh: '#404040',

@@ -1,5 +1,8 @@
+import { GeoJSONSource, Layer } from '@maplibre/maplibre-react-native'
+// eslint-disable-next-line import/no-unresolved
+import { Position } from 'geojson'
 import { useMemo } from 'react'
-import { LatLng, Polyline } from 'react-native-maps'
+// import { LatLng, Polyline } from 'react-native-maps'
 
 import { useRoutes } from '@/hooks/queries/useRoutes'
 import { useTheme } from '@/hooks/useTheme'
@@ -14,20 +17,36 @@ export const MarkersLinePolyline = ({ lineCode }: PolylineProps) => {
   const { getRouteFromCode } = useRoutes(lineCode)
   const route = getRouteFromCode()
 
-  const transformed: LatLng[] = useMemo(
+  const coordinates: Position[] = useMemo(
     () =>
-      route?.route_path?.map(path => ({
-        latitude: path.lat,
-        longitude: path.lng,
-      })) || [],
+      route?.route_path?.map(path => [path.lng, path.lat]) || [],
     [route],
   )
 
   return (
-    <Polyline
-      coordinates={transformed}
-      strokeWidth={6}
-      strokeColor={schemeColor.primary}
-    />
+    <GeoJSONSource data={{
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          id: `${lineCode}-polyline-feature`,
+          geometry: {
+            type: 'LineString',
+            coordinates,
+          },
+          properties: {},
+        } as const,
+      ],
+    }}
+    >
+      <Layer
+        type="line"
+        paint={{
+          'line-width': 6,
+          'line-color': schemeColor.primary,
+        }}
+        layerIndex={9}
+      />
+    </GeoJSONSource>
   )
 }

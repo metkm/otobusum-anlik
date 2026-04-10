@@ -63,14 +63,16 @@ export const MarkersLineRouteLine = ({ lineCode }: RouteLineProps) => {
 
   return (
     <>
-      <MarkersLinePolyline
+      <MarkersLinePolyline lineCode={lineCode} />
+
+      {/* <MarkersLinePolyline
         lineCode={lineCode}
       />
 
       <MarkersLineArrows
         arrows={arrows}
         lineCode={lineCode}
-      />
+      /> */}
     </>
   )
 }

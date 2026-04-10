@@ -27,13 +27,10 @@ export const MarkersLine = () => {
   return (
     <>
       {filteredCodes.map(lineCode => (
-        <MarkersBuses key={lineCode} code={lineCode} />
-
-        // <ViewAnnotation>
-
-        // </ViewAnnotation>
-
-        // <View key={lineCode}>{lineCode}</View>
+        <View key={lineCode}>
+          <MarkersLineRouteLine lineCode={lineCode} />
+          <MarkersBuses lineCode={lineCode} />
+        </View>
       ))}
     </>
 
