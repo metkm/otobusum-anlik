@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Otobüsüm Anlık</string>
+    <string name="title_activity_main">Otobüsüm Anlık</string>
+    <string name="package_name">com.otobusumanlik.app</string>
+    <string name="custom_url_scheme">com.otobusumanlik.app</string>
+</resources>
