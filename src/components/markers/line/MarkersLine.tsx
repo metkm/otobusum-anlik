@@ -1,3 +1,4 @@
+import { ViewAnnotation } from '@maplibre/maplibre-react-native'
 import { View } from 'react-native'
 // import { Platform, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
@@ -26,20 +27,32 @@ export const MarkersLine = () => {
   return (
     <>
       {filteredCodes.map(lineCode => (
-        <View key={lineCode}>
-          <MarkersLineRouteLine lineCode={lineCode} />
+        <MarkersBuses key={lineCode} code={lineCode} />
 
-          <MarkersStop lineCode={lineCode} />
+        // <ViewAnnotation>
 
-          {/* {
-            clusterStops && Platform.OS !== 'web'
-              ? <MarkersStopClusteredMemoized lineCode={lineCode} />
-              : <MarkersStop lineCode={lineCode} />
-          } */}
+        // </ViewAnnotation>
 
-          <MarkersBuses code={lineCode} />
-        </View>
+        // <View key={lineCode}>{lineCode}</View>
       ))}
     </>
+
+  // <>
+  //   {filteredCodes.map(lineCode => (
+  //     <View key={lineCode}>
+  //       <MarkersLineRouteLine lineCode={lineCode} />
+
+  //       <MarkersStop lineCode={lineCode} />
+
+  //       {/* {
+  //         clusterStops && Platform.OS !== 'web'
+  //           ? <MarkersStopClusteredMemoized lineCode={lineCode} />
+  //           : <MarkersStop lineCode={lineCode} />
+  //       } */}
+
+  //       <MarkersBuses code={lineCode} />
+  //     </View>
+  //   ))}
+  // </>
   )
 }

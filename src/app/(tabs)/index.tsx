@@ -1,7 +1,8 @@
+import { Camera, Layer, ViewAnnotation, type ViewAnnotationRef } from '@maplibre/maplibre-react-native'
 import { SplashScreen } from 'expo-router'
-import { useEffect, useRef } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Region } from 'react-native-maps'
+import { useEffect, useRef, useState } from 'react'
+import { StyleSheet, View, Image } from 'react-native'
+// import { Region } from 'react-native-maps'
 import { useSharedValue } from 'react-native-reanimated'
 
 import { Lines } from '@/components/lines/Lines'
@@ -19,58 +20,75 @@ import { getSelectedRouteCode, useFiltersStore } from '@/stores/filters'
 import { useLinesStore } from '@/stores/lines'
 import { useSettingsStore } from '@/stores/settings'
 
+const ANNOTATION_SIZE = 256
+
 export const HomeScreen = () => {
   const map = useRef<TheMapRef | null>(null)
+  const viewAnnotationRef = useRef<ViewAnnotationRef>(null)
 
-  const settingsStoreState = useSettingsStore.getState()
+  // const settingsStoreState = useSettingsStore.getState()
 
-  useEffect(() => {
-    const unsub = useLinesStore.subscribe(
-      state => state.lines,
-      async (state, prevState) => {
-        const city = useFiltersStore.getState().selectedCity
-        const newStateCity = state[city]
-        const oldStateCity = prevState[city]
-        if (newStateCity.length < oldStateCity.length) return
+  // useEffect(() => {
+  //   const unsub = useLinesStore.subscribe(
+  //     state => state.lines,
+  //     async (state, prevState) => {
+  //       const city = useFiltersStore.getState().selectedCity
+  //       const newStateCity = state[city]
+  //       const oldStateCity = prevState[city]
+  //       if (newStateCity.length < oldStateCity.length) return
 
-        const newCode = newStateCity.at(-1)
-        if (!newCode) return
+  //       const newCode = newStateCity.at(-1)
+  //       if (!newCode) return
 
-        const routeCode = getSelectedRouteCode(newCode)
-        const queryKey = [`stop-locations`, routeCode]
+  //       const routeCode = getSelectedRouteCode(newCode)
+  //       const queryKey = [`stop-locations`, routeCode]
 
-        const busStops = await queryClient.ensureQueryData<
-          Awaited<ReturnType<typeof getLineBusStops>>
-        >({
-          queryKey,
-          queryFn: () => getLineBusStops(routeCode),
-        })
+  //       const busStops = await queryClient.ensureQueryData<
+  //         Awaited<ReturnType<typeof getLineBusStops>>
+  //       >({
+  //         queryKey,
+  //         queryFn: () => getLineBusStops(routeCode),
+  //       })
 
-        map.current?.fitInsideCoordinates(
-          busStops?.map(stop => ({
-            longitude: stop.x_coord,
-            latitude: stop.y_coord,
-          })),
-        )
-      },
-    )
+  //       map.current?.fitInsideCoordinates(
+  //         busStops?.map(stop => ({
+  //           longitude: stop.x_coord,
+  //           latitude: stop.y_coord,
+  //         })),
+  //       )
+  //     },
+  //   )
 
-    return unsub
-  }, [])
+  //   return unsub
+  // }, [])
 
   const sheetContext: sheetContextValues = {
     height: useSharedValue(0),
     index: useSharedValue(-1),
   }
 
-  const handleRegionChangeComplete = (region: Region) => {
-    useSettingsStore.setState(() => ({ initialMapLocation: region }))
-  }
+  // const handleRegionChangeComplete = (region: Region) => {
+  //   useSettingsStore.setState(() => ({ initialMapLocation: region }))
+  // }
 
   return (
     <MapContext value={map}>
       <SheetContext.Provider value={sheetContext}>
-        <TheMap
+        <TheMap>
+          <MarkersLine />
+        </TheMap>
+
+        <View style={styles.linesContainer}>
+          <Lines />
+        </View>
+
+        {/* <TheMapButtons /> */}
+
+        {/* <View style={styles.linesContainer}>
+          <Lines />
+        </View> */}
+
+        {/* <TheMap
           ref={map}
           onMapReady={SplashScreen.hide}
           onMapRegionUpdate={handleRegionChangeComplete}
@@ -92,7 +110,7 @@ export const HomeScreen = () => {
           <Lines />
         </View>
 
-        <TheStopInfo ref={map} />
+        <TheStopInfo ref={map} /> */}
       </SheetContext.Provider>
     </MapContext>
   )

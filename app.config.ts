@@ -8,7 +8,7 @@ const config: ExpoConfig = {
   icon: './src/assets/icon.png',
   scheme: 'otobusum-anlik',
   userInterfaceStyle: 'automatic',
-  newArchEnabled: false,
+  // newArchEnabled: false,
   extra: {
     eas: {
       projectId: '2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
@@ -31,11 +31,11 @@ const config: ExpoConfig = {
   },
   androidStatusBar: {
     barStyle: 'light-content',
-    translucent: true,
+    // translucent: true,
   },
-  androidNavigationBar: {
-    enforceContrast: false,
-  },
+  // androidNavigationBar: {
+  //   enforceContrast: false,
+  // },
   android: {
     config: {
       googleMaps: {
@@ -53,6 +53,7 @@ const config: ExpoConfig = {
     'expo-router',
     'expo-localization',
     'expo-location',
+    '@maplibre/maplibre-react-native',
     [
       'expo-splash-screen',
       {
