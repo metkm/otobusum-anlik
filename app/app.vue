@@ -1,17 +1,22 @@
 <script setup lang="ts">
+import { App } from '@capacitor/app'
+
+const router = useRouter()
+
+App.addListener('backButton', () => {
+  router.back()
+})
 </script>
 
 <template>
   <main
-    class="flex flex-col overflow-hidden w-full h-full"
     data-vaul-drawer-wrapper
+    class="flex flex-col h-full w-full flex-1"
   >
     <AppMapRoot>
-      <div class="flex flex-1 min-h-0">
+      <NuxtLayout>
         <NuxtPage />
-      </div>
-
-      <AppNavigation />
+      </NuxtLayout>
     </AppMapRoot>
   </main>
 </template>

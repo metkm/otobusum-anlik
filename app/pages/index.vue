@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { motion } from 'motion-v'
+
 definePageMeta({
   icon: 'i-lucide-map',
   label: 'Map',
@@ -15,18 +17,27 @@ definePageMeta({
       />
     </AppMap>
 
-    <div class="flex flex-col absolute bottom-0 inset-x-0">
-      <div class="p-4 ml-auto">
-        <UButton
-          icon="i-lucide-search"
-          color="neutral"
-          variant="soft"
-          size="lg"
-          to="/search"
-        />
-      </div>
+    <LayoutGroup>
+      <motion.div
+        layout
+        class="flex flex-col absolute bottom-0 inset-x-0"
+      >
+        <motion.div
+          layout
+          class="p-2"
+        >
+          <UButton
+            icon="i-lucide-search"
+            color="neutral"
+            variant="soft"
+            size="xl"
+            to="/search"
+            square
+          />
+        </motion.div>
 
-      <LineCards />
-    </div>
+        <LineCards />
+      </motion.div>
+    </LayoutGroup>
   </div>
 </template>

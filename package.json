@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@capacitor/android": "^8.3.0",
+    "@capacitor/app": "^8.1.0",
     "@capacitor/core": "^8.3.0",
     "@capacitor/keyboard": "^8.0.3",
+    "@capacitor/status-bar": "^8.0.2",
     "@nuxt/eslint": "^1.15.2",
     "@nuxt/scripts": "^1.0.0-beta.32",
     "@nuxt/ui": "^4.6.1",

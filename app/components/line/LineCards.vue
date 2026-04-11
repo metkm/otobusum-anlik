@@ -16,8 +16,8 @@ const lineStyle = computed(() => ({
   <LayoutGroup>
     <motion.ol
       layout
-      class="flex gap-2 overflow-x-auto "
-      :class="{ 'p-2': !isOneElement }"
+      class="flex gap-2 overflow-x-auto"
+      :class="{ 'p-2 pt-0.5': !isOneElement }"
     >
       <AnimatePresence>
         <motion.li
@@ -27,7 +27,7 @@ const lineStyle = computed(() => ({
           :class="{ 'rounded-md': !isOneElement }"
           :style="lineStyle"
           :exit="{ scale: 0.5, opacity: 0 }"
-          layout="position"
+          layout
         >
           <LineCard :code="line" />
         </motion.li>
