@@ -4,6 +4,6 @@
       <slot />
     </div>
 
-    <AppNavigation />
+    <AppNavigation class="lg:hidden" />
   </div>
 </template>

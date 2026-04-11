@@ -45,7 +45,7 @@ const items: DropdownMenuItem[] = [
 </script>
 
 <template>
-  <div class="flex items-center justify-between gap-2 w-full">
+  <div class="flex items-center justify-between gap-2 w-full bg-default p-2.5 lg:rounded-md">
     <div class="flex items-center gap-2 overflow-hidden">
       <h1 class="font-medium">
         {{ code }}
@@ -85,6 +85,7 @@ const items: DropdownMenuItem[] = [
         icon="i-lucide-menu"
         variant="ghost"
         color="neutral"
+        size="sm"
       />
     </UDropdownMenu>
 

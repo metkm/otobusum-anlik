@@ -16,20 +16,22 @@ const lineStyle = computed(() => ({
   <LayoutGroup>
     <motion.ol
       layout
-      class="flex gap-2 overflow-x-auto"
-      :class="{ 'p-2 pt-0.5': !isOneElement }"
+      class="flex gap-2 overflow-x-auto lg:p-2"
+      :class="{ 'p-2': !isOneElement }"
     >
       <AnimatePresence>
         <motion.li
           v-for="line in linesStore.lines"
           :key="line"
-          class="p-2 bg-default ring ring-default w-full shrink-0 snap-center max-w-lg"
-          :class="{ 'rounded-md': !isOneElement }"
+          class="shrink-0  max-w-lg"
           :style="lineStyle"
           :exit="{ scale: 0.5, opacity: 0 }"
           layout
         >
-          <LineCard :code="line" />
+          <LineCard
+            :code="line"
+            :class="{ 'rounded-md': !isOneElement }"
+          />
         </motion.li>
       </AnimatePresence>
     </motion.ol>

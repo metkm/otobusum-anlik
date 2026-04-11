@@ -5,6 +5,8 @@ definePageMeta({
   icon: 'i-lucide-map',
   label: 'Map',
 })
+
+// const isDesktop = useMediaQuery('(min-width: 768px)')
 </script>
 
 <template>
@@ -17,15 +19,24 @@ definePageMeta({
       />
     </AppMap>
 
+    <!-- <div class="flex flex-col justify-between absolute inset-0 pointer-events-none"> -->
+    <!-- <div class="absolute w-full max-w-lg"> -->
+    <UInput
+      placeholder="Search"
+      class="absolute max-w-lg left-page-left right-page-right top-page-top"
+      icon="i-lucide-search"
+      size="xl"
+      variant="soft"
+    />
+    <!-- </div> -->
+    <!-- class="absolute mt-page-top ml-page-left mr-page-right w-full max-w-lg" -->
+
     <LayoutGroup>
       <motion.div
         layout
-        class="flex flex-col absolute bottom-0 inset-x-0"
+        class="absolute flex flex-col bottom-0 inset-x-0 max-w-max"
       >
-        <motion.div
-          layout
-          class="p-2"
-        >
+        <!-- <motion.div layout>
           <UButton
             icon="i-lucide-search"
             color="neutral"
@@ -34,10 +45,11 @@ definePageMeta({
             to="/search"
             square
           />
-        </motion.div>
+        </motion.div> -->
 
         <LineCards />
       </motion.div>
     </LayoutGroup>
+    <!-- </di v> -->
   </div>
 </template>

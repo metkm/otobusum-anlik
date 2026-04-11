@@ -7,6 +7,11 @@
 
 @theme {
   --font-sans: 'Inter', sans-serif;
+
+  --spacing-page-top: calc(env(safe-area-inset-top) + var(--spacing) * 2);
+  --spacing-page-left: calc(env(safe-area-inset-left) + var(--spacing) * 2);
+  --spacing-page-right: calc(env(safe-area-inset-right) + var(--spacing) * 2);
+  --spacing-page-bottom: calc(env(safe-area-inset-bottom) + var(--spacing) * 2);
 }
 
 html, body, #__nuxt {
