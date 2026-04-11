@@ -32,7 +32,7 @@ interface ClusterPoints extends LineBusStopMarkersItemPropsBase {
 
 type LineBusStopMarkersItemProps = PointProps | ClusterPoints
 
-export const MarkersStopItem = ({
+export const MarkersLineStopsItem = ({
   stop,
   lineCode,
   viewStyle,
@@ -95,8 +95,6 @@ export const MarkersStopItem = ({
     </Marker>
   )
 }
-
-export const MarkersStopItemMemoized = memo(MarkersStopItem)
 
 const styles = StyleSheet.create({
   busStop: {

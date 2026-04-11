@@ -6,9 +6,9 @@ import { MapMarkerProps } from 'react-native-maps'
 
 import { useTheme } from '@/hooks/useTheme'
 
-import { MarkersCallout } from '../callout/MarkersCallout'
+import { MarkersCallout } from '../../callout/MarkersCallout'
 
-import { MarkersBusesItemCallout } from './MarkersBusesItemCallout'
+// import { MarkersBusesItemCallout } from './MarkersLineBusesItemCallout'
 
 import { BusLocation } from '@/api/getLineBusLocations'
 
@@ -19,7 +19,7 @@ interface MarkersBusesItemProps extends Omit<MapMarkerProps, 'coordinate'> {
   lineCode: string
 }
 
-export const MarkersBusesItem = ({ location, lineCode }: MarkersBusesItemProps) => {
+export const MarkersLineBusesItem = ({ location, lineCode }: MarkersBusesItemProps) => {
   const { schemeColor } = useTheme(lineCode)
 
   return (
@@ -50,8 +50,6 @@ export const MarkersBusesItem = ({ location, lineCode }: MarkersBusesItemProps) 
   // </MarkersCallout>
   )
 }
-
-export const MarkersBusesItemMemoized = memo(MarkersBusesItem)
 
 const styles = StyleSheet.create({
   iconContainer: {

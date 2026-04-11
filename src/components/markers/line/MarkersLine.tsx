@@ -3,8 +3,8 @@ import { View } from 'react-native'
 // import { Platform, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
-import { MarkersBuses } from '../buses/MarkersBuses'
-import { MarkersStop } from '../stop/MarkersStop'
+import { MarkersLineBuses } from '../line/buses/MarkersLineBuses'
+import { MarkersLineStops } from './stop/MarkersLineStops'
 // import { MarkersStopClusteredMemoized } from '../stop/MarkersStopClustered'
 
 import { MarkersLineRouteLine } from './MarkersLineRouteLine'
@@ -29,7 +29,7 @@ export const MarkersLine = () => {
       {filteredCodes.map(lineCode => (
         <View key={lineCode}>
           <MarkersLineRouteLine lineCode={lineCode} />
-          <MarkersBuses lineCode={lineCode} />
+          <MarkersLineBuses lineCode={lineCode} />
         </View>
       ))}
     </>

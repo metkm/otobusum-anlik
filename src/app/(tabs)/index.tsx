@@ -59,10 +59,10 @@ export const HomeScreen = () => {
   //   return unsub
   // }, [])
 
-  const sheetContext: sheetContextValues = {
-    height: useSharedValue(0),
-    index: useSharedValue(-1),
-  }
+  // const sheetContext: sheetContextValues = {
+  //   height: useSharedValue(0),
+  //   index: useSharedValue(-1),
+  // }
 
   // const handleRegionChangeComplete = (region: Region) => {
   //   useSettingsStore.setState(() => ({ initialMapLocation: region }))
@@ -70,8 +70,8 @@ export const HomeScreen = () => {
 
   return (
     <MapContext value={map}>
-      <SheetContext.Provider value={sheetContext}>
-        <TheMap initialViewState={{ bounds: settingsStoreState.initialMapBounds ?? [26.218823938242565, 36.08430119633523, 30.10080291867854, 42.351104713710356] }}>
+      {/* <SheetContext.Provider value={sheetContext}> */}
+        <TheMap initialViewState={{ bounds: settingsStoreState.initialMapBounds }}>
           <MarkersLine />
         </TheMap>
 
@@ -80,6 +80,17 @@ export const HomeScreen = () => {
         </View>
 
         <TheMapButtons />
+
+
+
+
+
+
+
+
+
+
+        
 
         {/* <View style={styles.linesContainer}>
           <Lines />
@@ -108,7 +119,7 @@ export const HomeScreen = () => {
         </View>
 
         <TheStopInfo ref={map} /> */}
-      </SheetContext.Provider>
+      {/* </SheetContext.Provider> */}
     </MapContext>
   )
 }

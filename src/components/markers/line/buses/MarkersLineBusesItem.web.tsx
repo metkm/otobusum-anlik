@@ -5,9 +5,9 @@ import { StyleSheet, View } from 'react-native'
 
 import { useTheme } from '@/hooks/useTheme'
 
-import { MarkersCallout } from '../callout/MarkersCallout.web'
+import { MarkersCallout } from '../../callout/MarkersCallout.web'
 
-import { MarkersBusesItemCallout } from './MarkersBusesItemCallout'
+import { MarkersLineBusesItemCallout } from './MarkersLineBusesItemCallout'
 
 import { BusLocation } from '@/api/getLineBusLocations'
 
@@ -16,7 +16,7 @@ interface MarkersBusesItemProps {
   lineCode: string
 }
 
-export const MarkersBusesItem = ({ location, lineCode }: MarkersBusesItemProps) => {
+export const MarkerLinesBusesItem = ({ location, lineCode }: MarkersBusesItemProps) => {
   const { schemeColor } = useTheme(lineCode)
 
   return (
@@ -29,7 +29,7 @@ export const MarkersBusesItem = ({ location, lineCode }: MarkersBusesItemProps) 
         anchorPoint: AdvancedMarkerAnchorPoint.CENTER,
       }}
       calloutProps={{
-        children: <MarkersBusesItemCallout busLocation={location} lineCode={lineCode} />,
+        children: <MarkersLineBusesItemCallout busLocation={location} lineCode={lineCode} />,
       }}
     >
       <View style={[styles.iconContainer, { backgroundColor: schemeColor.primaryContainer }]}>
@@ -38,8 +38,6 @@ export const MarkersBusesItem = ({ location, lineCode }: MarkersBusesItemProps) 
     </MarkersCallout>
   )
 }
-
-export const MarkersBusesItemMemoized = memo(MarkersBusesItem)
 
 const styles = StyleSheet.create({
   iconContainer: {

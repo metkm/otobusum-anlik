@@ -16,7 +16,7 @@ export const useSettingsStore = create(
   subscribeWithSelector(
     persist<SettingsStore>(
       () => ({
-        initialMapBounds: undefined,
+        initialMapBounds: [26.218823938242565, 36.08430119633523, 30.10080291867854, 42.351104713710356],
         showMyLocation: false,
         showTraffic: true,
         colorScheme: undefined,

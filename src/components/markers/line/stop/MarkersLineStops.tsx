@@ -1,21 +1,20 @@
-import { memo, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Platform } from 'react-native'
 import { LatLng } from 'react-native-maps'
 
 import { useLineBusStops } from '@/hooks/queries/useLineBusStops'
 
-import { MarkersFiltersInView } from '../filters/MarkersFiltersInView'
-import { MarkersFiltersZoomMemoized } from '../filters/MarkersFiltersZoom'
-
-import { MarkersStopItemMemoized } from './MarkersStopItem'
+import { MarkersFiltersInView } from '../../filters/MarkersFiltersInView'
+import { MarkersFiltersZoomMemoized } from '../../filters/MarkersFiltersZoom'
 
 import { useFiltersStore, getSelectedRouteCode } from '@/stores/filters'
+import { MarkersLineStopsItem } from './MarkersLineStopsItem'
 
 interface Props {
   lineCode: string
 }
 
-export const MarkersStop = (props: Props) => {
+export const MarkersLineStops = (props: Props) => {
   const routeCode = useFiltersStore(() => getSelectedRouteCode(props.lineCode))
   const { query } = useLineBusStops(routeCode)
 
@@ -35,7 +34,7 @@ export const MarkersStop = (props: Props) => {
     return (
       <>
         {stops.map(item => (
-          <MarkersStopItemMemoized
+          <MarkersLineStopsItem
             type="point"
             key={`${item.x_coord}-${item.y_coord}-${props.lineCode}-${item.stop_code}`}
             stop={item}
@@ -54,12 +53,10 @@ export const MarkersStop = (props: Props) => {
           key={`${item.x_coord}-${item.y_coord}-${props.lineCode}-${item.stop_code}`}
           limit={13}
         >
-          <MarkersStopItemMemoized type="point" stop={item} lineCode={props.lineCode} />
+          <MarkersLineStopsItem type="point" stop={item} lineCode={props.lineCode} />
         </MarkersFiltersZoomMemoized>
       )}
     >
     </MarkersFiltersInView>
   )
 }
-
-export const MarkersStopMemoized = memo(MarkersStop)

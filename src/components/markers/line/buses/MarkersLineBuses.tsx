@@ -6,7 +6,7 @@ import { useLine } from '@/hooks/queries/useLine'
 
 // import { MarkersBusesItemMemoized } from './MarkersBusesItem'
 
-import { MarkersBusesItemMemoized } from './MarkersBusesItem'
+import { MarkersLineBusesItem } from './MarkersLineBusesItem'
 
 import { getSelectedRouteCode, useFiltersStore } from '@/stores/filters'
 
@@ -14,7 +14,7 @@ interface MarkersBussedProps {
   lineCode: string
 }
 
-export const MarkersBuses = ({ lineCode }: MarkersBussedProps) => {
+export const MarkersLineBuses = ({ lineCode }: MarkersBussedProps) => {
   const { query } = useLine(lineCode)
   const routeCode = useFiltersStore(() => getSelectedRouteCode(lineCode))
 
@@ -34,7 +34,7 @@ export const MarkersBuses = ({ lineCode }: MarkersBussedProps) => {
         //   </View>
         // </ViewAnnotation>
 
-        <MarkersBusesItemMemoized
+        <MarkersLineBusesItem
           key={`${loc.bus_id}-${loc.route_code}-${loc.lat}-${loc.lng}`}
           location={loc}
           lineCode={lineCode}
@@ -43,5 +43,3 @@ export const MarkersBuses = ({ lineCode }: MarkersBussedProps) => {
     </>
   )
 }
-
-export const MarkersBusesMemoized = memo(MarkersBuses)

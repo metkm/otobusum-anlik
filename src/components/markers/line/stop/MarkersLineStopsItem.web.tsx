@@ -5,7 +5,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 
 import { useTheme } from '@/hooks/useTheme'
 
-import { MarkersFiltersZoom } from '../filters/MarkersFiltersZoom'
+import { MarkersFiltersZoom } from '../../filters/MarkersFiltersZoom'
 
 import { BusStop } from '@/types/bus'
 

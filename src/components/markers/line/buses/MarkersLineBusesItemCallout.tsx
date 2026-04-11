@@ -13,7 +13,7 @@ interface MarkersBusesItemCalloutProps {
   lineCode: string
 }
 
-export const MarkersBusesItemCallout = ({ busLocation, lineCode }: MarkersBusesItemCalloutProps) => {
+export const MarkersLineBusesItemCallout = ({ busLocation, lineCode }: MarkersBusesItemCalloutProps) => {
   const { schemeColor } = useTheme(lineCode)
   const { query: { dataUpdatedAt } } = useLine(lineCode)
 
