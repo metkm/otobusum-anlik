@@ -1,3 +1,5 @@
+package com.otobusumanlik.app;
+
 import android.os.Bundle;
 import com.getcapacitor.BridgeActivity;
 import androidx.activity.EdgeToEdge;
