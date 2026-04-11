@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   app: {
     head: {
-      viewport: 'viewport-fit=cover initial-scale=1.0',
+      viewport: 'viewport-fit=cover, initial-scale=1',
     },
   },
   css: [`~/assets/main.css`],

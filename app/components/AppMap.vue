@@ -41,15 +41,16 @@ const handleReady = ({ map }: { map: ShallowRef<google.maps.Map | undefined> }) 
     :key="colorMode.value"
     :map-options="{
       colorScheme: colorMode.value.toUpperCase(),
-      cameraControl: false,
-      fullscreenControl: false,
-      mapTypeControl: false,
-      rotateControl: false,
-      streetViewControl: false,
-      zoomControl: false,
-      scaleControl: false,
+      // cameraControl: false,
+      // fullscreenControl: false,
+      // mapTypeControl: false,
+      // rotateControl: false,
+      // streetViewControl: false,
+      // zoomControl: false,
+      // scaleControl: false,
       center: settingsStore.initialMapCenter,
       zoom: settingsStore.initialMapZoom,
+      disableDefaultUI: true,
     }"
     class="w-full! flex-1 min-h-0"
     :api-key="apiKey"
@@ -58,3 +59,9 @@ const handleReady = ({ map }: { map: ShallowRef<google.maps.Map | undefined> }) 
     <slot />
   </ScriptGoogleMaps>
 </template>
+
+<style>
+.gm-style-cc {
+  display: none;
+}
+</style>

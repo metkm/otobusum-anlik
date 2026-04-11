@@ -16,7 +16,7 @@ const lineStyle = computed(() => ({
   <LayoutGroup>
     <motion.ol
       layout
-      class="flex gap-2 absolute bottom-0 inset-x-0 overflow-x-auto "
+      class="flex gap-2 overflow-x-auto "
       :class="{ 'p-2': !isOneElement }"
     >
       <AnimatePresence>

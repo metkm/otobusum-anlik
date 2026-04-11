@@ -92,6 +92,7 @@ const items: DropdownMenuItem[] = [
       v-else
       v-model:open="open"
       should-scale-background
+      :set-background-color-on-scale="false"
     >
       <UButton
         icon="i-lucide-menu"

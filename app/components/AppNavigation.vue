@@ -2,7 +2,9 @@
 const router = useRouter()
 const route = useRoute()
 
-const routes = router.options.routes.toReversed()
+const routes = router.options.routes
+  .toReversed()
+  .filter(r => r.meta?.icon)
 </script>
 
 <template>
