@@ -8,17 +8,6 @@ const routes = router.options.routes.toReversed()
 <template>
   <nav class="pb-[env(safe-area-inset-bottom)]">
     <ol class="flex">
-      <div
-        class="fixed rounded-full bg-accented will-change-transform transition-all"
-        :style="{
-          positionAnchor: '--this',
-          top: 'anchor(top)',
-          bottom: 'anchor(bottom)',
-          left: 'anchor(left)',
-          right: 'anchor(right)',
-        }"
-      />
-
       <li
         v-for="_route in routes"
         :key="_route.path"
@@ -35,7 +24,7 @@ const routes = router.options.routes.toReversed()
           <template #leading>
             <div
               class="flex items-center rounded-full px-3 py-0.5"
-              :style="{ anchorName: _route.path == route.path ? '--this' : '--nope' }"
+              :class="{ 'bg-accented': _route.path === route.path }"
             >
               <UIcon
                 :name="_route.meta!.icon"

@@ -4,5 +4,14 @@ export default defineAppConfig({
       primary: 'orange',
       neutral: 'zinc',
     },
+    drawer: {
+      variants: {
+        direction: {
+          bottom: {
+            handle: 'mt-2',
+          },
+        },
+      },
+    },
   },
 })

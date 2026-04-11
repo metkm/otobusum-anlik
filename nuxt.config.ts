@@ -1,11 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/eslint', '@nuxt/ui', '@nuxt/scripts'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/ui',
+    '@nuxt/scripts',
+    '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
+    '@vueuse/nuxt',
+    'motion-v/nuxt',
+  ],
   ssr: false,
   devtools: { enabled: false },
   app: {
     head: {
-      viewport: 'viewport-fit=cover',
+      viewport: 'viewport-fit=cover initial-scale=1.0',
     },
   },
   css: [`~/assets/main.css`],

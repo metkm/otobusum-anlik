@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+:root {
+  --ui-radius: 0.50rem;
+}
+
 @theme {
   --font-sans: 'Inter', sans-serif;
 }
