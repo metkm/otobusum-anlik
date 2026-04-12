@@ -29,9 +29,6 @@ const config: ExpoConfig = {
   runtimeVersion: {
     policy: 'appVersion',
   },
-  // androidStatusBar: {
-  //   barStyle: 'light-content',
-  // },
   android: {
     config: {
       googleMaps: {
@@ -57,6 +54,12 @@ const config: ExpoConfig = {
         backgroundColor: '#0a0a0a',
       },
     ],
+    [
+      "expo-navigation-bar",
+      {
+        "enforceContrast": false,
+      }
+    ]
   ],
   experiments: {
     typedRoutes: true,
