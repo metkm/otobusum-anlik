@@ -16,10 +16,10 @@ export const LineCards = () => {
 
   let spacing = useCSSVariable('--spacing') as number
   if (typeof spacing === 'string' && Platform.OS === 'web') {
-    spacing = 0.25
+    spacing = 4
   }
 
-  const lineWidth = width - (lines.length > 1 ? spacing * 14 : 0)
+  const lineWidth = width - (lines.length > 1 ? spacing * 10 : 0)
 
   return (
     <Animated.FlatList
