@@ -1,71 +1,75 @@
-import { useLocalSearchParams, useNavigation } from 'expo-router'
-import { useCallback, useEffect, useRef } from 'react'
-import { StyleSheet, View } from 'react-native'
+// import { useLocalSearchParams, useNavigation } from 'expo-router'
+// import { useCallback, useEffect, useRef } from 'react'
+// import { StyleSheet, Text, View } from 'react-native'
 
-import { UiButton } from '@/components/ui/UiButton'
-import { UiTextInput } from '@/components/ui/UiTextInput'
+// import { UiButton } from '@/components/ui/UiButton'
+// import { UiTextInput } from '@/components/ui/UiTextInput'
 
-import { usePaddings } from '@/hooks/usePaddings'
+// import { usePaddings } from '@/hooks/usePaddings'
 
-import { unSelectGroup } from '@/stores/filters'
-import { deleteGroup, updateGroupTitle } from '@/stores/lines'
-import { i18n } from '@/translations/i18n'
+// import { unSelectGroup } from '@/stores/filters'
+// import { deleteGroup, updateGroupTitle } from '@/stores/lines'
+// import { i18n } from '@/translations/i18n'
+
+import { Text } from 'react-native'
 
 export const GroupEditScreen = () => {
-  const { groupId } = useLocalSearchParams()
-  const { stackRoutePaddings } = usePaddings()
-  const navigation = useNavigation()
-  const title = useRef('')
+  return <Text>Edit Page</Text>
 
-  const handleQueryChange = useCallback((text: string) => (title.current = text), [])
+  // const { groupId } = useLocalSearchParams()
+  // const { stackRoutePaddings } = usePaddings()
+  // const navigation = useNavigation()
+  // const title = useRef('')
 
-  const handleOnPress = useCallback(() => {
-    if (!groupId || typeof groupId !== 'string') return
-    updateGroupTitle(groupId, title.current)
-    navigation.goBack()
-  }, [groupId, navigation])
+  // const handleQueryChange = useCallback((text: string) => (title.current = text), [])
 
-  const handleDeleteGroup = () => {
-    if (!groupId || typeof groupId !== 'string') return
+  // const handleOnPress = useCallback(() => {
+  //   if (!groupId || typeof groupId !== 'string') return
+  //   updateGroupTitle(groupId, title.current)
+  //   navigation.goBack()
+  // }, [groupId, navigation])
 
-    deleteGroup(groupId)
-    unSelectGroup()
+  // const handleDeleteGroup = () => {
+  //   if (!groupId || typeof groupId !== 'string') return
 
-    navigation.goBack()
-  }
+  //   deleteGroup(groupId)
+  //   unSelectGroup()
 
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => <UiButton title={i18n.t('save')} onPress={handleOnPress} variant="soft" />,
-    })
-  }, [navigation, handleOnPress])
+  //   navigation.goBack()
+  // }
 
-  return (
-    <View style={[styles.container, stackRoutePaddings]}>
-      <UiTextInput
-        onChangeText={handleQueryChange}
-        placeholder={i18n.t('newGroupTitlePlaceholder')}
-      />
+  // useEffect(() => {
+  //   navigation.setOptions({
+  //     headerRight: () => <UiButton title={i18n.t('save')} onPress={handleOnPress} variant="soft" />,
+  //   })
+  // }, [navigation, handleOnPress])
 
-      <UiButton
-        title={i18n.t('deleteGroup')}
-        icon="trash-bin"
-        variant="error"
-        onPress={handleDeleteGroup}
-        square
-      />
-    </View>
-  )
+  // return (
+  //   <View style={[styles.container, stackRoutePaddings]}>
+  //     <UiTextInput
+  //       onChangeText={handleQueryChange}
+  //       placeholder={i18n.t('newGroupTitlePlaceholder')}
+  //     />
+
+  //     <UiButton
+  //       title={i18n.t('deleteGroup')}
+  //       icon="trash-bin"
+  //       variant="error"
+  //       onPress={handleDeleteGroup}
+  //       square
+  //     />
+  //   </View>
+  // )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    overflow: 'hidden',
-  },
-})
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     display: 'flex',
+//     flexDirection: 'column',
+//     justifyContent: 'space-between',
+//     overflow: 'hidden',
+//   },
+// })
 
 export default GroupEditScreen

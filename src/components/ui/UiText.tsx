@@ -1,23 +1,38 @@
-import { StyleProp, Text, TextProps, TextStyle } from 'react-native'
+// import { StyleProp, Text, TextProps } from 'react-native'
 
-import { useTheme } from '@/hooks/useTheme'
+// import { useTheme } from '@/hooks/useTheme'
 
-import { FontSize, fontSizes } from '@/constants/uiSizes'
+// import { FontSize, fontSizes } from '@/constants/uiSizes'
 
-interface Props extends TextProps {
-  size?: FontSize
-  error?: boolean
-  dimmed?: boolean
-}
+// interface Props extends TextProps {
+//   size?: FontSize
+//   error?: boolean
+//   dimmed?: boolean
+// }
 
-export const UiText = ({ style, dimmed, size = 'md', ...rest }: Props) => {
-  const { schemeColor } = useTheme()
+import React from 'react'
+import { Text, TextProps } from 'react-native'
 
-  const baseStyle: StyleProp<TextStyle> = {
-    color: dimmed ? schemeColor.onSurfaceDimmed : schemeColor.onSurface,
-    fontSize: fontSizes[size],
-    flexShrink: 1,
-  }
+import { cn } from '@/utils/cn'
 
-  return <Text style={[baseStyle, style]} ellipsizeMode="tail" {...rest} />
+export const UiText = ({ className, ...props }: TextProps) => {
+  return (
+    <Text
+      className={cn(
+        'text-black dark:text-white',
+        className,
+      )}
+      {...props}
+    />
+  )
+
+  // const { schemeColor } = useTheme()
+
+  // const baseStyle: StyleProp<TextStyle> = {
+  //   color: dimmed ? schemeColor.onSurfaceDimmed : schemeColor.onSurface,
+  //   fontSize: fontSizes[size],
+  //   flexShrink: 1,
+  // }
+
+  // return <Text style={[baseStyle, style]} ellipsizeMode="tail" {...rest} />
 }

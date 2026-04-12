@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+@import 'uniwind';
+
+@layer theme {
+  :root {
+    @variant dark {
+      --ui-bg: var(--color-mauve-900);
+      --ui-bg-muted: var(--color-mauve-800);
+
+      --ui-text-default: var(--color-mauve-200);
+    }
+
+    @variant light {
+      --ui-bg: white;
+      --ui-bg-muted: var(--color-mauve-50);
+      
+      --ui-text-default: var(--color-mauve-700);
+    }
+  }
+}
+
+@theme inline {
+  --background-color-default: var(--ui-bg);
+  --background-color-muted: var(--ui-bg-muted);
+
+  --text-default: var(--ui-text-default);
+}

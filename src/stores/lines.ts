@@ -1,319 +1,359 @@
-import { type Theme } from '@material/material-color-utilities'
+// import { type Theme } from '@material/material-color-utilities'
+// import AsyncStorage from '@react-native-async-storage/async-storage'
+// import { randomUUID } from 'expo-crypto'
+// import { ToastAndroid } from 'react-native'
+// import { create } from 'zustand'
+// import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
+
+// import { useFiltersStore } from './filters'
+
+// import { ColorSchemes } from '@/constants/colors'
+// import { i18n } from '@/translations/i18n'
+// import { Cities } from '@/types/cities'
+// import { LineGroup } from '@/types/lineGroup'
+// import { createTheme, materialThemeToLocalSchemes } from '@/utils/createTheme'
+// import { notify } from '@/utils/notify'
+
+// interface StoreV0 {
+//   lines: Record<string, object[]>
+// }
+
+// export interface StoreV2 {
+//   lines: Record<Cities, string>
+//   lineTheme: Record<Cities, Record<string, Theme>>
+//   lineGroups: Record<Cities, Record<string, LineGroup>>
+// }
+
+// export interface LinesStore {
+//   lines: Record<Cities, string[]>
+//   lineTheme: Record<Cities, Record<string, ColorSchemes>>
+//   lineGroups: Record<Cities, Record<string, LineGroup>>
+// }
+
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { randomUUID } from 'expo-crypto'
-import { ToastAndroid } from 'react-native'
 import { create } from 'zustand'
-import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
 
-import { useFiltersStore } from './filters'
+export const Cities = {
+  ISTANBUL: 'istanbul',
+  IZMIR: 'izmir',
+} as const
 
-import { ColorSchemes } from '@/constants/colors'
-import { i18n } from '@/translations/i18n'
-import { Cities } from '@/types/cities'
-import { LineGroup } from '@/types/lineGroup'
-import { createTheme, materialThemeToLocalSchemes } from '@/utils/createTheme'
-import { notify } from '@/utils/notify'
+type City = typeof Cities[keyof typeof Cities]
 
-interface StoreV0 {
-  lines: Record<string, object[]>
-}
-
-export interface StoreV2 {
-  lines: Record<Cities, string>
-  lineTheme: Record<Cities, Record<string, Theme>>
-  lineGroups: Record<Cities, Record<string, LineGroup>>
-}
-
-export interface LinesStore {
-  lines: Record<Cities, string[]>
-  lineTheme: Record<Cities, Record<string, ColorSchemes>>
-  lineGroups: Record<Cities, Record<string, LineGroup>>
+interface LinesStore {
+  linesByCity: Record<City, string[]>
+  deleteLine: (code: string) => void
+  addLine: (code: string) => void
 }
 
 export const useLinesStore = create(
-  subscribeWithSelector(
-    persist<LinesStore>(
-      () => ({
-        lines: {
-          istanbul: [],
-          izmir: [],
-        },
-        lineTheme: {
-          istanbul: {},
-          izmir: {},
-        },
-        lineGroups: {
-          istanbul: {},
-          izmir: {},
-        },
-      }),
-      {
-        name: 'line-storage',
-        storage: createJSONStorage(() => AsyncStorage),
-        version: 3,
-        migrate: (persistedStore, version) => {
-          const store = persistedStore as LinesStore
-
-          if (version === 0 || version === undefined) {
-            const oldStore = persistedStore as unknown as StoreV0
-            const keys = Object.keys(oldStore.lines)
-
-            store.lines.istanbul = keys
-          }
-
-          if (version === 2) {
-            const oldStore = persistedStore as unknown as StoreV2
-
-            for (const [city, lineThemes] of Object.entries(oldStore.lineTheme)) {
-              for (const [lineCode, lineTheme] of Object.entries(lineThemes)) {
-                store.lineTheme[city as Cities][lineCode] = materialThemeToLocalSchemes(lineTheme)
-              }
-            }
-          }
-
-          return persistedStore as LinesStore
-        },
+  persist(
+    immer<LinesStore>(set => ({
+      linesByCity: {
+        istanbul: ['KM12', 'KM13'],
+        izmir: [],
       },
-    ),
+      deleteLine: (code: string) => set((state) => {
+        state.linesByCity['istanbul'] = state.linesByCity['istanbul'].filter(i => i !== code)
+      }),
+      addLine: (code: string) => set((state) => {
+        state.linesByCity['istanbul'].push(code)
+      }),
+    })),
+    {
+      name: 'lines-store',
+      storage: createJSONStorage(() => AsyncStorage),
+      version: 4,
+    },
   ),
 )
 
-export const getLines = () => {
-  const linesStore = useLinesStore.getState()
-  const filtersStore = useFiltersStore.getState()
+// export const useLinesStore = create(
+//   subscribeWithSelector(
+//     persist<LinesStore>(
+//       () => ({
+//         lines: {
+//           istanbul: [],
+//           izmir: [],
+//         },
+//         lineTheme: {
+//           istanbul: {},
+//           izmir: {},
+//         },
+//         lineGroups: {
+//           istanbul: {},
+//           izmir: {},
+//         },
+//       }),
+//       {
+//         name: 'line-storage',
+//         storage: createJSONStorage(() => AsyncStorage),
+//         version: 3,
+//         migrate: (persistedStore, version) => {
+//           const store = persistedStore as LinesStore
 
-  if (!filtersStore.selectedGroup) {
-    return linesStore.lines[filtersStore.selectedCity]
-  }
+//           if (version === 0 || version === undefined) {
+//             const oldStore = persistedStore as unknown as StoreV0
+//             const keys = Object.keys(oldStore.lines)
 
-  return (
-    linesStore.lineGroups[filtersStore.selectedCity][filtersStore.selectedGroup]?.lineCodes || []
-  )
-}
+//             store.lines.istanbul = keys
+//           }
 
-// Line stuff
-export const deleteLine = (lineCode: string) =>
-  useLinesStore.setState((state) => {
-    const filtersStore = useFiltersStore.getState()
-    const defaultLinesIndex = state.lines[filtersStore.selectedCity].indexOf(lineCode)
+//           if (version === 2) {
+//             const oldStore = persistedStore as unknown as StoreV2
 
-    const selectedGroup = useFiltersStore.getState().selectedGroup
-    if (selectedGroup) {
-      deleteLineFromGroup(selectedGroup, filtersStore.selectedCity, lineCode)
-    } else if (defaultLinesIndex !== -1) {
-      state.lines[filtersStore.selectedCity].splice(defaultLinesIndex, 1)
-    }
+//             for (const [city, lineThemes] of Object.entries(oldStore.lineTheme)) {
+//               for (const [lineCode, lineTheme] of Object.entries(lineThemes)) {
+//                 store.lineTheme[city as Cities][lineCode] = materialThemeToLocalSchemes(lineTheme)
+//               }
+//             }
+//           }
 
-    deleteTheme(lineCode)
+//           return persistedStore as LinesStore
+//         },
+//       },
+//     ),
+//   ),
+// )
 
-    return {
-      lines: {
-        ...state.lines,
-        [filtersStore.selectedCity]: [...state.lines[filtersStore.selectedCity]],
-      },
-    }
-  })
+// export const getLines = () => {
+//   const linesStore = useLinesStore.getState()
+//   const filtersStore = useFiltersStore.getState()
 
-export const addLine = (lineCode: string) =>
-  useLinesStore.setState((state) => {
-    const filtersStore = useFiltersStore.getState()
+//   if (!filtersStore.selectedGroup) {
+//     return linesStore.lines[filtersStore.selectedCity]
+//   }
 
-    if (state.lines[filtersStore.selectedCity].length > 3) {
-      ToastAndroid.show(i18n.t('lineLimitExceeded'), ToastAndroid.SHORT)
-      return state
-    }
+//   return (
+//     linesStore.lineGroups[filtersStore.selectedCity][filtersStore.selectedGroup]?.lineCodes || []
+//   )
+// }
 
-    if (state.lines[filtersStore.selectedCity].includes(lineCode)) return state
+// // Line stuff
+// export const deleteLine = (lineCode: string) =>
+//   useLinesStore.setState((state) => {
+//     const filtersStore = useFiltersStore.getState()
+//     const defaultLinesIndex = state.lines[filtersStore.selectedCity].indexOf(lineCode)
 
-    addTheme(lineCode)
-    notify(i18n.t('added', { lineCode: lineCode }))
+//     const selectedGroup = useFiltersStore.getState().selectedGroup
+//     if (selectedGroup) {
+//       deleteLineFromGroup(selectedGroup, filtersStore.selectedCity, lineCode)
+//     } else if (defaultLinesIndex !== -1) {
+//       state.lines[filtersStore.selectedCity].splice(defaultLinesIndex, 1)
+//     }
 
-    return {
-      lines: {
-        ...state.lines,
-        [filtersStore.selectedCity]: [...state.lines[filtersStore.selectedCity], lineCode],
-      },
-    }
-  })
+//     deleteTheme(lineCode)
 
-// Line stuff end
+//     return {
+//       lines: {
+//         ...state.lines,
+//         [filtersStore.selectedCity]: [...state.lines[filtersStore.selectedCity]],
+//       },
+//     }
+//   })
 
-// Theme stuff
-export const addTheme = (lineCode: string) =>
-  useLinesStore.setState((state) => {
-    const filtersStore = useFiltersStore.getState()
+// export const addLine = (lineCode: string) =>
+//   useLinesStore.setState((state) => {
+//     const filtersStore = useFiltersStore.getState()
 
-    if (state.lineTheme[filtersStore.selectedCity][lineCode]) {
-      return state
-    }
+//     if (state.lines[filtersStore.selectedCity].length > 3) {
+//       ToastAndroid.show(i18n.t('lineLimitExceeded'), ToastAndroid.SHORT)
+//       return state
+//     }
 
-    return {
-      lineTheme: {
-        ...state.lineTheme,
-        [filtersStore.selectedCity]: {
-          ...state.lineTheme[filtersStore.selectedCity],
-          [lineCode]: createTheme(),
-        },
-      },
-    }
-  })
+//     if (state.lines[filtersStore.selectedCity].includes(lineCode)) return state
 
-export const deleteTheme = (lineCode: string) =>
-  useLinesStore.setState((state) => {
-    const filtersStore = useFiltersStore.getState()
+//     addTheme(lineCode)
+//     notify(i18n.t('added', { lineCode: lineCode }))
 
-    const groupAllLineCodes = Object.values(state.lineGroups)
-      .map(group => Object.values(group))
-      .flat()
-      .map(group => group.lineCodes)
-      .flat()
+//     return {
+//       lines: {
+//         ...state.lines,
+//         [filtersStore.selectedCity]: [...state.lines[filtersStore.selectedCity], lineCode],
+//       },
+//     }
+//   })
 
-    const shouldDeleteTheme
-      = !groupAllLineCodes.includes(lineCode)
-        && state.lines[filtersStore.selectedCity].indexOf(lineCode) === -1
+// // Line stuff end
 
-    if (shouldDeleteTheme) {
-      delete state.lineTheme[filtersStore.selectedCity][lineCode]
-    }
+// // Theme stuff
+// export const addTheme = (lineCode: string) =>
+//   useLinesStore.setState((state) => {
+//     const filtersStore = useFiltersStore.getState()
 
-    return {
-      lineTheme: {
-        ...state.lineTheme,
-      },
-    }
-  })
+//     if (state.lineTheme[filtersStore.selectedCity][lineCode]) {
+//       return state
+//     }
 
-export const getTheme = (lineCode: string) => {
-  const linesStore = useLinesStore.getState()
-  const filtersStore = useFiltersStore.getState()
+//     return {
+//       lineTheme: {
+//         ...state.lineTheme,
+//         [filtersStore.selectedCity]: {
+//           ...state.lineTheme[filtersStore.selectedCity],
+//           [lineCode]: createTheme(),
+//         },
+//       },
+//     }
+//   })
 
-  return linesStore.lineTheme[filtersStore.selectedCity][lineCode]
-}
+// export const deleteTheme = (lineCode: string) =>
+//   useLinesStore.setState((state) => {
+//     const filtersStore = useFiltersStore.getState()
 
-// Theme stuff end
+//     const groupAllLineCodes = Object.values(state.lineGroups)
+//       .map(group => Object.values(group))
+//       .flat()
+//       .map(group => group.lineCodes)
+//       .flat()
 
-// Group stuff
-export const createNewGroup = () =>
-  useLinesStore.setState((state) => {
-    const filtersStore = useFiltersStore.getState()
-    const id = randomUUID()
+//     const shouldDeleteTheme
+//       = !groupAllLineCodes.includes(lineCode)
+//         && state.lines[filtersStore.selectedCity].indexOf(lineCode) === -1
 
-    const cityGroups = state.lineGroups[filtersStore.selectedCity]
-    const cityGroupsCount = Object.entries(cityGroups).length + 1
+//     if (shouldDeleteTheme) {
+//       delete state.lineTheme[filtersStore.selectedCity][lineCode]
+//     }
 
-    return {
-      lineGroups: {
-        ...state.lineGroups,
-        [filtersStore.selectedCity]: {
-          ...state.lineGroups[filtersStore.selectedCity],
-          [id]: {
-            id,
-            title: `new group ${cityGroupsCount}`,
-            lineCodes: [],
-          },
-        },
-      },
-    }
-  })
+//     return {
+//       lineTheme: {
+//         ...state.lineTheme,
+//       },
+//     }
+//   })
 
-export const addLineToGroup = (groupId: string, lineCode: string) =>
-  useLinesStore.setState((state) => {
-    const filtersStore = useFiltersStore.getState()
-    const group = state.lineGroups[filtersStore.selectedCity][groupId]
-    if (!group) return state
+// export const getTheme = (lineCode: string) => {
+//   const linesStore = useLinesStore.getState()
+//   const filtersStore = useFiltersStore.getState()
 
-    if (group.lineCodes.includes(lineCode)) {
-      notify(i18n.t('lineAlreadyInGroup'))
-      return state
-    }
+//   return linesStore.lineTheme[filtersStore.selectedCity][lineCode]
+// }
 
-    if (group.lineCodes.length > 3) {
-      notify(i18n.t('lineLimitExceeded'))
-      return state
-    }
+// // Theme stuff end
 
-    notify(i18n.t('addedToGroup', { lineCode: lineCode }))
-    addTheme(lineCode)
+// // Group stuff
+// export const createNewGroup = () =>
+//   useLinesStore.setState((state) => {
+//     const filtersStore = useFiltersStore.getState()
+//     const id = randomUUID()
 
-    return {
-      lineGroups: {
-        ...state.lineGroups,
-        [filtersStore.selectedCity]: {
-          ...state.lineGroups[filtersStore.selectedCity],
-          [groupId]: {
-            ...state.lineGroups[filtersStore.selectedCity][groupId],
-            lineCodes: [
-              ...state.lineGroups[filtersStore.selectedCity][groupId]!.lineCodes,
-              lineCode,
-            ],
-          },
-        },
-      },
-    }
-  })
+//     const cityGroups = state.lineGroups[filtersStore.selectedCity]
+//     const cityGroupsCount = Object.entries(cityGroups).length + 1
 
-export const updateGroupTitle = (groupId: string, newTitle: string) =>
-  useLinesStore.setState((state) => {
-    const filtersStore = useFiltersStore.getState()
-    const group = state.lineGroups[filtersStore.selectedCity][groupId]
-    if (!group) return state
+//     return {
+//       lineGroups: {
+//         ...state.lineGroups,
+//         [filtersStore.selectedCity]: {
+//           ...state.lineGroups[filtersStore.selectedCity],
+//           [id]: {
+//             id,
+//             title: `new group ${cityGroupsCount}`,
+//             lineCodes: [],
+//           },
+//         },
+//       },
+//     }
+//   })
 
-    return {
-      lineGroups: {
-        ...state.lineGroups,
-        [filtersStore.selectedCity]: {
-          ...state.lineGroups[filtersStore.selectedCity],
-          [groupId]: {
-            ...state.lineGroups[filtersStore.selectedCity][groupId],
-            title: newTitle,
-          },
-        },
-      },
-    }
-  })
+// export const addLineToGroup = (groupId: string, lineCode: string) =>
+//   useLinesStore.setState((state) => {
+//     const filtersStore = useFiltersStore.getState()
+//     const group = state.lineGroups[filtersStore.selectedCity][groupId]
+//     if (!group) return state
 
-export const deleteGroup = (groupId: string) =>
-  useLinesStore.setState((state) => {
-    const filtersStore = useFiltersStore.getState()
-    const group = state.lineGroups[filtersStore.selectedCity][groupId]
-    if (!group) return state
+//     if (group.lineCodes.includes(lineCode)) {
+//       notify(i18n.t('lineAlreadyInGroup'))
+//       return state
+//     }
 
-    group.lineCodes.forEach(lineCode => deleteLineFromGroup(groupId, filtersStore.selectedCity, lineCode))
-    delete state.lineGroups[filtersStore.selectedCity][groupId]
+//     if (group.lineCodes.length > 3) {
+//       notify(i18n.t('lineLimitExceeded'))
+//       return state
+//     }
 
-    return {
-      lineGroups: {
-        ...state.lineGroups,
-        [filtersStore.selectedCity]: {
-          ...state.lineGroups[filtersStore.selectedCity],
-        },
-      },
-    }
-  })
+//     notify(i18n.t('addedToGroup', { lineCode: lineCode }))
+//     addTheme(lineCode)
 
-export const deleteLineFromGroup = (groupId: string, city: Cities, lineCode: string) =>
-  useLinesStore.setState((state) => {
-    const lineIndex = state.lineGroups[city][groupId]?.lineCodes.indexOf(lineCode)
-    if (lineIndex === undefined || lineIndex === -1) return state
+//     return {
+//       lineGroups: {
+//         ...state.lineGroups,
+//         [filtersStore.selectedCity]: {
+//           ...state.lineGroups[filtersStore.selectedCity],
+//           [groupId]: {
+//             ...state.lineGroups[filtersStore.selectedCity][groupId],
+//             lineCodes: [
+//               ...state.lineGroups[filtersStore.selectedCity][groupId]!.lineCodes,
+//               lineCode,
+//             ],
+//           },
+//         },
+//       },
+//     }
+//   })
 
-    state.lineGroups[city][groupId]!.lineCodes.splice(lineIndex, 1)
-    deleteTheme(lineCode)
+// export const updateGroupTitle = (groupId: string, newTitle: string) =>
+//   useLinesStore.setState((state) => {
+//     const filtersStore = useFiltersStore.getState()
+//     const group = state.lineGroups[filtersStore.selectedCity][groupId]
+//     if (!group) return state
 
-    const filtersStore = useFiltersStore.getState()
+//     return {
+//       lineGroups: {
+//         ...state.lineGroups,
+//         [filtersStore.selectedCity]: {
+//           ...state.lineGroups[filtersStore.selectedCity],
+//           [groupId]: {
+//             ...state.lineGroups[filtersStore.selectedCity][groupId],
+//             title: newTitle,
+//           },
+//         },
+//       },
+//     }
+//   })
 
-    return {
-      lineGroups: {
-        ...state.lineGroups,
-        [filtersStore.selectedCity]: {
-          ...state.lineGroups[filtersStore.selectedCity],
-          [groupId]: {
-            ...state.lineGroups[filtersStore.selectedCity][groupId],
-            lineCodes: [...(state.lineGroups[filtersStore.selectedCity][groupId]?.lineCodes || [])],
-          },
-        },
-      },
-    }
-  })
+// export const deleteGroup = (groupId: string) =>
+//   useLinesStore.setState((state) => {
+//     const filtersStore = useFiltersStore.getState()
+//     const group = state.lineGroups[filtersStore.selectedCity][groupId]
+//     if (!group) return state
+
+//     group.lineCodes.forEach(lineCode => deleteLineFromGroup(groupId, filtersStore.selectedCity, lineCode))
+//     delete state.lineGroups[filtersStore.selectedCity][groupId]
+
+//     return {
+//       lineGroups: {
+//         ...state.lineGroups,
+//         [filtersStore.selectedCity]: {
+//           ...state.lineGroups[filtersStore.selectedCity],
+//         },
+//       },
+//     }
+//   })
+
+// export const deleteLineFromGroup = (groupId: string, city: Cities, lineCode: string) =>
+//   useLinesStore.setState((state) => {
+//     const lineIndex = state.lineGroups[city][groupId]?.lineCodes.indexOf(lineCode)
+//     if (lineIndex === undefined || lineIndex === -1) return state
+
+//     state.lineGroups[city][groupId]!.lineCodes.splice(lineIndex, 1)
+//     deleteTheme(lineCode)
+
+//     const filtersStore = useFiltersStore.getState()
+
+//     return {
+//       lineGroups: {
+//         ...state.lineGroups,
+//         [filtersStore.selectedCity]: {
+//           ...state.lineGroups[filtersStore.selectedCity],
+//           [groupId]: {
+//             ...state.lineGroups[filtersStore.selectedCity][groupId],
+//             lineCodes: [...(state.lineGroups[filtersStore.selectedCity][groupId]?.lineCodes || [])],
+//           },
+//         },
+//       },
+//     }
+//   })
 
 // Group stuff end
 

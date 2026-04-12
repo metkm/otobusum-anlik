@@ -29,12 +29,8 @@ const config: ExpoConfig = {
   runtimeVersion: {
     policy: 'appVersion',
   },
-  androidStatusBar: {
-    barStyle: 'light-content',
-    // translucent: true,
-  },
-  // androidNavigationBar: {
-  //   enforceContrast: false,
+  // androidStatusBar: {
+  //   barStyle: 'light-content',
   // },
   android: {
     config: {
@@ -64,6 +60,7 @@ const config: ExpoConfig = {
   ],
   experiments: {
     typedRoutes: true,
+    reactCompiler: true,
   },
 }
 
