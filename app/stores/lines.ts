@@ -28,4 +28,6 @@ export const useLinesStore = defineStore('lines', () => {
     selectedCity,
     removeLine,
   }
+}, {
+  persist: true,
 })

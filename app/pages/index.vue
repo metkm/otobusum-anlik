@@ -19,24 +19,22 @@ definePageMeta({
       />
     </AppMap>
 
-    <!-- <div class="flex flex-col justify-between absolute inset-0 pointer-events-none"> -->
-    <!-- <div class="absolute w-full max-w-lg"> -->
     <UInput
       placeholder="Search"
       class="absolute max-w-lg left-page-left right-page-right top-page-top"
       icon="i-lucide-search"
       size="xl"
-      variant="soft"
     />
-    <!-- </div> -->
-    <!-- class="absolute mt-page-top ml-page-left mr-page-right w-full max-w-lg" -->
 
     <LayoutGroup>
       <motion.div
         layout
-        class="absolute flex flex-col bottom-0 inset-x-0 max-w-max"
+        class="absolute flex flex-col items-start bottom-0 inset-x-0 max-w-max"
       >
-        <!-- <motion.div layout>
+        <motion.div
+          layout="position"
+          class="lg:hidden"
+        >
           <UButton
             icon="i-lucide-search"
             color="neutral"
@@ -44,8 +42,9 @@ definePageMeta({
             size="xl"
             to="/search"
             square
+            class="ml-2 mb-2"
           />
-        </motion.div> -->
+        </motion.div>
 
         <LineCards />
       </motion.div>
