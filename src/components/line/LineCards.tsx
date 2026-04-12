@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { FlatList, useWindowDimensions } from 'react-native'
+import { FlatList, Platform, useWindowDimensions } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useCSSVariable } from 'uniwind'
 
@@ -14,7 +14,11 @@ export const LineCards = () => {
   const lines = useLinesStore(state => state.linesByCity['istanbul'])
   const { width } = useWindowDimensions()
 
-  const spacing = useCSSVariable('--spacing') as number
+  let spacing = useCSSVariable('--spacing') as number
+  if (typeof spacing === 'string' && Platform.OS === 'web') {
+    spacing = 0.25
+  }
+
   const lineWidth = width - (lines.length > 1 ? spacing * 14 : 0)
 
   return (
