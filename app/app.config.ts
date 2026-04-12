@@ -8,9 +8,12 @@ export default defineAppConfig({
       variants: {
         direction: {
           bottom: {
-            handle: 'mt-2',
+            handle: 'mt-2 mb-2',
           },
         },
+      },
+      slots: {
+        content: 'pb-page-bottom px-page-left',
       },
     },
     input: {
@@ -27,7 +30,6 @@ export default defineAppConfig({
         size: {
           xl: {
             leadingIcon: '',
-            // base: 'py-10',
           },
         },
       },

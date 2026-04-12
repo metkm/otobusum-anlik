@@ -102,7 +102,7 @@ const items: DropdownMenuItem[] = [
       />
 
       <template #content>
-        <div class="flex flex-col gap-2 p-2">
+        <div class="flex flex-col gap-2">
           <UButton
             v-for="item in items"
             :key="item.label!"
