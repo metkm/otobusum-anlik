@@ -6,12 +6,14 @@ const router = useRouter()
 App.addListener('backButton', () => {
   router.back()
 })
+
+console.log(router.options.routes)
 </script>
 
 <template>
   <main
     data-vaul-drawer-wrapper
-    class="flex flex-col h-full w-full flex-1"
+    class="w-screen h-screen overflow-hidden"
   >
     <AppMapRoot>
       <NuxtLayout>

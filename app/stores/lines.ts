@@ -9,7 +9,7 @@ export const useLinesStore = defineStore('lines', () => {
   const selectedCity = ref<City>('istanbul')
 
   const linesByCity = ref<Record<City, string[]>>({
-    istanbul: ['KM12', 'KM13'],
+    istanbul: ['KM12'],
     izmir: [],
   })
 

@@ -15,12 +15,6 @@ const config: CapacitorConfig = {
     CapacitorHttp: {
       enabled: true,
     },
-    Keyboard: {
-      resizeOnFullScreen: false,
-    },
-    StatusBar: {
-      overlaysWebView: true,
-    },
   },
 }
 

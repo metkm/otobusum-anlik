@@ -6,25 +6,22 @@ definePageMeta({
   label: 'Map',
 })
 
-// const isDesktop = useMediaQuery('(min-width: 768px)')
+const linesStore = useLinesStore()
 </script>
 
 <template>
   <div class="flex flex-col flex-1 relative">
     <AppMap>
       <LineMarker
-        v-for="code in ['KM12', 'KM13']"
+        v-for="code in linesStore.lines"
         :key="code"
         :code="code"
       />
     </AppMap>
 
-    <UInput
-      placeholder="Search"
-      class="absolute max-w-lg left-page-left right-page-right top-page-top"
-      icon="i-lucide-search"
-      size="xl"
-    />
+    <div class="absolute inset-x-0 hidden lg:flex w-full max-w-lg">
+      <PageSearchContent class="overflow-hidden max-h-96" />
+    </div>
 
     <LayoutGroup>
       <motion.div
@@ -40,7 +37,7 @@ definePageMeta({
             color="neutral"
             variant="soft"
             size="xl"
-            to="/search"
+            to="search"
             square
             class="ml-2 mb-2"
           />
