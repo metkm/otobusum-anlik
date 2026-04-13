@@ -10,7 +10,7 @@ const linesStore = useLinesStore()
 </script>
 
 <template>
-  <div class="flex flex-col flex-1 relative">
+  <div class="flex flex-col flex-1 h-full relative">
     <AppMap>
       <LineMarker
         v-for="code in linesStore.lines"
@@ -46,6 +46,5 @@ const linesStore = useLinesStore()
         <LineCards />
       </motion.div>
     </LayoutGroup>
-    <!-- </di v> -->
   </div>
 </template>
