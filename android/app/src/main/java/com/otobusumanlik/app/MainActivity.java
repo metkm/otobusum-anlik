@@ -9,5 +9,7 @@ public class MainActivity extends BridgeActivity {
   public void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       EdgeToEdge.enable(this); // enable edge-to-edge mode
+
+      getWindow().setNavigationBarContrastEnforced(false);
   }
 }
