@@ -10,7 +10,7 @@ const linesStore = useLinesStore()
 </script>
 
 <template>
-  <div class="flex flex-col flex-1 h-full relative">
+  <div class="flex relative">
     <AppMap>
       <LineMarker
         v-for="code in linesStore.lines"
@@ -19,9 +19,7 @@ const linesStore = useLinesStore()
       />
     </AppMap>
 
-    <div class="absolute inset-x-0 hidden lg:flex w-full max-w-lg">
-      <PageSearchContent class="overflow-hidden max-h-96" />
-    </div>
+    <PageSearchContent class="absolute m-safe hidden lg:flex" />
 
     <LayoutGroup>
       <motion.div

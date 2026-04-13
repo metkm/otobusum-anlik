@@ -6,5 +6,7 @@ definePageMeta({
 </script>
 
 <template>
-  <p>timetable</p>
+  <div class="p-safe">
+    <p>Timetable</p>
+  </div>
 </template>

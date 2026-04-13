@@ -10,20 +10,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col w-full h-full pt-page-top pl-page-left pr-page-right pb-page-bottom">
+  <div class="flex flex-col max-w-md w-full">
     <UInput
       ref="input"
       v-model="query"
       placeholder="Search"
       icon="i-lucide-search"
       size="xl"
-      class="w-full"
+      :ui="{ base: 'ring-0' }"
     />
 
     <AnimatePresence>
       <motion.ol
         v-if="query"
-        class="flex flex-col flex-1 bg-default rounded-md mt-2 p-2 overflow-y-auto"
+        class="flex flex-col flex-1 bg-default rounded-md mt-2 p-2 overflow-y-auto max-h-72"
         :exit="{ scale: 0.8, opacity: 0 }"
         :animate="{ scale: 1, opacity: 1 }"
         :initial="{ scale: 0.8, opacity: 0 }"

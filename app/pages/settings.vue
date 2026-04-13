@@ -6,5 +6,7 @@ definePageMeta({
 </script>
 
 <template>
-  <p>other page</p>
+  <div class="p-safe">
+    <p>other page</p>
+  </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col w-full h-full">
+  <div class="flex flex-col lg:flex-row h-full w-full">
     <NuxtPage class="flex-1" />
-    <AppNavigation class="lg:hidden" />
+    <AppNavigation />
   </div>
 </template>

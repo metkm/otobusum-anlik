@@ -2,6 +2,7 @@
 import { REFETCH_INTERVAL, useLineBuses } from '~/hooks/useLinesBuses'
 import { motion } from 'motion-v'
 import type { DropdownMenuItem } from '@nuxt/ui'
+import { useIsDesktop } from '~/hooks/useIsDesktop'
 
 const props = defineProps<{
   code: string
@@ -13,8 +14,7 @@ const linesStore = useLinesStore()
 
 const { isFetching, dataUpdatedAt } = useLineBuses(props.code)
 const { remaining, start } = useCountdown(REFETCH_INTERVAL)
-
-const isDesktop = useMediaQuery('(min-width: 768px)')
+const isDesktop = useIsDesktop()
 
 watch(dataUpdatedAt, () => {
   const diff = Date.now() - dataUpdatedAt.value
