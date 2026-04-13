@@ -1,13 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 
-export interface BusLocation {
-  bus_id: string
-  lng: number
-  lat: number
-  route_code: string
-  closest_stop_code?: number
-}
+import { BusLocation } from '@/types/bus'
 
 export const REFETCH_INTERVAL = 50_000
 

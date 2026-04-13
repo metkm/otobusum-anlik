@@ -47,11 +47,13 @@ export const HomeScreen = () => {
         <LineMarkers />
       </TheMap>
 
-      <View className="absolute bottom-0 inset-x-0 flex flex-col items-start">
+      <View className="absolute bottom-0 inset-x-0 flex flex-col gap-2 items-start">
         <UButton
           className="ml-2"
-          icon="add-circle"
+          icon="search"
           square
+          to="/search"
+          color="neutral"
         />
 
         <LineCards />

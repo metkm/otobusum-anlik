@@ -12,8 +12,15 @@ export interface BusStop {
 }
 
 export interface BusLine {
-  id: number
   code: string
   title: string
   city: string
+}
+
+export interface BusLocation {
+  bus_id: string
+  lng: number
+  lat: number
+  route_code: string
+  closest_stop_code?: number
 }

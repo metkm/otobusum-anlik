@@ -1,10 +1,66 @@
-import { Text } from 'react-native'
+import { useState } from 'react'
+import { FlatList, View } from 'react-native'
+import { useDebouncedCallback } from 'use-debounce'
 
-export const ModalScreen = () => {
-  return <Text>Modal screen i guess</Text>
+import { UButton } from '@/components/u/UButton'
+import { UInput } from '@/components/u/UInput'
+
+import { isStop, useSearch } from '@/hooks/useSearch'
+
+export const SearchScreen = () => {
+  const [query, setQuery] = useState('')
+
+  const { data } = useSearch(query)
+
+  const handleTextChange = useDebouncedCallback((q: string) => {
+    if (q.length < 2)
+      return
+
+    setQuery(q)
+  }, 250)
+
+  console.log(data)
+
+  return (
+    <View className="m-safe p-2 gap-2">
+      <UInput
+        autoFocus={true}
+        placeholder="Search..."
+        onChangeText={handleTextChange}
+      />
+
+      <FlatList
+        data={[
+          ...(data?.lines || []),
+          ...(data?.stops || []),
+        ]}
+        renderItem={({ item }) => {
+          if (isStop(item)) {
+            return (
+              <UButton
+                label={item.stop_name}
+                variant="ghost"
+                color="neutral"
+              />
+            )
+          }
+
+          return (
+            <UButton
+              label={item.title}
+              variant="ghost"
+              color="neutral"
+            />
+          )
+        }}
+        keyExtractor={item => isStop(item) ? item.id.toString() : item.code}
+        contentContainerClassName="gap-2"
+      />
+    </View>
+  )
 }
 
-export default ModalScreen
+export default SearchScreen
 
 // import { useMutation } from '@tanstack/react-query'
 // import { router } from 'expo-router'

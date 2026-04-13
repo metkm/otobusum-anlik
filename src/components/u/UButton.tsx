@@ -1,7 +1,9 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
+import { Href, router } from 'expo-router'
 import React, { ComponentProps } from 'react'
 import { BaseButton } from 'react-native-gesture-handler'
-import { useCSSVariable, withUniwind } from 'uniwind'
+import { tv } from 'tailwind-variants'
+import { useResolveClassNames, withUniwind } from 'uniwind'
 
 import { UText } from './UText'
 
@@ -10,29 +12,110 @@ import { cn } from '@/utils/cn'
 
 const StyledBaseButton = withUniwind(BaseButton)
 
-export const UButton = (
-  { label, className, icon, square, ...props }: { label?: string, icon?: IconName, square?: boolean } & ComponentProps<typeof StyledBaseButton>,
-) => {
-  const textDefault = useCSSVariable('--text-color-inverted')
+type BaseButtonProps = ComponentProps<typeof StyledBaseButton>
+
+const ui = tv({
+  variants: {
+    color: {
+      primary: '',
+      neutral: '',
+    },
+    variant: {
+      solid: '',
+      ghost: '',
+    },
+  },
+  compoundVariants: [
+    {
+      color: 'primary',
+      variant: 'solid',
+      className: {
+        base: 'bg-primary',
+        label: 'text-inverted',
+      },
+    },
+    {
+      color: 'neutral',
+      variant: 'solid',
+      className: {
+        base: 'bg-muted',
+        label: 'text-default',
+      },
+    },
+    {
+      color: 'primary',
+      variant: 'ghost',
+      className: {
+        base: 'bg-transparent',
+        label: 'text-primary',
+      },
+    },
+    {
+      color: 'neutral',
+      variant: 'ghost',
+      className: {
+        base: 'bg-transparent',
+        label: 'text-default',
+      },
+    },
+  ],
+  slots: {
+    base: 'flex flex-row items-center gap-1 py-2 px-3 rounded-md',
+    label: 'font-medium',
+  },
+})
+
+export const UButton = ({
+  label,
+  className,
+  icon,
+  square,
+  to,
+  color = 'primary',
+  variant = 'solid',
+  ...props
+}: {
+  label?: string
+  icon?: IconName
+  square?: boolean
+  to?: Href
+  color?: 'primary' | 'neutral'
+  variant?: 'solid' | 'ghost'
+} & BaseButtonProps) => {
+  const handlePress: BaseButtonProps['onPress'] = () => {
+    if (!to) return
+    router.navigate(to)
+  }
+
+  const { base: uiBase, label: uiLabel } = ui({ color, variant })
+
+  const uiLabelStyle = useResolveClassNames(uiLabel())
 
   return (
     <StyledBaseButton
       className={cn(
-        'flex flex-row items-center gap-1 bg-primary py-2 px-3 rounded-md',
-        square ? 'p-2' : 'py-2 px-3',
+        uiBase(),
+        square ? 'p-3' : 'py-2 px-3',
         className,
       )}
+      onPress={handlePress}
       {...props}
     >
       {icon && (
         <Ionicons
           name={icon}
           size={20}
-          color={textDefault as string ?? 'black'}
+          color={uiLabelStyle.color}
         />
       )}
 
-      {label && <UText className="text-inverted dark:text-inverted font-medium">{label}</UText>}
+      {label && (
+        <UText
+          className={uiLabel()}
+        >
+          {label}
+        </UText>
+      )}
     </StyledBaseButton>
   )
 }

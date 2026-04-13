@@ -19,7 +19,7 @@ export const UText = ({ className, ...props }: TextProps) => {
   return (
     <Text
       className={cn(
-        'text-black dark:text-white',
+        'text-default',
         className,
       )}
       {...props}

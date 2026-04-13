@@ -74,6 +74,7 @@ export const RootLayout = () => {
           <ThemeProvider value={theme}>
             <Stack screenOptions={{ headerTitleAlign: 'center' }}>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="search" options={{ headerShown: false }} />
             </Stack>
           </ThemeProvider>
         </SafeAreaListener>
