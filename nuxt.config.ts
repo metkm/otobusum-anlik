@@ -32,6 +32,21 @@ export default defineNuxtConfig({
       stylistic: true,
     },
   },
+  icon: {
+    clientBundle: {
+      icons: [
+        'lucide:search',
+        'lucide:circle-plus',
+        'lucide:trash-2',
+        'lucide:loader-circle',
+        'lucide:menu',
+        'lucide:bus-front',
+        'lucide:map',
+        'lucide:settings',
+        'lucide:clock',
+      ],
+    },
+  },
   scripts: {
     registry: {
       googleMaps: {},
