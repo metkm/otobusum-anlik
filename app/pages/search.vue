@@ -5,5 +5,7 @@ definePageMeta({
 </script>
 
 <template>
-  <PageSearchContent />
+  <div class="p-safe flex h-full overflow-hidden">
+    <PageSearchContent />
+  </div>
 </template>

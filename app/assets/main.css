@@ -3,6 +3,7 @@
 
 :root {
   --ui-radius: 0.50rem;
+  --sidebar-offset: 0px;
 }
 
 @theme {
@@ -22,9 +23,14 @@ html, body, #__nuxt {
 }
 
 @theme inline {
-  --spacing-safe:
-            var(--spacing-page-top)
+  --spacing-safe: var(--spacing-page-top)
             var(--spacing-page-right)
             var(--spacing-page-bottom)
-            calc(var(--spacing-page-left) + 54px + var(--spacing) * 2);
+            calc(var(--spacing-page-left) + var(--sidebar-offset));
+}
+
+@media (width >= 64rem) {
+  :root {
+    --sidebar-offset: calc(54px + var(--spacing) * 2);
+  }
 }

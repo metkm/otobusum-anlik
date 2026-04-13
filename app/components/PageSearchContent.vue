@@ -23,7 +23,7 @@ onMounted(() => {
     <AnimatePresence>
       <motion.ol
         v-if="query"
-        class="flex flex-col flex-1 bg-default rounded-md mt-2 p-2 overflow-y-auto max-h-72"
+        class="flex flex-col flex-1 bg-default rounded-md mt-2 p-2 overflow-y-auto lg:max-h-72"
         :exit="{ scale: 0.8, opacity: 0 }"
         :animate="{ scale: 1, opacity: 1 }"
         :initial="{ scale: 0.8, opacity: 0 }"
