@@ -19,8 +19,6 @@ export const SearchScreen = () => {
     setQuery(q)
   }, 250)
 
-  console.log(data)
-
   return (
     <View className="m-safe p-2 gap-2">
       <UInput
