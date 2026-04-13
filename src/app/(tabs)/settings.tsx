@@ -13,15 +13,13 @@
 
 // import { i18n } from '@/translations/i18n'
 
-import { Text } from 'react-native'
-
-import { UiText } from '../../components/ui/UiText'
+import { UText } from '@/components/u/UText'
 
 export const SettingsScreen = () => {
   // const insets = useSafeAreaInsets()
 
   return (
-    <UiText>settings</UiText>
+    <UText>settings</UText>
 
   // <ScrollView
   //   style={{ marginTop: insets.top }}

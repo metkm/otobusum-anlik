@@ -13,7 +13,7 @@
 import { Layer, Map, RasterSource, type MapRef } from '@maplibre/maplibre-react-native'
 import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
-import { RefObject, useRef } from 'react'
+import React, { RefObject, useRef } from 'react'
 import { ActivityIndicator, useColorScheme } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -49,7 +49,7 @@ export interface TheMapProps {
 
 // const screen = Dimensions.get('screen')
 
-export const TheMap = ({ ref, onMapReady }: TheMapProps) => {
+export const TheMap = ({ children }: { children: React.ReactNode }) => {
   const map = useRef<MapRef>(null)
 
   const colorScheme = useColorScheme()
@@ -130,8 +130,14 @@ export const TheMap = ({ ref, onMapReady }: TheMapProps) => {
         tiles={tiles}
         tileSize={256}
       >
-        <Layer type="raster" id="google-raster-layer" layerIndex={8} />
+        <Layer
+          type="raster"
+          id="google-raster-layer"
+          layerIndex={8}
+        />
       </RasterSource>
+
+      {children}
     </Map>
 
   // <Animated.View style={animatedStyle}>

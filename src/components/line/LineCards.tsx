@@ -11,7 +11,7 @@ import { useLinesStore } from '@/stores/lines'
 export const LineCards = () => {
   const flatlistRef = useRef<FlatList>(null)
 
-  const lines = useLinesStore(state => state.linesByCity['istanbul'])
+  const lines = useLinesStore(state => state.lines())
   const { width } = useWindowDimensions()
 
   let spacing = useCSSVariable('--spacing') as number
@@ -28,7 +28,7 @@ export const LineCards = () => {
       itemLayoutAnimation={DEFAULT_TIMING_FUNCTION}
       renderItem={({ item }) => <LineCard lineCode={item} style={{ width: lineWidth }} />}
       horizontal
-      contentContainerClassName="gap-2 min-h-24 min-w-full"
+      contentContainerClassName="gap-2 min-w-full"
       contentContainerStyle={{
         padding: lines.length > 1 ? 8 : 0,
       }}

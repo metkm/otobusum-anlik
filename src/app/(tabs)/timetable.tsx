@@ -21,7 +21,7 @@
 
 import { View } from 'react-native'
 
-import { UiText } from '../../components/ui/UiText'
+import { UText } from '@/components/u/UText'
 
 // import { LineTimetableMemoized } from '@/components/lines/line/LineTimetable'
 // import { Lines } from '@/components/lines/Lines'
@@ -88,7 +88,7 @@ export const TimetableScreen = () => {
 
   return (
     <View className="m-safe p-2">
-      <UiText>Timetable</UiText>
+      <UText>Timetable</UText>
     </View>
 
   // <View style={containerStyle}>

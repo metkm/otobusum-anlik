@@ -5,13 +5,15 @@
 // // import { Region } from 'react-native-maps'
 // import { useSharedValue } from 'react-native-reanimated'
 
-import { Button, View } from 'react-native'
+import { Images } from '@maplibre/maplibre-react-native'
+import Ionicons from '@react-native-vector-icons/ionicons'
+import { View } from 'react-native'
 
 import { LineCards } from '@/components/line/LineCards'
+import { LineMarkers } from '@/components/line/LineMarkers'
+import { UButton } from '@/components/u/UButton'
 
 import { TheMap } from '../../components/map/TheMap'
-
-import { useLinesStore } from '@/stores/lines'
 
 // import { Lines } from '@/components/lines/Lines'
 // import { TheMap, TheMapRef } from '@/components/map/Map'
@@ -29,22 +31,29 @@ import { useLinesStore } from '@/stores/lines'
 // import { useSettingsStore } from '@/stores/settings'
 
 export const HomeScreen = () => {
-  const addLine = useLinesStore(state => state.addLine)
+  // const addLine = useLinesStore(state => state.addLine)
+
+  const busImageSource = Ionicons.getImageSourceSync('bus', 20, 'red')
 
   return (
     <>
-      <TheMap />
-
-      <View className="absolute top-10">
-        <Button
-          title="Add"
-          onPress={() => {
-            addLine(`KM${Math.floor(Math.random() * 1_000)}`)
+      <TheMap>
+        <Images
+          images={{
+            bus: busImageSource.uri,
           }}
         />
-      </View>
 
-      <View className="absolute bottom-0 inset-x-0">
+        <LineMarkers />
+      </TheMap>
+
+      <View className="absolute bottom-0 inset-x-0 flex flex-col items-start">
+        <UButton
+          className="ml-2"
+          icon="add-circle"
+          square
+        />
+
         <LineCards />
       </View>
     </>

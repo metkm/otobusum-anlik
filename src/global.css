@@ -3,18 +3,38 @@
 
 @layer theme {
   :root {
+    --ui-radius: 0.5rem;
+
+    --color-bright-sun-50: #fefbe8;
+    --color-bright-sun-100: #fff6c2;
+    --color-bright-sun-200: #ffe989;
+    --color-bright-sun-300: #ffd02e;
+    --color-bright-sun-400: #fdbe12;
+    --color-bright-sun-500: #eca506;
+    --color-bright-sun-600: #cc7d02;
+    --color-bright-sun-700: #a35805;
+    --color-bright-sun-800: #86450d;
+    --color-bright-sun-900: #723911;
+    --color-bright-sun-950: #431c05;
+
     @variant dark {
       --ui-bg: var(--color-mauve-900);
       --ui-bg-muted: var(--color-mauve-800);
+      
+      --ui-text: var(--color-mauve-200);
+      --ui-text-inverted: var(--color-mauve-900);
 
-      --ui-text-default: var(--color-mauve-200);
+      --ui-primary: var(--color-bright-sun-400);
     }
 
     @variant light {
       --ui-bg: white;
       --ui-bg-muted: var(--color-mauve-50);
-      
-      --ui-text-default: var(--color-mauve-700);
+
+      --ui-text: var(--color-mauve-700);
+      --ui-text-inverted: white;
+
+      --ui-primary: var(--color-bright-sun-500);
     }
   }
 }
@@ -23,5 +43,16 @@
   --background-color-default: var(--ui-bg);
   --background-color-muted: var(--ui-bg-muted);
 
-  --text-default: var(--ui-text-default);
+  --text-color-default: var(--ui-text);
+  --text-color-inverted: var(--ui-text-inverted);
+
+  --radius-xs: calc(var(--ui-radius) * 0.5);
+  --radius-sm: var(--ui-radius);
+  --radius-md: calc(var(--ui-radius) * 1.5);
+  --radius-lg: calc(var(--ui-radius) * 2);
+  --radius-xl: calc(var(--ui-radius) * 3);
+  --radius-2xl: calc(var(--ui-radius) * 4);
+  --radius-3xl: calc(var(--ui-radius) * 6);
+
+  --color-primary: var(--ui-primary);
 }

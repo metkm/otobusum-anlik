@@ -34,6 +34,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
+import { useFiltersStore } from './filters'
 
 export const Cities = {
   ISTANBUL: 'istanbul',
@@ -46,20 +47,24 @@ interface LinesStore {
   linesByCity: Record<City, string[]>
   deleteLine: (code: string) => void
   addLine: (code: string) => void
+  lines: () => string[]
 }
 
 export const useLinesStore = create(
   persist(
-    immer<LinesStore>(set => ({
+    immer<LinesStore>((set, get) => ({
       linesByCity: {
         istanbul: ['KM12', 'KM13'],
         izmir: [],
       },
+      lines: () => get().linesByCity[useFiltersStore.getState().city],
       deleteLine: (code: string) => set((state) => {
-        state.linesByCity['istanbul'] = state.linesByCity['istanbul'].filter(i => i !== code)
+        const city = useFiltersStore.getState().city
+        state.linesByCity[city] = state.linesByCity[city].filter(i => i !== code)
       }),
       addLine: (code: string) => set((state) => {
-        state.linesByCity['istanbul'].push(code)
+        const city = useFiltersStore.getState().city
+        state.linesByCity[city].push(code)
       }),
     })),
     {

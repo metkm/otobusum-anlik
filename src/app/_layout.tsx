@@ -5,6 +5,7 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { Stack } from 'expo-router'
 import React from 'react'
 import { useColorScheme } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaListener } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
@@ -64,17 +65,19 @@ export const RootLayout = () => {
         },
       }}
     >
-      <SafeAreaListener
-        onChange={({ insets }) => {
-          Uniwind.updateInsets(insets)
-        }}
-      >
-        <ThemeProvider value={theme}>
-          <Stack screenOptions={{ headerTitleAlign: 'center' }}>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
-        </ThemeProvider>
-      </SafeAreaListener>
+      <GestureHandlerRootView>
+        <SafeAreaListener
+          onChange={({ insets }) => {
+            Uniwind.updateInsets(insets)
+          }}
+        >
+          <ThemeProvider value={theme}>
+            <Stack screenOptions={{ headerTitleAlign: 'center' }}>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            </Stack>
+          </ThemeProvider>
+        </SafeAreaListener>
+      </GestureHandlerRootView>
     </PersistQueryClientProvider>
   )
 

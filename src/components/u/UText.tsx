@@ -15,7 +15,7 @@ import { Text, TextProps } from 'react-native'
 
 import { cn } from '@/utils/cn'
 
-export const UiText = ({ className, ...props }: TextProps) => {
+export const UText = ({ className, ...props }: TextProps) => {
   return (
     <Text
       className={cn(

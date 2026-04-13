@@ -24,7 +24,7 @@ const screens = [
 ]
 
 export const TabsLayout = () => {
-  const color = useCSSVariable('--text-default')
+  const color = useCSSVariable('--text-color-default')
 
   return (
     <Tabs screenOptions={{ headerShown: false }}>
