@@ -7,13 +7,16 @@ definePageMeta({
 })
 
 const linesStore = useLinesStore()
+const settingsStore = useSettingsStore()
+
+const linesFiltered = computed(() => linesStore.lines.filter(code => !settingsStore.hiddenLines.includes(code)))
 </script>
 
 <template>
   <div class="flex relative">
     <AppMap>
       <LineMarker
-        v-for="code in linesStore.lines"
+        v-for="code in linesFiltered"
         :key="code"
         :code="code"
       />

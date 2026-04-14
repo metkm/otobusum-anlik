@@ -11,10 +11,26 @@ const props = defineProps<{
 const open = ref(false)
 
 const linesStore = useLinesStore()
+const settingsStore = useSettingsStore()
 
-const { isFetching, dataUpdatedAt } = useLineBuses(props.code)
+const { isFetching, dataUpdatedAt, refetch } = useLineBuses(props.code)
 const { remaining, start } = useCountdown(REFETCH_INTERVAL)
 const isDesktop = useIsDesktop()
+
+const isHidden = computed({
+  get() {
+    return settingsStore.hiddenLines.includes(props.code)
+  },
+  set(val: boolean) {
+    if (val) {
+      settingsStore.hiddenLines.push(props.code)
+    }
+    else {
+      const i = settingsStore.hiddenLines.indexOf(props.code)
+      settingsStore.hiddenLines.splice(i, 1)
+    }
+  },
+})
 
 watch(dataUpdatedAt, () => {
   const diff = Date.now() - dataUpdatedAt.value
@@ -22,6 +38,13 @@ watch(dataUpdatedAt, () => {
   start(Math.floor((REFETCH_INTERVAL - diff) / 1000))
 }, {
   immediate: true,
+})
+
+watch(remaining, (count) => {
+  if (count !== 0)
+    return
+
+  refetch()
 })
 
 const items: DropdownMenuItem[] = [
@@ -77,48 +100,57 @@ const items: DropdownMenuItem[] = [
       </AnimatePresence>
     </div>
 
-    <UDropdownMenu
-      v-if="isDesktop"
-      :items="items"
-    >
+    <div class="flex gap-2">
       <UButton
-        icon="i-lucide-menu"
+        :icon="isHidden ? 'i-lucide-eye-off' : 'i-lucide-eye'"
         variant="ghost"
         color="neutral"
-        size="sm"
-      />
-    </UDropdownMenu>
-
-    <UDrawer
-      v-else
-      v-model:open="open"
-      should-scale-background
-      :set-background-color-on-scale="false"
-    >
-      <UButton
-        icon="i-lucide-menu"
-        variant="ghost"
-        color="neutral"
+        @click="isHidden = !isHidden"
       />
 
-      <template #content>
-        <div class="flex flex-col gap-2">
-          <UButton
-            v-for="item in items"
-            :key="item.label!"
-            :color="item.color ?? 'neutral'"
-            :icon="item.icon"
-            square
-            block
-            size="lg"
-            class="py-4"
-            variant="soft"
-            @click="item.onSelect"
-          >
-            {{ item.label }}
-          </UButton>
-        </div>
-      </template>
-    </UDrawer>
+      <UDropdownMenu
+        v-if="isDesktop"
+        :items="items"
+      >
+        <UButton
+          icon="i-lucide-menu"
+          variant="ghost"
+          color="neutral"
+          size="sm"
+        />
+      </UDropdownMenu>
+
+      <UDrawer
+        v-else
+        v-model:open="open"
+        should-scale-background
+        :set-background-color-on-scale="false"
+      >
+        <UButton
+          icon="i-lucide-menu"
+          variant="ghost"
+          color="neutral"
+        />
+
+        <template #content>
+          <div class="flex flex-col gap-2">
+            <UButton
+              v-for="item in items"
+              :key="item.label!"
+              :color="item.color ?? 'neutral'"
+              :icon="item.icon"
+              square
+              block
+              size="lg"
+              class="py-4"
+              variant="soft"
+              @click="item.onSelect"
+            >
+              {{ item.label }}
+            </UButton>
+          </div>
+        </template>
+      </UDrawer>
+    </div>
   </div>
 </template>

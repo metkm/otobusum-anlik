@@ -24,6 +24,7 @@ export default defineNuxtConfig({
           apiKey: '', // NUXT_PUBLIC_SCRIPTS_GOOGLE_MAPS_API_KEY
         },
       },
+      baseUrl: '',
     },
   },
   compatibilityDate: '2025-07-15',
@@ -44,6 +45,8 @@ export default defineNuxtConfig({
         'lucide:map',
         'lucide:settings',
         'lucide:clock',
+        'lucide:eye',
+        'lucide:eye-off',
       ],
     },
   },

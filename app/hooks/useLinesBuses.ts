@@ -12,11 +12,13 @@ interface BusLocation {
 export const REFETCH_INTERVAL = 50_000
 
 export const useLineBuses = (code: string) => {
+  const runtimeConfig = useRuntimeConfig()
+
   const query = useQuery({
     queryKey: [`line-${code}-buses`],
     queryFn: () =>
       CapacitorHttp.get({
-        url: `https://otobusum.metkm.win/bus-locations/${code}`,
+        url: `${runtimeConfig.public.baseUrl}/bus-locations/${code}`,
       }).then(response => response.data as BusLocation[]),
     staleTime: REFETCH_INTERVAL,
     refetchInterval: REFETCH_INTERVAL,

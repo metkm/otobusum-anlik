@@ -1,4 +1,6 @@
 export const useSettingsStore = defineStore('settings', () => {
+  const hiddenLines = ref<string[]>([])
+
   const initialMapCenter = ref({
     lat: 41.01354203681039,
     lng: 28.969362785019918,
@@ -9,7 +11,10 @@ export const useSettingsStore = defineStore('settings', () => {
   return {
     initialMapCenter,
     initialMapZoom,
+    hiddenLines,
   }
 }, {
-  persist: true,
+  persist: {
+    storage: piniaPluginPersistedstate.localStorage(),
+  },
 })

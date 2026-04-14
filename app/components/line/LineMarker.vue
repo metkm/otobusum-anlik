@@ -6,13 +6,6 @@ const props = defineProps<{
 }>()
 
 const { data } = useLineBuses(props.code)
-
-// const { data } = useQuery({
-//   queryKey: [`line-${props.code}-buses`],
-//   queryFn: () => CapacitorHttp.get({
-//     url: `https://otobusum.metkm.win/bus-locations/${props.code}`,
-//   }).then(response => response.data),
-// })
 </script>
 
 <template>
@@ -22,7 +15,7 @@ const { data } = useLineBuses(props.code)
     :position="{ lng: bus.lng, lat: bus.lat }"
   >
     <template #content>
-      <div class="flex size-8 bg-amber-400 rounded-full p-1">
+      <div class="flex size-8 bg-muted rounded-full p-2 ring-2 ring-muted shadow shadow-black">
         <UIcon
           name="i-lucide-bus-front"
           class="h-full w-full shrink-0"

@@ -9,7 +9,7 @@ export const useLinesStore = defineStore('lines', () => {
   const selectedCity = ref<City>('istanbul')
 
   const linesByCity = ref<Record<City, string[]>>({
-    istanbul: ['KM12', 'KM13', 'KM14'],
+    istanbul: ['KM12'],
     izmir: [],
   })
 
@@ -29,5 +29,7 @@ export const useLinesStore = defineStore('lines', () => {
     removeLine,
   }
 }, {
-  persist: true,
+  persist: {
+    storage: piniaPluginPersistedstate.localStorage(),
+  },
 })
