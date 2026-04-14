@@ -3,6 +3,7 @@ import { REFETCH_INTERVAL, useLineBuses } from '~/hooks/useLinesBuses'
 import { motion } from 'motion-v'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { useIsDesktop } from '~/hooks/useIsDesktop'
+import { useLineTheme } from '~/hooks/useLineTheme'
 
 const props = defineProps<{
   code: string
@@ -13,6 +14,7 @@ const open = ref(false)
 const linesStore = useLinesStore()
 const settingsStore = useSettingsStore()
 
+const { cssVariableTemplate } = useLineTheme(props.code)
 const { isFetching, dataUpdatedAt, refetch } = useLineBuses(props.code)
 const { remaining, start } = useCountdown(REFETCH_INTERVAL)
 const isDesktop = useIsDesktop()
@@ -68,7 +70,10 @@ const items: DropdownMenuItem[] = [
 </script>
 
 <template>
-  <div class="flex items-center justify-between gap-2 w-full bg-default p-2.5 lg:rounded-md">
+  <div
+    class="flex items-center justify-between gap-2 w-full bg-default p-2.5 lg:rounded-md"
+    :style="cssVariableTemplate"
+  >
     <div class="flex items-center gap-2 overflow-hidden">
       <h1 class="font-medium">
         {{ code }}

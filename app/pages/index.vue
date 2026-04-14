@@ -15,7 +15,7 @@ const linesFiltered = computed(() => linesStore.lines.filter(code => !settingsSt
 <template>
   <div class="flex relative">
     <AppMap>
-      <LineMarker
+      <LineMarkerBuses
         v-for="code in linesFiltered"
         :key="code"
         :code="code"

@@ -6,7 +6,8 @@ const router = useRouter()
 App.addListener('backButton', () => {
   if (window.history.state.back) {
     router.back()
-  } else {
+  }
+  else {
     App.exitApp()
   }
 })
