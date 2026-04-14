@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+html, body, #__nuxt {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+}
+
 :root {
   --ui-radius: 0.50rem;
   --sidebar-offset: 0px;
@@ -15,18 +22,17 @@
   --spacing-page-bottom: calc(env(safe-area-inset-bottom) + var(--spacing) * 2);
 }
 
-html, body, #__nuxt {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  height: 100%;
-}
-
 @theme inline {
   --spacing-safe: var(--spacing-page-top)
             var(--spacing-page-right)
             var(--spacing-page-bottom)
             calc(var(--spacing-page-left) + var(--sidebar-offset));
+}
+
+@custom-variant theme-midnight {
+  &:where([data-theme="midnight"] *) {
+    --ui-bg: black;
+  }
 }
 
 @media (width >= 64rem) {

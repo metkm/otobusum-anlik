@@ -17,6 +17,7 @@ App.addListener('backButton', () => {
   <main
     data-vaul-drawer-wrapper
     class="w-screen h-screen overflow-hidden"
+    data-theme="midnight"
   >
     <AppMapRoot>
       <NuxtLayout>

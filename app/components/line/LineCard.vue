@@ -3,7 +3,6 @@ import { REFETCH_INTERVAL, useLineBuses } from '~/hooks/useLinesBuses'
 import { motion } from 'motion-v'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { useIsDesktop } from '~/hooks/useIsDesktop'
-import { useLineTheme } from '~/hooks/useLineTheme'
 
 const props = defineProps<{
   code: string
@@ -14,7 +13,7 @@ const open = ref(false)
 const linesStore = useLinesStore()
 const settingsStore = useSettingsStore()
 
-const { cssVariableTemplate } = useLineTheme(props.code)
+// const { cssVariableTemplate } = useLineTheme(props.code)
 const { isFetching, dataUpdatedAt, refetch } = useLineBuses(props.code)
 const { remaining, start } = useCountdown(REFETCH_INTERVAL)
 const isDesktop = useIsDesktop()
@@ -70,92 +69,91 @@ const items: DropdownMenuItem[] = [
 </script>
 
 <template>
-  <div
-    class="flex items-center justify-between gap-2 w-full bg-default p-2.5 lg:rounded-md"
-    :style="cssVariableTemplate"
-  >
-    <div class="flex items-center gap-2 overflow-hidden">
-      <h1 class="font-medium">
-        {{ code }}
-      </h1>
+  <AppTheme :code="code">
+    <div class="flex items-center bg-default ring-2 ring-muted theme-midnight:bg-black justify-between gap-2 w-full p-2.5 lg:rounded-md">
+      <div class="flex items-center gap-2 overflow-hidden">
+        <h1 class="font-medium">
+          {{ code }}
+        </h1>
 
-      <AnimatePresence mode="wait">
-        <Motion
-          v-if="isFetching"
-          :initial="{ translateY: -50 }"
-          :animate="{ translateY: 0 }"
-          :exit="{ translateY: -50 }"
-          as-child
+        <AnimatePresence mode="wait">
+          <Motion
+            v-if="isFetching"
+            :initial="{ translateY: -50 }"
+            :animate="{ translateY: 0 }"
+            :exit="{ translateY: -50 }"
+            as-child
+          >
+            <UIcon
+              name="i-lucide-loader-circle"
+              class="animate-spin size-4"
+            />
+          </Motion>
+
+          <motion.p
+            v-else
+            class="text-xs text-muted"
+            :initial="{ translateY: 50 }"
+            :animate="{ translateY: 0 }"
+            :exit="{ translateY: 50 }"
+          >
+            {{ remaining }} sec to update
+          </motion.p>
+        </AnimatePresence>
+      </div>
+
+      <div class="flex gap-2">
+        <UButton
+          :icon="isHidden ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+          variant="ghost"
+          color="neutral"
+          @click="isHidden = !isHidden"
+        />
+
+        <UDropdownMenu
+          v-if="isDesktop"
+          :items="items"
         >
-          <UIcon
-            name="i-lucide-loader-circle"
-            class="animate-spin size-4"
+          <UButton
+            icon="i-lucide-menu"
+            variant="ghost"
+            color="neutral"
+            size="sm"
           />
-        </Motion>
+        </UDropdownMenu>
 
-        <motion.p
+        <UDrawer
           v-else
-          class="text-xs text-muted"
-          :initial="{ translateY: 50 }"
-          :animate="{ translateY: 0 }"
-          :exit="{ translateY: 50 }"
+          v-model:open="open"
+          should-scale-background
+          :set-background-color-on-scale="false"
         >
-          {{ remaining }} sec to update
-        </motion.p>
-      </AnimatePresence>
+          <UButton
+            icon="i-lucide-menu"
+            variant="ghost"
+            color="neutral"
+          />
+
+          <template #content>
+            <div class="flex flex-col gap-2">
+              <UButton
+                v-for="item in items"
+                :key="item.label!"
+                :color="item.color ?? 'neutral'"
+                :icon="item.icon"
+                square
+                block
+                size="lg"
+                class="py-4"
+                variant="soft"
+                @click="item.onSelect"
+              >
+                {{ item.label }}
+              </UButton>
+            </div>
+          </template>
+        </UDrawer>
+      </div>
     </div>
-
-    <div class="flex gap-2">
-      <UButton
-        :icon="isHidden ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-        variant="ghost"
-        color="neutral"
-        @click="isHidden = !isHidden"
-      />
-
-      <UDropdownMenu
-        v-if="isDesktop"
-        :items="items"
-      >
-        <UButton
-          icon="i-lucide-menu"
-          variant="ghost"
-          color="neutral"
-          size="sm"
-        />
-      </UDropdownMenu>
-
-      <UDrawer
-        v-else
-        v-model:open="open"
-        should-scale-background
-        :set-background-color-on-scale="false"
-      >
-        <UButton
-          icon="i-lucide-menu"
-          variant="ghost"
-          color="neutral"
-        />
-
-        <template #content>
-          <div class="flex flex-col gap-2">
-            <UButton
-              v-for="item in items"
-              :key="item.label!"
-              :color="item.color ?? 'neutral'"
-              :icon="item.icon"
-              square
-              block
-              size="lg"
-              class="py-4"
-              variant="soft"
-              @click="item.onSelect"
-            >
-              {{ item.label }}
-            </UButton>
-          </div>
-        </template>
-      </UDrawer>
-    </div>
-  </div>
+  </AppTheme>
 </template>
