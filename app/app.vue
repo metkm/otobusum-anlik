@@ -4,10 +4,12 @@ import { App } from '@capacitor/app'
 const router = useRouter()
 
 App.addListener('backButton', () => {
-  router.back()
+  if (window.history.state.back) {
+    router.back()
+  } else {
+    App.exitApp()
+  }
 })
-
-console.log(router.options.routes)
 </script>
 
 <template>

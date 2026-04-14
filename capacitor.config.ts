@@ -15,6 +15,9 @@ const config: CapacitorConfig = {
     CapacitorHttp: {
       enabled: true,
     },
+    App: {
+      disableBackButtonHandler: false,
+    },
   },
 }
 
