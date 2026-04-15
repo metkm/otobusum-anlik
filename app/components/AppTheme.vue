@@ -10,18 +10,16 @@ const { cssVariableTemplate } = useLineTheme(props.code)
 
 <template>
   <div :style="cssVariableTemplate">
-    <UTheme
-      :ui="{
-        button: {
-          base: `bg-red-500`,
-        },
-        dropdownMenu: {
-          content: 'theme-midnight:bg-orange-400',
-        },
-      }"
-    >
-      <slot />
-    </UTheme>
+    <!-- <div class="fixed top-20 left-0 z-50">
+      <div
+        v-for="shade in colorShades"
+        :key="shade"
+        class="size-10"
+        :style="{ backgroundColor: shade }"
+      />
+    </div> -->
+
+    <slot />
   </div>
 </template>
 

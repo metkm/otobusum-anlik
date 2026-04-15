@@ -29,12 +29,6 @@ html, body, #__nuxt {
             calc(var(--spacing-page-left) + var(--sidebar-offset));
 }
 
-@custom-variant theme-midnight {
-  &:where([data-theme="midnight"] *) {
-    --ui-bg: black;
-  }
-}
-
 @media (width >= 64rem) {
   :root {
     --sidebar-offset: calc(54px + var(--spacing) * 2);

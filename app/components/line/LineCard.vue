@@ -70,8 +70,10 @@ const items: DropdownMenuItem[] = [
 
 <template>
   <AppTheme :code="code">
-    <div class="flex items-center bg-default ring-2 ring-muted theme-midnight:bg-black justify-between gap-2 w-full p-2.5 lg:rounded-md">
+    <div class="flex items-center bg-default ring-2 ring-muted justify-between gap-2 w-full p-2.5 lg:rounded-md">
       <div class="flex items-center gap-2 overflow-hidden">
+        <div class="bg-primary size-4 rounded-md" />
+
         <h1 class="font-medium">
           {{ code }}
         </h1>
@@ -113,6 +115,7 @@ const items: DropdownMenuItem[] = [
         <UDropdownMenu
           v-if="isDesktop"
           :items="items"
+          :portal="false"
         >
           <UButton
             icon="i-lucide-menu"
@@ -125,8 +128,9 @@ const items: DropdownMenuItem[] = [
         <UDrawer
           v-else
           v-model:open="open"
-          should-scale-background
           :set-background-color-on-scale="false"
+          :portal="false"
+          :overlay="false"
         >
           <UButton
             icon="i-lucide-menu"

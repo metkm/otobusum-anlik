@@ -13,7 +13,7 @@ export default defineAppConfig({
         },
       },
       slots: {
-        content: 'pb-page-bottom px-page-left',
+        content: 'pb-page-bottom px-page-left z-50',
       },
     },
     input: {

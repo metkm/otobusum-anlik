@@ -1,47 +1,55 @@
-export const useLineTheme = (code: string) => {
-  // const code = _code.toLowerCase()
+import { hexFromArgb } from '@material/material-color-utilities'
 
+export const useLineTheme = (_code: string) => {
   const scheme = useColorMode()
-  const colors = createHexColors()
+  const { schemes, palettes } = createRandomTheme()
 
-  const cssVariableTemplate = `
-    --ui-color-neutral-${code}-50: ${colors[0]};
-    --ui-color-neutral-${code}-100: ${colors[1]};
-    --ui-color-neutral-${code}-200: ${colors[2]};
-    --ui-color-neutral-${code}-300: ${colors[3]};
-    --ui-color-neutral-${code}-400: ${colors[4]};
-    --ui-color-neutral-${code}-500: ${colors[5]};
-    --ui-color-neutral-${code}-600: ${colors[6]};
-    --ui-color-neutral-${code}-700: ${colors[7]};
-    --ui-color-neutral-${code}-800: ${colors[8]};
-    --ui-color-neutral-${code}-900: ${colors[9]};
-    --ui-color-neutral-${code}-950: ${colors[10]};
-
+  const cssVariableTemplate = computed(() => `
     ${
       scheme.value === 'dark'
         ? `
-        --ui-${code}-bg: var(--ui-color-neutral-${code}-900);
-        --ui-${code}-bg-muted: var(--ui-color-neutral-${code}-800);
-        --ui-${code}-bg-elevated: var(--ui-color-neutral-${code}-800);
-        --ui-${code}-text: var(--ui-color-neutral-${code}-200);
-        --ui-${code}-border: var(--ui-color-neutral-${code}-800);
-        --ui-${code}-border-muted: var(--ui-color-neutral-${code}-700);
-        --ui-${code}-border-accented: var(--ui-color-neutral-${code}-700);
-        --ui-${code}-border-inverted: #fff`
+        --ui-primary: ${hexFromArgb(schemes.dark.primary)};
+        --ui-bg: ${hexFromArgb(schemes.dark.surface)};
+        --ui-bg-muted: ${hexFromArgb(palettes.neutral.tone(12))};
+        --ui-bg-elevated: ${hexFromArgb(palettes.neutral.tone(17))};
+        --ui-text:  ${hexFromArgb(schemes.dark.onSurface)};
+        --ui-text-inverted:  ${hexFromArgb(schemes.dark.inverseOnSurface)};
+        `
         : `
-        --ui-${code}-bg: white;
-        --ui-${code}-bg-muted: var(--ui-color-neutral-${code}-50);
-        --ui-${code}-bg-elevated: var(--ui-color-neutral-${code}-100);
-        --ui-${code}-text: var(--ui-color-neutral-${code}-700);
-        --ui-${code}-border: var(--ui-color-neutral-${code}-200);
-        --ui-${code}-border-muted: var(--ui-color-neutral-${code}-200);
-        --ui-${code}-border-accented: var(--ui-color-neutral-${code}-300);
-        --ui-${code}-border-inverted: var(--ui-color-neutral-${code}-900)
+        --ui-primary: ${hexFromArgb(schemes.light.primary)};
+        --ui-bg: ${hexFromArgb(schemes.light.surface)};
+        --ui-bg-muted: ${hexFromArgb(palettes.neutral.tone(94))};
+        --ui-bg-elevated: ${hexFromArgb(palettes.neutral.tone(92))};
+        --ui-text:  ${hexFromArgb(schemes.light.onSurface)};
+        --ui-text-inverted:  ${hexFromArgb(schemes.light.inverseOnSurface)};
       `
     }
-  `
+  `)
 
   return {
     cssVariableTemplate,
   }
 }
+
+// --ui-primary: ${hexFromArgb(schemes.dark.primary)};
+// --ui-bg: ${hexFromArgb(schemes.dark.surface)};
+// --ui-bg-muted: var(--ui-color-neutral-800);
+// --ui-bg-elevated: var(--ui-color-neutral-800);
+// --ui-text:  ${hexFromArgb(schemes.dark.onSurface)};
+// --ui-text-inverted:  ${hexFromArgb(schemes.dark.inverseOnSurface)};
+// --ui-border: var(--ui-color-neutral-800);
+// --ui-border-muted: var(--ui-color-neutral-700);
+// --ui-border-accented: var(--ui-color-neutral-700);
+// --ui-border-inverted: #fff`
+
+// --ui-color-neutral-50: ${colorShades[0]};
+// --ui-color-neutral-100: ${colorShades[1]};
+// --ui-color-neutral-200: ${colorShades[2]};
+// --ui-color-neutral-300: ${colorShades[3]};
+// --ui-color-neutral-400: ${colorShades[4]};
+// --ui-color-neutral-500: ${colorShades[5]};
+// --ui-color-neutral-600: ${colorShades[6]};
+// --ui-color-neutral-700: ${colorShades[7]};
+// --ui-color-neutral-800: ${colorShades[8]};
+// --ui-color-neutral-900: ${colorShades[9]};
+// --ui-color-neutral-950: ${colorShades[10]};

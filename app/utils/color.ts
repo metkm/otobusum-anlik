@@ -1,4 +1,4 @@
-import { argbFromHex, hexFromArgb, themeFromSourceColor } from '@material/material-color-utilities'
+import { argbFromHex, themeFromSourceColor } from '@material/material-color-utilities'
 
 export const createRandomHslColor = () => {
   const randomInt = (min: number, max: number) => {
@@ -8,7 +8,7 @@ export const createRandomHslColor = () => {
   return [
     randomInt(0, 360),
     randomInt(42, 98),
-    randomInt(40, 90),
+    randomInt(0, 100),
   ] as const
 }
 
@@ -27,21 +27,36 @@ const hexFromHsl = (h: number, s: number, l: number) => {
   return `#${f(0)}${f(8)}${f(4)}`
 }
 
-export const createHexColors = () => {
+export const createRandomTheme = () => {
   const hslColor = createRandomHslColor()
   const hexColor = hexFromHsl(...hslColor)
   const argbColor = argbFromHex(hexColor)
 
-  const result = themeFromSourceColor(argbColor)
-  const palette = result.palettes.primary
+  return themeFromSourceColor(argbColor)
 
-  const count = 11
-  const colors = []
+  // const result = themeFromSourceColor(argbColor)
 
-  for (let index = count; index > 0; index--) {
-    const c = palette.tone(9 * index)
-    colors.push(hexFromArgb(c))
-  }
+  // const palette = result.palettes.neutral
 
-  return colors
+  // const mapping = {
+  //   50: 95,
+  //   100: 90,
+  //   200: 80,
+  //   300: 70,
+  //   400: 60,
+  //   500: 50,
+  //   600: 40,
+  //   700: 30,
+  //   800: 20,
+  //   900: 10,
+  //   950: 5,
+  // }
+
+  // const colors = []
+
+  // for (const [_shade, tone] of Object.entries(mapping)) {
+  //   colors.push(hexFromArgb(palette.tone(tone)))
+  // }
+
+  // return colors
 }
