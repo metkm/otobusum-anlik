@@ -14,6 +14,7 @@ export const useLineTheme = (_code: string) => {
         --ui-bg-elevated: ${hexFromArgb(palettes.neutral.tone(17))};
         --ui-text:  ${hexFromArgb(schemes.dark.onSurface)};
         --ui-text-inverted:  ${hexFromArgb(schemes.dark.inverseOnSurface)};
+        --ui-border-muted: ${hexFromArgb(schemes.dark.outlineVariant)};
         `
         : `
         --ui-primary: ${hexFromArgb(schemes.light.primary)};
@@ -22,6 +23,7 @@ export const useLineTheme = (_code: string) => {
         --ui-bg-elevated: ${hexFromArgb(palettes.neutral.tone(92))};
         --ui-text:  ${hexFromArgb(schemes.light.onSurface)};
         --ui-text-inverted:  ${hexFromArgb(schemes.light.inverseOnSurface)};
+        --ui-border-muted: ${hexFromArgb(schemes.light.outlineVariant)};
       `
     }
   `)

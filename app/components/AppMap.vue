@@ -5,6 +5,8 @@ import { injectMapRootContext } from './AppMapRoot.vue'
 const colorMode = useColorMode()
 const settingsStore = useSettingsStore()
 
+const mapRef = useTemplateRef('mapRef')
+
 const mapRootContext = injectMapRootContext()
 
 const apiKey = import.meta.env.NUXT_PUBLIC_SCRIPTS_GOOGLE_MAPS_API_KEY
@@ -34,29 +36,37 @@ const handleReady = ({ map }: { map: ShallowRef<google.maps.Map | undefined> }) 
 
   map.value.addListener('center_changed', debouncedMapCenterChange)
 }
+
+defineExpose({ mapRef })
 </script>
 
 <template>
   <ScriptGoogleMaps
+    ref="mapRef"
     :key="colorMode.value"
     :map-options="{
       colorScheme: colorMode.value.toUpperCase(),
-      // cameraControl: false,
-      // fullscreenControl: false,
-      // mapTypeControl: false,
-      // rotateControl: false,
-      // streetViewControl: false,
-      // zoomControl: false,
-      // scaleControl: false,
       center: settingsStore.initialMapCenter,
       zoom: settingsStore.initialMapZoom,
       disableDefaultUI: true,
     }"
-    class="w-full! flex-1 min-h-0"
+    class="flex-1 b-red-500 relative"
     :api-key="apiKey"
     @ready="handleReady"
   >
     <slot />
+
+    <template #placeholder>
+      <p>placeholder content</p>
+    </template>
+
+    <template #loading>
+      <p>loading content</p>
+    </template>
+
+    <template #error>
+      <p>error content</p>
+    </template>
   </ScriptGoogleMaps>
 </template>
 

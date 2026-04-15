@@ -1,11 +1,13 @@
 <script setup lang="ts">
+// const input = useTemplateRef('input')
+
 definePageMeta({
-  layout: false,
+  layout: 'blank',
 })
 </script>
 
 <template>
-  <div class="p-safe flex h-full overflow-hidden">
+  <div class="flex h-full overflow-hidden">
     <PageSearchContent />
   </div>
 </template>

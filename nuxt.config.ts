@@ -15,6 +15,9 @@ export default defineNuxtConfig({
     head: {
       viewport: 'viewport-fit=cover, initial-scale=1',
     },
+    layoutTransition: {
+      name: 'page',
+    },
   },
   css: [`~/assets/main.css`],
   runtimeConfig: {

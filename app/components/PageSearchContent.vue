@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { motion } from 'motion-v'
 
-const input = useTemplateRef('input')
 const query = ref('')
+const inputRef = useTemplateRef('inputRef')
 
-onMounted(() => {
-  input.value?.inputRef?.focus()
+defineExpose({
+  inputRef,
 })
 </script>
 
 <template>
   <div class="flex flex-col max-w-md w-full">
     <UInput
-      ref="input"
+      ref="inputRef"
       v-model="query"
       placeholder="Search"
       icon="i-lucide-search"
