@@ -38,6 +38,14 @@ const handleReady = ({ map }: { map: ShallowRef<google.maps.Map | undefined> }) 
 }
 
 defineExpose({ mapRef })
+
+onBeforeRouteLeave(() => {
+  const map = mapRef.value?.map
+  if (!map)
+    return
+
+  google.maps.event.trigger(map, 'resize')
+})
 </script>
 
 <template>
@@ -50,7 +58,6 @@ defineExpose({ mapRef })
       zoom: settingsStore.initialMapZoom,
       disableDefaultUI: true,
     }"
-    class="flex-1 b-red-500 relative"
     :api-key="apiKey"
     @ready="handleReady"
   >

@@ -18,11 +18,9 @@ App.addListener('backButton', () => {
     data-vaul-drawer-wrapper
     class="flex w-screen h-screen overflow-hidden relative"
   >
-    <AppMapRoot>
-      <NuxtLayout>
-        <NuxtPage />
-      </NuxtLayout>
-    </AppMapRoot>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </main>
 </template>
 
@@ -41,10 +39,10 @@ App.addListener('backButton', () => {
 }
 
 .page-leave-to {
-  transform: translateX(-50px);
+  transform: translateX(-50px) translateZ(0);
 }
 
 .page-enter-from {
-  transform: translateX(100%);
+  transform: translateX(100%) translateZ(0);
 }
 </style>
