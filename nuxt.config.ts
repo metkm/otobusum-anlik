@@ -53,9 +53,4 @@ export default defineNuxtConfig({
       ],
     },
   },
-  scripts: {
-    registry: {
-      googleMaps: {},
-    },
-  },
 })

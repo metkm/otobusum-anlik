@@ -38,14 +38,6 @@ const handleReady = ({ map }: { map: ShallowRef<google.maps.Map | undefined> }) 
 }
 
 defineExpose({ mapRef })
-
-onBeforeRouteLeave(() => {
-  const map = mapRef.value?.map
-  if (!map)
-    return
-
-  google.maps.event.trigger(map, 'resize')
-})
 </script>
 
 <template>
@@ -62,18 +54,6 @@ onBeforeRouteLeave(() => {
     @ready="handleReady"
   >
     <slot />
-
-    <template #placeholder>
-      <p>placeholder content</p>
-    </template>
-
-    <template #loading>
-      <p>loading content</p>
-    </template>
-
-    <template #error>
-      <p>error content</p>
-    </template>
   </ScriptGoogleMaps>
 </template>
 
