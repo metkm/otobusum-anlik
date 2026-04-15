@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// const input = useTemplateRef('input')
-
 definePageMeta({
   layout: 'blank',
 })
@@ -8,6 +6,9 @@ definePageMeta({
 
 <template>
   <div class="flex h-full overflow-hidden">
-    <PageSearchContent />
+    <AppSearch
+      autofocus
+      :autofocus-delay="500"
+    />
   </div>
 </template>

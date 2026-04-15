@@ -130,7 +130,6 @@ const items: DropdownMenuItem[] = [
           v-model:open="open"
           :set-background-color-on-scale="false"
           :portal="false"
-          :overlay="false"
         >
           <UButton
             icon="i-lucide-menu"

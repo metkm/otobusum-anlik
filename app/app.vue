@@ -28,6 +28,7 @@ App.addListener('backButton', () => {
 .page-enter-active,
 .page-leave-active {
   transition-property: transform;
+  /* transition-duration: 2s; */
   transition-duration: 500ms;
   transition-timing-function: var(--default-transition-timing-function);
   position: fixed;

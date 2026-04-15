@@ -51,6 +51,7 @@ defineExpose({ mapRef })
       disableDefaultUI: true,
     }"
     :api-key="apiKey"
+    trigger="immediate"
     @ready="handleReady"
   >
     <slot />

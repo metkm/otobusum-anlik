@@ -26,7 +26,7 @@ const linesFiltered = computed(() => linesStore.lines.filter(code => !settingsSt
         />
       </AppMap>
 
-      <PageSearchContent class="absolute m-safe hidden lg:flex" />
+      <AppSearch class="absolute m-safe hidden lg:flex" />
 
       <LayoutGroup>
         <motion.div
