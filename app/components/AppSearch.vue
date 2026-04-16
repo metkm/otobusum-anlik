@@ -35,7 +35,22 @@ defineExpose({
       :loading="isFetching"
       :autofocus="autofocus"
       :autofocus-delay="autofocusDelay"
-    />
+      clearable
+    >
+      <template
+        v-if="query?.length"
+        #trailing
+      >
+        <UButton
+          color="neutral"
+          variant="link"
+          size="sm"
+          icon="i-lucide-circle-x"
+          aria-label="Clear input"
+          @click="query = ''"
+        />
+      </template>
+    </UInput>
 
     <p
       v-if="SEARCH_KEY_LIMIT - query.length >= 0"

@@ -13,7 +13,6 @@ const open = ref(false)
 const linesStore = useLinesStore()
 const settingsStore = useSettingsStore()
 
-// const { cssVariableTemplate } = useLineTheme(props.code)
 const { isFetching, dataUpdatedAt, refetch } = useLineBuses(props.code)
 const { remaining, start } = useCountdown(REFETCH_INTERVAL)
 const isDesktop = useIsDesktop()
@@ -70,7 +69,10 @@ const items: DropdownMenuItem[] = [
 
 <template>
   <AppTheme :code="code">
-    <div class="flex items-center bg-default ring-2 ring-muted justify-between gap-2 w-full p-2.5 lg:rounded-md">
+    <div
+      class="flex items-center bg-default ring-2 ring-muted justify-between gap-2 w-full p-2.5 mt-1 lg:rounded-md"
+      :class="{ 'rounded-md': linesStore.lines.length > 1 }"
+    >
       <div class="flex items-center gap-2 overflow-hidden">
         <div class="bg-primary size-4 rounded-md" />
 

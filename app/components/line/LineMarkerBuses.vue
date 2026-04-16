@@ -11,7 +11,7 @@ const { cssVariableTemplate } = useLineTheme(props.code)
 </script>
 
 <template>
-  <ScriptGoogleMapsAdvancedMarkerElement
+  <ScriptGoogleMapsMarker
     v-for="bus in data"
     :key="bus.bus_id"
     :position="{ lng: bus.lng, lat: bus.lat }"
@@ -27,5 +27,5 @@ const { cssVariableTemplate } = useLineTheme(props.code)
         />
       </div>
     </template>
-  </ScriptGoogleMapsAdvancedMarkerElement>
+  </ScriptGoogleMapsMarker>
 </template>

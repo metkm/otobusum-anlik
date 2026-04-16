@@ -33,4 +33,13 @@ html, body, #__nuxt {
   :root {
     --sidebar-offset: calc(54px + var(--spacing) * 2);
   }
+
+  .invisible-scrollbar {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox, Safari 18.2+, Chromium 121+ */
+  }
+
+  .invisible-scrollbar::-webkit-scrollbar {
+    display: none;  /* Older Safari and Chromium */
+  }
 }

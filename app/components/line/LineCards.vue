@@ -14,9 +14,8 @@ const lineStyle = computed(() => ({
 
 <template>
   <LayoutGroup>
-    <motion.ol
-      layout
-      class="flex gap-2 overflow-x-auto max-w-full lg:p-2"
+    <ol
+      class="flex gap-2 overflow-x-auto invisible-scrollbar max-w-full lg:p-2"
       :class="{ 'p-2 pt-0': !isOneElement }"
     >
       <AnimatePresence>
@@ -25,7 +24,9 @@ const lineStyle = computed(() => ({
           :key="line"
           class="shrink-0  max-w-lg"
           :style="lineStyle"
-          :exit="{ scale: 0.5, opacity: 0 }"
+          :exit="{ scale: 0.9, opacity: 0 }"
+          :initial="{ scale: 0.9, opacity: 0 }"
+          :animate="{ scale: 1, opacity: 1 }"
           layout
         >
           <LineCard
@@ -34,6 +35,6 @@ const lineStyle = computed(() => ({
           />
         </motion.li>
       </AnimatePresence>
-    </motion.ol>
+    </ol>
   </LayoutGroup>
 </template>

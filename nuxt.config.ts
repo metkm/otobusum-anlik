@@ -40,7 +40,8 @@ export default defineNuxtConfig({
     clientBundle: {
       icons: [
         'lucide:search',
-        'lucide:circle-plus',
+        'lucide:circle',
+        'lucide:circle-x',
         'lucide:trash-2',
         'lucide:loader-circle',
         'lucide:menu',

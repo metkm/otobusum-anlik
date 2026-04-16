@@ -7,7 +7,7 @@ export interface SearchResponse {
   lines: BusLine[]
 }
 
-export const SEARCH_KEY_LIMIT = 2
+export const SEARCH_KEY_LIMIT = 1
 
 export const isStop = (item: BusStop | BusLine): item is BusStop => {
   return (item as BusStop).stop_code !== undefined
