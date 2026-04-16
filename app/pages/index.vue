@@ -6,10 +6,10 @@ definePageMeta({
   label: 'Map',
 })
 
-const linesStore = useLinesStore()
+const lineStore = useLineStore()
 const settingsStore = useSettingsStore()
 
-const linesFiltered = computed(() => linesStore.lines.filter(code => !settingsStore.hiddenLines.includes(code)))
+const linesFiltered = computed(() => lineStore.lines.filter(code => !settingsStore.hiddenLines.includes(code)))
 </script>
 
 <template>

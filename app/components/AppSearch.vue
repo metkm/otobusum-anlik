@@ -12,7 +12,7 @@ const inputRef = useTemplateRef('inputRef')
 const query = ref('')
 
 const { data, error, isFetching } = useSearch(query)
-const linesStore = useLinesStore()
+const lineStore = useLineStore()
 
 const merged = computed(() => [
   ...(data.value?.lines || []),
@@ -82,7 +82,7 @@ defineExpose({
                 if (isStop(item))
                   return
 
-                linesStore.addLine(item.code)
+                lineStore.addLine(item.code)
               }"
             >
               <template v-if="isStop(item)">

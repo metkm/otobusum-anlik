@@ -19,11 +19,11 @@ const { cssVariableTemplate } = useLineTheme(props.code)
     <template #content>
       <div
         :style="cssVariableTemplate"
-        class="flex size-8 bg-muted rounded-full p-2 ring-2 ring-muted"
+        class="flex size-8 bg-primary rounded-full p-2 ring-2 ring-muted"
       >
         <UIcon
           name="i-lucide-bus-front"
-          class="h-full w-full shrink-0"
+          class="h-full w-full shrink-0 text-inverted"
         />
       </div>
     </template>

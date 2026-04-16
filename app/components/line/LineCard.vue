@@ -10,7 +10,8 @@ const props = defineProps<{
 
 const open = ref(false)
 
-const linesStore = useLinesStore()
+const lineStore = useLineStore()
+const themeStore = useThemeStore()
 const settingsStore = useSettingsStore()
 
 const { isFetching, dataUpdatedAt, refetch } = useLineBuses(props.code)
@@ -49,38 +50,43 @@ watch(remaining, (count) => {
 
 const items: DropdownMenuItem[] = [
   {
-    label: 'Add To Group',
+    label: 'Add to group',
     icon: 'i-lucide-circle-plus',
   },
   {
-    label: 'Delete Line',
+    label: 'Delete line',
     icon: 'i-lucide-trash-2',
     color: 'error',
     onSelect: () => {
       open.value = false
 
       setTimeout(() => {
-        linesStore.removeLine(props.code)
+        lineStore.removeLine(props.code)
       }, 500)
     },
+  },
+  {
+    label: 'Refresh theme',
+    icon: 'i-lucide-palette',
+    onSelect: () => themeStore.refreshTheme(props.code),
   },
 ]
 </script>
 
 <template>
-  <AppTheme
+  <LineTheme
     v-slot="{ cssVariables }"
     :code="code"
   >
     <div
-      class="flex items-center bg-default ring-2 ring-muted justify-between gap-2 w-full p-2.5 mt-1 lg:rounded-md"
-      :class="{ 'rounded-md': linesStore.lines.length > 1 }"
+      class="flex items-center bg-default justify-between gap-2 w-full p-2.5 mt-1 lg:ring-2 lg:ring-muted lg:rounded-md"
+      :class="{ 'rounded-md ring-2 ring-muted': lineStore.lines.length > 1 }"
     >
       <div class="flex items-center gap-2 overflow-hidden">
         <div class="bg-primary size-4 rounded-md" />
 
         <h1 class="font-medium select-none">
-          {{ code }}
+          {{ code }} {{ lineStore.lines.length }}
         </h1>
 
         <AnimatePresence mode="wait">
@@ -166,5 +172,5 @@ const items: DropdownMenuItem[] = [
         </UDrawer>
       </div>
     </div>
-  </AppTheme>
+  </LineTheme>
 </template>

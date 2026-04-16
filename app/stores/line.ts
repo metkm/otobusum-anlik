@@ -3,15 +3,17 @@ export const Cities = {
   IZMIR: 'izmir',
 } as const
 
-type City = typeof Cities[keyof typeof Cities]
+export type City = typeof Cities[keyof typeof Cities]
 
-export const useLinesStore = defineStore('lines', () => {
+export const useLineStore = defineStore('lines', () => {
   const selectedCity = ref<City>('istanbul')
 
   const linesByCity = ref<Record<City, string[]>>({
     istanbul: ['KM12'],
     izmir: [],
   })
+
+  const themeStore = useThemeStore()
 
   const lines = computed({
     get() {
@@ -35,6 +37,7 @@ export const useLinesStore = defineStore('lines', () => {
       return
 
     lines.value.push(code)
+    themeStore.addTheme(code)
   }
 
   return {

@@ -1,32 +1,20 @@
-import { hexFromArgb } from '@material/material-color-utilities'
-
-export const useLineTheme = (_code: string) => {
+export const useLineTheme = (code: MaybeRefOrGetter<string>) => {
   const scheme = useColorMode()
-  const { schemes, palettes } = createRandomTheme()
+  const themeStore = useThemeStore()
 
-  const cssVariableTemplate = computed(() => `
-    ${
-      scheme.value === 'dark'
-        ? `
-        --ui-primary: ${hexFromArgb(schemes.dark.primary)};
-        --ui-bg: ${hexFromArgb(schemes.dark.surface)};
-        --ui-bg-muted: ${hexFromArgb(palettes.neutral.tone(12))};
-        --ui-bg-elevated: ${hexFromArgb(palettes.neutral.tone(17))};
-        --ui-text:  ${hexFromArgb(schemes.dark.onSurface)};
-        --ui-text-inverted:  ${hexFromArgb(schemes.dark.inverseOnSurface)};
-        --ui-border-muted: ${hexFromArgb(schemes.dark.outlineVariant)};
-        `
-        : `
-        --ui-primary: ${hexFromArgb(schemes.light.primary)};
-        --ui-bg: ${hexFromArgb(schemes.light.surface)};
-        --ui-bg-muted: ${hexFromArgb(palettes.neutral.tone(94))};
-        --ui-bg-elevated: ${hexFromArgb(palettes.neutral.tone(92))};
-        --ui-text:  ${hexFromArgb(schemes.light.onSurface)};
-        --ui-text-inverted:  ${hexFromArgb(schemes.light.inverseOnSurface)};
-        --ui-border-muted: ${hexFromArgb(schemes.light.outlineVariant)};
-      `
-    }
-  `)
+  const cssVariableTemplate = computed(() => {
+    const sc = themeStore.themes[toValue(code)]?.[scheme.value as keyof Schemes]
+    if (!sc)
+      return
+
+    console.log(Object.entries(sc)
+      .map((key, val) => `--${key}: ${val}`)
+      .join(';'))
+
+    return Object.entries(sc)
+      .map(([key, val]) => `--${key}: ${val}`)
+      .join(';')
+  })
 
   return {
     cssVariableTemplate,
