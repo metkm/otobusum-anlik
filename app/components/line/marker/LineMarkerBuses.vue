@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { useLineBuses } from '~/hooks/useLineBuses'
-import { useLineTheme } from '~/hooks/useLineTheme'
-
-const props = defineProps<{
-  code: string
-}>()
-
-const { data } = useLineBuses(props.code)
-const { cssVariableTemplate } = useLineTheme(props.code)
+const { data } = useLineBuses()
+const { cssVariableTemplate } = useLineTheme()
 </script>
 
 <template>

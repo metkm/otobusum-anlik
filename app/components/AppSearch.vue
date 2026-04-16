@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { motion } from 'motion-v'
-import { useIsDesktop } from '~/hooks/useIsDesktop'
-import { isStop, SEARCH_KEY_LIMIT, useSearch } from '~/hooks/useSearch'
 
 defineProps<{
   autofocus?: boolean

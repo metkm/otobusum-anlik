@@ -15,14 +15,15 @@ export interface LineRoute {
   route_path?: { lat: number, lng: number }[]
 }
 
-export const useLineRoutes = (code: string) => {
+export const useLineRoutes = () => {
   const runtimeConfig = useRuntimeConfig()
+  const { code } = useLine()
 
   const query = useQuery({
-    queryKey: ['line', code, 'routes'],
+    queryKey: ['line', toValue(code), 'routes'],
     queryFn: () =>
       CapacitorHttp.get({
-        url: `${runtimeConfig.public.baseUrl}/routes/${code}`,
+        url: `${runtimeConfig.public.baseUrl}/routes/${toValue(code)}`,
       }).then(response => response.data as LineRoute[]),
   })
 

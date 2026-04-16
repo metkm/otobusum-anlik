@@ -19,13 +19,15 @@ const linesFiltered = computed(() => lineStore.lines.filter(code => !settingsSto
         ref="map"
         class="flex-1"
       >
-        <template
+        <LineContext
           v-for="code in linesFiltered"
           :key="code"
+          :code="code"
         >
-          <LineMarkerBuses :code="code" />
-          <LineMarkerRoute :code="code" />
-        </template>
+          <LineMarkerBuses />
+          <LineMarkerRoute />
+          <LineMarkerStops />
+        </LineContext>
       </AppMap>
 
       <AppSearch class="absolute m-safe hidden lg:flex" />

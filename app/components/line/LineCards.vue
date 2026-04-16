@@ -43,8 +43,8 @@ const lineStyle = computed(() => ({
     >
       <AnimatePresence>
         <motion.li
-          v-for="line in lineStore.lines"
-          :key="line"
+          v-for="code in lineStore.lines"
+          :key="code"
           class="shrink-0  max-w-lg"
           :style="lineStyle"
           :exit="{ scale: 0.9, opacity: 0 }"
@@ -52,10 +52,9 @@ const lineStyle = computed(() => ({
           :animate="{ scale: 1, opacity: 1 }"
           layout
         >
-          <LineCard
-            :code="line"
-            :class="{ 'rounded-md': !isOneElement }"
-          />
+          <LineContext :code="code">
+            <LineCard :class="{ 'rounded-md': !isOneElement }" />
+          </LineContext>
         </motion.li>
       </AnimatePresence>
     </motion.ol>

@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { useIsDesktop } from '~/hooks/useIsDesktop'
-
 const router = useRouter()
 const route = useRoute()
 
+const isDesktop = useIsDesktop()
+
 const routes = router.options.routes
   .toReversed()
-  .filter(r => r.meta?.icon)
+  .filter(r => r.meta?.icon && (isDesktop ? r.name !== 'index' : true))
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
-
-const isDesktop = useIsDesktop()
 </script>
 
 <template>

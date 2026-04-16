@@ -1,6 +1,7 @@
-export const useLineTheme = (code: MaybeRefOrGetter<string>) => {
+export const useLineTheme = () => {
   const colorMode = useColorMode()
   const themeStore = useThemeStore()
+  const { code } = useLine()
 
   const scheme = computed(() => themeStore.themes[toValue(code)]?.[colorMode.value as keyof Schemes])
 
