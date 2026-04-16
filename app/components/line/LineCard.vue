@@ -68,7 +68,10 @@ const items: DropdownMenuItem[] = [
 </script>
 
 <template>
-  <AppTheme :code="code">
+  <AppTheme
+    v-slot="{ cssVariables }"
+    :code="code"
+  >
     <div
       class="flex items-center bg-default ring-2 ring-muted justify-between gap-2 w-full p-2.5 mt-1 lg:rounded-md"
       :class="{ 'rounded-md': linesStore.lines.length > 1 }"
@@ -76,7 +79,7 @@ const items: DropdownMenuItem[] = [
       <div class="flex items-center gap-2 overflow-hidden">
         <div class="bg-primary size-4 rounded-md" />
 
-        <h1 class="font-medium">
+        <h1 class="font-medium select-none">
           {{ code }}
         </h1>
 
@@ -131,7 +134,7 @@ const items: DropdownMenuItem[] = [
           v-else
           v-model:open="open"
           :set-background-color-on-scale="false"
-          :portal="false"
+          should-scale-background
         >
           <UButton
             icon="i-lucide-menu"
@@ -140,7 +143,10 @@ const items: DropdownMenuItem[] = [
           />
 
           <template #content>
-            <div class="flex flex-col gap-2">
+            <div
+              class="flex flex-col gap-2"
+              :style="cssVariables"
+            >
               <UButton
                 v-for="item in items"
                 :key="item.label!"

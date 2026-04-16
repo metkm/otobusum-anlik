@@ -19,7 +19,7 @@ const { cssVariableTemplate } = useLineTheme(props.code)
       />
     </div> -->
 
-    <slot />
+    <slot :css-variables="cssVariableTemplate" />
   </div>
 </template>
 
