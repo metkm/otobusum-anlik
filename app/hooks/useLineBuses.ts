@@ -15,7 +15,7 @@ export const useLineBuses = (code: string) => {
   const runtimeConfig = useRuntimeConfig()
 
   const query = useQuery({
-    queryKey: [`line-${code}-buses`],
+    queryKey: ['line', code, 'buses'],
     queryFn: () =>
       CapacitorHttp.get({
         url: `${runtimeConfig.public.baseUrl}/bus-locations/${code}`,

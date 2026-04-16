@@ -24,7 +24,7 @@ const isDesktop = useIsDesktop()
         >
           <UButton
             block
-            :to="_route.path"
+            :to="isDesktop ? { name: 'index', query: { s: _route.name as string } } : { name: route.name }"
             variant="ghost"
             :icon="route.meta!.icon"
             class="gap-0.5 flex-col items-center text-xs"
@@ -55,7 +55,7 @@ const isDesktop = useIsDesktop()
 
     <aside
       v-else
-      class="fixed left-page-left top-page-top bg-default rounded-md"
+      class="fixed left-page-left top-page-top bg-default rounded-md ring ring-muted"
     >
       <ReuseTemplate />
     </aside>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { REFETCH_INTERVAL, useLineBuses } from '~/hooks/useLinesBuses'
+import { REFETCH_INTERVAL, useLineBuses } from '~/hooks/useLineBuses'
 import { motion } from 'motion-v'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import { useIsDesktop } from '~/hooks/useIsDesktop'
@@ -89,7 +89,7 @@ const items: DropdownMenuItem[] = [
         <div class="bg-primary size-4 rounded-md" />
 
         <h1 class="font-medium select-none">
-          {{ code }} {{ lineStore.lines.length }}
+          {{ code }}
         </h1>
 
         <AnimatePresence mode="wait">
@@ -156,20 +156,24 @@ const items: DropdownMenuItem[] = [
               class="flex flex-col gap-2"
               :style="cssVariables"
             >
-              <UButton
+              <template
                 v-for="item in items"
                 :key="item.label!"
-                :color="item.color ?? 'neutral'"
-                :icon="item.icon"
-                square
-                block
-                size="lg"
-                class="py-4"
-                variant="soft"
-                @click="item.onSelect"
               >
-                {{ item.label }}
-              </UButton>
+                <UButton
+                  v-if="item.label"
+                  :color="item.color ?? 'neutral'"
+                  :icon="item.icon"
+                  square
+                  block
+                  size="lg"
+                  class="py-4"
+                  variant="soft"
+                  @click="item.onSelect"
+                >
+                  {{ item.label }}
+                </UButton>
+              </template>
             </div>
           </template>
         </UDrawer>

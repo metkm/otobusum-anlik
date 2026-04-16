@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLineBuses } from '~/hooks/useLinesBuses'
+import { useLineBuses } from '~/hooks/useLineBuses'
 import { useLineTheme } from '~/hooks/useLineTheme'
 
 const props = defineProps<{

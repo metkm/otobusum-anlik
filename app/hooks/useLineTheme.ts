@@ -1,23 +1,21 @@
 export const useLineTheme = (code: MaybeRefOrGetter<string>) => {
-  const scheme = useColorMode()
+  const colorMode = useColorMode()
   const themeStore = useThemeStore()
 
+  const scheme = computed(() => themeStore.themes[toValue(code)]?.[colorMode.value as keyof Schemes])
+
   const cssVariableTemplate = computed(() => {
-    const sc = themeStore.themes[toValue(code)]?.[scheme.value as keyof Schemes]
-    if (!sc)
+    if (!scheme.value)
       return
 
-    console.log(Object.entries(sc)
-      .map((key, val) => `--${key}: ${val}`)
-      .join(';'))
-
-    return Object.entries(sc)
+    return Object.entries(scheme.value)
       .map(([key, val]) => `--${key}: ${val}`)
       .join(';')
   })
 
   return {
     cssVariableTemplate,
+    scheme,
   }
 }
 
