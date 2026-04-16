@@ -54,6 +54,14 @@ const items: DropdownMenuItem[] = [
     icon: 'i-lucide-circle-plus',
   },
   {
+    label: 'Refresh theme',
+    icon: 'i-lucide-palette',
+    onSelect: () => themeStore.refreshTheme(props.code),
+  },
+  {
+    type: 'separator',
+  },
+  {
     label: 'Delete line',
     icon: 'i-lucide-trash-2',
     color: 'error',
@@ -64,11 +72,6 @@ const items: DropdownMenuItem[] = [
         lineStore.removeLine(props.code)
       }, 500)
     },
-  },
-  {
-    label: 'Refresh theme',
-    icon: 'i-lucide-palette',
-    onSelect: () => themeStore.refreshTheme(props.code),
   },
 ]
 </script>
