@@ -34,12 +34,23 @@ html, body, #__nuxt {
     --sidebar-offset: calc(54px + var(--spacing) * 2);
   }
 
-  .invisible-scrollbar {
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox, Safari 18.2+, Chromium 121+ */
+  ::-webkit-scrollbar {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--ui-bg-muted);
+    border-radius: var(--ui-radius);
+    border: 4px solid transparent;
+    background-clip: content-box;
+  }
+
+  /* .invisible-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   .invisible-scrollbar::-webkit-scrollbar {
-    display: none;  /* Older Safari and Chromium */
-  }
+    display: none;
+  } */
 }

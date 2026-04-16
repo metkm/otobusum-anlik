@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { motion } from 'motion-v'
+import { useIsDesktop } from '~/hooks/useIsDesktop'
 import { isStop, SEARCH_KEY_LIMIT, useSearch } from '~/hooks/useSearch'
 
 defineProps<{
@@ -8,6 +9,9 @@ defineProps<{
 }>()
 
 const inputRef = useTemplateRef('inputRef')
+
+const { focused } = useFocus(computed(() => inputRef.value?.inputRef))
+const isDesktop = useIsDesktop()
 
 const query = ref('')
 
@@ -53,7 +57,7 @@ defineExpose({
     </UInput>
 
     <p
-      v-if="SEARCH_KEY_LIMIT - query.length >= 0"
+      v-if="SEARCH_KEY_LIMIT - query.length >= 0 && focused"
       class="bg-default rounded-md py-1.5 px-3 w-max text-sm text-muted font-medium mt-1"
     >
       {{ SEARCH_KEY_LIMIT - query.length }} keys are needed for search
@@ -61,8 +65,8 @@ defineExpose({
 
     <AnimatePresence>
       <motion.ol
-        v-if="data"
-        class="flex flex-col flex-1 bg-default rounded-md mt-2 overflow-y-auto lg:max-h-72 text-sm"
+        v-if="data && (isDesktop ? focused : true)"
+        class="flex flex-col flex-1 bg-default rounded-md mt-2 overflow-y-auto lg:max-h-72 text-sm invisible-scrollbar"
         :exit="{ scale: 0.9, opacity: 0 }"
         :animate="{ scale: 1, opacity: 1 }"
         :initial="{ scale: 0.9, opacity: 0 }"
