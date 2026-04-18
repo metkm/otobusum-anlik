@@ -51,6 +51,7 @@ export default defineNuxtConfig({
         'lucide:clock',
         'lucide:eye',
         'lucide:eye-off',
+        'lucide:arrow-right',
       ],
     },
   },

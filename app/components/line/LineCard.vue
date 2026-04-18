@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { motion } from 'motion-v'
-import type { DropdownMenuItem, SelectMenuItem } from '@nuxt/ui'
+import type { DropdownMenuItem, SelectMenuItem, SelectMenuValue } from '@nuxt/ui'
 
 const open = ref(false)
 
@@ -20,7 +20,7 @@ const isDesktop = useIsDesktop()
 const routeItems = computed(
   () =>
     lineRoutesQuery.data.value?.map(route => ({
-      label: `${route.route_code} ${route.route_long_name}`,
+      label: route.route_long_name,
       value: route.route_code,
     })) as SelectMenuItem[],
 )
@@ -84,6 +84,10 @@ const items: DropdownMenuItem[] = [
     },
   },
 ]
+
+const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem, SelectMenuValue> => {
+  return typeof item === 'object' && item !== null
+}
 </script>
 
 <template>
@@ -102,7 +106,7 @@ const items: DropdownMenuItem[] = [
 
         <AnimatePresence mode="wait">
           <Motion
-            v-if="lineBusesQuery.isFetching"
+            v-if="lineBusesQuery.isFetching.value"
             :initial="{ translateY: -50 }"
             :animate="{ translateY: 0 }"
             :exit="{ translateY: -50 }"
@@ -190,14 +194,24 @@ const items: DropdownMenuItem[] = [
 
     <ol
       v-if="lineStopsQuery.data?.value && (lineStopsQuery.data.value?.length > 1)"
-      class="flex flex-col gap-2 text-sm max-h-36 overflow-y-auto p-2 pt-0"
+      class="flex flex-col gap-2 text-sm max-h-24 overflow-y-auto p-2 pt-0"
+      :style="{
+        'mask-image': 'linear-gradient(transparent, black 15%, black 85%, transparent)',
+      }"
     >
       <li
         v-for="stop in lineStopsQuery.data.value"
         :key="stop.id"
         class="flex items-center gap-2"
       >
-        <div class="border-4 border-muted size-10 rounded-full" />
+        <div class="flex justify-center items-center border-2 border-muted size-10 rounded-full">
+          <UIcon
+            v-if="lineBusesQuery.data.value?.find(b => b.closest_stop_code === stop.stop_code)"
+            name="i-lucide-bus-front"
+            class="bg-primary rounded-full size-5"
+          />
+        </div>
+
         <p>{{ stop.stop_name }}</p>
       </li>
     </ol>
@@ -205,12 +219,38 @@ const items: DropdownMenuItem[] = [
     <USelectMenu
       v-model="routeCode"
       :items="routeItems"
-      class="m-2"
+      class="m-2 z-50"
       variant="soft"
       value-key="value"
-      :portal="false"
+      :search-input="false"
     >
-      <p>{{ route?.route_long_name }}</p>
+      <template #item="{ item }">
+        <div
+          v-if="isMenuItemObject(item)"
+          class="flex items-center max-w-full gap-2"
+          :style="cssVariableTemplate"
+        >
+          <p class="text-center bg-primary text-inverted rounded-md w-20 p-1 shrink-0 truncate text-sm font-medium">
+            {{ item.value.split('_').slice(1).join('_') }}
+          </p>
+
+          <p class="truncate">
+            {{ item.label }}
+          </p>
+        </div>
+      </template>
+
+      <div
+        class="flex items-center *:truncate max-w-full gap-2"
+        :style="cssVariableTemplate"
+      >
+        <p>{{ route?.route_long_name.split(' - ')[0] }}</p>
+        <UIcon
+          name="i-lucide-arrow-right"
+          class="shrink-0"
+        />
+        <p>{{ route?.route_long_name.split(' - ')[1] }}</p>
+      </div>
     </USelectMenu>
   </div>
 </template>

@@ -6,7 +6,7 @@ interface BusLocation {
   lng: number
   lat: number
   route_code: string
-  closest_stop_code: string
+  closest_stop_code: number
 }
 
 export const REFETCH_INTERVAL = 50_000
