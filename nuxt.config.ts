@@ -13,7 +13,12 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   app: {
     head: {
-      viewport: 'viewport-fit=cover, initial-scale=1',
+      meta: [
+        { name: 'viewport', content: 'viewport-fit=cover, initial-scale=1' },
+      ],
+      link: [
+        { rel: 'manifest', href: 'manifest.json' },
+      ],
     },
     layoutTransition: {
       name: 'page',
