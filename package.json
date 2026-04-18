@@ -13,6 +13,7 @@
     "@capacitor/android": "^8.3.0",
     "@capacitor/app": "^8.1.0",
     "@capacitor/core": "^8.3.0",
+    "@iconify-json/lucide": "^1.2.102",
     "@material/material-color-utilities": "^0.4.0",
     "@nuxt/eslint": "^1.15.2",
     "@nuxt/scripts": "^1.0.0",

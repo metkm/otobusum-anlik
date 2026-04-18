@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const { data } = useLineStops()
+const { query } = useLineStops()
 const { cssVariableTemplate } = useLineTheme()
 </script>
 
 <template>
   <ScriptGoogleMapsMarker
-    v-for="stop in data"
+    v-for="stop in query.data.value"
     :key="stop.id"
     :position="{ lat: stop.y_coord, lng: stop.x_coord }"
   >

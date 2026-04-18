@@ -17,6 +17,7 @@ export interface LineRoute {
 
 export const useLineRoutes = () => {
   const runtimeConfig = useRuntimeConfig()
+  const lineStore = useLineStore()
   const { code } = useLine()
 
   const query = useQuery({
@@ -27,5 +28,16 @@ export const useLineRoutes = () => {
       }).then(response => response.data as LineRoute[]),
   })
 
-  return query
+  const routeCode = computed({
+    get() {
+      return lineStore.routes[toValue(code)] || `${toValue(code)}_G_D0`
+    },
+    set(routeCode: string) {
+      lineStore.routes[toValue(code)] = routeCode
+    },
+  })
+
+  const route = computed(() => query.data.value?.find(r => r.route_code === routeCode.value))
+
+  return { query, routeCode, route }
 }

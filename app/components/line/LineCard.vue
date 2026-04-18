@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { motion } from 'motion-v'
-import type { DropdownMenuItem } from '@nuxt/ui'
+import type { DropdownMenuItem, SelectMenuItem } from '@nuxt/ui'
 
 const open = ref(false)
 
@@ -9,12 +9,21 @@ const themeStore = useThemeStore()
 const settingsStore = useSettingsStore()
 
 const { cssVariableTemplate } = useLineTheme()
-const { isFetching, dataUpdatedAt, refetch } = useLineBuses()
-const { data: lineStopsData } = useLineStops()
+const { query: lineBusesQuery } = useLineBuses()
+const { query: lineRoutesQuery, route, routeCode } = useLineRoutes()
+const { query: lineStopsQuery } = useLineStops()
 const { code } = useLine()
 
 const { remaining, start } = useCountdown(REFETCH_INTERVAL)
 const isDesktop = useIsDesktop()
+
+const routeItems = computed(
+  () =>
+    lineRoutesQuery.data.value?.map(route => ({
+      label: `${route.route_code} ${route.route_long_name}`,
+      value: route.route_code,
+    })) as SelectMenuItem[],
+)
 
 const isHidden = computed({
   get() {
@@ -31,19 +40,22 @@ const isHidden = computed({
   },
 })
 
-watch(dataUpdatedAt, () => {
-  const diff = Date.now() - dataUpdatedAt.value
+watch(
+  lineBusesQuery.dataUpdatedAt,
+  () => {
+    const diff = Date.now() - lineBusesQuery.dataUpdatedAt.value
 
-  start(Math.floor((REFETCH_INTERVAL - diff) / 1000))
-}, {
-  immediate: true,
-})
+    start(Math.floor((REFETCH_INTERVAL - diff) / 1000))
+  },
+  {
+    immediate: true,
+  },
+)
 
 watch(remaining, (count) => {
-  if (count !== 0)
-    return
+  if (count !== 0) return
 
-  refetch()
+  lineBusesQuery.refetch()
 })
 
 const items: DropdownMenuItem[] = [
@@ -76,7 +88,7 @@ const items: DropdownMenuItem[] = [
 
 <template>
   <div
-    class="bg-default w-full mt-1 lg:ring-2 lg:ring-muted lg:rounded-md"
+    class="flex flex-col bg-default w-full mt-1 lg:ring-2 lg:ring-muted lg:rounded-md"
     :class="{ 'rounded-md ring-2 ring-muted': lineStore.lines.length > 1 }"
     :style="cssVariableTemplate"
   >
@@ -90,7 +102,7 @@ const items: DropdownMenuItem[] = [
 
         <AnimatePresence mode="wait">
           <Motion
-            v-if="isFetching"
+            v-if="lineBusesQuery.isFetching"
             :initial="{ translateY: -50 }"
             :animate="{ translateY: 0 }"
             :exit="{ translateY: -50 }"
@@ -176,9 +188,12 @@ const items: DropdownMenuItem[] = [
       </div>
     </div>
 
-    <ol class="flex flex-col gap-2 text-sm max-h-36 overflow-y-auto p-2 pt-0">
+    <ol
+      v-if="lineStopsQuery.data?.value && (lineStopsQuery.data.value?.length > 1)"
+      class="flex flex-col gap-2 text-sm max-h-36 overflow-y-auto p-2 pt-0"
+    >
       <li
-        v-for="stop in lineStopsData"
+        v-for="stop in lineStopsQuery.data.value"
         :key="stop.id"
         class="flex items-center gap-2"
       >
@@ -186,5 +201,16 @@ const items: DropdownMenuItem[] = [
         <p>{{ stop.stop_name }}</p>
       </li>
     </ol>
+
+    <USelectMenu
+      v-model="routeCode"
+      :items="routeItems"
+      class="m-2"
+      variant="soft"
+      value-key="value"
+      :portal="false"
+    >
+      <p>{{ route?.route_long_name }}</p>
+    </USelectMenu>
   </div>
 </template>

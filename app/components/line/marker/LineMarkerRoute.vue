@@ -1,8 +1,8 @@
 <script setup lang="ts">
-const { data } = useLineRoutes()
+const { query } = useLineRoutes()
 const { scheme } = useLineTheme()
 
-const routePath = computed(() => data.value?.[0]?.route_path || [])
+const routePath = computed(() => query.data.value?.[0]?.route_path || [])
 </script>
 
 <template>

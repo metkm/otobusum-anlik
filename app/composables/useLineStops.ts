@@ -17,5 +17,5 @@ export const useLineStops = () => {
       }).then(response => response.data as BusStop[]),
   })
 
-  return query
+  return { query }
 }

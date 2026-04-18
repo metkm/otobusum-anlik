@@ -55,11 +55,17 @@ export const useThemeStore = defineStore('theme', () => {
 
   const refreshTheme = (code: string) => addTheme(code)
 
+  const removeLine = (code: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+    delete themesByCity.value[cityStore.selectedCity][code]
+  }
+
   return {
     addTheme,
     themes,
     themesByCity,
     refreshTheme,
+    removeLine,
   }
 }, {
   persist: {
