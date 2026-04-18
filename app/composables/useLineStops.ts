@@ -10,7 +10,7 @@ export const useLineStops = () => {
     queryKey: ['line', code, 'stops'],
     queryFn: () =>
       CapacitorHttp.get({
-        url: `${runtimeConfig.public.baseUrl}/route-stops/${toValue(code)}`,
+        url: `${runtimeConfig.public.baseUrl}/v1/route-stops/${toValue(code)}`,
         params: {
           direction: 'G',
         },

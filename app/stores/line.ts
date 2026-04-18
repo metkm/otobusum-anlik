@@ -51,6 +51,7 @@ export const useLineStore = defineStore('lines', () => {
   return {
     lines,
     routes,
+    linesByCity,
     selectedCity,
     routesByCity,
     removeLine,

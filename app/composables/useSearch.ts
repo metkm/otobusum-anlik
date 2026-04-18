@@ -10,7 +10,7 @@ export interface SearchResponse {
 export const SEARCH_KEY_LIMIT = 1
 
 export const isStop = (item: BusStop | BusLine): item is BusStop => {
-  return (item as BusStop).stop_code !== undefined
+  return (item as BusStop).code !== undefined
 }
 
 export const useSearch = (q: MaybeRef<string>) => {
@@ -20,7 +20,7 @@ export const useSearch = (q: MaybeRef<string>) => {
     queryKey: ['search', () => toValue(q)],
     queryFn: () =>
       CapacitorHttp.get({
-        url: `${runtimeConfig.public.baseUrl}/search`,
+        url: `${runtimeConfig.public.baseUrl}/v1/search`,
         params: {
           q: toValue(q),
         },

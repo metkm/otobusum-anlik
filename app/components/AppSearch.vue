@@ -72,7 +72,7 @@ defineExpose({
         <template v-if="merged.length > 0">
           <li
             v-for="item in merged"
-            :key="isStop(item) ? item.id : item.code"
+            :key="item.id"
             class="flex items-center gap-2"
           >
             <UButton
@@ -88,14 +88,14 @@ defineExpose({
               }"
             >
               <template v-if="isStop(item)">
-                <p>{{ item.stop_name }}</p>
+                <p>{{ item.name }}</p>
               </template>
               <template v-else>
                 <p class="font-medium bg-muted rounded-md px-3 py-2">
                   {{ item.code }}
                 </p>
                 <p class="text-center w-full">
-                  {{ item.title }}
+                  {{ item.name }}
                 </p>
               </template>
             </UButton>

@@ -2,7 +2,7 @@
 const { query } = useLineRoutes()
 const { scheme } = useLineTheme()
 
-const routePath = computed(() => query.data.value?.[0]?.route_path || [])
+const routePath = computed(() => query.data.value?.[0]?.path || [])
 </script>
 
 <template>

@@ -7,7 +7,7 @@ const { cssVariableTemplate } = useLineTheme()
   <ScriptGoogleMapsMarker
     v-for="stop in query.data.value"
     :key="stop.id"
-    :position="{ lat: stop.y_coord, lng: stop.x_coord }"
+    :position="{ lat: stop.lat, lng: stop.lng }"
   >
     <template #content>
       <div

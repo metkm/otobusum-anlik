@@ -1,18 +1,43 @@
 export const useLineTheme = () => {
   const colorMode = useColorMode()
   const themeStore = useThemeStore()
+
   const { code } = useLine()
 
   const scheme = computed(() => themeStore.themes[toValue(code)]?.[colorMode.value as keyof Schemes])
 
   const cssVariableTemplate = computed(() => {
     if (!scheme.value)
-      return
+      return ``
 
     return Object.entries(scheme.value)
       .map(([key, val]) => `--${key}: ${val}`)
       .join(';')
   })
+
+  const teleportsClass = computed(() => `#teleports { ${cssVariableTemplate.value} }`)
+
+  const { load, unload } = useStyleTag(teleportsClass, {
+    immediate: false,
+  })
+
+  useMutationObserver(
+    document.querySelector('#teleports'),
+    () => {
+      const hasChildren = (document.querySelector('#teleports')?.childElementCount || 0) > 0
+      console.log(hasChildren)
+
+      if (!hasChildren) {
+        unload()
+      }
+      else {
+        load()
+      }
+    },
+    {
+      childList: true,
+    },
+  )
 
   return {
     cssVariableTemplate,

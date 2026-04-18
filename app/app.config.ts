@@ -16,6 +16,17 @@ export default defineAppConfig({
         content: 'pb-page-bottom px-page-left z-50',
       },
     },
+    dropdownMenu: {
+      slots: {
+        content: 'z-50',
+        viewport: 'z-50',
+      },
+    },
+    selectMenu: {
+      slots: {
+        content: 'z-50',
+      },
+    },
     input: {
       variants: {
         size: {

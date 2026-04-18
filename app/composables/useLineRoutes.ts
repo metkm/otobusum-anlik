@@ -7,12 +7,12 @@ export type RouteCode = `${string}_${Direction}_${string}`
 export interface LineRoute {
   id: number
   agency_id: string
-  route_short_name: string
-  route_long_name: string
-  route_type: string
-  route_desc: string
-  route_code: RouteCode
-  route_path?: { lat: number, lng: number }[]
+  line_code: string
+  name: string
+  type: string
+  desc: string
+  code: RouteCode
+  path?: { lat: number, lng: number }[]
 }
 
 export const useLineRoutes = () => {
@@ -24,7 +24,7 @@ export const useLineRoutes = () => {
     queryKey: ['line', toValue(code), 'routes'],
     queryFn: () =>
       CapacitorHttp.get({
-        url: `${runtimeConfig.public.baseUrl}/routes/${toValue(code)}`,
+        url: `${runtimeConfig.public.baseUrl}/v1/routes/${toValue(code)}`,
       }).then(response => response.data as LineRoute[]),
   })
 
@@ -37,7 +37,7 @@ export const useLineRoutes = () => {
     },
   })
 
-  const route = computed(() => query.data.value?.find(r => r.route_code === routeCode.value))
+  const route = computed(() => query.data.value?.find(r => r.code === routeCode.value))
 
   return { query, routeCode, route }
 }

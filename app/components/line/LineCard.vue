@@ -2,7 +2,7 @@
 import { motion } from 'motion-v'
 import type { DropdownMenuItem, SelectMenuItem, SelectMenuValue } from '@nuxt/ui'
 
-const open = ref(false)
+const drawerOpen = ref(false)
 
 const lineStore = useLineStore()
 const themeStore = useThemeStore()
@@ -20,8 +20,8 @@ const isDesktop = useIsDesktop()
 const routeItems = computed(
   () =>
     lineRoutesQuery.data.value?.map(route => ({
-      label: route.route_long_name,
-      value: route.route_code,
+      label: route.name,
+      value: route.code,
     })) as SelectMenuItem[] || [],
 )
 
@@ -76,7 +76,7 @@ const items: DropdownMenuItem[] = [
     icon: 'i-lucide-trash-2',
     color: 'error',
     onSelect: () => {
-      open.value = false
+      drawerOpen.value = false
 
       setTimeout(() => {
         lineStore.removeLine(toValue(code))
@@ -139,7 +139,7 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
         <UDropdownMenu
           v-if="isDesktop"
           :items="items"
-          :portal="false"
+          portal="#teleports"
         >
           <UButton
             icon="i-lucide-menu"
@@ -151,9 +151,10 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
 
         <UDrawer
           v-else
-          v-model:open="open"
+          v-model:open="drawerOpen"
           :set-background-color-on-scale="false"
           should-scale-background
+          portal="#teleports"
         >
           <UButton
             icon="i-lucide-menu"
@@ -162,10 +163,7 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
           />
 
           <template #content>
-            <div
-              class="flex flex-col gap-2"
-              :style="cssVariableTemplate"
-            >
+            <div class="flex flex-col gap-2">
               <template
                 v-for="item in items"
                 :key="item.label!"
@@ -204,13 +202,13 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
       >
         <div class="flex justify-center items-center border-2 border-muted size-10 rounded-full">
           <UIcon
-            v-if="lineBusesQuery.data.value?.find(b => b.closest_stop_code === stop.stop_code)"
+            v-if="lineBusesQuery.data.value?.find(b => b.closest_stop_code === stop.code)"
             name="i-lucide-bus-front"
             class="bg-primary rounded-full size-5"
           />
         </div>
 
-        <p>{{ stop.stop_name }}</p>
+        <p>{{ stop.name }}</p>
       </li>
     </ol>
     <ol
@@ -238,17 +236,17 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
     <USelectMenu
       v-model="routeCode"
       :items="routeItems"
-      class="m-2 z-50"
+      class="m-2"
       variant="soft"
       value-key="value"
       :search-input="false"
       :disabled="routeItems.length <= 1"
+      portal="#teleports"
     >
       <template #item="{ item }">
         <div
           v-if="isMenuItemObject(item)"
           class="flex items-center max-w-full gap-2"
-          :style="cssVariableTemplate"
         >
           <p class="text-center bg-primary text-inverted rounded-md w-20 p-1 shrink-0 truncate text-sm font-medium">
             {{ item.value.split('_').slice(1).join('_') }}
@@ -260,17 +258,14 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
         </div>
       </template>
 
-      <div
-        class="flex items-center justify-center *:truncate w-full max-w-full gap-2"
-        :style="cssVariableTemplate"
-      >
+      <div class="flex items-center justify-center *:truncate w-full max-w-full gap-2">
         <template v-if="route">
-          <p>{{ route?.route_long_name.split(' - ')[0] }}</p>
+          <p>{{ route?.name.split(' - ')[0] }}</p>
           <UIcon
             name="i-lucide-arrow-right"
             class="shrink-0"
           />
-          <p>{{ route?.route_long_name.split(' - ')[1] }}</p>
+          <p>{{ route?.name.split(' - ')[1] }}</p>
         </template>
         <template v-else-if="lineRoutesQuery.isFetching.value">
           <USkeleton class="h-5 w-16" />

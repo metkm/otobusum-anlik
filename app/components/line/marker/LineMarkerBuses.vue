@@ -11,8 +11,8 @@ const { cssVariableTemplate } = useLineTheme()
   >
     <template #content>
       <div
-        :style="cssVariableTemplate"
         class="flex size-8 bg-primary rounded-full p-2 ring-2 ring-muted"
+        :style="cssVariableTemplate"
       >
         <UIcon
           name="i-lucide-bus-front"
