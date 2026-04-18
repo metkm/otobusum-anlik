@@ -22,7 +22,7 @@ const routeItems = computed(
     lineRoutesQuery.data.value?.map(route => ({
       label: route.route_long_name,
       value: route.route_code,
-    })) as SelectMenuItem[],
+    })) as SelectMenuItem[] || [],
 )
 
 const isHidden = computed({
@@ -96,10 +96,8 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
     :class="{ 'rounded-md ring-2 ring-muted': lineStore.lines.length > 1 }"
     :style="cssVariableTemplate"
   >
-    <div class="flex items-center justify-between p-2 pl-2.5">
+    <div class="flex justify-between p-2 pl-3">
       <div class="flex items-center gap-2 overflow-hidden">
-        <!-- <div class="size-6 border-4 border-primary rounded-md" /> -->
-
         <h1 class="font-bold select-none text-lg">
           {{ code }}
         </h1>
@@ -194,7 +192,7 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
 
     <ol
       v-if="lineStopsQuery.data?.value && (lineStopsQuery.data.value?.length > 1)"
-      class="flex flex-col gap-2 text-sm max-h-24 overflow-y-auto p-2 pt-0"
+      class="flex flex-col gap-2 text-sm max-h-22 overflow-y-auto px-2"
       :style="{
         'mask-image': 'linear-gradient(transparent, black 15%, black 85%, transparent)',
       }"
@@ -215,6 +213,27 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
         <p>{{ stop.stop_name }}</p>
       </li>
     </ol>
+    <ol
+      v-else-if="lineStopsQuery.isFetching.value"
+      class="flex flex-col gap-2 px-2"
+    >
+      <li
+        v-for="i in 2"
+        :key="i"
+        class="flex items-center gap-2"
+      >
+        <USkeleton class="size-10" />
+        <USkeleton class="h-6 w-1/2" />
+      </li>
+    </ol>
+    <div
+      v-else-if="lineStopsQuery.error.value"
+      class="h-24 flex items-center justify-center"
+    >
+      <p class="text-muted text-sm font-medium">
+        {{ lineStopsQuery.error.value.message }}
+      </p>
+    </div>
 
     <USelectMenu
       v-model="routeCode"
@@ -223,6 +242,7 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
       variant="soft"
       value-key="value"
       :search-input="false"
+      :disabled="routeItems.length <= 1"
     >
       <template #item="{ item }">
         <div
@@ -241,15 +261,28 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
       </template>
 
       <div
-        class="flex items-center *:truncate max-w-full gap-2"
+        class="flex items-center justify-center *:truncate w-full max-w-full gap-2"
         :style="cssVariableTemplate"
       >
-        <p>{{ route?.route_long_name.split(' - ')[0] }}</p>
-        <UIcon
-          name="i-lucide-arrow-right"
-          class="shrink-0"
-        />
-        <p>{{ route?.route_long_name.split(' - ')[1] }}</p>
+        <template v-if="route">
+          <p>{{ route?.route_long_name.split(' - ')[0] }}</p>
+          <UIcon
+            name="i-lucide-arrow-right"
+            class="shrink-0"
+          />
+          <p>{{ route?.route_long_name.split(' - ')[1] }}</p>
+        </template>
+        <template v-else-if="lineRoutesQuery.isFetching.value">
+          <USkeleton class="h-5 w-16" />
+          <UIcon
+            name="i-lucide-arrow-right"
+            class="shrink-0"
+          />
+          <USkeleton class="h-5 w-16" />
+        </template>
+        <div v-else-if="lineRoutesQuery.error.value">
+          <p>{{ lineRoutesQuery.error.value.message }}</p>
+        </div>
       </div>
     </USelectMenu>
   </div>
