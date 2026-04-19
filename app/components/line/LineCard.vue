@@ -3,12 +3,13 @@ import { motion } from 'motion-v'
 import type { DropdownMenuItem, SelectMenuItem, SelectMenuValue } from '@nuxt/ui'
 
 const drawerOpen = ref(false)
+const dropdownOpen = ref(false)
 
 const lineStore = useLineStore()
 const themeStore = useThemeStore()
 const settingsStore = useSettingsStore()
 
-const { cssVariableTemplate } = useLineTheme()
+const { cssVariableTemplate } = useLineTheme([drawerOpen, dropdownOpen])
 const { query: lineBusesQuery } = useLineBuses()
 const { query: lineRoutesQuery, route, routeCode } = useLineRoutes()
 const { query: lineStopsQuery } = useLineStops()
@@ -138,6 +139,7 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
 
         <UDropdownMenu
           v-if="isDesktop"
+          v-model:open="dropdownOpen"
           :items="items"
           portal="#teleports"
         >
@@ -226,7 +228,7 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
     </ol>
     <div
       v-else-if="lineStopsQuery.error.value"
-      class="h-24 flex items-center justify-center"
+      class="h-22 flex items-center justify-center"
     >
       <p class="text-muted text-sm font-medium">
         {{ lineStopsQuery.error.value.message }}
