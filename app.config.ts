@@ -55,11 +55,11 @@ const config: ExpoConfig = {
       },
     ],
     [
-      "expo-navigation-bar",
+      'expo-navigation-bar',
       {
-        "enforceContrast": false,
-      }
-    ]
+        enforceContrast: false,
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,

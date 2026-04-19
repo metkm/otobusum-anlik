@@ -1,7 +1,6 @@
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { View, ViewProps } from 'react-native'
-import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UText } from '@/components/u/UText'
@@ -9,7 +8,6 @@ import { UText } from '@/components/u/UText'
 import { UButton } from '../u/UButton'
 import { USheet } from '../u/USheet'
 
-import { ExitingAnimation, EnteringAnimation, DEFAULT_TIMING_FUNCTION } from '@/constants/transitions'
 import { useLineStore } from '@/stores/line'
 import { cn } from '@/utils/cn'
 
@@ -22,11 +20,8 @@ export const LineCard = ({ lineCode, className, ...props }: { lineCode: string }
   }
 
   return (
-    <Animated.View
+    <View
       className={cn('bg-default p-2 rounded-md', className)}
-      exiting={ExitingAnimation}
-      entering={EnteringAnimation}
-      layout={DEFAULT_TIMING_FUNCTION}
       {...props}
     >
       <View className="flex-row items-center justify-between pl-2">
@@ -59,6 +54,6 @@ export const LineCard = ({ lineCode, className, ...props }: { lineCode: string }
           />
         </USheet>
       </View>
-    </Animated.View>
+    </View>
   )
 }

@@ -14,17 +14,19 @@ export const SearchScreen = () => {
   const [query, setQuery] = useState('')
   const addLine = useLineStore(useShallow(state => state.addLine))
 
-  const { query: { data, isFetching } } = useSearch(query)
+  const {
+    query: { data, error, isFetching, isSuccess },
+  } = useSearch(query)
+  const items = [...(data?.lines || []), ...(data?.stops || [])]
 
   const handleTextChange = useDebouncedCallback((q: string) => {
-    if (q.length < 2)
-      return
+    if (q.length < 2) return
 
     setQuery(q)
   }, 250)
 
   return (
-    <View className="m-safe p-2 gap-2">
+    <View className="grow m-safe p-2 gap-2">
       <UInput
         autoFocus={true}
         placeholder="Search..."
@@ -33,29 +35,37 @@ export const SearchScreen = () => {
         icon="search"
       />
 
-      <FlatList
-        data={[
-          ...(data?.lines || []),
-          ...(data?.stops || []),
-        ]}
-        renderItem={({ item }) => {
-          return (
-            <UButton
-              label={item.name}
-              variant="ghost"
-              color="neutral"
-              onPress={() => {
-                if (isStop(item))
-                  return
+      {items.length > 1
+        ? (
+            <FlatList
+              data={items}
+              renderItem={({ item }) => {
+                return (
+                  <UButton
+                    label={item.name}
+                    variant="ghost"
+                    color="neutral"
+                    onPress={() => {
+                      if (isStop(item)) return
 
-                addLine(item.code)
+                      addLine(item.code)
+                    }}
+                  >
+                    <UText className="bg-muted rounded-md p-2">{item.code}</UText>
+                  </UButton>
+                )
               }}
-            >
-              <UText className="bg-muted rounded-md p-2">{item.code}</UText>
-            </UButton>
+            />
           )
-        }}
-      />
+        : (
+            <View className="grow justify-center items-center">
+              {error
+                ? <UText>{error.message}</UText>
+                : isSuccess
+                  ? <UText>No results found!</UText>
+                  : <UText>Search Something</UText>}
+            </View>
+          )}
     </View>
   )
 }

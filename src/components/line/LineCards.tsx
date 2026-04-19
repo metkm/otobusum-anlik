@@ -25,7 +25,7 @@ export const LineCards = () => {
     <FlatList
       ref={flatlistRef}
       data={lines}
-      renderItem={({ item }) => <LineCard lineCode={item} style={{ width: lineWidth }} />}
+      renderItem={({ item }) => <LineCard lineCode={item} style={{ width: lineWidth }} className={lines.length < 2 ? 'rounded-none' : ''} />}
       horizontal
       contentContainerClassName={`gap-2 min-w-full ${isOneElement ? 'p-0' : 'pb-2 px-2'}`}
       keyExtractor={item => item}
