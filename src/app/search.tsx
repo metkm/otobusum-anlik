@@ -7,8 +7,7 @@ import { UButton } from '@/components/u/UButton'
 import { UInput } from '@/components/u/UInput'
 import { UText } from '@/components/u/UText'
 
-import { isStop, useSearch } from '@/hooks/useSearch'
-
+import { isStop, useSearch } from '@/composables/useSearch'
 import { useLineStore } from '@/stores/line'
 
 export const SearchScreen = () => {

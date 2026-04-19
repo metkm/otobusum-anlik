@@ -2,7 +2,7 @@ import { GeoJSONSource, Layer } from '@maplibre/maplibre-react-native'
 // eslint-disable-next-line import/no-unresolved
 import { Feature } from 'geojson'
 
-import { useLineBuses } from '@/hooks/useLineBuses'
+import { useLineBuses } from '@/composables/useLineBuses'
 
 export const LineMarkersBuses = ({ code }: { code: string }) => {
   const { data } = useLineBuses(code)

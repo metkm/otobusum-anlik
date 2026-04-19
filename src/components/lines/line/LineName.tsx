@@ -1,12 +1,12 @@
 import { StyleSheet, View } from 'react-native'
 
 import { useLine } from '@/hooks/queries/useLine'
-import { useCountdown } from '@/hooks/useCountdown'
 import { useTheme } from '@/hooks/useTheme'
 
 import { UiActivityIndicator } from '../../ui/UiActivityIndicator'
 import { UiText } from '../../ui/UiText'
 
+import { useCountdown } from '@/composables/useCountdown'
 import { iconSizes } from '@/constants/uiSizes'
 import { i18n } from '@/translations/i18n'
 
