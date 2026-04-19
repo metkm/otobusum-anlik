@@ -18,7 +18,7 @@ import { LineMemoized, LineProps } from './line/Line'
 import { LineGroups } from './line/LineGroups'
 
 import { useFiltersStore } from '@/stores/filters'
-import { getLines, useLinesStore } from '@/stores/lines'
+import { getLines, useLinesStore } from '@/stores/line'
 import { useMiscStore } from '@/stores/misc'
 import { i18n } from '@/translations/i18n'
 

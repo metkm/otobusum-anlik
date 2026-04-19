@@ -1,16 +1,35 @@
-import { TextInputProps } from 'react-native'
+import Lucide from '@react-native-vector-icons/lucide'
+import { ActivityIndicator, TextInputProps, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
+import { useCSSVariable } from 'uniwind'
 
+import { IconName } from '@/types/ui'
 import { cn } from '@/utils/cn'
 
 export const UInput = ({
   className,
+  icon,
+  loading,
   ...props
-}: TextInputProps) => {
+}: { icon?: IconName, loading?: boolean } & TextInputProps) => {
+  const bgColor = useCSSVariable('--ui-text')
+
+  const _icon = loading
+    ? <ActivityIndicator size={20} color={bgColor as string} />
+    : icon
+      ? <Lucide name={icon} size={20} color={bgColor as string} />
+      : undefined
+
   return (
-    <TextInput
-      className={cn('bg-muted rounded-md px-3', className)}
-      {...props}
-    />
+    <View className="relative">
+      <TextInput
+        className={cn('bg-muted rounded-md px-3', _icon ? 'pl-9' : undefined, className)}
+        {...props}
+      />
+
+      <View className="absolute left-2 inset-y-0 justify-center">
+        {_icon}
+      </View>
+    </View>
   )
 }

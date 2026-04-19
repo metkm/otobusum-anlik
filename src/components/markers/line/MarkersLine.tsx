@@ -10,7 +10,7 @@ import { MarkersLineStops } from './stop/MarkersLineStops'
 import { MarkersLineRouteLine } from './MarkersLineRouteLine'
 
 import { useFiltersStore } from '@/stores/filters'
-import { getLines, useLinesStore } from '@/stores/lines'
+import { getLines, useLinesStore } from '@/stores/line'
 import { useMiscStore } from '@/stores/misc'
 // import { useSettingsStore } from '@/stores/settings'
 

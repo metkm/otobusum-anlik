@@ -7,7 +7,7 @@ import { RectButton, RectButtonProps } from 'react-native-gesture-handler'
 import { UiLineCode } from './ui/UiLineCode'
 import { UiText } from './ui/UiText'
 
-import { addLine } from '@/stores/lines'
+import { addLine } from '@/stores/line'
 import { BusLine, BusStop } from '@/types/bus'
 import { isStop } from '@/utils/isStop'
 

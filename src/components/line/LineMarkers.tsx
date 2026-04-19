@@ -2,10 +2,10 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { LineMarkersBuses } from './markers/LineMarkersBuses'
 
-import { useLinesStore } from '@/stores/lines'
+import { useLineStore } from '@/stores/line'
 
 export const LineMarkers = () => {
-  const lines = useLinesStore(useShallow(state => state.lines()))
+  const lines = useLineStore(useShallow(state => state.lines()))
 
   return lines.map(code => <LineMarkersBuses key={code} code={code} />)
 

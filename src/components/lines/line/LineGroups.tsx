@@ -11,7 +11,7 @@ import { UiText } from '@/components/ui/UiText'
 import { LineGroupsItem } from './LineGroupsItem'
 
 import { selectGroup, useFiltersStore } from '@/stores/filters'
-import { addLineToGroup, createNewGroup, useLinesStore } from '@/stores/lines'
+import { addLineToGroup, createNewGroup, useLinesStore } from '@/stores/line'
 import { i18n } from '@/translations/i18n'
 import { LineGroup } from '@/types/lineGroup'
 

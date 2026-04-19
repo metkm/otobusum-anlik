@@ -1,4 +1,5 @@
-import Ionicons from '@react-native-vector-icons/ionicons'
+// import Ionicons from '@react-native-vector-icons/ionicons'
+import Lucide from '@react-native-vector-icons/lucide'
 import { Href, router } from 'expo-router'
 import React, { ComponentProps } from 'react'
 import { BaseButton } from 'react-native-gesture-handler'
@@ -61,7 +62,7 @@ const ui = tv({
   ],
   slots: {
     base: 'flex flex-row items-center gap-1 py-2 px-3 rounded-md',
-    label: 'font-medium',
+    label: 'font-medium truncate shrink-1',
   },
 })
 
@@ -73,6 +74,7 @@ export const UButton = ({
   to,
   color = 'primary',
   variant = 'solid',
+  children,
   ...props
 }: {
   label?: string
@@ -102,17 +104,17 @@ export const UButton = ({
       {...props}
     >
       {icon && (
-        <Ionicons
+        <Lucide
           name={icon}
           size={20}
           color={uiLabelStyle.color}
         />
       )}
 
+      {children}
+
       {label && (
-        <UText
-          className={uiLabel()}
-        >
+        <UText className={uiLabel()} numberOfLines={1}>
           {label}
         </UText>
       )}

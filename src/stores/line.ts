@@ -34,6 +34,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
+
 import { useFiltersStore } from './filters'
 
 export const Cities = {
@@ -50,7 +51,7 @@ interface LinesStore {
   lines: () => string[]
 }
 
-export const useLinesStore = create(
+export const useLineStore = create(
   persist(
     immer<LinesStore>((set, get) => ({
       linesByCity: {

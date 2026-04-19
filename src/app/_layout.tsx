@@ -1,5 +1,6 @@
 import '../global.css'
 
+import { TrueSheetProvider } from '@lodev09/react-native-true-sheet'
 import { DarkTheme, DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { Stack } from 'expo-router'

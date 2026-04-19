@@ -20,7 +20,7 @@ import { LineRoutes } from './LineRoutes'
 import { queryClient } from '@/api/client'
 import { getLineBusStops } from '@/api/getLineBusStops'
 import { changeRouteDirection, getSelectedRouteCode, useFiltersStore } from '@/stores/filters'
-import { deleteLine } from '@/stores/lines'
+import { deleteLine } from '@/stores/line'
 import { toggleLineVisibility, useMiscStore } from '@/stores/misc'
 import { i18n } from '@/translations/i18n'
 

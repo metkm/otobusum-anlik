@@ -6,7 +6,7 @@ import { DEFAULT_PAGE_PADDING } from '../usePaddings'
 
 import { getLineBusLocations } from '@/api/getLineBusLocations'
 import { lineUpdateInterval } from '@/constants/app'
-import { getLines, useLinesStore } from '@/stores/lines'
+import { getLines, useLinesStore } from '@/stores/line'
 import { i18n } from '@/translations/i18n'
 
 export function useLine(lineCode: string) {

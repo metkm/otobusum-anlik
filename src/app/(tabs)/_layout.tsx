@@ -1,4 +1,5 @@
-import Ionicons from '@react-native-vector-icons/ionicons'
+// import Ionicons from '@react-native-vector-icons/ionicons'
+import Lucide from '@react-native-vector-icons/lucide'
 import { Tabs } from 'expo-router'
 import { ComponentProps } from 'react'
 import { useCSSVariable } from 'uniwind'
@@ -14,7 +15,7 @@ const screens = [
   {
     name: 'timetable',
     label: 'timetable',
-    icon: 'time',
+    icon: 'clock',
   },
   {
     name: 'settings',
@@ -38,12 +39,12 @@ export const TabsLayout = () => {
               color: color as string,
             },
             tabBarIcon: ({ focused }) => {
-              type IconName = ComponentProps<typeof Ionicons>['name']
-              const icon = focused ? screen.icon : `${screen.icon}-outline`
+              type IconName = ComponentProps<typeof Lucide>['name']
+              // const icon = focused ? screen.icon : `${screen.icon}-filled`
 
               return (
-                <Ionicons
-                  name={icon as IconName}
+                <Lucide
+                  name={screen.icon as IconName}
                   size={20}
                   color={color as string}
                   className="size-5"

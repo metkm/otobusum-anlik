@@ -9,13 +9,15 @@ export interface SearchResponse {
 }
 
 export const isStop = (item: BusStop | BusLine): item is BusStop => {
-  return (item as BusStop).stop_code !== undefined
+  return (item as BusStop).lng !== undefined
 }
 
 export const useSearch = (q: string) => {
+  console.log(process.env.EXPO_PUBLIC_BASE_URL)
+
   const query = useQuery({
     queryKey: ['search', q],
-    queryFn: arg => ky.get<SearchResponse>(`${process.env.EXPO_PUBLIC_BASE_URL}/search`, {
+    queryFn: arg => ky.get<SearchResponse>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/search`, {
       searchParams: {
         q: arg.queryKey[1],
       },
@@ -23,5 +25,5 @@ export const useSearch = (q: string) => {
     enabled: () => q.length > 2,
   })
 
-  return query
+  return { query }
 }

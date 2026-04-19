@@ -8,7 +8,7 @@ import { LineGroups } from './lines/line/LineGroups'
 import { UiButton } from './ui/UiButton'
 
 import { changeRouteDirection, unSelectGroup, useFiltersStore } from '@/stores/filters'
-import { getLines, useLinesStore } from '@/stores/lines'
+import { getLines, useLinesStore } from '@/stores/line'
 
 export const TheMapButtons = () => {
   const { tabRoutePaddings } = usePaddings()

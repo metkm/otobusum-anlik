@@ -6,7 +6,8 @@
 // import { useSharedValue } from 'react-native-reanimated'
 
 import { Images } from '@maplibre/maplibre-react-native'
-import Ionicons from '@react-native-vector-icons/ionicons'
+// import { Bus } from 'lucide-react-native'
+import Lucide from '@react-native-vector-icons/lucide'
 import { View } from 'react-native'
 
 import { LineCards } from '@/components/line/LineCards'
@@ -33,7 +34,7 @@ import { TheMap } from '../../components/map/TheMap'
 export const HomeScreen = () => {
   // const addLine = useLinesStore(state => state.addLine)
 
-  const busImageSource = Ionicons.getImageSourceSync('bus', 20, 'red')
+  const busImageSource = Lucide.getImageSourceSync('bus-front', 20, 'red')
 
   return (
     <>
@@ -47,9 +48,9 @@ export const HomeScreen = () => {
         <LineMarkers />
       </TheMap>
 
-      <View className="absolute bottom-0 inset-x-0 flex flex-col gap-2 items-start">
+      <View className="absolute bottom-0 inset-x-0 items-start">
         <UButton
-          className="ml-2"
+          className="ml-2 mb-2"
           icon="search"
           square
           to="/search"

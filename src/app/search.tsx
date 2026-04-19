@@ -1,16 +1,21 @@
 import { useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { useDebouncedCallback } from 'use-debounce'
+import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
 import { UInput } from '@/components/u/UInput'
+import { UText } from '@/components/u/UText'
 
 import { isStop, useSearch } from '@/hooks/useSearch'
 
+import { useLineStore } from '@/stores/line'
+
 export const SearchScreen = () => {
   const [query, setQuery] = useState('')
+  const addLine = useLineStore(useShallow(state => state.addLine))
 
-  const { data } = useSearch(query)
+  const { query: { data, isFetching } } = useSearch(query)
 
   const handleTextChange = useDebouncedCallback((q: string) => {
     if (q.length < 2)
@@ -25,6 +30,8 @@ export const SearchScreen = () => {
         autoFocus={true}
         placeholder="Search..."
         onChangeText={handleTextChange}
+        loading={isFetching}
+        icon="search"
       />
 
       <FlatList
@@ -33,26 +40,22 @@ export const SearchScreen = () => {
           ...(data?.stops || []),
         ]}
         renderItem={({ item }) => {
-          if (isStop(item)) {
-            return (
-              <UButton
-                label={item.stop_name}
-                variant="ghost"
-                color="neutral"
-              />
-            )
-          }
-
           return (
             <UButton
-              label={item.title}
+              label={item.name}
               variant="ghost"
               color="neutral"
-            />
+              onPress={() => {
+                if (isStop(item))
+                  return
+
+                addLine(item.code)
+              }}
+            >
+              <UText className="bg-muted rounded-md p-2">{item.code}</UText>
+            </UButton>
           )
         }}
-        keyExtractor={item => isStop(item) ? item.id.toString() : item.code}
-        contentContainerClassName="gap-2"
       />
     </View>
   )

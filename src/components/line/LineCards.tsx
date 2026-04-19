@@ -1,17 +1,16 @@
 import { useRef } from 'react'
 import { FlatList, Platform, useWindowDimensions } from 'react-native'
-import Animated from 'react-native-reanimated'
 import { useCSSVariable } from 'uniwind'
+import { useShallow } from 'zustand/react/shallow'
 
 import { LineCard } from './LineCard'
 
-import { DEFAULT_TIMING_FUNCTION } from '@/constants/transitions'
-import { useLinesStore } from '@/stores/lines'
+import { useLineStore } from '@/stores/line'
 
 export const LineCards = () => {
   const flatlistRef = useRef<FlatList>(null)
 
-  const lines = useLinesStore(state => state.lines())
+  const lines = useLineStore(useShallow(state => state.lines()))
   const { width } = useWindowDimensions()
 
   let spacing = useCSSVariable('--spacing') as number
@@ -19,19 +18,16 @@ export const LineCards = () => {
     spacing = 4
   }
 
-  const lineWidth = width - (lines.length > 1 ? spacing * 10 : 0)
+  const isOneElement = lines.length < 2
+  const lineWidth = width - (isOneElement ? 0 : spacing * 10)
 
   return (
-    <Animated.FlatList
+    <FlatList
       ref={flatlistRef}
       data={lines}
-      itemLayoutAnimation={DEFAULT_TIMING_FUNCTION}
       renderItem={({ item }) => <LineCard lineCode={item} style={{ width: lineWidth }} />}
       horizontal
-      contentContainerClassName="gap-2 min-w-full"
-      contentContainerStyle={{
-        padding: lines.length > 1 ? 8 : 0,
-      }}
+      contentContainerClassName={`gap-2 min-w-full ${isOneElement ? 'p-0' : 'pb-2 px-2'}`}
       keyExtractor={item => item}
     />
   )

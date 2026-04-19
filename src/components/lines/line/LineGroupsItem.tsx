@@ -12,7 +12,7 @@ import { UiText } from '@/components/ui/UiText'
 
 import { useTheme } from '@/hooks/useTheme'
 
-import { deleteGroup } from '@/stores/lines'
+import { deleteGroup } from '@/stores/line'
 import { i18n } from '@/translations/i18n'
 import { LineGroup } from '@/types/lineGroup'
 
