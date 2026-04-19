@@ -1,4 +1,4 @@
-export const useLineTheme = (variables?: MaybeRefOrGetter<boolean>[]) => {
+export const useLineTheme = () => {
   const colorMode = useColorMode()
   const themeStore = useThemeStore()
 
@@ -15,38 +15,20 @@ export const useLineTheme = (variables?: MaybeRefOrGetter<boolean>[]) => {
       .join(';')
   })
 
-  const teleportsClass = computed(() => `#teleports [data-state=open] { ${cssVariableTemplate.value} }`)
+  // const teleportsClass = computed(() => `#teleports [data-state=open] { ${cssVariableTemplate.value} }`)
 
-  const { load, unload } = useStyleTag(teleportsClass, {
-    immediate: false,
-  })
+  // const { load, unload } = useStyleTag(teleportsClass, {
+  //   immediate: false,
+  // })
 
-  // useMutationObserver(
-  //   document.querySelector('#teleports'),
-  //   () => {
-  //     const hasChildren = (document.querySelector('#teleports')?.childElementCount || 0) > 0
-  //     console.log(hasChildren)
-
-  //     if (!hasChildren) {
-  //       unload()
-  //     }
-  //     else {
-  //       load()
-  //     }
-  //   },
-  //   {
-  //     childList: true,
-  //   },
-  // )
-
-  watch(variables || [], (v) => {
-    if (v.some(v => toValue(v))) {
-      load()
-    }
-    else {
-      unload()
-    }
-  })
+  // watch(variables || [], (v) => {
+  //   if (v.some(v => toValue(v))) {
+  //     load()
+  //   }
+  //   else {
+  //     setTimeout(unload, 100)
+  //   }
+  // })
 
   return {
     cssVariableTemplate,

@@ -4,12 +4,13 @@ import type { DropdownMenuItem, SelectMenuItem, SelectMenuValue } from '@nuxt/ui
 
 const drawerOpen = ref(false)
 const dropdownOpen = ref(false)
+const menuOpen = ref(false)
 
 const lineStore = useLineStore()
 const themeStore = useThemeStore()
 const settingsStore = useSettingsStore()
 
-const { cssVariableTemplate } = useLineTheme([drawerOpen, dropdownOpen])
+const { cssVariableTemplate } = useLineTheme()
 const { query: lineBusesQuery } = useLineBuses()
 const { query: lineRoutesQuery, route, routeCode } = useLineRoutes()
 const { query: lineStopsQuery } = useLineStops()
@@ -141,7 +142,7 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
           v-if="isDesktop"
           v-model:open="dropdownOpen"
           :items="items"
-          portal="#teleports"
+          :portal="false"
         >
           <UButton
             icon="i-lucide-menu"
@@ -156,7 +157,6 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
           v-model:open="drawerOpen"
           :set-background-color-on-scale="false"
           should-scale-background
-          portal="#teleports"
         >
           <UButton
             icon="i-lucide-menu"
@@ -237,13 +237,14 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
 
     <USelectMenu
       v-model="routeCode"
+      v-model:open="menuOpen"
       :items="routeItems"
       class="m-2"
       variant="soft"
       value-key="value"
       :search-input="false"
       :disabled="routeItems.length <= 1"
-      portal="#teleports"
+      :portal="false"
     >
       <template #item="{ item }">
         <div

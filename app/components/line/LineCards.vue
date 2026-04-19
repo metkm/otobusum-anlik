@@ -32,13 +32,13 @@ const lineStyle = computed(() => ({
   <LayoutGroup>
     <motion.ol
       ref="container"
-      class="flex gap-2 invisible-scrollbar lg:p-2"
+      class="flex gap-2 lg:p-2 "
       :class="{ 'p-2 pt-0': !isOneElement }"
       layout
       drag="x"
-      :drag-constraints="{ left: constraintLeft, right: 0 }"
+      :drag-constraints="{ left: constraintLeft, right: 0, top: 0, bottom: 0 }"
+      :drag-direction-lock="true"
       :drag-elastic="0.1"
-      :while-drag="{ cursor: 'grabbing' }"
       :style="{ x }"
     >
       <AnimatePresence>

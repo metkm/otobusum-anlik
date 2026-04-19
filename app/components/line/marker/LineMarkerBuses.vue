@@ -1,11 +1,18 @@
 <script setup lang="ts">
 const { query } = useLineBuses()
+const { routeCode } = useLineRoutes()
+
 const { cssVariableTemplate } = useLineTheme()
+
+const busesFiltered = computed(
+  () => (query.data.value || [])
+    .filter(b => b.route_code == routeCode.value),
+)
 </script>
 
 <template>
   <ScriptGoogleMapsMarker
-    v-for="bus in query.data.value"
+    v-for="bus in busesFiltered"
     :key="bus.bus_id"
     :position="{ lng: bus.lng, lat: bus.lat }"
   >
