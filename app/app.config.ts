@@ -13,18 +13,18 @@ export default defineAppConfig({
         },
       },
       slots: {
-        content: 'pb-page-bottom px-page-left z-50',
+        content: 'pb-page-bottom px-page-left z-10',
       },
     },
     dropdownMenu: {
       slots: {
-        content: 'z-50',
-        viewport: 'z-50',
+        content: 'z-10',
+        viewport: 'z-10',
       },
     },
     selectMenu: {
       slots: {
-        content: 'z-50',
+        content: 'z-10',
       },
     },
     input: {

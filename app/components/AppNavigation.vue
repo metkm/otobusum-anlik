@@ -14,7 +14,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 <template>
   <nav class="pb-[env(safe-area-inset-bottom)]">
     <DefineTemplate>
-      <ol class="flex lg:flex-col items-center">
+      <ol class="flex lg:flex-col items-center bg-default">
         <li
           v-for="_route in routes"
           :key="_route.path"
@@ -53,7 +53,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 
     <aside
       v-else
-      class="fixed left-page-left top-page-top bg-default rounded-md ring ring-muted"
+      class="fixed left-page-left top-page-top overflow-hidden rounded-md ring ring-muted"
     >
       <ReuseTemplate />
     </aside>

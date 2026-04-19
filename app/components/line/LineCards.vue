@@ -18,7 +18,9 @@ const constraintLeft = computed(() => {
 })
 
 watch(constraintLeft, (l) => {
-  x.set(l)
+  if (x.get() < l) {
+    x.set(l)
+  }
 })
 
 const isOneElement = computed(() => lineStore.lines.length <= 1)

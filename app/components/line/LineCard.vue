@@ -190,7 +190,35 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
       </div>
     </div>
 
-    <ol
+    <UScrollArea
+      v-if="lineStopsQuery.data?.value && (lineStopsQuery.data.value?.length > 1)"
+      v-slot="{ item: stop }"
+      :style="{
+        'mask-image': 'linear-gradient(transparent, black 15%, black 85%, transparent)',
+      }"
+      :virtualize="{
+        estimateSize: 40,
+        gap: 8,
+        paddingStart: 8,
+        paddingEnd: 8,
+      }"
+      :items="lineStopsQuery.data.value"
+      class="text-sm h-22 space-y-2 px-2"
+    >
+      <div class="flex items-center gap-2">
+        <div class="flex justify-center items-center border-2 border-muted size-10 rounded-full">
+          <UIcon
+            v-if="lineBusesQuery.data.value?.find(b => b.closest_stop_code === stop.code)"
+            name="i-lucide-bus-front"
+            class="bg-primary rounded-full size-5"
+          />
+        </div>
+
+        <p>{{ stop.name }}</p>
+      </div>
+    </UScrollArea>
+
+    <!-- <ol
       v-if="lineStopsQuery.data?.value && (lineStopsQuery.data.value?.length > 1)"
       class="flex flex-col gap-2 text-sm max-h-22 overflow-y-auto px-2"
       :style="{
@@ -212,7 +240,7 @@ const isMenuItemObject = (item: SelectMenuItem): item is Exclude<SelectMenuItem,
 
         <p>{{ stop.name }}</p>
       </li>
-    </ol>
+    </ol> -->
     <ol
       v-else-if="lineStopsQuery.isFetching.value"
       class="flex flex-col gap-2 px-2"

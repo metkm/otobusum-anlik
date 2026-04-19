@@ -65,7 +65,7 @@ defineExpose({
       <motion.ol
         v-if="data && (isDesktop ? focused : true)"
         class="flex flex-col flex-1 bg-default rounded-md mt-2 overflow-y-auto lg:max-h-72 text-sm invisible-scrollbar"
-        :exit="{ scale: 0.9, opacity: 0 }"
+        :exit="isDesktop ? { scale: 0.9, opacity: 0 } : undefined"
         :animate="{ scale: 1, opacity: 1 }"
         :initial="{ scale: 0.9, opacity: 0 }"
       >
