@@ -1,6 +1,5 @@
 import '../global.css'
 
-import { TrueSheetProvider } from '@lodev09/react-native-true-sheet'
 import { DarkTheme, DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { Stack } from 'expo-router'
@@ -36,21 +35,17 @@ import { persister, queryClient } from '@/api/client'
 // enableScreens(true)
 
 export const RootLayout = () => {
-  const [background, card] = useCSSVariable([
-    '--background-color-default',
-    '--background-color-muted',
-  ])
+  const background = useCSSVariable('--background-color-default')
 
   const colorScheme = useColorScheme()
-
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
   const theme: Theme = {
     ...baseTheme,
     colors: {
       ...baseTheme.colors,
-      background: background as string ?? baseTheme.colors.card,
-      card: card as string ?? baseTheme.colors.card,
+      background: background as string ?? baseTheme.colors.background,
+      card: background as string ?? baseTheme.colors.background,
     },
   }
 

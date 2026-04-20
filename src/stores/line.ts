@@ -42,19 +42,26 @@ import { City } from '@/types/city'
 
 interface LinesStore {
   linesByCity: Record<City, string[]>
+  routesByCity: Record<City, Record<string, string>>
+  lines: () => string[]
+  routes: () => Record<string, string>
   deleteLine: (code: string) => void
   addLine: (code: string) => void
-  lines: () => string[]
 }
 
 export const useLineStore = create(
   persist(
     immer<LinesStore>((set, get) => ({
       linesByCity: {
-        istanbul: ['KM12', 'KM13'],
+        istanbul: ['KM12'],
         izmir: [],
       },
+      routesByCity: {
+        istanbul: {},
+        izmir: {},
+      },
       lines: () => get().linesByCity[useFilterStore.getState().city],
+      routes: () => get().routesByCity[useFilterStore.getState().city],
       deleteLine: (code: string) => set((state) => {
         const city = useFilterStore.getState().city
         state.linesByCity[city] = state.linesByCity[city].filter(i => i !== code)
@@ -63,6 +70,9 @@ export const useLineStore = create(
         const city = useFilterStore.getState().city
         useThemeStore.getState().addTheme(code)
         state.linesByCity[city].push(code)
+      }),
+      setRoute: (routeCode: string) => set((state) => {
+        state.routes()[routeCode] = routeCode
       }),
     })),
     {

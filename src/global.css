@@ -17,6 +17,18 @@
     --color-bright-sun-900: #723911;
     --color-bright-sun-950: #431c05;
 
+    --color-mauve-50: #fafafa;
+    --color-mauve-100: #f3f1f3;
+    --color-mauve-200: #e7e4e7;
+    --color-mauve-300: #d7d0d7;
+    --color-mauve-400: #a89ea9;
+    --color-mauve-500: #79697b;
+    --color-mauve-600: #594c5b;
+    --color-mauve-700: #463947;
+    --color-mauve-800: #2a212c;
+    --color-mauve-900: #1d161e;
+    --color-mauve-950: #0c090c;
+
     @variant dark {
       --ui-bg: var(--color-mauve-900);
       --ui-bg-muted: var(--color-mauve-800);

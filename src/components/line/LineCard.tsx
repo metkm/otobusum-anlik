@@ -23,7 +23,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
   const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
 
   const { code } = useLine()
-  const { dataUpdatedAt, error, isFetching } = useLineBuses()
+  const { query: { dataUpdatedAt, error, isFetching } } = useLineBuses()
   const { remaining } = useCountdown(dataUpdatedAt, LINE_UPDATE_INTERVAL)
   const theme = useLineTheme(code)
 
@@ -36,22 +36,20 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
   return (
     <View
       className={cn('bg-default p-2 rounded-md', className)}
-      style={[{ backgroundColor: theme?.['ui-bg'] }, style]}
+      style={[{ backgroundColor: theme['ui-bg'] }, style]}
       {...props}
     >
       <View className="flex-row items-center justify-between pl-2">
         <View className="flex-row items-center gap-2">
           <UText className="font-semibold text-lg">{code}</UText>
 
-          {isFetching && <UActivityIndicator color={theme?.['ui-primary']} />}
-
-          {error
-            ? (
-                <UText className="text-error">{error.message}</UText>
-              )
-            : (
-                <UText className="text-xs text-muted">{`${remaining} sec to update`}</UText>
-              )}
+          {
+            isFetching
+              ? <UActivityIndicator color={theme?.['ui-primary']} />
+              : error
+                ? <UText className="text-error">{error.message}</UText>
+                : <UText className="text-xs text-muted">{`${remaining} sec to update`}</UText>
+          }
         </View>
 
         <View className="flex-row gap-2">

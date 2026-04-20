@@ -2,6 +2,8 @@
 import Lucide from '@react-native-vector-icons/lucide'
 import { Tabs } from 'expo-router'
 import { ComponentProps } from 'react'
+import { View } from 'react-native'
+import { cn } from 'tailwind-variants'
 import { useCSSVariable } from 'uniwind'
 
 import { i18n } from '@/translations/i18n'
@@ -43,12 +45,18 @@ export const TabsLayout = () => {
               // const icon = focused ? screen.icon : `${screen.icon}-filled`
 
               return (
-                <Lucide
-                  name={screen.icon as IconName}
-                  size={20}
-                  color={color as string}
-                  className="size-5"
-                />
+                <View className={cn(
+                  'px-3 py-0.5 rounded-md',
+                  focused ? 'bg-muted' : undefined,
+                )}
+                >
+                  <Lucide
+                    name={screen.icon as IconName}
+                    size={20}
+                    color={color as string}
+                    className="size-5"
+                  />
+                </View>
               )
             },
           }}

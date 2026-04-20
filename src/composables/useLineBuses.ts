@@ -17,5 +17,7 @@ export const useLineBuses = () => {
     refetchInterval: REFETCH_INTERVAL,
   })
 
-  return query
+  return {
+    query,
+  }
 }

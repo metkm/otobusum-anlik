@@ -10,12 +10,13 @@ import { City } from '@/types/city'
 import { createRandomTheme } from '@/utils/color'
 
 interface Scheme {
-  'ui-primary': string
   'ui-bg': string
   'ui-bg-muted': string
-  'ui-bg-elevated': string
+  'ui-text-muted': string
   'ui-text': string
   'ui-text-inverted': string
+  'ui-primary': string
+  'ui-error': string
   'ui-border': string
   'ui-border-muted': string
 }
@@ -46,22 +47,24 @@ export const useThemeStore = create(
         set((state) => {
           state.themesByCity[city][code] = {
             dark: {
-              'ui-primary': hexFromArgb(schemes.dark.primary),
               'ui-bg': hexFromArgb(schemes.dark.surface),
               'ui-bg-muted': hexFromArgb(palettes.neutral.tone(12)),
-              'ui-bg-elevated': hexFromArgb(palettes.neutral.tone(17)),
+              'ui-text-muted': hexFromArgb(palettes.neutral.tone(90)),
               'ui-text': hexFromArgb(schemes.dark.onSurface),
               'ui-text-inverted': hexFromArgb(schemes.dark.inverseOnSurface),
+              'ui-primary': hexFromArgb(schemes.dark.primary),
+              'ui-error': hexFromArgb(schemes.dark.error),
               'ui-border': hexFromArgb(schemes.dark.outline),
               'ui-border-muted': hexFromArgb(schemes.dark.outlineVariant),
             },
             light: {
-              'ui-primary': hexFromArgb(schemes.light.primary),
               'ui-bg': hexFromArgb(schemes.light.surface),
               'ui-bg-muted': hexFromArgb(palettes.neutral.tone(94)),
-              'ui-bg-elevated': hexFromArgb(palettes.neutral.tone(92)),
+              'ui-text-muted': hexFromArgb(palettes.neutral.tone(10)),
               'ui-text': hexFromArgb(schemes.light.onSurface),
               'ui-text-inverted': hexFromArgb(schemes.light.inverseOnSurface),
+              'ui-primary': hexFromArgb(schemes.light.primary),
+              'ui-error': hexFromArgb(schemes.light.error),
               'ui-border': hexFromArgb(schemes.light.outline),
               'ui-border-muted': hexFromArgb(schemes.light.outlineVariant),
             },
