@@ -18,7 +18,7 @@ export const USheet = ({ ref, children, ...props }: { ref: RefObject<TrueSheet |
       }}
       {...props}
     >
-      <GestureHandlerRootViewWithUniwind className="grow gap-2 pt-5 px-2">
+      <GestureHandlerRootViewWithUniwind className="grow gap-2 pt-5 pb-2 px-2">
         {children}
       </GestureHandlerRootViewWithUniwind>
     </TrueSheet>
