@@ -20,7 +20,7 @@ export const LineCard = ({ className, ...props }: ViewProps) => {
   const deleteLine = useLineStore(useShallow(state => state.deleteLine))
 
   const { code } = useLine()
-  const { isFetching, dataUpdatedAt } = useLineBuses()
+  const { dataUpdatedAt, error, isFetching } = useLineBuses()
   const { remaining } = useCountdown(dataUpdatedAt, LINE_UPDATE_INTERVAL)
 
   const sheet = useRef<TrueSheet>(null)
@@ -40,11 +40,11 @@ export const LineCard = ({ className, ...props }: ViewProps) => {
 
           {isFetching && <UActivityIndicator />}
 
-          <UText className="text-xs text-muted">
-            {remaining}
-            {' '}
-            sec to update
-          </UText>
+          {
+            error
+              ? <UText className="text-error">{error.message}</UText>
+              : <UText className="text-xs text-muted">{`${remaining} sec to update`}</UText>
+          }
         </View>
 
         <UButton

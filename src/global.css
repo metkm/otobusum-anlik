@@ -26,6 +26,7 @@
       --ui-text-inverted: var(--color-mauve-900);
 
       --ui-primary: var(--color-bright-sun-400);
+      --ui-error: var(--color-red-400);
     }
 
     @variant light {
@@ -37,6 +38,7 @@
       --ui-text-inverted: white;
 
       --ui-primary: var(--color-bright-sun-500);
+      --ui-error: var(--color-red-500);
     }
   }
 }
@@ -58,4 +60,5 @@
   --radius-3xl: calc(var(--ui-radius) * 6);
 
   --color-primary: var(--ui-primary);
+  --color-error: var(--ui-error);
 }
