@@ -47,7 +47,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
             isFetching
               ? <UActivityIndicator color={theme?.['ui-primary']} />
               : error
-                ? <UText className="text-error truncate shrink" numberOfLines={1}>Long LONG ERROR MESSAGE OMG SOLONG STOP PLS</UText>
+                ? <UText className="text-error truncate shrink" numberOfLines={1}>{error.message}</UText>
                 : <UText className="text-xs text-muted">{`${remaining} sec to update`}</UText>
           }
         </View>
