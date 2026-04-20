@@ -25,6 +25,20 @@ const ui = tv({
       solid: '',
       ghost: '',
     },
+    size: {
+      md: {
+        base: 'py-2 px-3',
+      },
+      lg: {
+        base: 'py-3 px-4',
+      },
+    },
+    block: {
+      true: 'justify-center',
+    },
+    square: {
+      true: '',
+    },
   },
   compoundVariants: [
     {
@@ -59,9 +73,19 @@ const ui = tv({
         label: 'text-default',
       },
     },
+    {
+      square: true,
+      size: 'md',
+      class: 'p-2',
+    },
+    {
+      square: true,
+      size: 'lg',
+      class: 'p-3',
+    },
   ],
   slots: {
-    base: 'flex flex-row items-center gap-1 py-2 px-3 rounded-md',
+    base: 'flex flex-row items-center gap-1 rounded-md',
     label: 'font-medium truncate shrink-1',
   },
 })
@@ -74,6 +98,8 @@ export const UButton = ({
   to,
   color = 'primary',
   variant = 'solid',
+  size = 'md',
+  block,
   children,
   ...props
 }: {
@@ -83,13 +109,15 @@ export const UButton = ({
   to?: Href
   color?: 'primary' | 'neutral'
   variant?: 'solid' | 'ghost'
+  size?: 'md' | 'lg'
+  block?: boolean
 } & BaseButtonProps) => {
   const handlePress: BaseButtonProps['onPress'] = () => {
     if (!to) return
     router.navigate(to)
   }
 
-  const { base: uiBase, label: uiLabel } = ui({ color, variant })
+  const { base: uiBase, label: uiLabel } = ui({ color, variant, size, block, square })
 
   const uiLabelStyle = useResolveClassNames(uiLabel())
 
@@ -97,7 +125,6 @@ export const UButton = ({
     <StyledBaseButton
       className={cn(
         uiBase(),
-        square ? 'p-2' : 'py-2 px-3',
         className,
       )}
       onPress={handlePress}
@@ -114,7 +141,10 @@ export const UButton = ({
       {children}
 
       {label && (
-        <UText className={uiLabel()} numberOfLines={1}>
+        <UText
+          className={uiLabel()}
+          numberOfLines={1}
+        >
           {label}
         </UText>
       )}

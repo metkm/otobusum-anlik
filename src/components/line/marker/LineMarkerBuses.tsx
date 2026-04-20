@@ -1,4 +1,4 @@
-import { GeoJSONSource, Images, Layer } from '@maplibre/maplibre-react-native'
+import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibre-react-native'
 import Lucide from '@react-native-vector-icons/lucide'
 // eslint-disable-next-line import/no-unresolved
 import { Feature } from 'geojson'
@@ -10,7 +10,7 @@ import { useLineTheme } from '@/composables/useLineTheme'
 export const LineMarkerBuses = () => {
   const { code } = useLine()
   const { data } = useLineBuses()
-  const theme = useLineTheme()
+  const theme = useLineTheme(code)
 
   if (!data)
     return

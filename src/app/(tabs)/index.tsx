@@ -43,6 +43,7 @@ export const HomeScreen = () => {
           square
           to="/search"
           color="neutral"
+          size="lg"
         />
 
         <LineCards />

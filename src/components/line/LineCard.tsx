@@ -25,7 +25,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
   const { code } = useLine()
   const { dataUpdatedAt, error, isFetching } = useLineBuses()
   const { remaining } = useCountdown(dataUpdatedAt, LINE_UPDATE_INTERVAL)
-  const theme = useLineTheme()
+  const theme = useLineTheme(code)
 
   const sheet = useRef<TrueSheet>(null)
 
@@ -72,12 +72,19 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
           />
         </View>
 
-        <USheet ref={sheet} detents={['auto']}>
+        <USheet
+          ref={sheet}
+          detents={['auto']}
+          backgroundColor={theme?.['ui-bg']}
+        >
           <UButton
             label="Add to group"
             color="neutral"
             icon="circle-plus"
             square
+            style={{ backgroundColor: theme?.['ui-bg-muted'] }}
+            size="lg"
+            block
           />
 
           <UButton
@@ -86,6 +93,9 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
             icon="trash-2"
             square
             onPress={() => deleteLine(code)}
+            style={{ backgroundColor: theme?.['ui-bg-muted'] }}
+            size="lg"
+            block
           />
         </USheet>
       </View>
