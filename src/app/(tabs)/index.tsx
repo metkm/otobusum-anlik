@@ -5,9 +5,7 @@
 // // import { Region } from 'react-native-maps'
 // import { useSharedValue } from 'react-native-reanimated'
 
-import { Images } from '@maplibre/maplibre-react-native'
 // import { Bus } from 'lucide-react-native'
-import Lucide from '@react-native-vector-icons/lucide'
 import { View } from 'react-native'
 
 import { LineCards } from '@/components/line/LineCards'
@@ -32,19 +30,9 @@ import { TheMap } from '../../components/map/TheMap'
 // import { useSettingsStore } from '@/stores/settings'
 
 export const HomeScreen = () => {
-  // const addLine = useLinesStore(state => state.addLine)
-
-  const busImageSource = Lucide.getImageSourceSync('bus-front', 20, 'red')
-
   return (
     <>
       <TheMap>
-        <Images
-          images={{
-            bus: busImageSource.uri,
-          }}
-        />
-
         <LineMarkers />
       </TheMap>
 

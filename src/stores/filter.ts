@@ -1,32 +1,37 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from 'zustand'
-import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
 
-// import { queryClient } from '@/api/client'
-// import { RouteCode } from '@/api/getAllRoutes'
-// import { getLineBusLocations } from '@/api/getLineBusLocations'
-import { Cities } from '@/types/cities'
-// import { Direction } from '@/types/timetable'
+import { City } from '@/types/city'
 
 export interface FiltersStore {
   // selectedRoutes: Record<string, RouteCode>
   // selectedGroup?: string
-  city: Cities
+  city: City
+  hiddenLines: string[]
+  toggleLineHidden: (code: string) => void
 }
 
-export const useFiltersStore = create(
-  subscribeWithSelector(
-    persist<FiltersStore>(
-      () => ({
-        // selectedRoutes: {},
-        // selectedGroup: undefined,
-        city: 'istanbul',
+export const useFilterStore = create(
+  persist(
+    immer<FiltersStore>((set, _get) => ({
+      city: 'istanbul',
+      hiddenLines: [],
+      toggleLineHidden: (code: string) => set((state) => {
+        const i = state.hiddenLines.indexOf(code)
+        if (i === -1) {
+          state.hiddenLines.push(code)
+        } else {
+          state.hiddenLines.splice(i, 1)
+        }
       }),
-      {
-        name: 'filter-storage',
-        storage: createJSONStorage(() => AsyncStorage),
-      },
+    }),
     ),
+    {
+      name: 'filter-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+    },
   ),
 )
 

@@ -35,14 +35,10 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
-import { useFiltersStore } from './filters'
+import { useFilterStore } from './filter'
+import { useThemeStore } from './theme'
 
-export const Cities = {
-  ISTANBUL: 'istanbul',
-  IZMIR: 'izmir',
-} as const
-
-type City = typeof Cities[keyof typeof Cities]
+import { City } from '@/types/city'
 
 interface LinesStore {
   linesByCity: Record<City, string[]>
@@ -58,13 +54,14 @@ export const useLineStore = create(
         istanbul: ['KM12', 'KM13'],
         izmir: [],
       },
-      lines: () => get().linesByCity[useFiltersStore.getState().city],
+      lines: () => get().linesByCity[useFilterStore.getState().city],
       deleteLine: (code: string) => set((state) => {
-        const city = useFiltersStore.getState().city
+        const city = useFilterStore.getState().city
         state.linesByCity[city] = state.linesByCity[city].filter(i => i !== code)
       }),
       addLine: (code: string) => set((state) => {
-        const city = useFiltersStore.getState().city
+        const city = useFilterStore.getState().city
+        useThemeStore.getState().addTheme(code)
         state.linesByCity[city].push(code)
       }),
     })),

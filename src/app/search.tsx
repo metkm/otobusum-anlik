@@ -60,7 +60,7 @@ export const SearchScreen = () => {
         : (
             <View className="grow justify-center items-center">
               {error
-                ? <UText>{error.message}</UText>
+                ? <UText className="text-error">{error.message}</UText>
                 : isSuccess
                   ? <UText>No results found!</UText>
                   : <UText>Search Something</UText>}

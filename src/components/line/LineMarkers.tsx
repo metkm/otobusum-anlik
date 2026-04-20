@@ -1,16 +1,20 @@
 import { useShallow } from 'zustand/react/shallow'
 
-import { LineMarkersBuses } from './markers/LineMarkersBuses'
+import { LineMarkerBuses } from './marker/LineMarkerBuses'
 
 import { LineContext } from '@/composables/useLine'
+import { useFilterStore } from '@/stores/filter'
 import { useLineStore } from '@/stores/line'
 
 export const LineMarkers = () => {
-  const lines = useLineStore(useShallow(state => state.lines()))
+  const _lines = useLineStore(useShallow(state => state.lines()))
+  const hiddenLines = useFilterStore(useShallow(state => state.hiddenLines))
+
+  const lines = _lines.filter(l => !hiddenLines.includes(l))
 
   return lines.map(code => (
     <LineContext value={code} key={code}>
-      <LineMarkersBuses />
+      <LineMarkerBuses />
     </LineContext>
   ))
 

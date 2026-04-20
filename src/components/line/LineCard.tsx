@@ -12,16 +12,20 @@ import { USheet } from '../u/USheet'
 import { useCountdown } from '@/composables/useCountdown'
 import { useLine } from '@/composables/useLine'
 import { useLineBuses } from '@/composables/useLineBuses'
+import { useLineTheme } from '@/composables/useLineTheme'
 import { LINE_UPDATE_INTERVAL } from '@/constants/app'
+import { useFilterStore } from '@/stores/filter'
 import { useLineStore } from '@/stores/line'
 import { cn } from '@/utils/cn'
 
-export const LineCard = ({ className, ...props }: ViewProps) => {
+export const LineCard = ({ className, style, ...props }: ViewProps) => {
   const deleteLine = useLineStore(useShallow(state => state.deleteLine))
+  const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
 
   const { code } = useLine()
   const { dataUpdatedAt, error, isFetching } = useLineBuses()
   const { remaining } = useCountdown(dataUpdatedAt, LINE_UPDATE_INTERVAL)
+  const theme = useLineTheme()
 
   const sheet = useRef<TrueSheet>(null)
 
@@ -32,32 +36,43 @@ export const LineCard = ({ className, ...props }: ViewProps) => {
   return (
     <View
       className={cn('bg-default p-2 rounded-md', className)}
+      style={[{ backgroundColor: theme?.['ui-bg'] }, style]}
       {...props}
     >
       <View className="flex-row items-center justify-between pl-2">
         <View className="flex-row items-center gap-2">
           <UText className="font-semibold text-lg">{code}</UText>
 
-          {isFetching && <UActivityIndicator />}
+          {isFetching && <UActivityIndicator color={theme?.['ui-primary']} />}
 
-          {
-            error
-              ? <UText className="text-error">{error.message}</UText>
-              : <UText className="text-xs text-muted">{`${remaining} sec to update`}</UText>
-          }
+          {error
+            ? (
+                <UText className="text-error">{error.message}</UText>
+              )
+            : (
+                <UText className="text-xs text-muted">{`${remaining} sec to update`}</UText>
+              )}
         </View>
 
-        <UButton
-          icon="menu"
-          onPress={presentMenu}
-          variant="ghost"
-          color="neutral"
-        />
+        <View className="flex-row gap-2">
+          <UButton
+            icon="eye"
+            onPress={() => toggleLineHidden(code)}
+            variant="ghost"
+            color="neutral"
+            square
+          />
 
-        <USheet
-          ref={sheet}
-          detents={['auto']}
-        >
+          <UButton
+            icon="menu"
+            onPress={presentMenu}
+            variant="ghost"
+            color="neutral"
+            square
+          />
+        </View>
+
+        <USheet ref={sheet} detents={['auto']}>
           <UButton
             label="Add to group"
             color="neutral"

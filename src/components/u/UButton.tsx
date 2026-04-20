@@ -97,7 +97,7 @@ export const UButton = ({
     <StyledBaseButton
       className={cn(
         uiBase(),
-        square ? 'p-3' : 'py-2 px-3',
+        square ? 'p-2' : 'py-2 px-3',
         className,
       )}
       onPress={handlePress}

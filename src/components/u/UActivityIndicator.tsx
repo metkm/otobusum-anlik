@@ -1,8 +1,13 @@
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, ActivityIndicatorProps } from 'react-native'
 import { useCSSVariable } from 'uniwind'
 
-export const UActivityIndicator = () => {
+export const UActivityIndicator = (props: ActivityIndicatorProps) => {
   const bgColor = useCSSVariable('--ui-text')
 
-  return <ActivityIndicator color={bgColor as string} />
+  return (
+    <ActivityIndicator
+      color={bgColor as string}
+      {...props}
+    />
+  )
 }
