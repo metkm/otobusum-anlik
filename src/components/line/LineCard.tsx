@@ -40,14 +40,14 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
       {...props}
     >
       <View className="flex-row items-center justify-between pl-2">
-        <View className="flex-row items-center gap-2">
+        <View className="flex-row items-center gap-2 shrink">
           <UText className="font-semibold text-lg">{code}</UText>
 
           {
             isFetching
               ? <UActivityIndicator color={theme?.['ui-primary']} />
               : error
-                ? <UText className="text-error">{error.message}</UText>
+                ? <UText className="text-error truncate shrink" numberOfLines={1}>Long LONG ERROR MESSAGE OMG SOLONG STOP PLS</UText>
                 : <UText className="text-xs text-muted">{`${remaining} sec to update`}</UText>
           }
         </View>
