@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { LineCard } from './LineCard'
 
+import { LineContext } from '@/composables/useLine'
 import { useLineStore } from '@/stores/line'
 
 export const LineCards = () => {
@@ -25,7 +26,14 @@ export const LineCards = () => {
     <FlatList
       ref={flatlistRef}
       data={lines}
-      renderItem={({ item }) => <LineCard lineCode={item} style={{ width: lineWidth }} className={lines.length < 2 ? 'rounded-none' : ''} />}
+      renderItem={({ item }) => (
+        <LineContext value={item}>
+          <LineCard
+            style={{ width: lineWidth }}
+            className={lines.length < 2 ? 'rounded-none' : ''}
+          />
+        </LineContext>
+      )}
       horizontal
       contentContainerClassName={`gap-2 min-w-full ${isOneElement ? 'p-0' : 'pb-2 px-2'}`}
       keyExtractor={item => item}

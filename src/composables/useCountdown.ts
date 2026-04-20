@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { lineUpdateInterval } from '@/constants/app'
+import { LINE_UPDATE_INTERVAL } from '@/constants/app'
 
-export const useCountdown = (from: number = Date.now(), duration: number = lineUpdateInterval) => {
-  const [count, setCount] = useState(0)
+export const useCountdown = (from: number = Date.now(), duration: number = LINE_UPDATE_INTERVAL) => {
+  const [remaining, setCount] = useState(0)
   const _from = useRef(from)
 
   const loop = useCallback(() => {
     setCount(() => {
       const diff = Date.now() - _from.current
-      return Math.max(0, duration - diff)
+      return Math.max(0, Math.floor((duration - diff) / 1000))
     })
 
     return setTimeout(loop, 1_000)
@@ -29,6 +29,6 @@ export const useCountdown = (from: number = Date.now(), duration: number = lineU
   }, [from])
 
   return {
-    count,
+    remaining,
   }
 }

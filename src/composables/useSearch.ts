@@ -13,8 +13,6 @@ export const isStop = (item: BusStop | BusLine): item is BusStop => {
 }
 
 export const useSearch = (q: string) => {
-  console.log(process.env.EXPO_PUBLIC_BASE_URL)
-
   const query = useQuery({
     queryKey: ['search', q],
     queryFn: arg => ky.get<SearchResponse>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/search`, {

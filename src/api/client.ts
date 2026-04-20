@@ -2,8 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
 import { QueryCache, QueryClient } from '@tanstack/react-query'
 
-import { notify } from '@/utils/notify'
-
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -11,12 +9,12 @@ export const queryClient = new QueryClient({
     },
   },
   queryCache: new QueryCache({
-    onError: (_, query) => {
-      let message = query.meta?.errorMessage as string | undefined
-      if (!message) return
+    // onError: (_, query) => {
+    //   let message = query.meta?.errorMessage as string | undefined
+    //   if (!message) return
 
-      notify(message)
-    },
+    //   notify(message)
+    // },
   }),
 })
 

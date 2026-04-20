@@ -1,1 +1,1 @@
-export const lineUpdateInterval = 50_000
+export const LINE_UPDATE_INTERVAL = 50_000

@@ -2,12 +2,17 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { LineMarkersBuses } from './markers/LineMarkersBuses'
 
+import { LineContext } from '@/composables/useLine'
 import { useLineStore } from '@/stores/line'
 
 export const LineMarkers = () => {
   const lines = useLineStore(useShallow(state => state.lines()))
 
-  return lines.map(code => <LineMarkersBuses key={code} code={code} />)
+  return lines.map(code => (
+    <LineContext value={code} key={code}>
+      <LineMarkersBuses />
+    </LineContext>
+  ))
 
   // return [1, 2, 3, 4, 5].map(i => (
   //   <GeoJSONSource

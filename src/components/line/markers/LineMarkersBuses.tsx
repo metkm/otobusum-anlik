@@ -4,8 +4,8 @@ import { Feature } from 'geojson'
 
 import { useLineBuses } from '@/composables/useLineBuses'
 
-export const LineMarkersBuses = ({ code }: { code: string }) => {
-  const { data } = useLineBuses(code)
+export const LineMarkersBuses = () => {
+  const { data } = useLineBuses()
 
   if (!data)
     return

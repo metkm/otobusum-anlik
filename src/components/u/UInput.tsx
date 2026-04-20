@@ -1,7 +1,9 @@
 import Lucide from '@react-native-vector-icons/lucide'
-import { ActivityIndicator, TextInputProps, View } from 'react-native'
+import { TextInputProps, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { useCSSVariable } from 'uniwind'
+
+import { UActivityIndicator } from './UActivityIndicator'
 
 import { IconName } from '@/types/ui'
 import { cn } from '@/utils/cn'
@@ -15,7 +17,7 @@ export const UInput = ({
   const bgColor = useCSSVariable('--ui-text')
 
   const _icon = loading
-    ? <ActivityIndicator size={20} color={bgColor as string} />
+    ? <UActivityIndicator />
     : icon
       ? <Lucide name={icon} size={20} color={bgColor as string} />
       : undefined

@@ -21,6 +21,7 @@
       --ui-bg: var(--color-mauve-900);
       --ui-bg-muted: var(--color-mauve-800);
       
+      --ui-text-muted: var(--color-mauve-400);
       --ui-text: var(--color-mauve-200);
       --ui-text-inverted: var(--color-mauve-900);
 
@@ -31,6 +32,7 @@
       --ui-bg: white;
       --ui-bg-muted: var(--color-mauve-50);
 
+      --ui-text-muted: var(--color-mauve-500);
       --ui-text: var(--color-mauve-700);
       --ui-text-inverted: white;
 
@@ -43,6 +45,7 @@
   --background-color-default: var(--ui-bg);
   --background-color-muted: var(--ui-bg-muted);
 
+  --text-color-muted: var(--ui-text-muted);
   --text-color-default: var(--ui-text);
   --text-color-inverted: var(--ui-text-inverted);
 
