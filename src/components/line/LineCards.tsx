@@ -34,9 +34,10 @@ export const LineCards = () => {
           />
         </LineContext>
       )}
-      horizontal
-      contentContainerClassName={`gap-2 min-w-full ${isOneElement ? 'p-0' : 'pb-2 px-2'}`}
+      contentContainerClassName={`gap-2 ${isOneElement ? 'p-0' : 'pb-2 px-2'}`}
       keyExtractor={item => item}
+      snapToInterval={lineWidth - spacing}
+      horizontal
     />
   )
 }
