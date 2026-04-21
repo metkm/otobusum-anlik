@@ -33,9 +33,7 @@ export const LineMarkerBuses = () => {
 
   return (
     <>
-      <Images
-        images={images}
-      />
+      <Images images={images} />
 
       <GeoJSONSource
         data={{
@@ -43,10 +41,10 @@ export const LineMarkerBuses = () => {
           features,
         }}
       >
-
         <Layer
           type="circle"
-          paint={{ 'circle-radius': 20, 'circle-color': theme?.['ui-primary'] }}
+          paint={{ 'circle-radius': 16, 'circle-color': theme?.['ui-primary'] }}
+          layerIndex={12}
         />
 
         <Layer
@@ -59,6 +57,7 @@ export const LineMarkerBuses = () => {
             'icon-opacity-transition': { duration: 0 },
             'icon-color-transition': { duration: 0 },
           }}
+          layerIndex={13}
         />
       </GeoJSONSource>
     </>

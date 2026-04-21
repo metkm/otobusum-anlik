@@ -31,10 +31,12 @@ export const useLineRoute = () => {
   })
 
   const route = query.data?.find(r => r.code === routeCode)
+  const direction = routeCode.split('_')[1] || 'G' as Direction
 
   return {
     query,
     routeCode,
     route,
+    direction,
   }
 }

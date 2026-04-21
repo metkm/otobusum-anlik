@@ -29,12 +29,13 @@ export const defaultTheme: Schemes = {
   },
 }
 
-export const useLineTheme = (code: string) => {
+export const useLineTheme = (code?: string) => {
   const colorScheme = useColorScheme()
+  const themes = useThemeStore(useShallow(state => state.themes()))
   const prefer = colorScheme === 'unspecified' ? 'dark' : colorScheme
 
-  const themes = useThemeStore(useShallow(state => state.themes()))
-  const theme = themes[code]?.[prefer]
+  if (!code)
+    return
 
-  return theme ?? defaultTheme[prefer]
+  return themes[code]?.[prefer]
 }

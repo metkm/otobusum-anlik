@@ -14,7 +14,7 @@
     "@expo/metro-runtime": "~55.0.9",
     "@gorhom/bottom-sheet": "^5.2.9",
     "@lodev09/react-native-true-sheet": "^3.10.0",
-    "@maplibre/maplibre-react-native": "^11.0.0-beta.30",
+    "@maplibre/maplibre-react-native": "^11.0.1",
     "@material/material-color-utilities": "^0.4.0",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-community/netinfo": "11.5.2",

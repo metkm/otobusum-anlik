@@ -1,17 +1,20 @@
-// import Ionicons from '@react-native-vector-icons/ionicons'
 import Lucide from '@react-native-vector-icons/lucide'
 import { Href, router } from 'expo-router'
-import React, { ComponentProps } from 'react'
+import React, { ComponentProps, use } from 'react'
+import { ViewStyle } from 'react-native'
 import { BaseButton } from 'react-native-gesture-handler'
 import { tv } from 'tailwind-variants'
-import { useResolveClassNames, withUniwind } from 'uniwind'
+import { withUniwind } from 'uniwind'
 
 import { UText } from './UText'
 
+import { LineContext } from '@/composables/useLine'
+import { useLineTheme } from '@/composables/useLineTheme'
 import { IconName } from '@/types/ui'
 import { cn } from '@/utils/cn'
 
 const StyledBaseButton = withUniwind(BaseButton)
+const StyledLucide = withUniwind(Lucide)
 
 type BaseButtonProps = ComponentProps<typeof StyledBaseButton>
 
@@ -24,6 +27,7 @@ const ui = tv({
     variant: {
       solid: '',
       ghost: '',
+      soft: '',
     },
     size: {
       md: {
@@ -47,6 +51,13 @@ const ui = tv({
       className: {
         base: 'bg-primary',
         label: 'text-inverted',
+      },
+    },
+    {
+      color: 'neutral',
+      variant: 'soft',
+      className: {
+        base: 'bg-muted',
       },
     },
     {
@@ -101,6 +112,7 @@ export const UButton = ({
   size = 'md',
   block,
   children,
+  style,
   ...props
 }: {
   label?: string
@@ -108,10 +120,13 @@ export const UButton = ({
   square?: boolean
   to?: Href
   color?: 'primary' | 'neutral'
-  variant?: 'solid' | 'ghost'
+  variant?: 'solid' | 'ghost' | 'soft'
   size?: 'md' | 'lg'
   block?: boolean
 } & BaseButtonProps) => {
+  const code = use(LineContext)
+  const lineTheme = useLineTheme(code)
+
   const handlePress: BaseButtonProps['onPress'] = () => {
     if (!to) return
     router.navigate(to)
@@ -119,7 +134,15 @@ export const UButton = ({
 
   const { base: uiBase, label: uiLabel } = ui({ color, variant, size, block, square })
 
-  const uiLabelStyle = useResolveClassNames(uiLabel())
+  const themeStyle: ViewStyle | undefined = lineTheme
+    ? {
+        backgroundColor: variant === 'solid'
+          ? lineTheme['ui-primary']
+          : variant === 'soft'
+            ? lineTheme['ui-bg-muted']
+            : lineTheme['ui-bg'],
+      }
+    : undefined
 
   return (
     <StyledBaseButton
@@ -128,13 +151,14 @@ export const UButton = ({
         className,
       )}
       onPress={handlePress}
+      style={[themeStyle, style]}
       {...props}
     >
       {icon && (
-        <Lucide
+        <StyledLucide
           name={icon}
           size={20}
-          color={uiLabelStyle.color}
+          className={uiLabel()}
         />
       )}
 

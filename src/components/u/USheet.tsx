@@ -3,7 +3,7 @@ import { RefObject } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useCSSVariable, withUniwind } from 'uniwind'
 
-const GestureHandlerRootViewWithUniwind = withUniwind(GestureHandlerRootView)
+const StyledGestureHandlerRootView = withUniwind(GestureHandlerRootView)
 
 export const USheet = ({ ref, children, ...props }: { ref: RefObject<TrueSheet | null> } & TrueSheetProps) => {
   const backgroundColor = useCSSVariable('--ui-bg') as string
@@ -18,9 +18,9 @@ export const USheet = ({ ref, children, ...props }: { ref: RefObject<TrueSheet |
       }}
       {...props}
     >
-      <GestureHandlerRootViewWithUniwind className="grow gap-2 pt-5 pb-2 px-2">
+      <StyledGestureHandlerRootView className="grow gap-2 pt-5 pb-2 px-2">
         {children}
-      </GestureHandlerRootViewWithUniwind>
+      </StyledGestureHandlerRootView>
     </TrueSheet>
   )
 }

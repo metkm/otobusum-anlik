@@ -12,6 +12,7 @@ import { USheet } from '../u/USheet'
 import { useCountdown } from '@/composables/useCountdown'
 import { useLine } from '@/composables/useLine'
 import { useLineBuses } from '@/composables/useLineBuses'
+import { useLineRoute } from '@/composables/useLineRoutes'
 import { useLineTheme } from '@/composables/useLineTheme'
 import { LINE_UPDATE_INTERVAL } from '@/constants/app'
 import { useFilterStore } from '@/stores/filter'
@@ -25,6 +26,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
   const { code } = useLine()
   const { query: { dataUpdatedAt, error, isFetching } } = useLineBuses()
   const { remaining } = useCountdown(dataUpdatedAt, LINE_UPDATE_INTERVAL)
+  const { route, routeCode } = useLineRoute()
   const theme = useLineTheme(code)
 
   const sheet = useRef<TrueSheet>(null)
@@ -35,8 +37,8 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
 
   return (
     <View
-      className={cn('bg-default p-2 rounded-md', className)}
-      style={[{ backgroundColor: theme['ui-bg'] }, style]}
+      className={cn('bg-default p-2 rounded-md gap-2', className)}
+      style={[{ backgroundColor: theme?.['ui-bg'] }, style]}
       {...props}
     >
       <View className="flex-row items-center justify-between pl-2">
@@ -44,7 +46,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
           <UText className="font-semibold text-lg">{code}</UText>
 
           {
-            isFetching
+            !isFetching
               ? <UActivityIndicator color={theme?.['ui-primary']} />
               : error
                 ? <UText className="text-error truncate shrink" numberOfLines={1}>{error.message}</UText>
@@ -97,6 +99,12 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
           />
         </USheet>
       </View>
+
+      <UButton
+        label={route?.name || routeCode}
+        variant="soft"
+        color="neutral"
+      />
     </View>
   )
 }

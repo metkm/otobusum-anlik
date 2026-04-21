@@ -1,6 +1,6 @@
 import { createContext, use } from 'react'
 
-export const LineContext = createContext<string | null>(null)
+export const LineContext = createContext<string | undefined>(undefined)
 
 export const useLine = () => {
   const context = use(LineContext)
