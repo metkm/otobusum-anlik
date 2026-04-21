@@ -9,7 +9,7 @@ import { useLineTheme } from '@/composables/useLineTheme'
 
 export const LineMarkerBuses = () => {
   const { code } = useLine()
-  const { data } = useLineBuses()
+  const { query: { data } } = useLineBuses()
   const theme = useLineTheme(code)
 
   if (!data)
