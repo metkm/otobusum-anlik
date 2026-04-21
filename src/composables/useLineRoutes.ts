@@ -28,6 +28,7 @@ export const useLineRoutes = () => {
     queryKey: ['line', code, 'routes'],
     queryFn: () => ky.get<LineRoute[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${code}`).json(),
     staleTime: Infinity,
+    meta: { persist: true },
   })
 
   const route = query.data?.find(r => r.code === routeCode)
