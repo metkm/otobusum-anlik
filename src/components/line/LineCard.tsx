@@ -13,6 +13,7 @@ import { useCountdown } from '@/composables/useCountdown'
 import { useLine } from '@/composables/useLine'
 import { useLineBuses } from '@/composables/useLineBuses'
 import { useLineRoutes } from '@/composables/useLineRoutes'
+import { useLineStops } from '@/composables/useLineStops'
 import { useLineTheme } from '@/composables/useLineTheme'
 import { LINE_UPDATE_INTERVAL } from '@/constants/app'
 import { useFilterStore } from '@/stores/filter'
@@ -27,6 +28,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
   const { code } = useLine()
   const { query: lineQuery } = useLineBuses()
   const { query: routesQuery, route, routeCode } = useLineRoutes()
+  const { query: lineStopsQuery } = useLineStops()
 
   const { remaining } = useCountdown(lineQuery.dataUpdatedAt, LINE_UPDATE_INTERVAL)
   const theme = useLineTheme(code)
@@ -67,7 +69,6 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
             onPress={() => toggleLineHidden(code)}
             variant="ghost"
             color="neutral"
-            square
           />
 
           <UButton
@@ -75,7 +76,6 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
             onPress={presentMenu}
             variant="ghost"
             color="neutral"
-            square
           />
         </View>
 
@@ -107,6 +107,22 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
         </USheet>
       </View>
 
+      <FlatList
+        data={lineStopsQuery.data || []}
+        renderItem={({ item }) => (
+          <View className="flex-row items-center gap-2">
+            <View
+              className="size-10 rounded-full border-2 border-muted"
+              style={{ borderColor: theme?.['ui-primary'] }}
+            />
+            <UText className="text-xs">{item.name}</UText>
+          </View>
+        )}
+        className="max-h-24"
+        contentContainerClassName="px-2 gap-2"
+        fadingEdgeLength={10}
+      />
+
       <UButton
         label={route?.name || routeCode}
         variant="soft"
@@ -124,26 +140,24 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
           >
             <FlatList
               data={routesQuery.data}
-              renderItem={({ item }) => {
-                return (
-                  <UButton
-                    label={item.name}
-                    variant="ghost"
-                    square
-                    onPress={() => setRoute(code, item.code)}
+              renderItem={({ item }) => (
+                <UButton
+                  label={item.name}
+                  variant="ghost"
+                  square
+                  onPress={() => setRoute(code, item.code)}
+                >
+                  <UText
+                    className="px-2 py-1 font-medium rounded-md w-20 text-center"
+                    style={{
+                      backgroundColor: routeCode === item.code ? theme?.['ui-primary'] : theme?.['ui-bg-muted'],
+                      color: routeCode === item.code ? theme?.['ui-text-inverted'] : theme?.['ui-text'],
+                    }}
                   >
-                    <UText
-                      className="px-2 py-1 font-medium rounded-md w-20 text-center"
-                      style={{
-                        backgroundColor: routeCode === item.code ? theme?.['ui-primary'] : theme?.['ui-bg-muted'],
-                        color: routeCode === item.code ? theme?.['ui-text-inverted'] : theme?.['ui-text'],
-                      }}
-                    >
-                      {item.code.split('_').slice(1).join('_')}
-                    </UText>
-                  </UButton>
-                )
-              }}
+                    {item.code.split('_').slice(1).join('_')}
+                  </UText>
+                </UButton>
+              )}
               contentContainerClassName="gap-2"
             />
           </USheet>

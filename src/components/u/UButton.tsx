@@ -31,7 +31,7 @@ const ui = tv({
     },
     size: {
       md: {
-        base: 'py-2 px-3',
+        base: 'py-1.5 px-2',
       },
       lg: {
         base: 'py-3 px-4',
