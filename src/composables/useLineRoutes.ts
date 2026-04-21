@@ -20,7 +20,7 @@ export interface LineRoute {
   path?: { lat: number, lng: number }[]
 }
 
-export const useLineRoute = () => {
+export const useLineRoutes = () => {
   const { code } = useLine()
   const routeCode = useLineStore(useShallow(state => state.routes()[code])) || `${code}_G_D0`
 

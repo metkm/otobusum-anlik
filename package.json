@@ -28,6 +28,7 @@
     "@vis.gl/react-google-maps": "^1.8.3",
     "clsx": "^2.1.1",
     "expo": "^55.0.13",
+    "expo-build-properties": "~55.0.13",
     "expo-constants": "~55.0.13",
     "expo-crypto": "~55.0.14",
     "expo-dev-client": "~55.0.24",

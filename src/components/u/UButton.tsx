@@ -1,7 +1,7 @@
 import Lucide from '@react-native-vector-icons/lucide'
 import { Href, router } from 'expo-router'
 import React, { ComponentProps, use } from 'react'
-import { ViewStyle } from 'react-native'
+import { TextStyle, ViewStyle } from 'react-native'
 import { BaseButton } from 'react-native-gesture-handler'
 import { tv } from 'tailwind-variants'
 import { withUniwind } from 'uniwind'
@@ -54,17 +54,10 @@ const ui = tv({
       },
     },
     {
-      color: 'neutral',
+      color: 'primary',
       variant: 'soft',
       className: {
-        base: 'bg-muted',
-      },
-    },
-    {
-      color: 'neutral',
-      variant: 'solid',
-      className: {
-        base: 'bg-muted',
+        base: 'bg-primary/10',
         label: 'text-default',
       },
     },
@@ -74,6 +67,22 @@ const ui = tv({
       className: {
         base: 'bg-transparent',
         label: 'text-primary',
+      },
+    },
+    {
+      color: 'neutral',
+      variant: 'soft',
+      className: {
+        base: 'bg-muted',
+        label: 'text-default',
+      },
+    },
+    {
+      color: 'neutral',
+      variant: 'solid',
+      className: {
+        base: 'bg-muted',
+        label: 'text-default',
       },
     },
     {
@@ -134,14 +143,12 @@ export const UButton = ({
 
   const { base: uiBase, label: uiLabel } = ui({ color, variant, size, block, square })
 
-  const themeStyle: ViewStyle | undefined = lineTheme
-    ? {
-        backgroundColor: variant === 'solid'
-          ? lineTheme['ui-primary']
-          : variant === 'soft'
-            ? lineTheme['ui-bg-muted']
-            : lineTheme['ui-bg'],
-      }
+  const themeStyle: ViewStyle & TextStyle | undefined = lineTheme
+    ? variant === 'solid'
+      ? { backgroundColor: lineTheme['ui-primary'], color: lineTheme['ui-text-inverted'] }
+      : variant === 'soft'
+        ? { backgroundColor: lineTheme['ui-bg-muted'], color: lineTheme['ui-text'] }
+        : { backgroundColor: lineTheme['ui-bg'], color: lineTheme['ui-text'] }
     : undefined
 
   return (
@@ -159,6 +166,7 @@ export const UButton = ({
           name={icon}
           size={20}
           className={uiLabel()}
+          color={themeStyle?.color}
         />
       )}
 
@@ -168,6 +176,7 @@ export const UButton = ({
         <UText
           className={uiLabel()}
           numberOfLines={1}
+          style={themeStyle ? { color: themeStyle?.color } : undefined}
         >
           {label}
         </UText>

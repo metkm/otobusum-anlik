@@ -47,7 +47,6 @@ export const SearchScreen = () => {
                     color="neutral"
                     onPress={() => {
                       if (isStop(item)) return
-
                       addLine(item.code)
                     }}
                   >

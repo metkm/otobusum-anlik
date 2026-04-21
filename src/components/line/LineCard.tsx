@@ -1,6 +1,6 @@
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
-import { View, ViewProps } from 'react-native'
+import { View, ViewProps, FlatList } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UText } from '@/components/u/UText'
@@ -12,7 +12,7 @@ import { USheet } from '../u/USheet'
 import { useCountdown } from '@/composables/useCountdown'
 import { useLine } from '@/composables/useLine'
 import { useLineBuses } from '@/composables/useLineBuses'
-import { useLineRoute } from '@/composables/useLineRoutes'
+import { useLineRoutes } from '@/composables/useLineRoutes'
 import { useLineTheme } from '@/composables/useLineTheme'
 import { LINE_UPDATE_INTERVAL } from '@/constants/app'
 import { useFilterStore } from '@/stores/filter'
@@ -22,17 +22,24 @@ import { cn } from '@/utils/cn'
 export const LineCard = ({ className, style, ...props }: ViewProps) => {
   const deleteLine = useLineStore(useShallow(state => state.deleteLine))
   const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
+  const setRoute = useLineStore(useShallow(state => state.setRoute))
 
   const { code } = useLine()
-  const { query: { dataUpdatedAt, error, isFetching } } = useLineBuses()
-  const { remaining } = useCountdown(dataUpdatedAt, LINE_UPDATE_INTERVAL)
-  const { route, routeCode } = useLineRoute()
+  const { query: lineQuery } = useLineBuses()
+  const { query: routesQuery, route, routeCode } = useLineRoutes()
+
+  const { remaining } = useCountdown(lineQuery.dataUpdatedAt, LINE_UPDATE_INTERVAL)
   const theme = useLineTheme(code)
 
-  const sheet = useRef<TrueSheet>(null)
+  const menuSheet = useRef<TrueSheet>(null)
+  const routeSheet = useRef<TrueSheet>(null)
 
   const presentMenu = () => {
-    sheet.current?.present()
+    menuSheet.current?.present()
+  }
+
+  const presentRoutes = () => {
+    routeSheet.current?.present()
   }
 
   return (
@@ -46,10 +53,10 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
           <UText className="font-semibold text-lg">{code}</UText>
 
           {
-            !isFetching
+            lineQuery.isFetching
               ? <UActivityIndicator color={theme?.['ui-primary']} />
-              : error
-                ? <UText className="text-error truncate shrink" numberOfLines={1}>{error.message}</UText>
+              : lineQuery.error
+                ? <UText className="text-error truncate shrink" numberOfLines={1}>{lineQuery.error.message}</UText>
                 : <UText className="text-xs text-muted">{`${remaining} sec to update`}</UText>
           }
         </View>
@@ -73,18 +80,18 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
         </View>
 
         <USheet
-          ref={sheet}
+          ref={menuSheet}
           detents={['auto']}
-          backgroundColor={theme?.['ui-bg']}
+          contentContainerClassName="px-2 gap-2"
         >
           <UButton
             label="Add to group"
-            color="neutral"
             icon="circle-plus"
             square
-            style={{ backgroundColor: theme?.['ui-bg-muted'] }}
             size="lg"
             block
+            variant="soft"
+            color="primary"
           />
 
           <UButton
@@ -93,9 +100,9 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
             icon="trash-2"
             square
             onPress={() => deleteLine(code)}
-            style={{ backgroundColor: theme?.['ui-bg-muted'] }}
             size="lg"
             block
+            variant="soft"
           />
         </USheet>
       </View>
@@ -104,7 +111,43 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
         label={route?.name || routeCode}
         variant="soft"
         color="neutral"
+        block
+        onPress={presentRoutes}
       />
+
+      {routesQuery.data
+        && (
+          <USheet
+            ref={routeSheet}
+            scrollable
+            detents={[0.5, 1]}
+          >
+            <FlatList
+              data={routesQuery.data}
+              renderItem={({ item }) => {
+                return (
+                  <UButton
+                    label={item.name}
+                    variant="ghost"
+                    square
+                    onPress={() => setRoute(code, item.code)}
+                  >
+                    <UText
+                      className="px-2 py-1 font-medium rounded-md w-20 text-center"
+                      style={{
+                        backgroundColor: routeCode === item.code ? theme?.['ui-primary'] : theme?.['ui-bg-muted'],
+                        color: routeCode === item.code ? theme?.['ui-text-inverted'] : theme?.['ui-text'],
+                      }}
+                    >
+                      {item.code.split('_').slice(1).join('_')}
+                    </UText>
+                  </UButton>
+                )
+              }}
+              contentContainerClassName="gap-2"
+            />
+          </USheet>
+        )}
     </View>
   )
 }

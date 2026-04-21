@@ -60,6 +60,14 @@ const config: ExpoConfig = {
         enforceContrast: false,
       },
     ],
+    [
+      'expo-build-properties',
+      {
+        android: {
+          usesCleartextTraffic: true,
+        },
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,

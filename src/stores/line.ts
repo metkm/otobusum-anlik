@@ -47,6 +47,7 @@ interface LinesStore {
   routes: () => Record<string, string>
   deleteLine: (code: string) => void
   addLine: (code: string) => void
+  setRoute: (code: string, routeCode: string) => void
 }
 
 export const useLineStore = create(
@@ -71,8 +72,9 @@ export const useLineStore = create(
         useThemeStore.getState().addTheme(code)
         state.linesByCity[city].push(code)
       }),
-      setRoute: (routeCode: string) => set((state) => {
-        state.routes()[routeCode] = routeCode
+      setRoute: (code: string, routeCode: string) => set((state) => {
+        const city = useFilterStore.getState().city
+        state.routesByCity[city][code] = routeCode
       }),
     })),
     {

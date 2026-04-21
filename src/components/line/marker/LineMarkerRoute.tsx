@@ -2,12 +2,12 @@ import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibr
 import Lucide from '@react-native-vector-icons/lucide'
 
 import { useLine } from '@/composables/useLine'
-import { useLineRoute } from '@/composables/useLineRoutes'
+import { useLineRoutes } from '@/composables/useLineRoutes'
 import { useLineTheme } from '@/composables/useLineTheme'
 
 export const LineMarkerRoute = () => {
   const { code } = useLine()
-  const { query: { data }, route, direction } = useLineRoute()
+  const { query: { data }, route, direction } = useLineRoutes()
   const theme = useLineTheme(code)
 
   if (!data)
