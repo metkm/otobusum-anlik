@@ -23,9 +23,9 @@ export const UInput = ({
       : undefined
 
   return (
-    <View className="relative">
+    <View className={cn('relative', className)}>
       <TextInput
-        className={cn('bg-muted rounded-md px-3', _icon ? 'pl-9' : undefined, className)}
+        className={cn('bg-muted rounded-md px-3', _icon ? 'pl-9' : undefined)}
         {...props}
       />
 

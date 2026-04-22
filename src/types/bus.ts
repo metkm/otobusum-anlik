@@ -26,3 +26,8 @@ export interface BusLocation {
   route_code: string
   closest_stop_code: number
 }
+
+export interface BusStopWithBuses {
+  buses: string[]
+  stop: BusStop
+}

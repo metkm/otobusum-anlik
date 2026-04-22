@@ -13,7 +13,7 @@ export const useLineStops = () => {
     queryFn: () => ky.get<BusStop[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/route-stops/${code}`, {
       searchParams: { direction: 'G' },
     }).json(),
-    staleTime: Infinity,
+    staleTime: 86_400_000,
     meta: { persist: true },
   })
 

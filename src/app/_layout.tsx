@@ -1,38 +1,25 @@
 import '../global.css'
 
-import { DarkTheme, DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native'
+import { createTrueSheetNavigator, TrueSheetNavigationEventMap, TrueSheetNavigationOptions, TrueSheetNavigationState } from '@lodev09/react-native-true-sheet/navigation'
+import { DarkTheme, DefaultTheme, ThemeProvider, type Theme, type ParamListBase } from '@react-navigation/native'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
-import { Stack } from 'expo-router'
+import { withLayoutContext } from 'expo-router'
 import React from 'react'
 import { useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaListener } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
-// import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
-// import { DarkTheme, DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native'
-// import { DehydrateOptions } from '@tanstack/react-query'
-// import { Stack } from 'expo-router'
-// import * as SplashScreen from 'expo-splash-screen'
-// import { setBackgroundColorAsync } from 'expo-system-ui'
-// import { GestureHandlerRootView } from 'react-native-gesture-handler'
-// import { SafeAreaProvider } from 'react-native-safe-area-context'
-// import { enableFreeze, enableScreens } from 'react-native-screens'
-// import { TheStatusBar } from '@/components/TheStatusBar'
-// import { useTheme } from '@/hooks/useTheme'
 import { persister, queryClient } from '@/api/client'
-// import { fontSizes } from '@/constants/uiSizes'
-// import { i18n } from '@/translations/i18n'
 
-// SplashScreen.preventAutoHideAsync()
+const { Navigator } = createTrueSheetNavigator()
 
-// SplashScreen.setOptions({
-//   duration: 50,
-//   fade: true,
-// })
-
-// enableFreeze(true)
-// enableScreens(true)
+export const Sheet = withLayoutContext<
+  TrueSheetNavigationOptions,
+  typeof Navigator,
+  TrueSheetNavigationState<ParamListBase>,
+  TrueSheetNavigationEventMap
+>(Navigator)
 
 export const RootLayout = () => {
   const background = useCSSVariable('--background-color-default')
@@ -68,10 +55,17 @@ export const RootLayout = () => {
           }}
         >
           <ThemeProvider value={theme}>
-            <Stack screenOptions={{ headerTitleAlign: 'center' }}>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="search" options={{ headerShown: false }} />
-            </Stack>
+            <Sheet screenOptions={{
+              grabberOptions: {
+                topMargin: 8,
+                height: 4,
+              },
+              backgroundColor: background as string ?? baseTheme.colors.background,
+            }}
+            >
+              <Sheet.Screen name="(home)" />
+              <Sheet.Screen name="stop" />
+            </Sheet>
           </ThemeProvider>
         </SafeAreaListener>
       </GestureHandlerRootView>

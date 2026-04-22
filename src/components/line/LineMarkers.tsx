@@ -2,6 +2,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { LineMarkerBuses } from './marker/LineMarkerBuses'
 import { LineMarkerRoute } from './marker/LineMarkerRoute'
+import { LineMarkerStops } from './marker/LineMarkerStops'
 
 import { LineContext } from '@/composables/useLine'
 import { useFilterStore } from '@/stores/filter'
@@ -17,6 +18,7 @@ export const LineMarkers = () => {
     <LineContext value={code} key={code}>
       <LineMarkerBuses />
       <LineMarkerRoute />
+      <LineMarkerStops />
     </LineContext>
   ))
 

@@ -63,53 +63,6 @@ export const TabsLayout = () => {
         />
       ))}
     </Tabs>
-
-  // <Tabs
-  //   screenOptions={{
-  //     headerShown: false,
-  //     tabBarIconStyle: {
-  //       flex: 1,
-  //     },
-  //     tabBarShowLabel: Platform.OS !== 'web',
-  //     tabBarLabelStyle: {
-  //       color: schemeDefault.onSurface,
-  //     },
-  //     freezeOnBlur: true,
-  //     animation: 'shift',
-  //   }}
-  //   detachInactiveScreens
-  // >
-  //   {screens.map(screen => (
-  //     <Tabs.Screen
-  //       key={screen.name}
-  //       name={screen.name}
-  //       options={{
-  //         tabBarLabel: i18n.t(screen.label),
-  //         tabBarIcon: ({ focused }) => (
-  //           <View
-  //             style={{
-  //               backgroundColor: focused ? schemeDefault.surfaceContainerHigh : undefined,
-  //               borderRadius: 999,
-  //               paddingVertical: 2,
-  //               paddingHorizontal: 20,
-  //             }}
-  //           >
-  //             <Ionicons
-  //               name={
-  //                 (focused ? `${screen.icon}` : `${screen.icon}-outline`) as ComponentProps<
-  //                   typeof Ionicons
-  //                 >['name']
-  //               }
-  //               size={22}
-  //               color={schemeDefault.onSurface}
-  //               style={{ width: 22, height: 22 }}
-  //             />
-  //           </View>
-  //         ),
-  //       }}
-  //     />
-  //   ))}
-  // </Tabs>
   )
 }
 

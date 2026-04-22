@@ -27,13 +27,25 @@ export const SearchScreen = () => {
 
   return (
     <View className="grow m-safe p-2 gap-2">
-      <UInput
-        autoFocus={true}
-        placeholder="Search..."
-        onChangeText={handleTextChange}
-        loading={isFetching}
-        icon="search"
-      />
+      <View className="flex-row gap-2">
+        <UButton
+          to="/(home)/(tabs)"
+          icon="arrow-left"
+          square
+          className="aspect-square"
+          block
+          variant="soft"
+        />
+
+        <UInput
+          autoFocus={true}
+          placeholder="Search..."
+          onChangeText={handleTextChange}
+          loading={isFetching}
+          icon="search"
+          className="flex-1"
+        />
+      </View>
 
       {items.length > 1
         ? (

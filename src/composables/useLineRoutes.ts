@@ -27,7 +27,7 @@ export const useLineRoutes = () => {
   const query = useQuery({
     queryKey: ['line', code, 'routes'],
     queryFn: () => ky.get<LineRoute[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${code}`).json(),
-    staleTime: Infinity,
+    staleTime: 86_400_000,
     meta: { persist: true },
   })
 

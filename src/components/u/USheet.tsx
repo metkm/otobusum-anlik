@@ -24,7 +24,6 @@ export const USheet = ({ ref, contentContainerClassName, children, ...props }: {
       {...props}
     >
       <StyledGestureHandlerRootView className={cn('grow pt-5 pb-2', contentContainerClassName)}>
-        {/* <StyledGestureHandlerRootView className="grow gap-2 pt-5 pb-2 px-2"> */}
         {children}
       </StyledGestureHandlerRootView>
     </TrueSheet>

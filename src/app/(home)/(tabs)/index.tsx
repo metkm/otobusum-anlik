@@ -6,13 +6,16 @@
 // import { useSharedValue } from 'react-native-reanimated'
 
 // import { Bus } from 'lucide-react-native'
-import { View } from 'react-native'
+import { Camera, type ViewStateChangeEvent } from '@maplibre/maplibre-react-native'
+import { NativeSyntheticEvent, View } from 'react-native'
+import { useShallow } from 'zustand/react/shallow'
 
 import { LineCards } from '@/components/line/LineCards'
 import { LineMarkers } from '@/components/line/LineMarkers'
+import { TheMap } from '@/components/map/TheMap'
 import { UButton } from '@/components/u/UButton'
 
-import { TheMap } from '../../components/map/TheMap'
+import { useSettingsStore } from '@/stores/settings'
 
 // import { Lines } from '@/components/lines/Lines'
 // import { TheMap, TheMapRef } from '@/components/map/Map'
@@ -30,9 +33,19 @@ import { TheMap } from '../../components/map/TheMap'
 // import { useSettingsStore } from '@/stores/settings'
 
 export const HomeScreen = () => {
+  const initialMapBounds = useSettingsStore(useShallow(state => state.initialMapBounds))
+
+  const onMapRegionChange = (event: NativeSyntheticEvent<ViewStateChangeEvent>) => {
+    useSettingsStore.setState(() => ({
+      initialMapBounds: event.nativeEvent.bounds,
+    }))
+  }
+
   return (
     <>
-      <TheMap>
+      <TheMap onRegionDidChange={onMapRegionChange}>
+        <Camera initialViewState={{ bounds: initialMapBounds }} />
+
         <LineMarkers />
       </TheMap>
 

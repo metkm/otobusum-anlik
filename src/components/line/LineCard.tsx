@@ -1,4 +1,5 @@
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
+import Lucide from '@react-native-vector-icons/lucide'
 import { useRef } from 'react'
 import { View, ViewProps, FlatList } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
@@ -20,17 +21,17 @@ import { useFilterStore } from '@/stores/filter'
 import { useLineStore } from '@/stores/line'
 import { cn } from '@/utils/cn'
 
-export const LineCard = ({ className, style, ...props }: ViewProps) => {
+export const LineCard = ({ className, style, markersHidden, ...props }: { markersHidden?: boolean } & ViewProps) => {
   const deleteLine = useLineStore(useShallow(state => state.deleteLine))
   const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
   const setRoute = useLineStore(useShallow(state => state.setRoute))
 
   const { code } = useLine()
-  const { query: lineQuery } = useLineBuses()
+  const { query: lineBusesQuery } = useLineBuses()
   const { query: routesQuery, route, routeCode } = useLineRoutes()
   const { query: lineStopsQuery } = useLineStops()
 
-  const { remaining } = useCountdown(lineQuery.dataUpdatedAt, LINE_UPDATE_INTERVAL)
+  const { remaining } = useCountdown(lineBusesQuery.dataUpdatedAt, LINE_UPDATE_INTERVAL)
   const theme = useLineTheme(code)
 
   const menuSheet = useRef<TrueSheet>(null)
@@ -55,17 +56,17 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
           <UText className="font-semibold text-lg">{code}</UText>
 
           {
-            lineQuery.isFetching
+            lineBusesQuery.isFetching
               ? <UActivityIndicator color={theme?.['ui-primary']} />
-              : lineQuery.error
-                ? <UText className="text-error truncate shrink" numberOfLines={1}>{lineQuery.error.message}</UText>
+              : lineBusesQuery.error
+                ? <UText className="text-error truncate shrink" numberOfLines={1}>{lineBusesQuery.error.message}</UText>
                 : <UText className="text-xs text-muted">{`${remaining} sec to update`}</UText>
           }
         </View>
 
         <View className="flex-row gap-2">
           <UButton
-            icon="eye"
+            icon={markersHidden ? 'eye-closed' : 'eye'}
             onPress={() => toggleLineHidden(code)}
             variant="ghost"
             color="neutral"
@@ -112,13 +113,22 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
         renderItem={({ item }) => (
           <View className="flex-row items-center gap-2">
             <View
-              className="size-10 rounded-full border-2 border-muted"
+              className="items-center justify-center size-10 rounded-full border-2 border-muted"
               style={{ borderColor: theme?.['ui-primary'] }}
-            />
+            >
+              {lineBusesQuery.data?.find(b => b.closest_stop_code === item.code) && (
+                <Lucide
+                  name="bus-front"
+                  color={theme?.['ui-primary']}
+                  size={16}
+                />
+              )}
+            </View>
+
             <UText className="text-xs">{item.name}</UText>
           </View>
         )}
-        className="max-h-24"
+        className="max-h-22"
         contentContainerClassName="px-2 gap-2"
         fadingEdgeLength={10}
       />

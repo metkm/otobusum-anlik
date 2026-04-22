@@ -45,6 +45,8 @@ export const LineMarkerBuses = () => {
           type="circle"
           paint={{ 'circle-radius': 16, 'circle-color': theme?.['ui-primary'] }}
           layerIndex={12}
+          minzoom={10}
+          maxzoom={18}
         />
 
         <Layer
@@ -58,6 +60,8 @@ export const LineMarkerBuses = () => {
             'icon-color-transition': { duration: 0 },
           }}
           layerIndex={13}
+          minzoom={10}
+          maxzoom={18}
         />
       </GeoJSONSource>
     </>

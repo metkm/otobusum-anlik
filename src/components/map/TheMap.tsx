@@ -1,4 +1,4 @@
-import { Camera, Layer, Map, RasterSource, type MapRef } from '@maplibre/maplibre-react-native'
+import { Layer, Map, RasterSource, type MapRef, type LngLatBounds, type CameraProps, type MapProps } from '@maplibre/maplibre-react-native'
 import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import React, { RefObject, useRef, useState } from 'react'
@@ -7,6 +7,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { useSettingsStore } from '../../stores/settings'
 
+import rawStyleJson from '@/assets/style.json'
 import { getMapStyle } from '@/constants/mapStyles'
 
 export interface TheMapProps {
@@ -15,13 +16,15 @@ export interface TheMapProps {
   ref?: RefObject<MapRef | null>
 }
 
-export const TheMap = ({ children }: { children: React.ReactNode }) => {
+// const StyledMap = withUniwind(Map)
+const styleJson = JSON.stringify(rawStyleJson)
+
+export const TheMap = ({ children, cameraProps, style, ...props }: { initialMapBounds?: LngLatBounds, cameraProps?: CameraProps } & Omit<MapProps, 'mapStyle'>) => {
   const map = useRef<MapRef>(null)
   const [visible, setVisible] = useState(false)
 
   const colorScheme = useColorScheme()
   const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
-  const initialMapBounds = useSettingsStore(useShallow(state => state.initialMapBounds))
 
   const { data } = useQuery({
     queryKey: [`map-session-creation-${showTraffic}-${'dark'}`],
@@ -37,7 +40,7 @@ export const TheMap = ({ children }: { children: React.ReactNode }) => {
         }),
       })
         .json(),
-    staleTime: 60_000_000,
+    staleTime: 86_400_000,
   })
 
   if (!data) {
@@ -46,28 +49,19 @@ export const TheMap = ({ children }: { children: React.ReactNode }) => {
 
   const tiles = [`https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}?session=${data.session}&key=${process.env.EXPO_PUBLIC_MAP_API}`]
 
+  const onFinishLoadingMap = () => setVisible(true)
+
   return (
     <Map
       ref={map}
-      mapStyle="https://demotiles.maplibre.org/style.json"
       logo={false}
       attribution={false}
       compass={false}
       androidView="texture"
-      onDidFinishLoadingMap={() => {
-        setVisible(true)
-      }}
-      onRegionDidChange={async () => {
-        const bounds = await map.current?.getBounds()
-
-        useSettingsStore.setState(() => ({
-          initialMapBounds: bounds,
-        }))
-      }}
-      style={{
-        opacity: visible ? 1 : 0,
-        flex: 1,
-      }}
+      onDidFinishLoadingMap={onFinishLoadingMap}
+      style={{ opacity: visible ? 1 : 0, flex: 1, ...style }}
+      {...props}
+      mapStyle={styleJson}
     >
       <RasterSource
         key="raster-source"
@@ -81,8 +75,6 @@ export const TheMap = ({ children }: { children: React.ReactNode }) => {
           layerIndex={8}
         />
       </RasterSource>
-
-      {initialMapBounds && <Camera initialViewState={{ bounds: initialMapBounds }} />}
 
       {children}
     </Map>
