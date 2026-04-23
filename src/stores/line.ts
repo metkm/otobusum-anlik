@@ -70,7 +70,10 @@ export const useLineStore = create(
       addLine: (code: string) => set((state) => {
         const city = useFilterStore.getState().city
         useThemeStore.getState().addTheme(code)
-        state.linesByCity[city].push(code)
+
+        if (!state.linesByCity[city].includes(code)) {
+          state.linesByCity[city].push(code)
+        }
       }),
       setRoute: (code: string, routeCode: string) => set((state) => {
         const city = useFilterStore.getState().city

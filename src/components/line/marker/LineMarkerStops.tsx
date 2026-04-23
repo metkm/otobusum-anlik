@@ -2,20 +2,21 @@ import { GeoJSONSource, Layer } from '@maplibre/maplibre-react-native'
 import { router } from 'expo-router'
 // eslint-disable-next-line import/no-unresolved
 import { Feature } from 'geojson'
+import { useShallow } from 'zustand/react/shallow'
 
-import { useLine } from '@/composables/useLine'
-import { useLineStops } from '@/composables/useLineStops'
-import { useLineTheme } from '@/composables/useLineTheme'
+import { useLine, useLineStops, useLineTheme } from '@/composables'
+import { useFilterStore } from '@/stores/filter'
 
 export const LineMarkerStops = () => {
   const { code } = useLine()
-  const { query: { data } } = useLineStops()
+  const { query: lineStopsQuery } = useLineStops()
+  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
   const theme = useLineTheme(code)
 
-  if (!data)
+  if (!lineStopsQuery.data)
     return
 
-  const features: Feature[] = data.map(bus => ({
+  const features: Feature[] = lineStopsQuery.data.map(bus => ({
     type: 'Feature',
     properties: {
       code: bus.code,
@@ -46,6 +47,9 @@ export const LineMarkerStops = () => {
           'circle-color': theme?.['ui-bg-muted'],
           'circle-stroke-width': 2,
           'circle-stroke-color': theme?.['ui-border-muted'],
+        }}
+        layout={{
+          visibility: isLineHidden ? 'none' : 'visible',
         }}
         layerIndex={12}
         minzoom={11}

@@ -7,7 +7,7 @@ import { UActivityIndicator } from '@/components/u/UActivityIndicator'
 import { UButton } from '@/components/u/UButton'
 import { UText } from '@/components/u/UText'
 
-import { useStop } from '@/composables/useStop'
+import { useStop } from '@/composables'
 import { i18n } from '@/translations/i18n'
 
 export const StopScreen = () => {
@@ -38,7 +38,11 @@ export const StopScreen = () => {
     <View className="gap-2 pt-5 pb-2 px-2">
       {data && (
         <View className="h-40">
-          <TheMap style={{ borderRadius: '15px' }}>
+          <TheMap
+            dragPan={false}
+            touchZoom={false}
+            doubleTapZoom={false}
+          >
             <Camera center={[data.stop.lng, data.stop.lat]} zoom={15} />
           </TheMap>
         </View>

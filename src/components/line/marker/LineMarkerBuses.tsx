@@ -2,17 +2,18 @@ import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibr
 import Lucide from '@react-native-vector-icons/lucide'
 // eslint-disable-next-line import/no-unresolved
 import { Feature } from 'geojson'
+import { useShallow } from 'zustand/react/shallow'
 
-import { useLine } from '@/composables/useLine'
-import { useLineBuses } from '@/composables/useLineBuses'
-import { useLineTheme } from '@/composables/useLineTheme'
+import { useLine, useLineBuses, useLineTheme } from '@/composables'
+import { useFilterStore } from '@/stores/filter'
 
 export const LineMarkerBuses = () => {
   const { code } = useLine()
-  const { query: { data } } = useLineBuses()
+  const { query: lineBusesQuery } = useLineBuses()
+  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
   const theme = useLineTheme(code)
 
-  if (!data)
+  if (!lineBusesQuery.data)
     return
 
   const iconSource = Lucide.getImageSourceSync('bus-front', 20, theme?.['ui-text-inverted'])
@@ -22,7 +23,7 @@ export const LineMarkerBuses = () => {
 
   images[iconImage] = iconSource.uri
 
-  const features: Feature[] = data.map(bus => ({
+  const features: Feature[] = lineBusesQuery.data?.map(bus => ({
     type: 'Feature',
     properties: {},
     geometry: {
@@ -44,6 +45,7 @@ export const LineMarkerBuses = () => {
         <Layer
           type="circle"
           paint={{ 'circle-radius': 16, 'circle-color': theme?.['ui-primary'] }}
+          layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
           layerIndex={12}
           minzoom={10}
           maxzoom={18}
@@ -54,6 +56,7 @@ export const LineMarkerBuses = () => {
           layout={{
             'icon-image': iconImage,
             'icon-size': 0.3,
+            'visibility': isLineHidden ? 'none' : 'visible',
           }}
           paint={{
             'icon-opacity-transition': { duration: 0 },

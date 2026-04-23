@@ -1,16 +1,17 @@
 import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibre-react-native'
 import Lucide from '@react-native-vector-icons/lucide'
+import { useShallow } from 'zustand/react/shallow'
 
-import { useLine } from '@/composables/useLine'
-import { useLineRoutes } from '@/composables/useLineRoutes'
-import { useLineTheme } from '@/composables/useLineTheme'
+import { useLine, useLineRoutes, useLineTheme } from '@/composables'
+import { useFilterStore } from '@/stores/filter'
 
 export const LineMarkerRoute = () => {
   const { code } = useLine()
-  const { query: { data }, route, direction } = useLineRoutes()
+  const { query: lineRoutesQuery, route, direction } = useLineRoutes()
+  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
   const theme = useLineTheme(code)
 
-  if (!data)
+  if (!lineRoutesQuery.data)
     return
 
   const coordinates = route?.path?.map(p => [p.lng, p.lat]) || []
@@ -45,6 +46,8 @@ export const LineMarkerRoute = () => {
           }}
           layout={{
             'line-join': 'round',
+            'line-cap': 'round',
+            'visibility': isLineHidden ? 'none' : 'visible',
           }}
           layerIndex={10}
         />
@@ -57,6 +60,7 @@ export const LineMarkerRoute = () => {
             'icon-rotation-alignment': 'map',
             'icon-size': 0.2,
             'symbol-spacing': 20,
+            'visibility': isLineHidden ? 'none' : 'visible',
           }}
           paint={{
             'icon-opacity': 0.5,
