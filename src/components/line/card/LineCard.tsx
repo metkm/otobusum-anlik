@@ -21,7 +21,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
   return (
     <View
       className={cn('bg-default p-2 rounded-md gap-2', className)}
-      style={[{ backgroundColor: theme?.['ui-bg'] }, style]}
+      style={[{ backgroundColor: theme?.['ui-bg'], elevation: 10 }, style]}
       {...props}
     >
       <View className="flex-row items-center justify-between pl-1">

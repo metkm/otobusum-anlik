@@ -20,8 +20,15 @@
 // import { useShallow } from 'zustand/react/shallow'
 
 import { View } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler'
+import { useShallow } from 'zustand/react/shallow'
 
-import { UText } from '@/components/u/UText'
+import { LineCards } from '@/components/line/LineCards'
+import { LineTimetable } from '@/components/line/LineTimetable'
+
+import { LineContext } from '@/composables/useLine'
+import { useLineCardWidth } from '@/composables/useLineCardWidth'
+import { useLineStore } from '@/stores/line'
 
 // import { LineTimetableMemoized } from '@/components/lines/line/LineTimetable'
 // import { Lines } from '@/components/lines/Lines'
@@ -86,9 +93,27 @@ export const TimetableScreen = () => {
   //   return <UiText style={styles.center}>{i18n.t('timetableEmpty')}</UiText>
   // }
 
+  const lines = useLineStore(useShallow(state => state.lines()))
+
+  const { snapInterval } = useLineCardWidth()
+
   return (
-    <View className="m-safe p-2">
-      <UText>Timetable</UText>
+    <View className="m-safe flex-1 pt-2">
+      <View>
+        <LineCards />
+      </View>
+
+      <FlatList
+        data={lines}
+        renderItem={({ item }) => (
+          <LineContext value={item}>
+            <LineTimetable />
+          </LineContext>
+        )}
+        contentContainerClassName="gap-2 p-2 pt-0"
+        snapToInterval={snapInterval}
+        horizontal
+      />
     </View>
 
   // <View style={containerStyle}>

@@ -101,7 +101,7 @@ const ui = tv({
     {
       square: true,
       size: 'lg',
-      class: 'p-3',
+      class: 'p-4',
     },
   ],
   slots: {

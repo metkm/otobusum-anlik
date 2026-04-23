@@ -1,27 +1,19 @@
 import { useRef } from 'react'
-import { FlatList, Platform, useWindowDimensions } from 'react-native'
-import { useCSSVariable } from 'uniwind'
+import { FlatList } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { LineCard } from './card/LineCard'
 
+import { useLineCardWidth } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { useLineStore } from '@/stores/line'
 
 export const LineCards = () => {
   const flatlistRef = useRef<FlatList>(null)
-  // const hiddenLines = useFilterStore(useShallow(state => state.hiddenLines))
+  const { cardWidth, snapInterval } = useLineCardWidth()
 
   const lines = useLineStore(useShallow(state => state.lines()))
-  const { width } = useWindowDimensions()
-
-  let spacing = useCSSVariable('--spacing') as number
-  if (typeof spacing === 'string' && Platform.OS === 'web') {
-    spacing = 4
-  }
-
   const isOneElement = lines.length < 2
-  const lineWidth = width - (isOneElement ? 0 : spacing * 6)
 
   return (
     <FlatList
@@ -30,16 +22,24 @@ export const LineCards = () => {
       renderItem={({ item }) => (
         <LineContext value={item}>
           <LineCard
-            style={{ width: lineWidth }}
+            style={{ width: cardWidth }}
             className={lines.length < 2 ? 'rounded-none' : ''}
-            // markersHidden={hiddenLines.includes(item)}
           />
         </LineContext>
       )}
       contentContainerClassName={`gap-2 ${isOneElement ? 'p-0' : 'pb-2 px-2'}`}
       keyExtractor={item => item}
-      snapToInterval={lineWidth - spacing}
+      snapToInterval={snapInterval}
       horizontal
+      onEndReached={() => {
+        flatlistRef.current?.scrollToIndex({
+          index: lines.length - 1,
+          viewPosition: -5,
+        })
+      }}
+      onScrollToIndexFailed={() => {}}
+      initialNumToRender={2}
+      maxToRenderPerBatch={2}
     />
   )
 }
