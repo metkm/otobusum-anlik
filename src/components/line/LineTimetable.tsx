@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView, View, ViewProps } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '../u/UButton'
@@ -10,6 +10,7 @@ import { Time } from '@/composables/useLineTimetable'
 import { useFilterStore } from '@/stores/filter'
 import { i18n } from '@/translations/i18n'
 import { City } from '@/types/city'
+import { cn } from '@/utils/cn'
 import { groupDeparturesByHour } from '@/utils/groupDepartures'
 import { toAscii } from '@/utils/toAscii'
 
@@ -71,7 +72,7 @@ const options: Record<City, { label: string, value: number }[]> = {
 const now = new Date()
 const nowDay = now.getDay()
 
-export const LineTimetable = () => {
+export const LineTimetable = ({ className }: ViewProps) => {
   const city = useFilterStore(useShallow(state => state.city))
   const [day, setDay] = useState(() => 1 << (nowDay + 1))
 
@@ -151,8 +152,9 @@ export const LineTimetable = () => {
 
   return (
     <View
-      style={{ width: cardWidth, elevation: 10, backgroundColor: theme?.['ui-bg'] }}
-      className="bg-muted rounded-md"
+      style={{ width: cardWidth, elevation: 5, backgroundColor: theme?.['ui-bg'] }}
+      // className="bg-muted rounded-md"
+      className={cn('bg-muted rounded-md', className)}
     >
       <View className="m-2 mb-0">
         <UText className="text-muted">{routeCode}</UText>
@@ -168,7 +170,6 @@ export const LineTimetable = () => {
             block
             variant={day & option.value ? 'solid' : 'ghost'}
             size="lg"
-            square
             onPress={() => setDay(option.value)}
           />
         ))}

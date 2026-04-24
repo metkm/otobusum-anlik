@@ -81,7 +81,6 @@ export const LineCardButtons = () => {
         <UButton
           label="Add to group"
           icon="circle-plus"
-          square
           size="lg"
           block
           variant="soft"
@@ -92,7 +91,6 @@ export const LineCardButtons = () => {
           label="Delete line"
           color="neutral"
           icon="trash-2"
-          square
           onPress={() => deleteLine(code)}
           size="lg"
           block

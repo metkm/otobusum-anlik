@@ -13,7 +13,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { LineCards } from '@/components/line/LineCards'
 import { LineMarkers } from '@/components/line/LineMarkers'
 import { TheMap } from '@/components/map/TheMap'
-import { UButton } from '@/components/u/UButton'
+import { MapButtons } from '@/components/MapButtons'
 
 import { useSettingsStore } from '@/stores/settings'
 
@@ -50,15 +50,7 @@ export const HomeScreen = () => {
       </TheMap>
 
       <View className="absolute bottom-0 inset-x-0 items-start">
-        <UButton
-          className="ml-2 mb-2"
-          icon="search"
-          square
-          to="/search"
-          color="neutral"
-          size="lg"
-        />
-
+        <MapButtons />
         <LineCards />
       </View>
     </>

@@ -14,7 +14,16 @@ import { IconName } from '@/types/ui'
 import { cn } from '@/utils/cn'
 
 const StyledBaseButton = withUniwind(BaseButton)
-const StyledLucide = withUniwind(Lucide)
+const StyledLucide = withUniwind(Lucide, {
+  size: {
+    fromClassName: 'sizeClassName',
+    styleProperty: 'width',
+  },
+  color: {
+    fromClassName: 'className',
+    styleProperty: 'color',
+  },
+})
 
 type BaseButtonProps = ComponentProps<typeof StyledBaseButton>
 
@@ -31,10 +40,12 @@ const ui = tv({
     },
     size: {
       md: {
-        base: 'py-1.5 px-2',
+        base: 'p-2',
+        icon: 'size-4.5',
       },
       lg: {
-        base: 'py-3 px-4',
+        base: 'p-3',
+        icon: 'size-4.5',
       },
     },
     block: {
@@ -42,6 +53,9 @@ const ui = tv({
     },
     square: {
       true: '',
+    },
+    disabled: {
+      true: 'opacity-75',
     },
   },
   compoundVariants: [
@@ -93,20 +107,21 @@ const ui = tv({
         label: 'text-default',
       },
     },
-    {
-      square: true,
-      size: 'md',
-      class: 'p-2',
-    },
-    {
-      square: true,
-      size: 'lg',
-      class: 'p-4',
-    },
+    // {
+    //   square: true,
+    //   size: 'md',
+    //   class: 'p-2',
+    // },
+    // {
+    //   square: true,
+    //   size: 'lg',
+    //   class: 'p-2.5',
+    // },
   ],
   slots: {
-    base: 'flex flex-row items-center gap-1 rounded-md',
+    base: 'flex flex-row items-center gap-1.5 rounded-md',
     label: 'font-medium truncate shrink-1',
+    icon: '',
   },
 })
 
@@ -114,7 +129,7 @@ export const UButton = ({
   label,
   className,
   icon,
-  square,
+  // square,
   to,
   color = 'primary',
   variant = 'solid',
@@ -122,16 +137,18 @@ export const UButton = ({
   block,
   children,
   style,
+  disabled,
   ...props
 }: {
   label?: string
   icon?: IconName
-  square?: boolean
+  // square?: boolean
   to?: Href
   color?: 'primary' | 'neutral'
   variant?: 'solid' | 'ghost' | 'soft'
   size?: 'md' | 'lg'
   block?: boolean
+  disabled?: boolean
 } & BaseButtonProps) => {
   const code = use(LineContext)
   const lineTheme = useLineTheme(code)
@@ -141,7 +158,7 @@ export const UButton = ({
     router.navigate(to)
   }
 
-  const { base: uiBase, label: uiLabel } = ui({ color, variant, size, block, square })
+  const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, variant, size, block, disabled })
 
   const themeStyle: ViewStyle & TextStyle | undefined = lineTheme
     ? variant === 'solid'
@@ -156,15 +173,17 @@ export const UButton = ({
       className={cn(
         uiBase(),
         className,
+        'disabled:bg-red-500',
       )}
       onPress={handlePress}
       style={[themeStyle, style]}
+      enabled={!disabled}
       {...props}
     >
       {icon && (
         <StyledLucide
           name={icon}
-          size={20}
+          sizeClassName={uiIcon()}
           className={uiLabel()}
           color={themeStyle?.color}
         />
@@ -175,6 +194,7 @@ export const UButton = ({
       {label && (
         <UText
           className={uiLabel()}
+          // className="text-sm"
           numberOfLines={1}
           style={themeStyle ? { color: themeStyle?.color } : undefined}
         >

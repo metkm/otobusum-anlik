@@ -1,6 +1,6 @@
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
-import { FlatList, ListRenderItem } from 'react-native'
+import { FlatList, ListRenderItem, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
@@ -20,7 +20,6 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
     <UButton
       label={item.name}
       variant="ghost"
-      square
       onPress={() => setRoute(code, item.code)}
     >
       <UText
@@ -38,7 +37,10 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
 
 export const LineCardRoutes = () => {
   const routeSheet = useRef<TrueSheet>(null)
-  const { query: routesQuery, route, routeCode } = useLineRoutes()
+
+  const { code } = useLine()
+  const { query: routesQuery, route, routeCode, otherDirectionRoute } = useLineRoutes()
+  const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
 
   const presentRoutes = () => {
     routeSheet.current?.present()
@@ -54,13 +56,23 @@ export const LineCardRoutes = () => {
   }
 
   return (
-    <>
+    <View className="flex-row gap-2">
+      <UButton
+        icon="repeat"
+        disabled={otherDirectionRoute === undefined}
+        onPress={() => {
+          changeRouteDirection(code)
+        }}
+      />
+
       <UButton
         label={route?.name || routeCode}
         variant="soft"
         color="neutral"
-        block
+        icon="route"
         onPress={presentRoutes}
+        block
+        className="shrink"
       />
 
       {routesQuery.data
@@ -78,6 +90,6 @@ export const LineCardRoutes = () => {
             />
           </USheet>
         )}
-    </>
+    </View>
   )
 }

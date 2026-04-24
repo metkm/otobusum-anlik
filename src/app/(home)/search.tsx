@@ -31,8 +31,6 @@ export const SearchScreen = () => {
         <UButton
           to="/(home)/(tabs)"
           icon="arrow-left"
-          square
-          className="aspect-square"
           block
           variant="soft"
         />

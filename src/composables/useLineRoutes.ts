@@ -5,9 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useLine } from './useLine'
 
 import { useLineStore } from '@/stores/line'
-
-export type Direction = 'G' | 'D'
-export type RouteCode = `${string}_${Direction}_${string}`
+import { RouteCode, RouteDirection } from '@/types/line'
 
 export interface LineRoute {
   id: number
@@ -22,7 +20,8 @@ export interface LineRoute {
 
 export const useLineRoutes = () => {
   const { code } = useLine()
-  const routeCode = useLineStore(useShallow(state => state.routes()[code])) || `${code}_G_D0`
+  const routeCode = useLineStore(useShallow(state => state.routes()[code])) || `${code}_G_D0` as RouteCode
+  // const setRoute = useLineStore(useShallow(state => state.setRoute))
 
   const query = useQuery({
     queryKey: ['line', code, 'routes'],
@@ -32,12 +31,22 @@ export const useLineRoutes = () => {
   })
 
   const route = query.data?.find(r => r.code === routeCode)
-  const direction = routeCode.split('_')[1] || 'G' as Direction
+
+  const direction = routeCode.split('_')[1] || 'G' as RouteDirection
+  const otherDirectionCode = routeCode.replace(/G|D/, direction === 'G' ? 'D' : 'G')
+  const otherDirectionRoute = query.data?.find(r => r.code === otherDirectionCode)
+
+  // const changeDirection = () => {
+  //   if (!otherDirectionRoute) return
+  //   setRoute(code, otherDirectionRoute.code)
+  // }
 
   return {
     query,
     routeCode,
     route,
     direction,
+    // changeDirection,
+    otherDirectionRoute,
   }
 }

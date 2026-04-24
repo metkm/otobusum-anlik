@@ -98,7 +98,7 @@ export const TimetableScreen = () => {
   const { snapInterval } = useLineCardWidth()
 
   return (
-    <View className="m-safe flex-1 pt-2">
+    <View className="mt-safe mx-safe flex-1 pt-2">
       <View>
         <LineCards />
       </View>
@@ -107,10 +107,10 @@ export const TimetableScreen = () => {
         data={lines}
         renderItem={({ item }) => (
           <LineContext value={item}>
-            <LineTimetable />
+            <LineTimetable className={lines.length < 2 ? 'rounded-none' : ''} />
           </LineContext>
         )}
-        contentContainerClassName="gap-2 p-2 pt-0"
+        contentContainerClassName={`gap-2 ${lines.length > 1 ? 'p-2 pt-0' : 'pt-2'}`}
         snapToInterval={snapInterval}
         horizontal
       />

@@ -4,12 +4,14 @@ import Lucide from '@react-native-vector-icons/lucide'
 import { Feature } from 'geojson'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine, useLineBuses, useLineTheme } from '@/composables'
+import { useLine, useLineBuses, useLineRoutes, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores/filter'
 
 export const LineMarkerBuses = () => {
   const { code } = useLine()
   const { query: lineBusesQuery } = useLineBuses()
+  const { routeCode } = useLineRoutes()
+
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
   const theme = useLineTheme(code)
 
@@ -23,14 +25,15 @@ export const LineMarkerBuses = () => {
 
   images[iconImage] = iconSource.uri
 
-  const features: Feature[] = lineBusesQuery.data?.map(bus => ({
-    type: 'Feature',
-    properties: {},
-    geometry: {
-      type: 'Point',
-      coordinates: [bus.lng, bus.lat],
-    },
-  }))
+  const features: Feature[] = lineBusesQuery.data?.filter(bus => bus.route_code === routeCode)
+    .map(bus => ({
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Point',
+        coordinates: [bus.lng, bus.lat],
+      },
+    }))
 
   return (
     <>

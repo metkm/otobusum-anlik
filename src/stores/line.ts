@@ -39,15 +39,17 @@ import { useFilterStore } from './filter'
 import { useThemeStore } from './theme'
 
 import { City } from '@/types/city'
+import { RouteCode, RouteDirection } from '@/types/line'
 
 interface LinesStore {
   linesByCity: Record<City, string[]>
-  routesByCity: Record<City, Record<string, string>>
+  routesByCity: Record<City, Record<string, RouteCode>>
   lines: () => string[]
-  routes: () => Record<string, string>
+  routes: () => Record<string, RouteCode>
   deleteLine: (code: string) => void
   addLine: (code: string) => void
-  setRoute: (code: string, routeCode: string) => void
+  setRoute: (code: string, routeCode: RouteCode) => void
+  changeRouteDirection: (code: string) => void
 }
 
 export const useLineStore = create(
@@ -63,11 +65,11 @@ export const useLineStore = create(
       },
       lines: () => get().linesByCity[useFilterStore.getState().city],
       routes: () => get().routesByCity[useFilterStore.getState().city],
-      deleteLine: (code: string) => set((state) => {
+      deleteLine: code => set((state) => {
         const city = useFilterStore.getState().city
         state.linesByCity[city] = state.linesByCity[city].filter(i => i !== code)
       }),
-      addLine: (code: string) => set((state) => {
+      addLine: code => set((state) => {
         const city = useFilterStore.getState().city
         useThemeStore.getState().addTheme(code)
 
@@ -75,9 +77,17 @@ export const useLineStore = create(
           state.linesByCity[city].push(code)
         }
       }),
-      setRoute: (code: string, routeCode: string) => set((state) => {
+      setRoute: (code, routeCode) => set((state) => {
         const city = useFilterStore.getState().city
         state.routesByCity[city][code] = routeCode
+      }),
+      changeRouteDirection: code => set((state) => {
+        const city = useFilterStore.getState().city
+        const routeCode = state.routesByCity[city][code] || `${code}_G_D0`
+        const direction = routeCode.split('_')[1] as RouteDirection
+        const otherDirectionCode = routeCode.replace(/G|D/, direction === 'G' ? 'D' : 'G') as RouteCode
+
+        state.routesByCity[city][code] = otherDirectionCode
       }),
     })),
     {
