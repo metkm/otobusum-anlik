@@ -72,7 +72,7 @@ export const LineCardRoutes = () => {
         icon="route"
         onPress={presentRoutes}
         block
-        className="grow"
+        className="grow shrink"
       />
 
       {routesQuery.data
