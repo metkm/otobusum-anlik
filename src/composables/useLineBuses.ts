@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 
 import { useLine } from './useLine'
+import { useLineRoutes } from './useLineRoutes'
 
 import { BusLocation } from '@/types/bus'
 
@@ -9,6 +10,7 @@ export const REFETCH_INTERVAL = 50_000
 
 export const useLineBuses = () => {
   const { code } = useLine()
+  const { routeCode } = useLineRoutes()
 
   const query = useQuery({
     queryKey: ['line', code, 'buses'],
@@ -17,7 +19,10 @@ export const useLineBuses = () => {
     refetchInterval: REFETCH_INTERVAL,
   })
 
+  const buses = query.data?.filter(bus => bus.route_code === routeCode) || []
+
   return {
     query,
+    buses,
   }
 }

@@ -9,7 +9,7 @@ import { useFilterStore } from '@/stores/filter'
 
 export const LineMarkerBuses = () => {
   const { code } = useLine()
-  const { query: lineBusesQuery } = useLineBuses()
+  const { query: lineBusesQuery, buses } = useLineBuses()
   const { routeCode } = useLineRoutes()
 
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
@@ -25,7 +25,7 @@ export const LineMarkerBuses = () => {
 
   images[iconImage] = iconSource.uri
 
-  const features: Feature[] = lineBusesQuery.data?.filter(bus => bus.route_code === routeCode)
+  const features: Feature[] = buses.filter(bus => bus.route_code === routeCode)
     .map(bus => ({
       type: 'Feature',
       properties: {},

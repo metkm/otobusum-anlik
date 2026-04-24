@@ -13,7 +13,7 @@ import { cn } from '@/utils/cn'
 export const LineCard = ({ className, style, ...props }: ViewProps) => {
   const { code } = useLine()
 
-  const { query: lineBusesQuery } = useLineBuses()
+  const { buses } = useLineBuses()
   const { query: lineStopsQuery } = useLineStops()
 
   const theme = useLineTheme(code)
@@ -39,7 +39,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
               className="items-center justify-center size-10 rounded-full border-2 border-muted"
               style={{ borderColor: theme?.['ui-primary'] }}
             >
-              {lineBusesQuery.data?.find(b => b.closest_stop_code === item.code) && (
+              {buses.find(b => b.closest_stop_code === item.code) && (
                 <Lucide
                   name="bus-front"
                   color={theme?.['ui-primary']}
@@ -53,7 +53,11 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
         )}
         className="max-h-22"
         contentContainerClassName="px-2 gap-2"
+        initialNumToRender={2}
+        maxToRenderPerBatch={3}
+        removeClippedSubviews
         fadingEdgeLength={10}
+        windowSize={2}
       />
 
       <LineCardRoutes />
