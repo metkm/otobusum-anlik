@@ -33,7 +33,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
         data={lineStopsQuery.data || []}
         renderItem={({ item, index }) => (
           <View className="flex-row items-center gap-2">
-            <UText className="w-6.5 text-center text-sm font-medium">{index}</UText>
+            <UText className="w-6.5 text-center text-sm font-medium">{index + 1}</UText>
 
             <View
               className="items-center justify-center size-10 rounded-full border-2 border-muted"

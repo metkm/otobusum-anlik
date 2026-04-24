@@ -33,6 +33,7 @@ export const SearchScreen = () => {
           icon="arrow-left"
           block
           variant="soft"
+          className="aspect-square"
         />
 
         <UInput

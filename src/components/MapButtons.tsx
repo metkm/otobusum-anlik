@@ -4,13 +4,22 @@ import { useShallow } from 'zustand/react/shallow'
 import { UButton } from './u/UButton'
 
 import { useLineStore } from '@/stores/line'
+import { cn } from '@/utils/cn'
 
 export const MapButtons = () => {
   const lines = useLineStore(useShallow(state => state.lines()))
   const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
 
   return (
-    <View className="ml-2 mb-2 gap-2">
+    <View className={cn(
+      'left-2 gap-2 absolute z-10',
+      lines.length < 2
+        ? lines.length < 1
+          ? 'bottom-2'
+          : 'bottom-50'
+        : 'bottom-52',
+    )}
+    >
       <UButton
         icon="search"
         to="/search"

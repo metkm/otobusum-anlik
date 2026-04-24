@@ -56,7 +56,7 @@ export const LineCardRoutes = () => {
   }
 
   return (
-    <View className="flex-row gap-2">
+    <View className="flex-row gap-2 grow">
       <UButton
         icon="repeat"
         disabled={otherDirectionRoute === undefined}
@@ -72,7 +72,7 @@ export const LineCardRoutes = () => {
         icon="route"
         onPress={presentRoutes}
         block
-        className="shrink"
+        className="grow"
       />
 
       {routesQuery.data

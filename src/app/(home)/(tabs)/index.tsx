@@ -49,8 +49,9 @@ export const HomeScreen = () => {
         <LineMarkers />
       </TheMap>
 
-      <View className="absolute bottom-0 inset-x-0 items-start">
-        <MapButtons />
+      <MapButtons />
+
+      <View className="absolute bottom-0 flex-col items-start z-10">
         <LineCards />
       </View>
     </>
