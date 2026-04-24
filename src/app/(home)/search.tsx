@@ -1,3 +1,4 @@
+import { router } from 'expo-router'
 import { useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { useDebouncedCallback } from 'use-debounce'
@@ -29,11 +30,11 @@ export const SearchScreen = () => {
     <View className="grow m-safe p-2 gap-2">
       <View className="flex-row gap-2">
         <UButton
-          to="/(home)/(tabs)"
           icon="arrow-left"
           block
           variant="soft"
           className="aspect-square"
+          onPress={() => router.back()}
         />
 
         <UInput

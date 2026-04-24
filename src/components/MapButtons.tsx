@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from './u/UButton'
@@ -11,14 +11,16 @@ export const MapButtons = () => {
   const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
 
   return (
-    <View className={cn(
-      'left-2 gap-2 absolute z-10',
-      lines.length < 2
-        ? lines.length < 1
-          ? 'bottom-2'
-          : 'bottom-50'
-        : 'bottom-52',
-    )}
+    <Animated.View
+      layout={LinearTransition}
+      className={cn(
+        'left-2 gap-2 absolute z-10',
+        lines.length < 2
+          ? lines.length < 1
+            ? 'bottom-2'
+            : 'bottom-50'
+          : 'bottom-52',
+      )}
     >
       <UButton
         icon="search"
@@ -39,7 +41,7 @@ export const MapButtons = () => {
           }}
         />
       )}
-    </View>
+    </Animated.View>
   )
 }
 
