@@ -12,6 +12,8 @@ export const isStop = (item: BusStop | BusLine): item is BusStop => {
   return (item as BusStop).lng !== undefined
 }
 
+export const MIN_CHARACTER_LIMIT = 1
+
 export const useSearch = (q: string) => {
   const query = useQuery({
     queryKey: ['search', q],
@@ -20,7 +22,7 @@ export const useSearch = (q: string) => {
         q: arg.queryKey[1],
       },
     }).json(),
-    enabled: () => q.length > 2,
+    enabled: () => q.length > MIN_CHARACTER_LIMIT,
   })
 
   return { query }

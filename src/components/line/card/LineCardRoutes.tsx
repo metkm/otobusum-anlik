@@ -3,34 +3,58 @@ import { useRef } from 'react'
 import { FlatList, ListRenderItem, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
-import { UButton } from '@/components/u/UButton'
+import { StyledLucide, UButton } from '@/components/u/UButton'
 import { USheet } from '@/components/u/USheet'
 import { UText } from '@/components/u/UText'
 
-import { useLine, useLineTheme } from '@/composables'
+import { useLine, useLineBuses, useLineTheme } from '@/composables'
 import { LineRoute, useLineRoutes } from '@/composables/useLineRoutes'
 import { useLineStore } from '@/stores'
 
 const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute }) => {
   const setRoute = useLineStore(useShallow(state => state.setRoute))
   const { code } = useLine()
+  const { query: busesQuery } = useLineBuses()
   const theme = useLineTheme(code)
+
+  const style = {
+    backgroundColor: isSelected ? theme?.['ui-primary'] : theme?.['ui-bg'],
+    color: isSelected ? theme?.['ui-text-inverted'] : theme?.['ui-text'],
+  }
 
   return (
     <UButton
       label={item.name}
-      variant="ghost"
+      variant="soft"
       onPress={() => setRoute(code, item.code)}
+      className="flex-col justify-start items-start"
     >
-      <UText
-        className="px-2 py-1 font-medium rounded-md w-20 text-center"
-        style={{
-          backgroundColor: isSelected ? theme?.['ui-primary'] : theme?.['ui-bg-muted'],
-          color: isSelected ? theme?.['ui-text-inverted'] : theme?.['ui-text'],
-        }}
-      >
-        {item.code.split('_').slice(1).join('_')}
-      </UText>
+      <View className="flex-row justify-center gap-1">
+        <View
+          className="px-2 py-1 gap-1 rounded-md flex-row"
+          style={style}
+        >
+          <StyledLucide
+            name="bus-front"
+            sizeClassName="size-4"
+            color={style.color}
+          />
+
+          <UText
+            className="font-medium text-xs"
+            style={style}
+          >
+            {busesQuery.data?.reduce((acc, curr) => curr.route_code === item.code ? acc + 1 : acc, 0)}
+          </UText>
+        </View>
+
+        <UText
+          className="px-2 py-1 font-medium rounded-md text-xs"
+          style={style}
+        >
+          {item.code.split('_').slice(1).join('_')}
+        </UText>
+      </View>
     </UButton>
   )
 }
@@ -41,6 +65,17 @@ export const LineCardRoutes = () => {
   const { code } = useLine()
   const { query: routesQuery, route, routeCode, otherDirectionRoute } = useLineRoutes()
   const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
+
+  const sortedRoutes = [...(routesQuery.data || [])]
+    .sort((a, b) => {
+      const ad = a.code.split('_')[2]?.slice(1)
+      const bd = b.code.split('_')[2]?.slice(1)
+
+      if (!ad || !bd)
+        return 1
+
+      return Number(ad) - Number(bd)
+    })
 
   const presentRoutes = () => {
     routeSheet.current?.present()
@@ -68,7 +103,6 @@ export const LineCardRoutes = () => {
       <UButton
         label={route?.name || routeCode}
         variant="soft"
-        color="neutral"
         icon="route"
         onPress={presentRoutes}
         block
@@ -84,10 +118,10 @@ export const LineCardRoutes = () => {
             detents={[0.5, 1]}
           >
             <FlatList
-              data={routesQuery.data}
+              data={sortedRoutes}
               renderItem={renderItem}
-              contentContainerClassName="gap-2"
               extraData={routeCode}
+              contentContainerClassName="gap-2 px-2 pb-2"
             />
           </USheet>
         )}

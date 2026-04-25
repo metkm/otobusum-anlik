@@ -7,15 +7,17 @@ import { UButton } from '@/components/u/UButton'
 import { USheet } from '@/components/u/USheet'
 import { UText } from '@/components/u/UText'
 
-import { useLine, useLineNews } from '@/composables'
+import { useLine, useLineNews, useLineTheme } from '@/composables'
 import { useFilterStore, useLineStore, useThemeStore } from '@/stores'
 
-export const LineCardButtons = () => {
+export const LineCardMenu = () => {
   const { code } = useLine()
   const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
   const deleteLine = useLineStore(useShallow(state => state.deleteLine))
   const addTheme = useThemeStore(useShallow(state => state.addTheme))
+
+  const theme = useLineTheme(code)
 
   const { news } = useLineNews()
 
@@ -88,16 +90,16 @@ export const LineCardButtons = () => {
 
         <UButton
           label="Refresh colors"
-          icon="palette"
           onPress={() => addTheme(code)}
           size="lg"
           block
           variant="soft"
-        />
+        >
+          <View style={{ backgroundColor: theme?.['ui-primary'] }} className="size-4 rounded-md" />
+        </UButton>
 
         <UButton
           label="Delete line"
-          color="neutral"
           icon="trash-2"
           onPress={() => deleteLine(code)}
           size="lg"

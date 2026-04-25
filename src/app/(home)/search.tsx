@@ -1,30 +1,71 @@
 import { router } from 'expo-router'
 import { useState } from 'react'
 import { FlatList, View } from 'react-native'
-import { useDebouncedCallback } from 'use-debounce'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
 import { UInput } from '@/components/u/UInput'
+import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
-import { isStop, useSearch } from '@/composables/useSearch'
+import { useLine, useLineTheme } from '@/composables'
+import { LineContext } from '@/composables/useLine'
+import { isStop, MIN_CHARACTER_LIMIT, useSearch } from '@/composables/useSearch'
 import { useLineStore } from '@/stores'
+import { i18n } from '@/translations/i18n'
+import { BusLine, BusStop } from '@/types/bus'
+
+const RenderItemLine = ({ item }: { item: BusLine }) => {
+  const { code } = useLine()
+  const addLine = useLineStore(useShallow(state => state.addLine))
+
+  const theme = useLineTheme(code)
+
+  return (
+    <UButton
+      variant="ghost"
+      color="neutral"
+      label={item.name}
+      onPress={() => {
+        addLine(item.code)
+      }}
+    >
+      <UText
+        className="bg-muted rounded-md px-2.5 py-1 text-sm font-medium"
+        style={theme
+          ? {
+              backgroundColor: theme?.['ui-primary'],
+              color: theme?.['ui-text-inverted'],
+            }
+          : undefined}
+      >
+        {item.code}
+      </UText>
+    </UButton>
+  )
+}
+
+const RenderItemStop = ({ item }: { item: BusStop }) => {
+  return (
+    <UButton
+      variant="ghost"
+      color="neutral"
+      label={item.name}
+      icon="bus-front"
+    />
+  )
+}
 
 export const SearchScreen = () => {
   const [query, setQuery] = useState('')
-  const addLine = useLineStore(useShallow(state => state.addLine))
 
-  const {
-    query: { data, error, isFetching, isSuccess },
-  } = useSearch(query)
-  const items = [...(data?.lines || []), ...(data?.stops || [])]
+  const { query: searchQuery } = useSearch(query)
+  const results = [
+    ...(searchQuery.data?.lines || []),
+    ...(searchQuery.data?.stops || []),
+  ]
 
-  const handleTextChange = useDebouncedCallback((q: string) => {
-    if (q.length < 2) return
-
-    setQuery(q)
-  }, 250)
+  const neededCharacterCount = MIN_CHARACTER_LIMIT - query.length + 1
 
   return (
     <View className="grow m-safe p-2 gap-2">
@@ -39,44 +80,45 @@ export const SearchScreen = () => {
 
         <UInput
           autoFocus={true}
-          placeholder="Search..."
-          onChangeText={handleTextChange}
-          loading={isFetching}
+          placeholder={i18n.t('searchPlaceholder')}
+          onChangeText={q => setQuery(q)}
+          loading={searchQuery.isFetching}
           icon="search"
           className="flex-1"
         />
       </View>
 
-      {items.length > 1
-        ? (
-            <FlatList
-              data={items}
-              renderItem={({ item }) => {
-                return (
-                  <UButton
-                    label={item.name}
-                    variant="ghost"
-                    color="neutral"
-                    onPress={() => {
-                      if (isStop(item)) return
-                      addLine(item.code)
-                    }}
-                  >
-                    <UText className="bg-muted rounded-md p-2">{item.code}</UText>
-                  </UButton>
-                )
-              }}
-            />
-          )
-        : (
-            <View className="grow justify-center items-center">
-              {error
-                ? <UText className="text-error">{error.message}</UText>
-                : isSuccess
-                  ? <UText>No results found!</UText>
-                  : <UText>Search Something</UText>}
-            </View>
-          )}
+      {neededCharacterCount > 0 && (
+        <UText className="text-center text-muted font-medium text-xs">
+          {`${neededCharacterCount} more characters are needed for search`}
+        </UText>
+      )}
+
+      <UQueryState query={searchQuery}>
+
+        {(results.length < 1 && searchQuery.isSuccess)
+          ? (
+              <UText className="text-muted font-medium  grow text-center align-middle">{i18n.t('emptySearch')}</UText>
+            )
+          : (
+              <FlatList
+                data={results}
+                renderItem={({ item }) => {
+                  if (isStop(item)) {
+                    return <RenderItemStop item={item} />
+                  }
+
+                  return (
+                    <LineContext value={item.code}>
+                      <RenderItemLine item={item} />
+                    </LineContext>
+                  )
+                }}
+                contentContainerClassName="gap-2"
+                fadingEdgeLength={10}
+              />
+            )}
+      </UQueryState>
     </View>
   )
 }

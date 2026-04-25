@@ -5,7 +5,7 @@ import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
-import { LineCardButtons } from './LineCardButtons'
+import { LineCardMenu } from './LineCardMenu'
 import { LineCardName } from './LineCardName'
 import { LineCardRoutes } from './LineCardRoutes'
 
@@ -37,7 +37,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
     >
       <View className="flex-row items-center justify-between pl-1">
         <LineCardName />
-        <LineCardButtons />
+        <LineCardMenu />
       </View>
 
       <UQueryState

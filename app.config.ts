@@ -68,6 +68,12 @@ const config: ExpoConfig = {
         },
       },
     ],
+    [
+      'expo-font',
+      {
+        fonts: ['./src/assets/fonts/Inter-Variable.ttf'],
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,

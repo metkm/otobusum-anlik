@@ -15,7 +15,7 @@ import { IconName } from '@/types/ui'
 import { cn } from '@/utils/cn'
 
 const StyledBaseButton = withUniwind(BaseButton)
-const StyledLucide = withUniwind(Lucide, {
+export const StyledLucide = withUniwind(Lucide, {
   size: {
     fromClassName: 'sizeClassName',
     styleProperty: 'width',
@@ -108,20 +108,10 @@ const ui = tv({
         label: 'text-default',
       },
     },
-    // {
-    //   square: true,
-    //   size: 'md',
-    //   class: 'p-2',
-    // },
-    // {
-    //   square: true,
-    //   size: 'lg',
-    //   class: 'p-2.5',
-    // },
   ],
   slots: {
-    base: 'flex flex-row items-center gap-1.5 rounded-md',
-    label: 'font-medium truncate shrink-1',
+    base: 'bg-muted flex flex-row items-center gap-1.5 rounded-md',
+    label: 'font-medium truncate shrink-1 text-sm',
     icon: '',
   },
 })
@@ -161,13 +151,16 @@ export const UButton = ({
 
   const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, variant, size, block, disabled })
 
-  const themeStyle: ViewStyle & TextStyle | undefined = lineTheme
-    ? variant === 'solid'
-      ? { backgroundColor: lineTheme['ui-primary'], color: lineTheme['ui-text-inverted'] }
-      : variant === 'soft'
-        ? { backgroundColor: lineTheme['ui-bg-muted'], color: lineTheme['ui-text'] }
-        : { backgroundColor: lineTheme['ui-bg'], color: lineTheme['ui-text'] }
-    : undefined
+  const themeStyle: ViewStyle & TextStyle | undefined
+    = color === 'primary'
+      ? lineTheme
+        ? variant === 'solid'
+          ? { backgroundColor: lineTheme['ui-primary'], color: lineTheme['ui-text-inverted'] }
+          : variant === 'soft'
+            ? { backgroundColor: lineTheme['ui-bg-muted'], color: lineTheme['ui-text'] }
+            : { backgroundColor: lineTheme['ui-bg'], color: lineTheme['ui-text'] }
+        : undefined
+      : undefined
 
   return (
     <StyledBaseButton
@@ -216,7 +209,6 @@ export const UButton = ({
       {label && (
         <UText
           className={uiLabel()}
-          // className="text-sm"
           numberOfLines={1}
           style={themeStyle ? { color: themeStyle?.color } : undefined}
         >
