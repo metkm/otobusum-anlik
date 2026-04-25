@@ -1,6 +1,8 @@
 import Lucide from '@react-native-vector-icons/lucide'
 import { View, ViewProps, FlatList } from 'react-native'
 
+import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
+import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
 import { LineCardButtons } from './LineCardButtons'
@@ -10,17 +12,26 @@ import { LineCardRoutes } from './LineCardRoutes'
 import { useLine, useLineBuses, useLineStops, useLineTheme } from '@/composables'
 import { cn } from '@/utils/cn'
 
+const ErrorState = ({ message }: { message?: string }) => {
+  return (
+    <View className="h-22 items-center justify-center">
+      <UText className="text-error font-medium">
+        {message}
+      </UText>
+    </View>
+  )
+}
+
 export const LineCard = ({ className, style, ...props }: ViewProps) => {
   const { code } = useLine()
 
   const { buses } = useLineBuses()
   const { query: lineStopsQuery } = useLineStops()
-
   const theme = useLineTheme(code)
 
   return (
     <View
-      className={cn('bg-default p-2 rounded-md gap-2 h-48', className)}
+      className={cn('bg-default p-2 rounded-md gap-2', className)}
       style={[{ backgroundColor: theme?.['ui-bg'], elevation: 5 }, style]}
       {...props}
     >
@@ -29,36 +40,42 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
         <LineCardButtons />
       </View>
 
-      <FlatList
-        data={lineStopsQuery.data || []}
-        renderItem={({ item, index }) => (
-          <View className="flex-row items-center gap-2">
-            <UText className="w-6.5 text-center text-sm font-medium">{index + 1}</UText>
+      <UQueryState
+        query={lineStopsQuery}
+        loading={() => <SkeletonLineStops />}
+        error={error => <ErrorState message={error.message} />}
+      >
+        <FlatList
+          data={lineStopsQuery.data || []}
+          renderItem={({ item, index }) => (
+            <View className="flex-row items-center gap-2">
+              <UText className="w-6.5 text-center text-sm font-medium">{index + 1}</UText>
 
-            <View
-              className="items-center justify-center size-10 rounded-full border-2 border-muted"
-              style={{ borderColor: theme?.['ui-primary'] }}
-            >
-              {buses.find(b => b.closest_stop_code === item.code) && (
-                <Lucide
-                  name="bus-front"
-                  color={theme?.['ui-primary']}
-                  size={16}
-                />
-              )}
+              <View
+                className="items-center justify-center size-10 rounded-full border-2 border-muted"
+                style={{ borderColor: theme?.['ui-primary'] }}
+              >
+                {buses.find(b => b.closest_stop_code === item.code) && (
+                  <Lucide
+                    name="bus-front"
+                    color={theme?.['ui-primary']}
+                    size={16}
+                  />
+                )}
+              </View>
+
+              <UText className="text-xs truncate shrink" numberOfLines={2}>{item.name}</UText>
             </View>
-
-            <UText className="text-xs truncate shrink" numberOfLines={2}>{item.name}</UText>
-          </View>
-        )}
-        className="max-h-22"
-        contentContainerClassName="px-2 gap-2"
-        initialNumToRender={2}
-        maxToRenderPerBatch={3}
-        removeClippedSubviews
-        fadingEdgeLength={10}
-        windowSize={2}
-      />
+          )}
+          className="max-h-22"
+          contentContainerClassName="px-2 gap-2"
+          initialNumToRender={2}
+          maxToRenderPerBatch={3}
+          removeClippedSubviews
+          fadingEdgeLength={10}
+          windowSize={2}
+        />
+      </UQueryState>
 
       <LineCardRoutes />
     </View>

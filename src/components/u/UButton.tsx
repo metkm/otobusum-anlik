@@ -6,6 +6,7 @@ import { BaseButton } from 'react-native-gesture-handler'
 import { tv } from 'tailwind-variants'
 import { withUniwind } from 'uniwind'
 
+import { UActivityIndicator } from './UActivityIndicator'
 import { UText } from './UText'
 
 import { LineContext } from '@/composables/useLine'
@@ -129,7 +130,6 @@ export const UButton = ({
   label,
   className,
   icon,
-  // square,
   to,
   color = 'primary',
   variant = 'solid',
@@ -138,17 +138,18 @@ export const UButton = ({
   children,
   style,
   disabled,
+  loading,
   ...props
 }: {
   label?: string
   icon?: IconName
-  // square?: boolean
   to?: Href
   color?: 'primary' | 'neutral'
   variant?: 'solid' | 'ghost' | 'soft'
   size?: 'md' | 'lg'
   block?: boolean
   disabled?: boolean
+  loading?: boolean
 } & BaseButtonProps) => {
   const code = use(LineContext)
   const lineTheme = useLineTheme(code)
@@ -180,14 +181,35 @@ export const UButton = ({
       enabled={!disabled}
       {...props}
     >
-      {icon && (
+      {
+        loading
+          ? (
+              <UActivityIndicator
+                sizeClassName={uiIcon()}
+                className={uiLabel()}
+                color={themeStyle?.color}
+              />
+            )
+          : icon
+            ? (
+                <StyledLucide
+                  name={icon}
+                  sizeClassName={uiIcon()}
+                  className={uiLabel()}
+                  color={themeStyle?.color}
+                />
+              )
+            : undefined
+      }
+
+      {/* {icon && (
         <StyledLucide
           name={icon}
           sizeClassName={uiIcon()}
           className={uiLabel()}
           color={themeStyle?.color}
         />
-      )}
+      )} */}
 
       {children}
 

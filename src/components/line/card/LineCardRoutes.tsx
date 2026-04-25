@@ -73,6 +73,7 @@ export const LineCardRoutes = () => {
         onPress={presentRoutes}
         block
         className="grow shrink"
+        loading={routesQuery.isFetching}
       />
 
       {routesQuery.data

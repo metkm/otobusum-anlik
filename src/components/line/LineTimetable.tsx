@@ -2,7 +2,9 @@ import { useMemo, useState } from 'react'
 import { ScrollView, View, ViewProps } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
+import { SkeletonTimetable } from '../u/skeleton/SkeletonTimetable'
 import { UButton } from '../u/UButton'
+import { UQueryState } from '../u/UQueryState'
 import { UText } from '../u/UText'
 
 import { useLine, useLineCardWidth, useLineNews, useLineRoutes, useLineTheme, useLineTimetable } from '@/composables'
@@ -138,22 +140,9 @@ export const LineTimetable = ({ className }: ViewProps) => {
   const groupedByHour = groupDeparturesByHour(filteredData)
   const hours = Object.keys(groupedByHour).sort()
 
-  // const Content = () => {
-  //   if (lineTimetableQuery.isFetching) {
-  //     return <UActivityIndicator />
-  //   }
-
-  //   if (lineTimetableQuery.isError) {
-  //     return <UText>{lineTimetableQuery.error.message}</UText>
-  //   }
-
-  //   return
-  // }
-
   return (
     <View
       style={{ width: cardWidth, elevation: 5, backgroundColor: theme?.['ui-bg'] }}
-      // className="bg-muted rounded-md"
       className={cn('bg-muted rounded-md', className)}
     >
       <View className="m-2 mb-0">
@@ -168,50 +157,59 @@ export const LineTimetable = ({ className }: ViewProps) => {
             key={option.value}
             className="flex-1"
             block
-            variant={day & option.value ? 'solid' : 'ghost'}
+            variant={day & option.value ? 'solid' : 'soft'}
             size="lg"
             onPress={() => setDay(option.value)}
           />
         ))}
       </View>
 
-      <ScrollView contentContainerClassName="flex-row p-2" fadingEdgeLength={10}>
-        <View className="gap-2">
-          {hours.map(hour => (
-            <UText
-              key={hour}
-              className="size-8 font-medium items-center text-center align-middle rounded-md"
-              style={{
-                backgroundColor: theme?.['ui-primary'],
-                color: theme?.['ui-text-inverted'],
-              }}
-            >
-              {hour}
-            </UText>
-          ))}
-        </View>
+      <UQueryState
+        query={lineTimetableQuery}
+        loading={() => <SkeletonTimetable />}
+      >
+        <ScrollView
+          contentContainerClassName="flex-row p-2"
+          fadingEdgeLength={10}
+        >
+          <View className="gap-2">
+            {hours.map(hour => (
+              <UText
+                key={hour}
+                className="size-8 font-medium items-center text-center align-middle rounded-md"
+                style={{
+                  backgroundColor: theme?.['ui-primary'],
+                  color: theme?.['ui-text-inverted'],
+                }}
+              >
+                {hour}
+              </UText>
+            ))}
+          </View>
 
-        <ScrollView horizontal contentContainerClassName="flex-col gap-2">
-          {hours.map(hour => (
-            <View key={hour} className="flex-row">
-              {groupedByHour[hour]?.map(time => (
-                <UText
-                  key={`${code}-${time}-${routeCode}`}
-                  className="size-8 align-middle text-center"
-                  style={[
-                    cancelledTimes?.includes(`${hour}:${time}`) && {
-                      textDecorationLine: 'line-through',
-                      opacity: 0.5,
-                    },
-                  ]}
-                >
-                  {time}
-                </UText>
-              ))}
-            </View>
-          ))}
+          <ScrollView horizontal contentContainerClassName="flex-col gap-2">
+            {hours.map(hour => (
+              <View key={hour} className="flex-row">
+                {groupedByHour[hour]?.map(time => (
+                  <UText
+                    key={`${code}-${time}-${routeCode}`}
+                    className="size-8 align-middle text-center"
+                    style={[
+                      cancelledTimes?.includes(`${hour}:${time}`) && {
+                        textDecorationLine: 'line-through',
+                        opacity: 0.5,
+                      },
+                    ]}
+                  >
+                    {time}
+                  </UText>
+                ))}
+              </View>
+            ))}
+          </ScrollView>
         </ScrollView>
-      </ScrollView>
+      </UQueryState>
+
     </View>
   )
 }
