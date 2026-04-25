@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import Animated, { LinearTransition, useAnimatedReaction, useAnimatedStyle, useDerivedValue, useSharedValue, withDecay, withSpring, withTiming } from 'react-native-reanimated'
+import Animated, { clamp, LinearTransition, useAnimatedReaction, useAnimatedStyle, useDerivedValue, useSharedValue, withDecay, withSpring, withTiming } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { LineCard } from './card/LineCard'
@@ -18,32 +18,75 @@ const roundToStep = (x: number, step: number) => {
   return Math.round(x / step) * step
 }
 
+const dampen = (value: number) => {
+  'worklet'
+  return 8 * Math.log(value + 1)
+}
+
 export const LineCards = () => {
   const { cardWidth, snapInterval } = useLineCardWidth()
   const lines = useLineStore(useShallow(state => state.lines()))
 
   const offset = useSharedValue(0)
+  const offsetStart = useSharedValue(0)
+
   const contentWidth = useSharedValue(0)
 
   const offsetLimit = useDerivedValue(() => -(contentWidth.value - width), [])
 
   const pan = Gesture.Pan()
-    .onChange(({ changeX }) => {
-      offset.value += changeX
+    .onStart(() => {
+      offsetStart.value = offset.value
+    })
+    .onChange(({ translationX }) => {
+      let newOffset = offsetStart.value + translationX
+      let offsetModifier = translationX > 0 ? 1 : -1
+
+      if ((newOffset > 0) || (newOffset < offsetLimit.value)) {
+        newOffset = offsetStart.value + dampen(Math.abs(translationX)) * offsetModifier
+      }
+
+      offset.value = newOffset
     })
     .onFinalize(({ velocityX }) => {
+      if (offset.value < offsetLimit.value) {
+        offset.value = withSpring(offsetLimit.value)
+        return
+      }
+
+      if (offset.value > 0) {
+        offset.value = withSpring(0)
+        return
+      }
+
       offset.value = withDecay({
         velocity: velocityX,
-        rubberBandEffect: true,
-        clamp: [
-          offsetLimit.value,
-          0,
-        ],
+        clamp: [offsetLimit.value, 0],
       }, () => {
-        const closest = roundToStep(offset.value, snapInterval + 4)
-        offset.value = withSpring(closest)
+        const rounded = roundToStep(clamp(offset.value, offsetLimit.value, 0), snapInterval + 4)
+        offset.value = withSpring(rounded)
       })
     })
+
+  // const pan = Gesture.Pan()
+  //   .activeOffsetY(Infinity)
+  //   .activeOffsetX([-100, 100])
+  //   .onChange(({ changeX }) => {
+  //     offset.value += changeX
+  //   })
+  //   .onFinalize(({ velocityX }) => {
+  //     offset.value = withDecay({
+  //       velocity: velocityX,
+  //       // rubberBandEffect: true,
+  //       clamp: [
+  //         offsetLimit.value,
+  //         0,
+  //       ],
+  //     }, () => {
+  //       const closest = roundToStep(offset.value, snapInterval + 4)
+  //       offset.value = withSpring(closest)
+  //     })
+  //   })
 
   const containerStyle = useAnimatedStyle(() => {
     return {
