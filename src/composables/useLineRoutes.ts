@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { useLine } from './useLine'
 
-import { useLineStore } from '@/stores/line'
+import { useLineStore } from '@/stores'
 import { RouteCode, RouteDirection } from '@/types/line'
 
 export interface LineRoute {

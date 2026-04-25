@@ -3,7 +3,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { LineMarkerBuses, LineMarkerRoute, LineMarkerStops } from './marker'
 
 import { LineContext } from '@/composables/useLine'
-import { useLineStore } from '@/stores/line'
+import { useLineStore } from '@/stores'
 
 export const LineMarkers = () => {
   const lines = useLineStore(useShallow(state => state.lines()))

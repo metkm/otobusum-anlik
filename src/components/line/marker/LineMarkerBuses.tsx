@@ -5,7 +5,7 @@ import { Feature } from 'geojson'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLine, useLineBuses, useLineRoutes, useLineTheme } from '@/composables'
-import { useFilterStore } from '@/stores/filter'
+import { useFilterStore } from '@/stores'
 
 export const LineMarkerBuses = () => {
   const { code } = useLine()

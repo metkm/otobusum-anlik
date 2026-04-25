@@ -1,7 +1,7 @@
 import { useColorScheme } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
-import { Schemes, useThemeStore } from '@/stores/theme'
+import { Schemes, useThemeStore } from '@/stores'
 
 export const defaultTheme: Schemes = {
   dark: {

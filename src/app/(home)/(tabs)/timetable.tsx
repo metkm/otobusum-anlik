@@ -26,9 +26,9 @@ import { useShallow } from 'zustand/react/shallow'
 import { LineCards } from '@/components/line/LineCards'
 import { LineTimetable } from '@/components/line/LineTimetable'
 
+import { useLineCardWidth } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { useLineCardWidth } from '@/composables/useLineCardWidth'
-import { useLineStore } from '@/stores/line'
+import { useLineStore } from '@/stores'
 
 // import { LineTimetableMemoized } from '@/components/lines/line/LineTimetable'
 // import { Lines } from '@/components/lines/Lines'

@@ -3,7 +3,7 @@ import Lucide from '@react-native-vector-icons/lucide'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLine, useLineRoutes, useLineTheme } from '@/composables'
-import { useFilterStore } from '@/stores/filter'
+import { useFilterStore } from '@/stores'
 
 export const LineMarkerRoute = () => {
   const { code } = useLine()

@@ -15,7 +15,7 @@ import { LineMarkers } from '@/components/line/LineMarkers'
 import { TheMap } from '@/components/map/TheMap'
 import { MapButtons } from '@/components/MapButtons'
 
-import { useSettingsStore } from '@/stores/settings'
+import { useSettingsStore } from '@/stores'
 
 // import { Lines } from '@/components/lines/Lines'
 // import { TheMap, TheMapRef } from '@/components/map/Map'

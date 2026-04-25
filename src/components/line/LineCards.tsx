@@ -8,7 +8,7 @@ import { LineCard } from './card/LineCard'
 import { useLineCardWidth } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { ExitScaleOut } from '@/constants/animation'
-import { useLineStore } from '@/stores/line'
+import { useLineStore } from '@/stores'
 
 const width = Dimensions.get('window').width
 

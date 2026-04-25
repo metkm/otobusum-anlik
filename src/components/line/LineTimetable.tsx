@@ -7,7 +7,7 @@ import { UText } from '../u/UText'
 
 import { useLine, useLineCardWidth, useLineNews, useLineRoutes, useLineTheme, useLineTimetable } from '@/composables'
 import { Time } from '@/composables/useLineTimetable'
-import { useFilterStore } from '@/stores/filter'
+import { useFilterStore } from '@/stores'
 import { i18n } from '@/translations/i18n'
 import { City } from '@/types/city'
 import { cn } from '@/utils/cn'

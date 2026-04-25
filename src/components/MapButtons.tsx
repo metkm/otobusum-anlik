@@ -3,7 +3,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from './u/UButton'
 
-import { useLineStore } from '@/stores/line'
+import { useLineStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
 export const MapButtons = () => {

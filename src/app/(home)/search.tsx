@@ -9,7 +9,7 @@ import { UInput } from '@/components/u/UInput'
 import { UText } from '@/components/u/UText'
 
 import { isStop, useSearch } from '@/composables/useSearch'
-import { useLineStore } from '@/stores/line'
+import { useLineStore } from '@/stores'
 
 export const SearchScreen = () => {
   const [query, setQuery] = useState('')

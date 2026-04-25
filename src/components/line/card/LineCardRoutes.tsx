@@ -9,7 +9,7 @@ import { UText } from '@/components/u/UText'
 
 import { useLine, useLineTheme } from '@/composables'
 import { LineRoute, useLineRoutes } from '@/composables/useLineRoutes'
-import { useLineStore } from '@/stores/line'
+import { useLineStore } from '@/stores'
 
 const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute }) => {
   const setRoute = useLineStore(useShallow(state => state.setRoute))
