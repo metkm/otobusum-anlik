@@ -68,6 +68,7 @@ export const useLineStore = create(
       deleteLine: code => set((state) => {
         const city = useFilterStore.getState().city
         state.linesByCity[city] = state.linesByCity[city].filter(i => i !== code)
+        useThemeStore.getState().deleteTheme(code)
       }),
       addLine: code => set((state) => {
         const city = useFilterStore.getState().city

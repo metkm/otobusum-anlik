@@ -30,6 +30,7 @@ interface ThemeStore {
   themesByCity: Record<City, Record<string, Schemes>>
   themes: () => Record<string, Schemes>
   addTheme: (code: string) => void
+  deleteTheme: (code: string) => void
 }
 
 export const useThemeStore = create(
@@ -71,6 +72,10 @@ export const useThemeStore = create(
           }
         })
       },
+      deleteTheme: code => set((state) => {
+        const city = useFilterStore.getState().city
+        delete state.themesByCity[city][code]
+      }),
     })),
     {
       name: 'theme-store',
