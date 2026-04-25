@@ -20,7 +20,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
 
   return (
     <View
-      className={cn('bg-default p-2 rounded-md gap-2', className)}
+      className={cn('bg-default p-2 rounded-md gap-2 h-48', className)}
       style={[{ backgroundColor: theme?.['ui-bg'], elevation: 5 }, style]}
       {...props}
     >

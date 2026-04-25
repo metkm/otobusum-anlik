@@ -29,12 +29,12 @@ export const LineCards = () => {
 
   const offset = useSharedValue(0)
   const offsetStart = useSharedValue(0)
-
   const contentWidth = useSharedValue(0)
 
   const offsetLimit = useDerivedValue(() => -(contentWidth.value - width), [])
 
   const pan = Gesture.Pan()
+    .minDistance(50)
     .onStart(() => {
       offsetStart.value = offset.value
     })
@@ -48,7 +48,9 @@ export const LineCards = () => {
 
       offset.value = newOffset
     })
-    .onFinalize(({ velocityX }) => {
+    .onFinalize(({ velocityX }, success) => {
+      if (!success) return
+
       if (offset.value < offsetLimit.value) {
         offset.value = withSpring(offsetLimit.value)
         return
@@ -63,30 +65,10 @@ export const LineCards = () => {
         velocity: velocityX,
         clamp: [offsetLimit.value, 0],
       }, () => {
-        const rounded = roundToStep(clamp(offset.value, offsetLimit.value, 0), snapInterval + 4)
+        const rounded = roundToStep(clamp(offset.value, offsetLimit.value, 0), snapInterval)
         offset.value = withSpring(rounded)
       })
     })
-
-  // const pan = Gesture.Pan()
-  //   .activeOffsetY(Infinity)
-  //   .activeOffsetX([-100, 100])
-  //   .onChange(({ changeX }) => {
-  //     offset.value += changeX
-  //   })
-  //   .onFinalize(({ velocityX }) => {
-  //     offset.value = withDecay({
-  //       velocity: velocityX,
-  //       // rubberBandEffect: true,
-  //       clamp: [
-  //         offsetLimit.value,
-  //         0,
-  //       ],
-  //     }, () => {
-  //       const closest = roundToStep(offset.value, snapInterval + 4)
-  //       offset.value = withSpring(closest)
-  //     })
-  //   })
 
   const containerStyle = useAnimatedStyle(() => {
     return {
@@ -103,10 +85,13 @@ export const LineCards = () => {
   })
 
   return (
-    <GestureDetector gesture={pan}>
+    <GestureDetector
+      gesture={pan}
+      touchAction="pan-x"
+    >
       <Animated.View
         style={containerStyle}
-        className="gap-2 flex-row"
+        className="gap-2 flex-row items-center"
         onLayout={({ nativeEvent }) => {
           const cw = nativeEvent.layout.width
           contentWidth.value = cw
