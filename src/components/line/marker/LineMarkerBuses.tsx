@@ -2,23 +2,28 @@ import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibr
 import Lucide from '@react-native-vector-icons/lucide'
 // eslint-disable-next-line import/no-unresolved
 import { Feature } from 'geojson'
+import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLine, useLineBuses, useLineRoutes, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerBuses = () => {
+  const defaultBg = useCSSVariable('--ui-bg')
+
   const { code } = useLine()
   const { query: lineBusesQuery, buses } = useLineBuses()
   const { routeCode } = useLineRoutes()
 
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
-  const theme = useLineTheme(code)
+  const theme = useLineTheme()
+
+  const backgroundWithColor = theme?.backgroundWithColor({ variant: 'solid' })
 
   if (!lineBusesQuery.data)
     return
 
-  const iconSource = Lucide.getImageSourceSync('bus-front', 20, theme?.['ui-text-inverted'])
+  const iconSource = Lucide.getImageSourceSync('bus-front', 20, backgroundWithColor?.color)
 
   const iconImage = `bus-${code}`
   const images: Record<string, ImageEntry> = {}
@@ -47,7 +52,7 @@ export const LineMarkerBuses = () => {
       >
         <Layer
           type="circle"
-          paint={{ 'circle-radius': 16, 'circle-color': theme?.['ui-primary'] }}
+          paint={{ 'circle-radius': 16, 'circle-color': backgroundWithColor?.backgroundColor ?? defaultBg as string }}
           layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
           layerIndex={12}
           minzoom={10}

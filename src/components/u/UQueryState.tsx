@@ -20,7 +20,7 @@ export const UQueryState = <T,>({
 
   if (query.isError)
     return error?.(query.error) ?? (
-      <UText className="text-error grow text-center align-middle">
+      <UText className="text-error grow text-center align-middle text-xs truncate shrink" numberOfLines={1}>
         {query.error.message}
       </UText>
     )

@@ -9,13 +9,13 @@ import { LineCardMenu } from './LineCardMenu'
 import { LineCardName } from './LineCardName'
 import { LineCardRoutes } from './LineCardRoutes'
 
-import { useLine, useLineBuses, useLineStops, useLineTheme } from '@/composables'
+import { useLineBuses, useLineStops, useLineTheme } from '@/composables'
 import { cn } from '@/utils/cn'
 
 const ErrorState = ({ message }: { message?: string }) => {
   return (
     <View className="h-22 items-center justify-center">
-      <UText className="text-error font-medium">
+      <UText className="text-error font-medium text-xs">
         {message}
       </UText>
     </View>
@@ -23,16 +23,17 @@ const ErrorState = ({ message }: { message?: string }) => {
 }
 
 export const LineCard = ({ className, style, ...props }: ViewProps) => {
-  const { code } = useLine()
-
   const { buses } = useLineBuses()
   const { query: lineStopsQuery } = useLineStops()
-  const theme = useLineTheme(code)
+  const theme = useLineTheme()
+
+  const background = theme?.backgroundWithColor({ variant: 'ghost' })
+  const border = theme?.border({ variant: 'solid' })
 
   return (
     <View
-      className={cn('bg-default p-2 rounded-md gap-2', className)}
-      style={[{ backgroundColor: theme?.['ui-bg'], elevation: 5 }, style]}
+      className={cn('bg-muted p-2 rounded-md gap-2', className)}
+      style={[{ elevation: 5 }, background, style]}
       {...props}
     >
       <View className="flex-row items-center justify-between pl-1">
@@ -53,12 +54,13 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
 
               <View
                 className="items-center justify-center size-10 rounded-full border-2 border-muted"
-                style={{ borderColor: theme?.['ui-primary'] }}
+                style={border}
+                // style={{ borderColor: background?.color }}
               >
                 {buses.find(b => b.closest_stop_code === item.code) && (
                   <Lucide
                     name="bus-front"
-                    color={theme?.['ui-primary']}
+                    color={background?.color}
                     size={16}
                   />
                 )}

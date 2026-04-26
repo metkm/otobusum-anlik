@@ -1,22 +1,22 @@
 import { TrueSheet, type TrueSheetProps } from '@lodev09/react-native-true-sheet'
-import { RefObject, use } from 'react'
+import { RefObject } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { withUniwind } from 'uniwind'
 
-import { LineContext } from '@/composables/useLine'
 import { useLineTheme } from '@/composables/useLineTheme'
 import { cn } from '@/utils/cn'
 
 const StyledGestureHandlerRootView = withUniwind(GestureHandlerRootView)
 
 export const USheet = ({ ref, contentContainerClassName, children, ...props }: { ref: RefObject<TrueSheet | null>, contentContainerClassName?: string } & TrueSheetProps) => {
-  const code = use(LineContext)
-  const theme = useLineTheme(code)
+  const theme = useLineTheme()
+
+  const background = theme?.background({ variant: 'ghost' })
 
   return (
     <TrueSheet
       ref={ref}
-      backgroundColor={theme?.['ui-bg']}
+      backgroundColor={background?.backgroundColor}
       grabberOptions={{
         topMargin: 8,
         height: 4,

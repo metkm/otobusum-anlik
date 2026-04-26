@@ -15,12 +15,9 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
   const setRoute = useLineStore(useShallow(state => state.setRoute))
   const { code } = useLine()
   const { query: busesQuery } = useLineBuses()
-  const theme = useLineTheme(code)
 
-  const style = {
-    backgroundColor: isSelected ? theme?.['ui-primary'] : theme?.['ui-bg'],
-    color: isSelected ? theme?.['ui-text-inverted'] : theme?.['ui-text'],
-  }
+  const theme = useLineTheme()
+  const backgroundWithColor = theme?.backgroundWithColor({ variant: isSelected ? 'solid' : 'soft' })
 
   return (
     <UButton
@@ -32,17 +29,17 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
       <View className="flex-row justify-center gap-1">
         <View
           className="px-2 py-1 gap-1 rounded-md flex-row"
-          style={style}
+          style={backgroundWithColor}
         >
           <StyledLucide
             name="bus-front"
             sizeClassName="size-4"
-            color={style.color}
+            color={backgroundWithColor?.color}
           />
 
           <UText
             className="font-medium text-xs"
-            style={style}
+            style={backgroundWithColor}
           >
             {busesQuery.data?.reduce((acc, curr) => curr.route_code === item.code ? acc + 1 : acc, 0)}
           </UText>
@@ -50,7 +47,7 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
 
         <UText
           className="px-2 py-1 font-medium rounded-md text-xs"
-          style={style}
+          style={backgroundWithColor}
         >
           {item.code.split('_').slice(1).join('_')}
         </UText>

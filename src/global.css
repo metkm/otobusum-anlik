@@ -32,6 +32,9 @@
     @variant dark {
       --ui-bg: var(--color-mauve-900);
       --ui-bg-muted: var(--color-mauve-800);
+
+      --ui-border: var(--color-mauve-800);
+      /* --ui-border-muted: var(--ui-color-neutral-200); */
       
       --ui-text-muted: var(--color-mauve-400);
       --ui-text: var(--color-mauve-200);
@@ -44,6 +47,8 @@
     @variant light {
       --ui-bg: white;
       --ui-bg-muted: var(--color-mauve-50);
+
+      --ui-border: var(--color-mauve-200);
 
       --ui-text-muted: var(--color-mauve-500);
       --ui-text: var(--color-mauve-700);
@@ -73,9 +78,15 @@
   --radius-2xl: calc(var(--ui-radius) * 4);
   --radius-3xl: calc(var(--ui-radius) * 6);
 
+  --border-color-default: var(--ui-border);
+
   --color-primary: var(--ui-primary);
   --color-error: var(--ui-error);
 }
+
+/* @theme static {
+  --border-color-default: var(--ui-border);
+} */
 
 @utility h-hairline {
   height: hairlineWidth();

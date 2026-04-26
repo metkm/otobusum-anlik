@@ -1,7 +1,6 @@
 import Lucide from '@react-native-vector-icons/lucide'
 import { Href, router } from 'expo-router'
-import React, { ComponentProps, use } from 'react'
-import { TextStyle, ViewStyle } from 'react-native'
+import React, { ComponentProps } from 'react'
 import { BaseButton } from 'react-native-gesture-handler'
 import { tv } from 'tailwind-variants'
 import { withUniwind } from 'uniwind'
@@ -9,7 +8,6 @@ import { withUniwind } from 'uniwind'
 import { UActivityIndicator } from './UActivityIndicator'
 import { UText } from './UText'
 
-import { LineContext } from '@/composables/useLine'
 import { useLineTheme } from '@/composables/useLineTheme'
 import { IconName } from '@/types/ui'
 import { cn } from '@/utils/cn'
@@ -141,26 +139,30 @@ export const UButton = ({
   disabled?: boolean
   loading?: boolean
 } & BaseButtonProps) => {
-  const code = use(LineContext)
-  const lineTheme = useLineTheme(code)
+  // const code = use(LineContext)
+  // const lineTheme = useLineTheme(code)
+
+  const theme = useLineTheme()
+  const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, variant, size, block, disabled })
 
   const handlePress: BaseButtonProps['onPress'] = () => {
     if (!to) return
     router.navigate(to)
   }
 
-  const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, variant, size, block, disabled })
+  const themeBackground = theme?.background({ variant })
+  const themeText = theme?.text({ variant })
 
-  const themeStyle: ViewStyle & TextStyle | undefined
-    = color === 'primary'
-      ? lineTheme
-        ? variant === 'solid'
-          ? { backgroundColor: lineTheme['ui-primary'], color: lineTheme['ui-text-inverted'] }
-          : variant === 'soft'
-            ? { backgroundColor: lineTheme['ui-bg-muted'], color: lineTheme['ui-text'] }
-            : { backgroundColor: lineTheme['ui-bg'], color: lineTheme['ui-text'] }
-        : undefined
-      : undefined
+  // const themeStyle: ViewStyle & TextStyle | undefined
+  //   = color === 'primary'
+  //     ? lineTheme
+  //       ? variant === 'solid'
+  //         ? { backgroundColor: lineTheme['ui-primary'], color: lineTheme['ui-text-inverted'] }
+  //         : variant === 'soft'
+  //           ? { backgroundColor: lineTheme['ui-bg-muted'], color: lineTheme['ui-text'] }
+  //           : { backgroundColor: lineTheme['ui-bg'], color: lineTheme['ui-text'] }
+  //       : undefined
+  //     : undefined
 
   return (
     <StyledBaseButton
@@ -170,7 +172,7 @@ export const UButton = ({
         'disabled:bg-red-500',
       )}
       onPress={handlePress}
-      style={[themeStyle, style]}
+      style={[themeBackground, style]}
       enabled={!disabled}
       {...props}
     >
@@ -180,7 +182,7 @@ export const UButton = ({
               <UActivityIndicator
                 sizeClassName={uiIcon()}
                 className={uiLabel()}
-                color={themeStyle?.color}
+                color={themeText?.color}
               />
             )
           : icon
@@ -189,7 +191,7 @@ export const UButton = ({
                   name={icon}
                   sizeClassName={uiIcon()}
                   className={uiLabel()}
-                  color={themeStyle?.color}
+                  color={themeText?.color}
                 />
               )
             : undefined
@@ -210,7 +212,8 @@ export const UButton = ({
         <UText
           className={uiLabel()}
           numberOfLines={1}
-          style={themeStyle ? { color: themeStyle?.color } : undefined}
+          style={themeText}
+          // style={themeStyle ? { color: themeStyle?.color } : undefined}
         >
           {label}
         </UText>

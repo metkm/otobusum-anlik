@@ -99,7 +99,7 @@ export const TimetableScreen = () => {
 
   return (
     <View className="mt-safe mx-safe flex-1 pt-2">
-      <View>
+      <View className="items-start">
         <LineCards />
       </View>
 

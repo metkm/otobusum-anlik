@@ -83,7 +83,9 @@ export const LineTimetable = ({ className }: ViewProps) => {
   const { route, routeCode } = useLineRoutes()
   const { query: lineTimetableQuery } = useLineTimetable()
   const { query: lineNewsQuery } = useLineNews()
-  const theme = useLineTheme(code)
+
+  const theme = useLineTheme()
+  const background = theme?.background({ variant: 'ghost' })
 
   const filteredData = useMemo(() => {
     if (!lineTimetableQuery.data) return []
@@ -142,7 +144,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
 
   return (
     <View
-      style={{ width: cardWidth, elevation: 5, backgroundColor: theme?.['ui-bg'] }}
+      style={[{ width: cardWidth, elevation: 5 }, background]}
       className={cn('bg-muted rounded-md', className)}
     >
       <View className="m-2 mb-0">
@@ -177,10 +179,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
               <UText
                 key={hour}
                 className="size-8 font-medium items-center text-center align-middle rounded-md"
-                style={{
-                  backgroundColor: theme?.['ui-primary'],
-                  color: theme?.['ui-text-inverted'],
-                }}
+                style={theme?.backgroundWithColor({ variant: 'solid' })}
               >
                 {hour}
               </UText>

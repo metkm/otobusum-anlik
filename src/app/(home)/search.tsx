@@ -8,7 +8,7 @@ import { UInput } from '@/components/u/UInput'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
-import { useLine, useLineTheme } from '@/composables'
+import { useLineTheme } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { isStop, MIN_CHARACTER_LIMIT, useSearch } from '@/composables/useSearch'
 import { useLineStore } from '@/stores'
@@ -16,10 +16,8 @@ import { i18n } from '@/translations/i18n'
 import { BusLine, BusStop } from '@/types/bus'
 
 const RenderItemLine = ({ item }: { item: BusLine }) => {
-  const { code } = useLine()
   const addLine = useLineStore(useShallow(state => state.addLine))
-
-  const theme = useLineTheme(code)
+  const theme = useLineTheme()
 
   return (
     <UButton
@@ -32,12 +30,7 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
     >
       <UText
         className="bg-muted rounded-md px-2.5 py-1 text-sm font-medium"
-        style={theme
-          ? {
-              backgroundColor: theme?.['ui-primary'],
-              color: theme?.['ui-text-inverted'],
-            }
-          : undefined}
+        style={theme?.backgroundWithColor({ variant: 'solid' })}
       >
         {item.code}
       </UText>

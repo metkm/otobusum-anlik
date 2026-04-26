@@ -1,35 +1,44 @@
+import { use } from 'react'
 import { useColorScheme } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
-import { Schemes, useThemeStore } from '@/stores'
+import { LineContext } from './useLine'
 
-export const defaultTheme: Schemes = {
-  dark: {
-    'ui-bg': '1d161e', // mauve-900
-    'ui-bg-muted': '#2a212c', // mauve-800
-    'ui-text-muted': '#a89ea9', // mauve-400
-    'ui-text': '#e7e4e7', // mauve-200
-    'ui-text-inverted': '#1d161e', // mauve-900
-    'ui-primary': '#fdbe12', // bright-sun-400
-    'ui-error': '#f87171', // red-400 (tailwind default)
-    'ui-border': '#463947', // mauve-700 (visible on dark bg)
-    'ui-border-muted': '#594c5b', // mauve-600
-  },
+import { useThemeStore } from '@/stores'
 
-  light: {
-    'ui-bg': '#ffffff',
-    'ui-bg-muted': '#fafafa', // mauve-50
-    'ui-text-muted': '#79697b', // mauve-500
-    'ui-text': '#463947', // mauve-700
-    'ui-text-inverted': '#ffffff',
-    'ui-primary': '#eca506', // bright-sun-500
-    'ui-error': '#ef4444', // red-500
-    'ui-border': '#d7d0d7', // mauve-300
-    'ui-border-muted': '#e7e4e7', // mauve-200
-  },
+type VariantConfig<V, S> = {
+  variants: {
+    slots: S
+    variant: V
+  }
+  compoundVariants: {
+    variant: keyof V
+    style: Partial<{ [K in keyof S]: S[K] }>
+  }[]
 }
 
-export const useLineTheme = (code?: string) => {
+type VariantReturnType<V, S> = {
+  [T in keyof S]: (options?: { variant?: keyof V }) => S[T] | undefined
+}
+
+const createLineVariants = <V extends object, S>(config: VariantConfig<V, S>): VariantReturnType<V, S> => {
+  const result = {} as VariantReturnType<V, S>
+
+  for (const slot in config.variants.slots) {
+    const defaultVariant = Object.keys(config.variants.variant)[0]
+
+    result[slot] = (_config) => {
+      const st = config.compoundVariants.find(cv => cv.variant === (_config?.variant ?? defaultVariant))
+      return st?.style[slot]
+    }
+  }
+
+  return result
+}
+
+export const useLineTheme = () => {
+  const code = use(LineContext)
+
   const colorScheme = useColorScheme()
   const themes = useThemeStore(useShallow(state => state.themes()))
   const prefer = colorScheme === 'unspecified' ? 'dark' : colorScheme
@@ -37,5 +46,92 @@ export const useLineTheme = (code?: string) => {
   if (!code)
     return
 
-  return themes[code]?.[prefer]
+  const theme = themes[code]?.[prefer]
+  if (!theme)
+    return
+
+  return createLineVariants({
+    variants: {
+      slots: {
+        background: { backgroundColor: '' },
+        text: { color: '' },
+        border: { borderColor: '' },
+        backgroundWithColor: { backgroundColor: '', color: '' },
+      },
+      variant: {
+        solid: {},
+        soft: {},
+        ghost: {},
+      },
+    },
+    compoundVariants: [
+      {
+        variant: 'solid',
+        style: {
+          background: {
+            backgroundColor: theme['ui-primary'],
+          },
+          border: {
+            borderColor: theme['ui-border'],
+          },
+          text: {
+            color: theme['ui-text-inverted'],
+          },
+          backgroundWithColor: {
+            backgroundColor: theme['ui-primary'],
+            color: theme['ui-text-inverted'],
+          },
+        },
+      },
+      {
+        variant: 'soft',
+        style: {
+          background: {
+            backgroundColor: theme['ui-bg-muted'],
+          },
+          border: {
+            borderColor: theme['ui-border-muted'],
+          },
+          text: {
+            color: theme['ui-text'],
+          },
+          backgroundWithColor: {
+            backgroundColor: theme['ui-bg-muted'],
+            color: theme['ui-text'],
+          },
+        },
+      },
+      {
+        variant: 'ghost',
+        style: {
+          background: {
+            backgroundColor: theme['ui-bg'],
+          },
+          border: {
+            borderColor: theme['ui-border-muted'],
+          },
+          text: {
+            color: theme['ui-text'],
+          },
+          backgroundWithColor: {
+            backgroundColor: theme['ui-bg'],
+            color: theme['ui-text'],
+          },
+        },
+      },
+    ],
+  })
+
+  // const borderStyle = border({ variant: 'solid' })
+
+  // return createLineVariants(variant, theme)
+
+  // const colorScheme = useColorScheme()
+  // const themes = useThemeStore(useShallow(state => state.themes()))
+  // const prefer = colorScheme === 'unspecified' ? 'dark' : colorScheme
+
+  // if (!code)
+  //   return
+
+  // return themes[code]?.[prefer]
 }

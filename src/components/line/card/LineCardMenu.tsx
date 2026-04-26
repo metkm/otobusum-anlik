@@ -17,7 +17,7 @@ export const LineCardMenu = () => {
   const deleteLine = useLineStore(useShallow(state => state.deleteLine))
   const addTheme = useThemeStore(useShallow(state => state.addTheme))
 
-  const theme = useLineTheme(code)
+  const theme = useLineTheme()
 
   const { news } = useLineNews()
 
@@ -95,7 +95,10 @@ export const LineCardMenu = () => {
           block
           variant="soft"
         >
-          <View style={{ backgroundColor: theme?.['ui-primary'] }} className="size-4 rounded-md" />
+          <View
+            style={theme?.background({ variant: 'solid' })}
+            className="size-4 rounded-md"
+          />
         </UButton>
 
         <UButton

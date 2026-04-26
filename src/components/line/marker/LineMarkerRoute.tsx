@@ -1,15 +1,18 @@
 import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibre-react-native'
 import Lucide from '@react-native-vector-icons/lucide'
+import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLine, useLineRoutes, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerRoute = () => {
+  const defaultBg = useCSSVariable('--ui-bg')
+
   const { code } = useLine()
   const { query: lineRoutesQuery, route, direction } = useLineRoutes()
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
-  const theme = useLineTheme(code)
+  const theme = useLineTheme()
 
   if (!lineRoutesQuery.data)
     return
@@ -19,7 +22,10 @@ export const LineMarkerRoute = () => {
   const images: Record<string, ImageEntry> = {}
   const iconImage = `route-arrow-${code}`
 
-  images[iconImage] = Lucide.getImageSourceSync(direction === 'G' ? 'arrow-right' : 'arrow-left', 20, theme?.['ui-bg']).uri
+  const background = theme?.background({ variant: 'solid' })
+  const backgroundSoft = theme?.background({ variant: 'soft' })
+
+  images[iconImage] = Lucide.getImageSourceSync(direction === 'G' ? 'arrow-right' : 'arrow-left', 20, backgroundSoft?.backgroundColor).uri
 
   return (
     <>
@@ -41,7 +47,7 @@ export const LineMarkerRoute = () => {
         <Layer
           type="line"
           paint={{
-            'line-color': theme?.['ui-primary'],
+            'line-color': background?.backgroundColor ?? defaultBg as string,
             'line-width': 8,
           }}
           layout={{
