@@ -1,171 +1,45 @@
-// import { ComponentProps, useCallback, useEffect } from 'react'
-// import {
-//   FlatList,
-//   LayoutChangeEvent,
-//   ListRenderItem,
-//   Platform,
-//   StyleProp,
-//   StyleSheet,
-//   View,
-//   ViewStyle,
-// } from 'react-native'
-// import Animated, {
-//   Easing,
-//   scrollTo,
-//   useAnimatedRef,
-//   useAnimatedScrollHandler,
-//   useSharedValue,
-//   withTiming,
-// } from 'react-native-reanimated'
-// import { useShallow } from 'zustand/react/shallow'
-
 import { View } from 'react-native'
-import { FlatList } from 'react-native-gesture-handler'
+import { useSharedValue } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { LineCards } from '@/components/line/LineCards'
 import { LineTimetable } from '@/components/line/LineTimetable'
+import { CarouselContext, UCarousel } from '@/components/u/UCarousel'
 
 import { useLineCardWidth } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { useLineStore } from '@/stores'
 
-// import { LineTimetableMemoized } from '@/components/lines/line/LineTimetable'
-// import { Lines } from '@/components/lines/Lines'
-// import { UiText } from '@/components/ui/UiText'
-
-// import { usePaddings } from '@/hooks/usePaddings'
-
-// import { useFiltersStore } from '@/stores/filters'
-// import { getLines, useLinesStore } from '@/stores/lines'
-// import { useMiscStore } from '@/stores/misc'
-// import { i18n } from '@/translations/i18n'
-
-// const FlatListComponent = Platform.OS === 'web' ? FlatList : Animated.FlatList
-
-export const TimetableScreen = () => {
-  // const { tabRoutePaddings } = usePaddings(0)
-
-  // const linesHeight = useSharedValue(0)
-  // const linesRef = useAnimatedRef<FlatList>()
-  // const timetablesRef = useAnimatedRef<FlatList>()
-
-  // const lines = useLinesStore(useShallow(() => getLines()))
-  // useFiltersStore(useShallow(state => state.selectedCity))
-
-  // const onLayout = useCallback(
-  //   ({ nativeEvent }: LayoutChangeEvent) => {
-  //     linesHeight.value = withTiming(nativeEvent.layout.height, {
-  //       easing: Easing.out(Easing.quad),
-  //     })
-  //   },
-  //   [linesHeight],
-  // )
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     const mx = Math.max(0, Math.min(useMiscStore.getState().scrolledLineIndex, lines.length - 1))
-
-  //     linesRef.current?.scrollToIndex({
-  //       index: mx,
-  //       viewPosition: 0.5,
-  //     })
-  //   }, 200)
-  // }, [linesRef, lines.length])
-
-  // const containerStyle: StyleProp<ViewStyle> = {
-  //   flex: 1,
-  //   ...tabRoutePaddings,
-  // }
-
-  // const handleOnScroll = useAnimatedScrollHandler(({ contentOffset }) => {
-  //   scrollTo(linesRef, contentOffset.x, 0, false)
-  //   scrollTo(timetablesRef, contentOffset.x, 0, false)
-  // })
-
-  // const renderItem: ListRenderItem<string> = useCallback(({ item: lineCode }) => {
-  //   return <LineTimetableMemoized lineCode={lineCode} />
-  // }, [])
-
-  // const keyExtractor = useCallback((item: string) => item, [])
-
-  // if (lines.length < 1) {
-  //   return <UiText style={styles.center}>{i18n.t('timetableEmpty')}</UiText>
-  // }
-
+const LineTimetables = () => {
   const lines = useLineStore(useShallow(state => state.lines()))
-
   const { snapInterval } = useLineCardWidth()
 
   return (
-    <View className="mt-safe mx-safe flex-1 pt-2">
-      <View className="items-start">
-        <LineCards />
-      </View>
-
-      <FlatList
-        data={lines}
-        renderItem={({ item }) => (
-          <LineContext value={item}>
-            <LineTimetable className={lines.length < 2 ? 'rounded-none' : ''} />
-          </LineContext>
-        )}
-        contentContainerClassName={`gap-2 ${lines.length > 1 ? 'p-2 pt-0' : 'pt-2'}`}
-        snapToInterval={snapInterval}
-        horizontal
-      />
-    </View>
-
-  // <View style={containerStyle}>
-  //   <Lines
-  //     ref={linesRef}
-  //     listProps={{
-  //       onLayout,
-  //       onScroll: Platform.OS !== 'web' ? handleOnScroll : undefined,
-  //     }}
-  //     lineProps={{
-  //       variant: 'soft',
-  //     }}
-  //   />
-
-  //   <FlatListComponent
-  //     ref={timetablesRef}
-  //     data={lines}
-  //     renderItem={renderItem}
-  //     keyExtractor={keyExtractor}
-  //     style={styles.list}
-  //     contentContainerStyle={styles.listContent}
-  //     onScroll={Platform.OS !== 'web' ? handleOnScroll : undefined}
-  //     pagingEnabled
-  //     snapToAlignment="center"
-  //     horizontal
-  //     removeClippedSubviews={false}
-  //     {...(Platform.OS === 'web'
-  //       ? ({
-  //           CellRendererComponent: ({ children }) => {
-  //             return <View style={{ flex: 1 }}>{children}</View>
-  //           },
-  //         } as Pick<ComponentProps<typeof FlatList<string>>, 'CellRendererComponent'>)
-  //       : ({} as any))}
-  //   />
-  // </View>
+    <UCarousel
+      snapInterval={snapInterval}
+      contentClassName="p-2 gap-2 pt-0"
+      className="flex-1"
+    >
+      {lines.map(item => (
+        <LineContext key={item} value={item}>
+          <LineTimetable />
+        </LineContext>
+      ))}
+    </UCarousel>
   )
 }
 
-// const styles = StyleSheet.create({
-//   center: {
-//     flex: 1,
-//     textAlign: 'center',
-//     textAlignVertical: 'center',
-//   },
-//   list: {
-//     flex: 1,
-//   },
-//   listContent: {
-//     gap: 8,
-//     padding: 8,
-//     paddingTop: 0,
-//   },
-// })
+export const TimetableScreen = () => {
+  const offset = useSharedValue(0)
+
+  return (
+    <View className="mt-safe mx-safe pt-2 flex-1">
+      <CarouselContext value={offset}>
+        <LineCards />
+        <LineTimetables />
+      </CarouselContext>
+    </View>
+  )
+}
 
 export default TimetableScreen

@@ -51,7 +51,7 @@ export const HomeScreen = () => {
 
       <MapButtons />
 
-      <View className="absolute bottom-0 flex-col items-start z-10">
+      <View className="absolute bottom-0">
         <LineCards />
       </View>
     </>

@@ -48,7 +48,7 @@ export const RootLayout = () => {
         },
       }}
     >
-      <GestureHandlerRootView>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaListener
           onChange={({ insets }) => {
             Uniwind.updateInsets(insets)
