@@ -1,7 +1,7 @@
-import Lucide from '@react-native-vector-icons/lucide'
 import { View, ViewProps, FlatList } from 'react-native'
 
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
+import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
@@ -58,7 +58,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
                 // style={{ borderColor: background?.color }}
               >
                 {buses.find(b => b.closest_stop_code === item.code) && (
-                  <Lucide
+                  <UIcon
                     name="bus-front"
                     color={background?.color}
                     size={16}

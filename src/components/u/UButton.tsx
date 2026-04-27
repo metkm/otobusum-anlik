@@ -6,23 +6,13 @@ import { tv } from 'tailwind-variants'
 import { withUniwind } from 'uniwind'
 
 import { UActivityIndicator } from './UActivityIndicator'
+import { UIcon } from './UIcon'
 import { UText } from './UText'
 
 import { useLineTheme } from '@/composables/useLineTheme'
-import { IconName } from '@/types/ui'
 import { cn } from '@/utils/cn'
 
 const StyledBaseButton = withUniwind(BaseButton)
-export const StyledLucide = withUniwind(Lucide, {
-  size: {
-    fromClassName: 'sizeClassName',
-    styleProperty: 'width',
-  },
-  color: {
-    fromClassName: 'className',
-    styleProperty: 'color',
-  },
-})
 
 type BaseButtonProps = ComponentProps<typeof StyledBaseButton>
 
@@ -130,7 +120,7 @@ export const UButton = ({
   ...props
 }: {
   label?: string
-  icon?: IconName
+  icon?: ComponentProps<typeof Lucide>['name']
   to?: Href
   color?: 'primary' | 'neutral'
   variant?: 'solid' | 'ghost' | 'soft'
@@ -139,9 +129,6 @@ export const UButton = ({
   disabled?: boolean
   loading?: boolean
 } & BaseButtonProps) => {
-  // const code = use(LineContext)
-  // const lineTheme = useLineTheme(code)
-
   const theme = useLineTheme()
   const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, variant, size, block, disabled })
 
@@ -152,17 +139,6 @@ export const UButton = ({
 
   const themeBackground = theme?.background({ variant })
   const themeText = theme?.text({ variant })
-
-  // const themeStyle: ViewStyle & TextStyle | undefined
-  //   = color === 'primary'
-  //     ? lineTheme
-  //       ? variant === 'solid'
-  //         ? { backgroundColor: lineTheme['ui-primary'], color: lineTheme['ui-text-inverted'] }
-  //         : variant === 'soft'
-  //           ? { backgroundColor: lineTheme['ui-bg-muted'], color: lineTheme['ui-text'] }
-  //           : { backgroundColor: lineTheme['ui-bg'], color: lineTheme['ui-text'] }
-  //       : undefined
-  //     : undefined
 
   return (
     <StyledBaseButton
@@ -187,24 +163,15 @@ export const UButton = ({
             )
           : icon
             ? (
-                <StyledLucide
+                <UIcon
                   name={icon}
                   sizeClassName={uiIcon()}
-                  className={uiLabel()}
+                  colorClassName={uiLabel()}
                   color={themeText?.color}
                 />
               )
             : undefined
       }
-
-      {/* {icon && (
-        <StyledLucide
-          name={icon}
-          sizeClassName={uiIcon()}
-          className={uiLabel()}
-          color={themeStyle?.color}
-        />
-      )} */}
 
       {children}
 

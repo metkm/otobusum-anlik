@@ -2,7 +2,7 @@ export type RouteDirection = 'G' | 'D'
 export type RouteCode = `${string}_${RouteDirection}_${string}`
 
 export interface LineGroup {
-  id: number
+  id: string
   name: string
-  codes: Set<string>
+  codes: string[]
 }

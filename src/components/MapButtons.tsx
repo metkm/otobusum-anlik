@@ -41,6 +41,14 @@ export const MapButtons = () => {
           }}
         />
       )}
+
+      <UButton
+        icon="component"
+        color="neutral"
+        style={{ elevation: 5 }}
+        size="lg"
+        to="/groups"
+      />
     </Animated.View>
   )
 }

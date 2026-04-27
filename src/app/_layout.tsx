@@ -48,7 +48,7 @@ export const RootLayout = () => {
         },
       }}
     >
-      <GestureHandlerRootView style={{ flex: 1 }}>
+      <GestureHandlerRootView style={{ flexGrow: 1 }}>
         <SafeAreaListener
           onChange={({ insets }) => {
             Uniwind.updateInsets(insets)
@@ -65,6 +65,10 @@ export const RootLayout = () => {
             >
               <Sheet.Screen name="(home)" />
               <Sheet.Screen name="stop" />
+              <Sheet.Screen
+                name="groups"
+                options={{ scrollable: true, detents: [0.5, 1] }}
+              />
             </Sheet>
           </ThemeProvider>
         </SafeAreaListener>

@@ -6,7 +6,7 @@
 // import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { enableMapSet } from 'immer'
+import { randomUUID } from 'expo-crypto'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
@@ -69,62 +69,105 @@ import { LineGroup, RouteCode, RouteDirection } from '@/types/line'
 //   // changeRouteDirection: (code: string) => void
 // }
 
-enableMapSet()
-
 interface LineCodeSlice {
   lines: Record<City, LineGroup[]>
-  groupId: number
+  groupId: string
+  createGroup: () => void
+  selectGroup: (id: string) => void
+  deleteGroup: (id: string) => void
   addLine: (code: string) => void
   deleteLine: (code: string) => void
   getLines: () => string[]
 }
 
 interface LineRouteSlice {
-  routes: Record<City, Map<string, RouteCode>>
+  routes: Record<City, Record<string, RouteCode>>
   setRoute: (code: string, routeCode: RouteCode) => void
   changeRouteDirection: (code: string) => void
-  getRoutes: () => Map<string, RouteCode>
+  getRoutes: () => Record<string, RouteCode>
 }
 
 const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
   lines: {
-    istanbul: [{ id: 1, name: 'default', codes: new Set(['km12']) }],
+    istanbul: [{ id: 'abc', name: 'default', codes: ['KM12'] }],
     izmir: [],
   },
-  groupId: 1,
+  groupId: 'abc',
+  createGroup: () => set((state) => {
+    const city = useFilterStore.getState().city
+    const uuid = randomUUID()
+
+    state.lines[city].push({
+      id: uuid,
+      codes: [],
+      name: uuid,
+    })
+  }),
+  selectGroup: id => set((state) => {
+    state.groupId = id
+  }),
+  deleteGroup: id => set((state) => {
+    const city = useFilterStore.getState().city
+    const groups = state.lines[city]
+
+    if (groups.length < 2)
+      return
+
+    const i = groups.findIndex(gr => gr.id === id)
+    if (i === -1 || i === undefined)
+      return
+
+    if (state.groupId === groups.at(i)?.id) {
+      state.groupId = groups.at(0)!.id
+    }
+
+    state.lines[city]?.splice(i, 1)
+  }),
   addLine: code => set((state) => {
     const city = useFilterStore.getState().city
-    state.lines[city]?.find(c => c.id === state.groupId)?.codes.add(code)
+    const codes = state.lines[city].find(c => c.id === state.groupId)?.codes
 
+    if (codes?.includes(code))
+      return
+
+    codes?.push(code)
     useThemeStore.getState().createTheme(code)
   }),
   deleteLine: code => set((state) => {
     const city = useFilterStore.getState().city
-    state.lines[city]?.find(c => c.id === state.groupId)?.codes.delete(code)
+    const codes = state.lines[city]?.find(c => c.id === state.groupId)?.codes
+
+    const i = codes?.findIndex(c => c === code)
+    if (i === -1 || i === undefined)
+      return
+
+    codes?.splice(i, 1)
   }),
   getLines: () => {
     const city = useFilterStore.getState().city
-    return Array.from(get().lines[city]?.find(gr => gr.id === get().groupId)?.codes.values() || [])
+    const group = get().lines[city].find(gr => gr.id === get().groupId)
+
+    return group?.codes || []
   },
 }))
 
 const createLineRouteSlice = immer<LineRouteSlice>((set, get) => ({
   routes: {
-    istanbul: new Map(),
-    izmir: new Map(),
+    istanbul: {},
+    izmir: {},
   },
   setRoute: (code, routeCode) => set((state) => {
     const city = useFilterStore.getState().city
-    state.routes[city].set(code, routeCode)
+    state.routes[city][code] = routeCode
   }),
   changeRouteDirection: code => set((state) => {
     const city = useFilterStore.getState().city
-    const routeCode = state.routes[city].get(code) || `${code}_G_D0`
+    const routeCode = state.routes[city]?.[code] || `${code}_G_D0`
 
     const direction = routeCode.split('_')[1] as RouteDirection
     const otherDirectionCode = routeCode.replace(/G|D/, direction === 'G' ? 'D' : 'G') as RouteCode
 
-    state.routes[city].set(code, otherDirectionCode)
+    state.routes[city][code] = otherDirectionCode
   }),
   getRoutes: () => {
     const city = useFilterStore.getState().city

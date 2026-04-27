@@ -61,4 +61,7 @@ export default {
   lineGroups: 'Hat Grupları',
   empty: 'Boş',
   emptyGroups: 'Grupların boş',
+  areYouSure: 'Emin misin?',
+  cancel: 'İptal',
+  delete: 'Sil',
 }

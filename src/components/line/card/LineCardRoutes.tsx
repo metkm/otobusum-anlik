@@ -3,7 +3,8 @@ import { useRef } from 'react'
 import { FlatList, ListRenderItem, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
-import { StyledLucide, UButton } from '@/components/u/UButton'
+import { UButton } from '@/components/u/UButton'
+import { UIcon } from '@/components/u/UIcon'
 import { USheet } from '@/components/u/USheet'
 import { UText } from '@/components/u/UText'
 
@@ -28,10 +29,10 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
     >
       <View className="flex-row justify-center gap-1">
         <View
-          className="px-2 py-1 gap-1 rounded-md flex-row"
+          className="px-2 py-1 gap-1 rounded-md flex-row items-center"
           style={backgroundWithColor}
         >
-          <StyledLucide
+          <UIcon
             name="bus-front"
             sizeClassName="size-4"
             color={backgroundWithColor?.color}
@@ -46,7 +47,7 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
         </View>
 
         <UText
-          className="px-2 py-1 font-medium rounded-md text-xs"
+          className="px-2 py-1 font-medium rounded-md text-xs align-middle"
           style={backgroundWithColor}
         >
           {item.code.split('_').slice(1).join('_')}

@@ -61,4 +61,7 @@ export default {
   lineGroups: 'Line Groups',
   empty: 'Empty',
   emptyGroups: 'No groups found',
+  areYouSure: 'Are you sure?',
+  cancel: 'Cancel',
+  delete: 'Delete',
 }

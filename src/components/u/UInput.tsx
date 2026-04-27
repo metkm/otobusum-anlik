@@ -1,11 +1,10 @@
-import Lucide from '@react-native-vector-icons/lucide'
+import { ComponentProps } from 'react'
 import { TextInputProps, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
-import { useCSSVariable } from 'uniwind'
 
 import { UActivityIndicator } from './UActivityIndicator'
+import { UIcon } from './UIcon'
 
-import { IconName } from '@/types/ui'
 import { cn } from '@/utils/cn'
 
 export const UInput = ({
@@ -13,13 +12,11 @@ export const UInput = ({
   icon,
   loading,
   ...props
-}: { icon?: IconName, loading?: boolean } & TextInputProps) => {
-  const bgColor = useCSSVariable('--ui-text')
-
+}: { icon?: ComponentProps<typeof UIcon>['name'], loading?: boolean } & TextInputProps) => {
   const _icon = loading
     ? <UActivityIndicator />
     : icon
-      ? <Lucide name={icon} size={20} color={bgColor as string} />
+      ? <UIcon name={icon} colorClassName="--ui-text" />
       : undefined
 
   return (

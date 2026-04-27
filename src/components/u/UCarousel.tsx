@@ -42,7 +42,7 @@ export const UCarousel = ({
   const offsetLimit = useDerivedValue(() => -(contentWidth.value - width), [])
 
   const pan = Gesture.Pan()
-    .minDistance(100)
+    .minDistance(50)
     .onStart(() => {
       offsetStart.value = offset.value
     })

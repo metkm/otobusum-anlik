@@ -1,10 +1,10 @@
-// import Ionicons from '@react-native-vector-icons/ionicons'
-import Lucide from '@react-native-vector-icons/lucide'
 import { Tabs } from 'expo-router'
 import { ComponentProps } from 'react'
 import { View } from 'react-native'
 import { cn } from 'tailwind-variants'
 import { useCSSVariable } from 'uniwind'
+
+import { UIcon } from '@/components/u/UIcon'
 
 import { i18n } from '@/translations/i18n'
 
@@ -41,7 +41,7 @@ export const TabsLayout = () => {
               color: color as string,
             },
             tabBarIcon: ({ focused }) => {
-              type IconName = ComponentProps<typeof Lucide>['name']
+              type IconName = ComponentProps<typeof UIcon>['name']
               // const icon = focused ? screen.icon : `${screen.icon}-filled`
 
               return (
@@ -50,7 +50,7 @@ export const TabsLayout = () => {
                   focused ? 'bg-muted' : undefined,
                 )}
                 >
-                  <Lucide
+                  <UIcon
                     name={screen.icon as IconName}
                     size={20}
                     color={color as string}

@@ -2,7 +2,7 @@ import { Camera } from '@maplibre/maplibre-react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { Linking, View } from 'react-native'
 
-import { TheMap } from '@/components/map/TheMap'
+import { Map } from '@/components/Map'
 import { UActivityIndicator } from '@/components/u/UActivityIndicator'
 import { UButton } from '@/components/u/UButton'
 import { UText } from '@/components/u/UText'
@@ -38,13 +38,13 @@ export const StopScreen = () => {
     <View className="gap-2 pt-5 pb-2 px-2">
       {data && (
         <View className="h-40">
-          <TheMap
+          <Map
             dragPan={false}
             touchZoom={false}
             doubleTapZoom={false}
           >
             <Camera center={[data.stop.lng, data.stop.lat]} zoom={15} />
-          </TheMap>
+          </Map>
         </View>
       )}
 

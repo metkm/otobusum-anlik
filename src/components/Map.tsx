@@ -1,11 +1,11 @@
-import { Layer, Map, RasterSource, type MapRef, type LngLatBounds, type CameraProps, type MapProps } from '@maplibre/maplibre-react-native'
+import { Layer, Map as _Map, RasterSource, type MapRef, type LngLatBounds, type CameraProps, type MapProps } from '@maplibre/maplibre-react-native'
 import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import React, { RefObject, useRef, useState } from 'react'
 import { ActivityIndicator, useColorScheme } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useSettingsStore } from '../../stores/settings'
+import { useSettingsStore } from '../stores/settings'
 
 import rawStyleJson from '@/assets/style.json'
 import { getMapStyle } from '@/constants/mapStyles'
@@ -19,7 +19,7 @@ export interface TheMapProps {
 // const StyledMap = withUniwind(Map)
 const styleJson = JSON.stringify(rawStyleJson)
 
-export const TheMap = ({ children, cameraProps, style, ...props }: { initialMapBounds?: LngLatBounds, cameraProps?: CameraProps } & Omit<MapProps, 'mapStyle'>) => {
+export const Map = ({ children, cameraProps, style, ...props }: { initialMapBounds?: LngLatBounds, cameraProps?: CameraProps } & Omit<MapProps, 'mapStyle'>) => {
   const map = useRef<MapRef>(null)
   const [visible, setVisible] = useState(false)
 
@@ -52,7 +52,7 @@ export const TheMap = ({ children, cameraProps, style, ...props }: { initialMapB
   const onFinishLoadingMap = () => setVisible(true)
 
   return (
-    <Map
+    <_Map
       ref={map}
       logo={false}
       attribution={false}
@@ -77,6 +77,6 @@ export const TheMap = ({ children, cameraProps, style, ...props }: { initialMapB
       </RasterSource>
 
       {children}
-    </Map>
+    </_Map>
   )
 }
