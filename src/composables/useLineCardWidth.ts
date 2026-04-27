@@ -5,7 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useLineStore } from '@/stores'
 
 export const useLineCardWidth = () => {
-  const lines = useLineStore(useShallow(state => state.lines()))
+  const lines = useLineStore(useShallow(state => state.getLines()))
   const { width } = useWindowDimensions()
 
   let spacing = useCSSVariable('--spacing') as number

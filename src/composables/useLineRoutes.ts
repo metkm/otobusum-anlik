@@ -20,8 +20,7 @@ export interface LineRoute {
 
 export const useLineRoutes = () => {
   const { code } = useLine()
-  const routeCode = useLineStore(useShallow(state => state.routes()[code])) || `${code}_G_D0` as RouteCode
-  // const setRoute = useLineStore(useShallow(state => state.setRoute))
+  const routeCode = useLineStore(useShallow(state => state.getRoutes().get(code))) || `${code}_G_D0` as RouteCode
 
   const query = useQuery({
     queryKey: ['line', code, 'routes'],
@@ -32,21 +31,15 @@ export const useLineRoutes = () => {
 
   const route = query.data?.find(r => r.code === routeCode)
 
-  const direction = routeCode.split('_')[1] || 'G' as RouteDirection
+  const direction = (routeCode.split('_')[1] || 'G') as RouteDirection
   const otherDirectionCode = routeCode.replace(/G|D/, direction === 'G' ? 'D' : 'G')
   const otherDirectionRoute = query.data?.find(r => r.code === otherDirectionCode)
-
-  // const changeDirection = () => {
-  //   if (!otherDirectionRoute) return
-  //   setRoute(code, otherDirectionRoute.code)
-  // }
 
   return {
     query,
     routeCode,
     route,
     direction,
-    // changeDirection,
     otherDirectionRoute,
   }
 }

@@ -5,6 +5,18 @@
 // import { create } from 'zustand'
 // import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { enableMapSet } from 'immer'
+import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { immer } from 'zustand/middleware/immer'
+
+import { useFilterStore } from './filter'
+import { useThemeStore } from './theme'
+
+import { City } from '@/types/city'
+import { LineGroup, RouteCode, RouteDirection } from '@/types/line'
+
 // import { useFiltersStore } from './filters'
 
 // import { ColorSchemes } from '@/constants/colors'
@@ -30,74 +42,153 @@
 //   lineGroups: Record<Cities, Record<string, LineGroup>>
 // }
 
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
-import { immer } from 'zustand/middleware/immer'
+// import AsyncStorage from '@react-native-async-storage/async-storage'
+// import { create } from 'zustand'
+// import { createJSONStorage, persist } from 'zustand/middleware'
+// import { immer } from 'zustand/middleware/immer'
 
-import { useFilterStore } from './filter'
-import { useThemeStore } from './theme'
+// import { useFilterStore } from './filter'
+// import { useThemeStore } from './theme'
 
-import { City } from '@/types/city'
-import { RouteCode, RouteDirection } from '@/types/line'
+// import { City } from '@/types/city'
+// import { LineGroup, RouteCode, RouteDirection } from '@/types/line'
 
-interface LinesStore {
-  linesByCity: Record<City, string[]>
-  routesByCity: Record<City, Record<string, RouteCode>>
-  lines: () => string[]
-  routes: () => Record<string, RouteCode>
-  deleteLine: (code: string) => void
+// interface LinesStore {
+//   // linesByCity: Record<City, LineGroup[]>
+//   // routesByCity: Record<City, Record<string, RouteCode>>
+
+//   // selectedGroupId: number
+//   // getGroup: () => LineGroup
+//   // // group: () => LineGroup
+
+//   // // lines: () => string[]
+//   // // routes: () => Record<string, RouteCode>
+//   // deleteLine: (code: string) => void
+//   // addLine: (code: string) => void
+//   // setRoute: (code: string, routeCode: RouteCode) => void
+//   // changeRouteDirection: (code: string) => void
+// }
+
+enableMapSet()
+
+interface LineCodeSlice {
+  lines: Record<City, LineGroup[]>
+  groupId: number
   addLine: (code: string) => void
-  setRoute: (code: string, routeCode: RouteCode) => void
-  changeRouteDirection: (code: string) => void
+  deleteLine: (code: string) => void
+  getLines: () => string[]
 }
 
+interface LineRouteSlice {
+  routes: Record<City, Map<string, RouteCode>>
+  setRoute: (code: string, routeCode: RouteCode) => void
+  changeRouteDirection: (code: string) => void
+  getRoutes: () => Map<string, RouteCode>
+}
+
+const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
+  lines: {
+    istanbul: [{ id: 1, name: 'default', codes: new Set(['km12']) }],
+    izmir: [],
+  },
+  groupId: 1,
+  addLine: code => set((state) => {
+    const city = useFilterStore.getState().city
+    state.lines[city]?.find(c => c.id === state.groupId)?.codes.add(code)
+
+    useThemeStore.getState().createTheme(code)
+  }),
+  deleteLine: code => set((state) => {
+    const city = useFilterStore.getState().city
+    state.lines[city]?.find(c => c.id === state.groupId)?.codes.delete(code)
+  }),
+  getLines: () => {
+    const city = useFilterStore.getState().city
+    return Array.from(get().lines[city]?.find(gr => gr.id === get().groupId)?.codes.values() || [])
+  },
+}))
+
+const createLineRouteSlice = immer<LineRouteSlice>((set, get) => ({
+  routes: {
+    istanbul: new Map(),
+    izmir: new Map(),
+  },
+  setRoute: (code, routeCode) => set((state) => {
+    const city = useFilterStore.getState().city
+    state.routes[city].set(code, routeCode)
+  }),
+  changeRouteDirection: code => set((state) => {
+    const city = useFilterStore.getState().city
+    const routeCode = state.routes[city].get(code) || `${code}_G_D0`
+
+    const direction = routeCode.split('_')[1] as RouteDirection
+    const otherDirectionCode = routeCode.replace(/G|D/, direction === 'G' ? 'D' : 'G') as RouteCode
+
+    state.routes[city].set(code, otherDirectionCode)
+  }),
+  getRoutes: () => {
+    const city = useFilterStore.getState().city
+    return get().routes[city]
+  },
+}))
+
 export const useLineStore = create(
-  persist(
-    immer<LinesStore>((set, get) => ({
-      linesByCity: {
-        istanbul: ['KM12'],
-        izmir: [],
-      },
-      routesByCity: {
-        istanbul: {},
-        izmir: {},
-      },
-      lines: () => get().linesByCity[useFilterStore.getState().city],
-      routes: () => get().routesByCity[useFilterStore.getState().city],
-      deleteLine: code => set((state) => {
-        const city = useFilterStore.getState().city
-        state.linesByCity[city] = state.linesByCity[city].filter(i => i !== code)
-        useThemeStore.getState().deleteTheme(code)
-      }),
-      addLine: code => set((state) => {
-        const city = useFilterStore.getState().city
-        useThemeStore.getState().addTheme(code)
-
-        if (!state.linesByCity[city].includes(code)) {
-          state.linesByCity[city].push(code)
-        }
-      }),
-      setRoute: (code, routeCode) => set((state) => {
-        const city = useFilterStore.getState().city
-        state.routesByCity[city][code] = routeCode
-      }),
-      changeRouteDirection: code => set((state) => {
-        const city = useFilterStore.getState().city
-        const routeCode = state.routesByCity[city][code] || `${code}_G_D0`
-        const direction = routeCode.split('_')[1] as RouteDirection
-        const otherDirectionCode = routeCode.replace(/G|D/, direction === 'G' ? 'D' : 'G') as RouteCode
-
-        state.routesByCity[city][code] = otherDirectionCode
-      }),
-    })),
-    {
-      name: 'lines-store',
-      storage: createJSONStorage(() => AsyncStorage),
-      version: 4,
-    },
-  ),
+  persist<LineCodeSlice & LineRouteSlice>((...a) => ({
+    ...createLineCodeSlice(...a),
+    ...createLineRouteSlice(...a),
+  }), {
+    name: 'lines-store',
+    storage: createJSONStorage(() => AsyncStorage),
+    version: 4,
+  }),
 )
+
+// export const useLineStore = create(
+//   persist(
+//     immer<LinesStore>((set, get) => ({
+//       linesByCity: {
+//         istanbul: [{ id: 1, name: 'default', codes: ['km12'] }],
+//         izmir: [],
+//       },
+//       routesByCity: {
+//         istanbul: {},
+//         izmir: {},
+//       },
+//       selectedGroupId: () => get().linesByCity[]
+//       // lines: () => get().linesByCity[useFilterStore.getState().city],
+//       // routes: () => get().routesByCity[useFilterStore.getState().city],
+//       deleteLine: code => set((state) => {
+//         // const city = useFilterStore.getState().city
+//         // state.linesByCity[city] = state.linesByCity[city].filter(i => i !== code)
+//         // useThemeStore.getState().deleteTheme(code)
+//       }),
+//       addLine: code => set((state) => {
+//         // const city = useFilterStore.getState().city
+//         // useThemeStore.getState().addTheme(code)
+
+//         // if (!state.linesByCity[city].includes(code)) {
+//         //   state.linesByCity[city].push(code)
+//         // }
+//       }),
+//       setRoute: (code, routeCode) => set((state) => {
+//         // const city = useFilterStore.getState().city
+//         // state.routesByCity[city][code] = routeCode
+//       }),
+//       changeRouteDirection: code => set((state) => {
+//         // const city = useFilterStore.getState().city
+//         // const routeCode = state.routesByCity[city][code] || `${code}_G_D0`
+//         // const direction = routeCode.split('_')[1] as RouteDirection
+//         // const otherDirectionCode = routeCode.replace(/G|D/, direction === 'G' ? 'D' : 'G') as RouteCode
+//         // state.routesByCity[city][code] = otherDirectionCode
+//       }),
+//     })),
+//     {
+//       name: 'lines-store',
+//       storage: createJSONStorage(() => AsyncStorage),
+//       version: 4,
+//     },
+//   ),
+// )
 
 // export const useLinesStore = create(
 //   subscribeWithSelector(

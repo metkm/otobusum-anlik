@@ -29,7 +29,7 @@ export interface Schemes {
 interface ThemeStore {
   themesByCity: Record<City, Record<string, Schemes>>
   themes: () => Record<string, Schemes>
-  addTheme: (code: string) => void
+  createTheme: (code: string) => void
   deleteTheme: (code: string) => void
 }
 
@@ -41,7 +41,7 @@ export const useThemeStore = create(
         izmir: {},
       },
       themes: () => get().themesByCity[useFilterStore.getState().city],
-      addTheme: (code: string) => {
+      createTheme: (code: string) => {
         const { schemes, palettes } = createRandomTheme()
         const city = useFilterStore.getState().city
 

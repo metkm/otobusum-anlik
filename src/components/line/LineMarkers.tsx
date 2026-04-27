@@ -6,7 +6,7 @@ import { LineContext } from '@/composables/useLine'
 import { useLineStore } from '@/stores'
 
 export const LineMarkers = () => {
-  const lines = useLineStore(useShallow(state => state.lines()))
+  const lines = useLineStore(useShallow(state => state.getLines()))
 
   return lines.map(code => (
     <LineContext value={code} key={code}>

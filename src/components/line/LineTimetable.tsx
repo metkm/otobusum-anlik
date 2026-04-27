@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
-import { ScrollView, View, ViewProps } from 'react-native'
+import { View, ViewProps } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
 import { SkeletonTimetable } from '../u/skeleton/SkeletonTimetable'
@@ -7,7 +8,7 @@ import { UButton } from '../u/UButton'
 import { UQueryState } from '../u/UQueryState'
 import { UText } from '../u/UText'
 
-import { useLine, useLineCardWidth, useLineNews, useLineRoutes, useLineTheme, useLineTimetable } from '@/composables'
+import { useLineCardWidth, useLineNews, useLineRoutes, useLineTheme, useLineTimetable } from '@/composables'
 import { Time } from '@/composables/useLineTimetable'
 import { useFilterStore } from '@/stores'
 import { i18n } from '@/translations/i18n'
@@ -78,7 +79,6 @@ export const LineTimetable = ({ className }: ViewProps) => {
   const city = useFilterStore(useShallow(state => state.city))
   const [day, setDay] = useState(() => 1 << (nowDay + 1))
 
-  const { code } = useLine()
   const { cardWidth } = useLineCardWidth()
   const { route, routeCode } = useLineRoutes()
   const { query: lineTimetableQuery } = useLineTimetable()
@@ -140,7 +140,9 @@ export const LineTimetable = ({ className }: ViewProps) => {
   })
 
   const groupedByHour = groupDeparturesByHour(filteredData)
-  const hours = Object.keys(groupedByHour).sort()
+
+  const backgroundWithColor = theme?.backgroundWithColor()
+  const backgroundMuted = theme?.background({ variant: 'soft' })
 
   return (
     <View
@@ -170,7 +172,41 @@ export const LineTimetable = ({ className }: ViewProps) => {
         query={lineTimetableQuery}
         loading={() => <SkeletonTimetable />}
       >
-        <ScrollView
+        <ScrollView fadingEdgeLength={10}>
+          {Object.entries(groupedByHour).map(([hour, minutes], index) => (
+            <View
+              key={hour}
+              className="flex-row items-center shrink p-2 gap-2"
+              style={(index % 2 !== 0) && backgroundMuted}
+            >
+              <UText
+                className="font-medium w-7 h-full min-h-7 text-center align-middle rounded-md"
+                style={backgroundWithColor}
+              >
+                {hour}
+              </UText>
+
+              <View className="flex-row flex-wrap items-center gap-2 shrink">
+                {minutes.map(min => (
+                  <UText
+                    key={min}
+                    className="leading-tight"
+                    style={[
+                      cancelledTimes?.includes(`${hour}:${min}`) && {
+                        textDecorationLine: 'line-through',
+                        opacity: 0.5,
+                      },
+                    ]}
+                  >
+                    {min}
+                  </UText>
+                ))}
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+
+        {/* <ScrollView
           contentContainerClassName="flex-row p-2"
           fadingEdgeLength={10}
         >
@@ -206,9 +242,8 @@ export const LineTimetable = ({ className }: ViewProps) => {
               </View>
             ))}
           </ScrollView>
-        </ScrollView>
+        </ScrollView> */}
       </UQueryState>
-
     </View>
   )
 }

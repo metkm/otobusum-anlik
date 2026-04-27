@@ -15,7 +15,7 @@ export const LineCardMenu = () => {
   const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
   const deleteLine = useLineStore(useShallow(state => state.deleteLine))
-  const addTheme = useThemeStore(useShallow(state => state.addTheme))
+  const createTheme = useThemeStore(useShallow(state => state.createTheme))
 
   const theme = useLineTheme()
 
@@ -90,7 +90,7 @@ export const LineCardMenu = () => {
 
         <UButton
           label="Refresh colors"
-          onPress={() => addTheme(code)}
+          onPress={() => createTheme(code)}
           size="lg"
           block
           variant="soft"

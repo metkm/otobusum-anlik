@@ -45,7 +45,6 @@ export const HomeScreen = () => {
     <>
       <TheMap onRegionDidChange={onMapRegionChange}>
         <Camera initialViewState={{ bounds: initialMapBounds }} />
-
         <LineMarkers />
       </TheMap>
 

@@ -7,7 +7,7 @@ import { useLineStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
 export const MapButtons = () => {
-  const lines = useLineStore(useShallow(state => state.lines()))
+  const lines = useLineStore(useShallow(state => state.getLines()))
   const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
 
   return (

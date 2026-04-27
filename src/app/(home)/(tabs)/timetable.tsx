@@ -11,18 +11,18 @@ import { LineContext } from '@/composables/useLine'
 import { useLineStore } from '@/stores'
 
 const LineTimetables = () => {
-  const lines = useLineStore(useShallow(state => state.lines()))
+  const lines = useLineStore(useShallow(state => state.getLines()))
   const { snapInterval } = useLineCardWidth()
 
   return (
     <UCarousel
       snapInterval={snapInterval}
-      contentClassName="p-2 gap-2 pt-0"
+      contentClassName={`gap-2 pt-0 ${lines.length > 1 ? 'p-2 pt-0' : ''}`}
       className="flex-1"
     >
       {lines.map(item => (
         <LineContext key={item} value={item}>
-          <LineTimetable />
+          <LineTimetable className={lines.length < 2 ? 'rounded-none' : ''} />
         </LineContext>
       ))}
     </UCarousel>

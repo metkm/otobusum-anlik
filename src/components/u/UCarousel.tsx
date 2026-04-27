@@ -1,7 +1,7 @@
 import React, { createContext, use } from 'react'
 import { Dimensions, ViewProps } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import Animated, { clamp, SharedValue, useAnimatedStyle, useDerivedValue, useSharedValue, withDecay, withSpring } from 'react-native-reanimated'
+import Animated, { clamp, SharedValue, useAnimatedReaction, useAnimatedStyle, useDerivedValue, useSharedValue, withDecay, withSpring } from 'react-native-reanimated'
 
 import { cn } from '@/utils/cn'
 
@@ -42,7 +42,7 @@ export const UCarousel = ({
   const offsetLimit = useDerivedValue(() => -(contentWidth.value - width), [])
 
   const pan = Gesture.Pan()
-    .minDistance(50)
+    .minDistance(100)
     .onStart(() => {
       offsetStart.value = offset.value
     })
@@ -83,6 +83,13 @@ export const UCarousel = ({
   const containerStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: offset.value }],
+    }
+  })
+
+  useAnimatedReaction(() => contentWidth.value, () => {
+    const limit = Math.min(0, -(contentWidth.value - width))
+    if (offset.value < limit) {
+      offset.value = withSpring(limit)
     }
   })
 

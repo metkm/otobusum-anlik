@@ -31,49 +31,52 @@ export const LineMarkerRoute = () => {
     <>
       <Images images={images} />
 
-      <GeoJSONSource
-        data={{
-          type: 'FeatureCollection',
-          features: [{
-            type: 'Feature',
-            properties: {},
-            geometry: {
-              type: 'LineString',
-              coordinates,
-            },
-          }],
-        }}
-      >
-        <Layer
-          type="line"
-          paint={{
-            'line-color': background?.backgroundColor ?? defaultBg as string,
-            'line-width': 8,
+      {coordinates.length > 1 && (
+        <GeoJSONSource
+          data={{
+            type: 'FeatureCollection',
+            features: [{
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'LineString',
+                coordinates,
+              },
+            }],
           }}
-          layout={{
-            'line-join': 'round',
-            'line-cap': 'round',
-            'visibility': isLineHidden ? 'none' : 'visible',
-          }}
-          layerIndex={10}
-        />
+        >
+          <Layer
+            type="line"
+            paint={{
+              'line-color': background?.backgroundColor ?? defaultBg as string,
+              'line-width': 8,
+            }}
+            layout={{
+              'line-join': 'round',
+              'line-cap': 'round',
+              'visibility': isLineHidden ? 'none' : 'visible',
+            }}
+            layerIndex={10}
+          />
 
-        <Layer
-          type="symbol"
-          layout={{
-            'symbol-placement': 'line',
-            'icon-image': iconImage,
-            'icon-rotation-alignment': 'map',
-            'icon-size': 0.2,
-            'symbol-spacing': 20,
-            'visibility': isLineHidden ? 'none' : 'visible',
-          }}
-          paint={{
-            'icon-opacity': 0.5,
-          }}
-          layerIndex={11}
-        />
-      </GeoJSONSource>
+          <Layer
+            type="symbol"
+            layout={{
+              'symbol-placement': 'line',
+              'icon-image': iconImage,
+              'icon-rotation-alignment': 'map',
+              'icon-size': 0.2,
+              'symbol-spacing': 20,
+              'visibility': isLineHidden ? 'none' : 'visible',
+            }}
+            paint={{
+              'icon-opacity': 0.5,
+            }}
+            layerIndex={11}
+          />
+        </GeoJSONSource>
+      )}
+
     </>
   )
 }

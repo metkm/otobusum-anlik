@@ -15,13 +15,13 @@ const width = Dimensions.get('window').width
 
 export const LineCards = () => {
   const { cardWidth, snapInterval } = useLineCardWidth()
-  const lines = useLineStore(useShallow(state => state.lines()))
+  const lines = useLineStore(useShallow(state => state.getLines()))
 
   return (
     <UCarousel
       snapInterval={snapInterval}
       style={{ width }}
-      contentClassName="p-2 gap-2"
+      contentClassName={`gap-2 ${lines.length > 1 ? 'p-2' : 'p-0'}`}
     >
       {lines.map(code => (
         <Animated.View
