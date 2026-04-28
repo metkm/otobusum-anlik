@@ -4,6 +4,7 @@ import ky from 'ky'
 import { useLine } from './useLine'
 import { useLineRoutes } from './useLineRoutes'
 
+import { LONG_CACHE_MS } from '@/constants/app'
 import { BusStop } from '@/types/bus'
 
 export const useLineStops = () => {
@@ -15,7 +16,7 @@ export const useLineStops = () => {
     queryFn: () => ky.get<BusStop[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/route-stops/${code}`, {
       searchParams: { direction },
     }).json(),
-    staleTime: 86_400_000,
+    staleTime: LONG_CACHE_MS,
     meta: { persist: true },
   })
 
