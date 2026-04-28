@@ -9,6 +9,7 @@ import { UText } from '@/components/u/UText'
 
 import { useLine, useLineNews, useLineTheme } from '@/composables'
 import { useFilterStore, useLineStore, useThemeStore } from '@/stores'
+import { i18n } from '@/translations/i18n'
 
 export const LineCardMenu = () => {
   const { code } = useLine()
@@ -17,9 +18,8 @@ export const LineCardMenu = () => {
   const deleteLine = useLineStore(useShallow(state => state.deleteLine))
   const createTheme = useThemeStore(useShallow(state => state.createTheme))
 
-  const theme = useLineTheme()
-
   const { news } = useLineNews()
+  const theme = useLineTheme()
 
   const menuSheet = useRef<TrueSheet>(null)
   const announcementsSheet = useRef<TrueSheet>(null)
@@ -81,11 +81,17 @@ export const LineCardMenu = () => {
         contentContainerClassName="px-2 gap-2"
       >
         <UButton
-          label="Add to group"
+          label={i18n.t('addToGroup')}
           icon="circle-plus"
           size="lg"
           block
           variant="soft"
+          to={{
+            pathname: '/groups',
+            params: {
+              addToGroup: code,
+            },
+          }}
         />
 
         <UButton
@@ -102,7 +108,7 @@ export const LineCardMenu = () => {
         </UButton>
 
         <UButton
-          label="Delete line"
+          label={i18n.t('deleteLine')}
           icon="trash-2"
           onPress={() => deleteLine(code)}
           size="lg"

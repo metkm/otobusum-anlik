@@ -1,3 +1,4 @@
+import { useLocalSearchParams } from 'expo-router'
 import { useRef } from 'react'
 import { Alert, View } from 'react-native'
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -14,6 +15,9 @@ import { i18n } from '@/translations/i18n'
 import { LineGroup } from '@/types/line'
 
 const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?: boolean, canDelete?: boolean }) => {
+  const params = useLocalSearchParams()
+  const addToGroup = params.addToGroup
+
   const handleDelete = () => {
     Alert.alert(i18n.t('deleteGroup'), i18n.t('areYouSure'), [
       {
@@ -26,6 +30,15 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
         },
       },
     ])
+  }
+
+  const handlePress = () => {
+    if (addToGroup) {
+      useLineStore.getState().addLine(addToGroup as string, group.id)
+      return
+    }
+
+    useLineStore.getState().selectGroup(group.id)
   }
 
   return (
@@ -44,9 +57,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
         className="grow justify-between shrink"
         variant="soft"
         color="neutral"
-        onPress={() => {
-          useLineStore.getState().selectGroup(group.id)
-        }}
+        onPress={handlePress}
       >
         <View className="flex-col shrink gap-2">
           <UText

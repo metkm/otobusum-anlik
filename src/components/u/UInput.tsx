@@ -16,7 +16,12 @@ export const UInput = ({
   const _icon = loading
     ? <UActivityIndicator />
     : icon
-      ? <UIcon name={icon} colorClassName="--ui-text" />
+      ? (
+          <UIcon
+            name={icon}
+            colorClassName="text-default"
+          />
+        )
       : undefined
 
   return (

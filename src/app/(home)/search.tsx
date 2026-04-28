@@ -19,22 +19,33 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
   const addLine = useLineStore(useShallow(state => state.addLine))
   const theme = useLineTheme()
 
+  const backgroundWithColor = theme?.backgroundWithColor({ variant: 'solid' })
+
   return (
-    <UButton
-      variant="ghost"
-      color="neutral"
-      label={item.name}
-      onPress={() => {
-        addLine(item.code)
-      }}
-    >
-      <UText
-        className="bg-muted rounded-md px-2.5 py-1 text-sm font-medium"
-        style={theme?.backgroundWithColor({ variant: 'solid' })}
+    <View className="flex-row items-center gap-2 shrink">
+      <UButton
+        variant="ghost"
+        color="neutral"
+        label={item.name}
+        onPress={() => {
+          addLine(item.code)
+        }}
+        className="flex-1"
       >
-        {item.code}
-      </UText>
-    </UButton>
+        <UText
+          className="bg-muted rounded-md px-2.5 py-1 text-sm font-medium"
+          style={backgroundWithColor}
+        >
+          {item.code}
+        </UText>
+      </UButton>
+
+      <UButton
+        icon="circle-plus"
+        to={{ pathname: '/groups',
+          params: { addToGroup: item.code } }}
+      />
+    </View>
   )
 }
 

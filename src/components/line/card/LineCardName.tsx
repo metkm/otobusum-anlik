@@ -6,6 +6,7 @@ import { UText } from '@/components/u/UText'
 
 import { useCountdown, useLine, useLineBuses } from '@/composables'
 import { LINE_UPDATE_INTERVAL } from '@/constants/app'
+import { i18n } from '@/translations/i18n'
 
 export const LineCardName = () => {
   const { code } = useLine()
@@ -24,7 +25,7 @@ export const LineCardName = () => {
       >
         <UQueryState query={lineBusesQuery}>
           <UText className="text-xs text-muted font-medium">
-            {`${remaining} sec to update`}
+            {i18n.t('updateCount', { count: remaining })}
           </UText>
         </UQueryState>
       </Animated.View>

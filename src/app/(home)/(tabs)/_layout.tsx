@@ -42,7 +42,6 @@ export const TabsLayout = () => {
             },
             tabBarIcon: ({ focused }) => {
               type IconName = ComponentProps<typeof UIcon>['name']
-              // const icon = focused ? screen.icon : `${screen.icon}-filled`
 
               return (
                 <View className={cn(

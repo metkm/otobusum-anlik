@@ -55,7 +55,6 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
               <View
                 className="items-center justify-center size-10 rounded-full border-2 border-muted"
                 style={border}
-                // style={{ borderColor: background?.color }}
               >
                 {buses.find(b => b.closest_stop_code === item.code) && (
                   <UIcon
