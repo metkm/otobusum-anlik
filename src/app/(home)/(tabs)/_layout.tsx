@@ -51,9 +51,9 @@ export const TabsLayout = () => {
                 >
                   <UIcon
                     name={screen.icon as IconName}
-                    size={20}
                     color={color as string}
-                    className="size-5"
+                    sizeClassName="w-5"
+                    size={20}
                   />
                 </View>
               )

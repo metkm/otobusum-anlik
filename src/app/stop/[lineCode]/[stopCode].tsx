@@ -57,7 +57,7 @@ export const StopScreen = () => {
 
       <View>
         <UText className="text-muted">{data?.stop.code}</UText>
-        <UText className="text-lg font-medium">{data?.stop.name}</UText>
+        <UText className="text-lg font-inter-medium">{data?.stop.name}</UText>
         <UText className="text-muted">{data?.stop.province}</UText>
       </View>
 

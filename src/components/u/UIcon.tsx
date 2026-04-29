@@ -2,6 +2,8 @@ import Lucide from '@react-native-vector-icons/lucide'
 import { ComponentProps } from 'react'
 import { withUniwind } from 'uniwind'
 
+import { cn } from '@/utils/cn'
+
 export const StyledLucide = withUniwind(Lucide, {
   size: {
     fromClassName: 'sizeClassName',
@@ -13,6 +15,12 @@ export const StyledLucide = withUniwind(Lucide, {
   },
 })
 
-export const UIcon = (props: ComponentProps<typeof StyledLucide>) => {
-  return <StyledLucide size={20} {...props} />
+export const UIcon = ({ sizeClassName, ...props }: ComponentProps<typeof StyledLucide>) => {
+  return (
+    <StyledLucide
+      sizeClassName={cn('size-4', sizeClassName)}
+      className={sizeClassName}
+      {...props}
+    />
+  )
 }

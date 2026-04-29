@@ -20,7 +20,7 @@ import { cn } from '@/utils/cn'
 const ErrorState = ({ message }: { message?: string }) => {
   return (
     <View className="h-22 items-center justify-center">
-      <UText className="text-error font-medium text-xs">
+      <UText className="text-error font-inter-medium text-xs">
         {message}
       </UText>
     </View>
@@ -55,7 +55,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
           data={lineStopsQuery.data || []}
           renderItem={({ item, index }) => (
             <View className="flex-row items-center gap-2">
-              <UText className="w-6.5 text-center text-sm font-medium">{index + 1}</UText>
+              <UText className="w-6.5 text-center font-inter-medium">{index + 1}</UText>
 
               <View
                 className="items-center justify-center size-9 rounded-full border-2 border-muted"

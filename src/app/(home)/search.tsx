@@ -33,7 +33,7 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
         className="flex-1"
       >
         <UText
-          className="bg-muted rounded-md px-2.5 py-1 text-sm font-medium"
+          className="bg-muted rounded-md px-2.5 py-1 font-inter-medium"
           style={backgroundWithColor}
         >
           {item.code}
@@ -93,7 +93,7 @@ export const SearchScreen = () => {
       </View>
 
       {neededCharacterCount > 0 && (
-        <UText className="text-center text-muted font-medium text-xs">
+        <UText className="text-center text-muted font-inter-medium text-xs">
           {`${neededCharacterCount} more characters are needed for search`}
         </UText>
       )}
@@ -102,7 +102,7 @@ export const SearchScreen = () => {
 
         {(results.length < 1 && searchQuery.isSuccess)
           ? (
-              <UText className="text-muted font-medium  grow text-center align-middle">{i18n.t('emptySearch')}</UText>
+              <UText className="text-muted font-inter-medium  grow text-center align-middle">{i18n.t('emptySearch')}</UText>
             )
           : (
               <FlatList

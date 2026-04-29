@@ -151,7 +151,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
     >
       <View className="m-2 mb-0">
         <UText className="text-muted">{routeCode}</UText>
-        <UText className="text-lg font-medium leading-tight">{route?.name}</UText>
+        <UText className="text-lg font-inter-medium leading-tight">{route?.name}</UText>
       </View>
 
       <View className="flex-row gap-2 m-2">
@@ -180,7 +180,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
               style={(index % 2 !== 0) && backgroundMuted}
             >
               <UText
-                className="font-medium w-7 h-full min-h-7 text-center align-middle rounded-md"
+                className="font-inter-medium w-7 h-full min-h-7 text-center align-middle rounded-md"
                 style={backgroundWithColor}
               >
                 {hour}
@@ -214,7 +214,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
             {hours.map(hour => (
               <UText
                 key={hour}
-                className="size-8 font-medium items-center text-center align-middle rounded-md"
+                className="size-8 font-inter-medium items-center text-center align-middle rounded-md"
                 style={theme?.backgroundWithColor({ variant: 'solid' })}
               >
                 {hour}

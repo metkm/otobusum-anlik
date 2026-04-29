@@ -24,7 +24,7 @@ export const LineCardName = () => {
         className="shrink"
       >
         <UQueryState query={lineBusesQuery}>
-          <UText className="text-xs text-muted font-medium">
+          <UText className="text-xs text-muted font-inter-medium">
             {i18n.t('updateCount', { count: remaining })}
           </UText>
         </UQueryState>

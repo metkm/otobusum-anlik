@@ -39,7 +39,7 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
           />
 
           <UText
-            className="font-medium text-xs"
+            className="font-inter-medium text-xs"
             style={backgroundWithColor}
           >
             {busesQuery.data?.reduce((acc, curr) => curr.route_code === item.code ? acc + 1 : acc, 0)}
@@ -47,7 +47,7 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
         </View>
 
         <UText
-          className="px-2 py-1 font-medium rounded-md text-xs align-middle"
+          className="px-2 py-1 font-inter-medium rounded-md text-xs align-middle"
           style={backgroundWithColor}
         >
           {item.code.split('_').slice(1).join('_')}

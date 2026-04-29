@@ -16,7 +16,7 @@ const LineTimetables = () => {
   const lines = useLineStore(useShallow(state => state.getLines()))
   const { snapInterval } = useLineCardWidth()
 
-  if (lines.length < 2) {
+  if (lines.length < 1) {
     return (
       <UText className="flex-1 align-middle mx-2 text-center text-muted font-inter-medium">{i18n.t('timetableEmpty')}</UText>
     )

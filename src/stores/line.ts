@@ -7,6 +7,7 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { randomUUID } from 'expo-crypto'
+import { Alert } from 'react-native'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
@@ -14,6 +15,7 @@ import { immer } from 'zustand/middleware/immer'
 import { useFilterStore } from './filter'
 import { useThemeStore } from './theme'
 
+import { i18n } from '@/translations/i18n'
 import { City } from '@/types/city'
 import { LineGroup, RouteCode, RouteDirection } from '@/types/line'
 
@@ -108,27 +110,41 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
   selectGroup: id => set((state) => {
     state.groupId = id
   }),
-  deleteGroup: id => set((state) => {
-    const city = useFilterStore.getState().city
-    const groups = state.lines[city]
+  deleteGroup: async (id) => {
+    await new Promise<void>((resolve) => {
+      Alert.alert(i18n.t('deleteGroup'), i18n.t('areYouSure'), [
+        {
+          text: i18n.t('cancel'),
+        },
+        {
+          text: i18n.t('delete'),
+          onPress: () => resolve(),
+        },
+      ])
+    })
 
-    if (groups.length < 2)
-      return
+    return set((state) => {
+      const city = useFilterStore.getState().city
+      const groups = state.lines[city]
 
-    const i = groups.findIndex(gr => gr.id === id)
-    if (i === -1 || i === undefined)
-      return
+      if (groups.length < 2)
+        return
 
-    state.lines[city]?.splice(i, 1)
+      const i = groups.findIndex(gr => gr.id === id)
+      if (i === -1 || i === undefined)
+        return
 
-    if (state.groupId === id) {
-      state.groupId = groups.at(0)!.id
-    }
+      state.lines[city]?.splice(i, 1)
 
-    useThemeStore
-      .getState()
-      .deleteUnusedThemes(state.lines[city].flatMap(gr => gr.codes))
-  }),
+      if (state.groupId === id) {
+        state.groupId = groups.at(0)!.id
+      }
+
+      useThemeStore
+        .getState()
+        .deleteUnusedThemes(state.lines[city].flatMap(gr => gr.codes))
+    })
+  },
   updateGroupName: (id, name) => set((state) => {
     const city = useFilterStore.getState().city
 

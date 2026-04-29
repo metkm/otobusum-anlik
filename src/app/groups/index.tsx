@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router'
 import { useRef } from 'react'
-import { Alert, View } from 'react-native'
+import { View } from 'react-native'
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
@@ -18,20 +18,6 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
   const params = useLocalSearchParams()
   const addToGroup = params.addToGroup
 
-  const handleDelete = () => {
-    Alert.alert(i18n.t('deleteGroup'), i18n.t('areYouSure'), [
-      {
-        text: i18n.t('cancel'),
-      },
-      {
-        text: i18n.t('delete'),
-        onPress: () => {
-          useLineStore.getState().deleteGroup(group.id)
-        },
-      },
-    ])
-  }
-
   const handlePress = () => {
     if (addToGroup) {
       useLineStore.getState().addLine(addToGroup as string, group.id)
@@ -42,50 +28,51 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
   }
 
   return (
-    <GestureHandlerRootView style={{ flexDirection: 'row', alignItems: 'stretch', gap: 8 }}>
+    <GestureHandlerRootView style={{ flexDirection: 'row', gap: 8 }}>
       {selected && (
         <View className="rounded-md bg-primary w-8 items-center justify-center">
           <UIcon name="check" />
         </View>
       )}
 
-      <UButton
-        key={group.id}
-        className="grow justify-between shrink gap-0"
-        variant="soft"
-        color="neutral"
-        onPress={handlePress}
-      >
-        <View className="flex-col shrink gap-1 grow">
-          <UText
-            className="shrink truncate pl-1 font-medium"
-            numberOfLines={1}
-          >
-            {group.name}
-          </UText>
+      <View className="flex-row flex-1 bg-muted rounded-md pr-2 gap-1">
+        <UButton
+          key={group.id}
+          onPress={handlePress}
+          variant="ghost"
+          className="flex-1"
+        >
+          <View className="justify-center gap-1 grow">
+            <UText
+              className="shrink truncate font-inter-medium"
+              numberOfLines={1}
+            >
+              {group.name}
+            </UText>
 
-          <View className="flex-row gap-1 flex-wrap">
-            {group.codes.length < 1
-              ? (
-                  <UText className="font-medium text-xs text-muted pl-1">{i18n.t('emptyGroup')}</UText>
-                )
-              : (
-                  group.codes.map(code => (
-                    <UText
-                      key={code}
-                      className="bg-default px-2 py-1 rounded-md font-medium text-sm"
-                    >
-                      {code}
-                    </UText>
-                  ))
-                )}
+            <View className="flex-row flex-wrap gap-1">
+              {group.codes.length < 1
+                ? (
+                    <UText className="font-inter-medium text-xs text-muted">{i18n.t('emptyGroup')}</UText>
+                  )
+                : (
+                    group.codes.map(code => (
+                      <UText
+                        key={code}
+                        className="font-inter-medium text-xs rounded-md bg-default h-6 w-12 text-center align-middle"
+                      >
+                        {code}
+                      </UText>
+                    ))
+                  )}
+            </View>
           </View>
-        </View>
+        </UButton>
 
         {canDelete && (
           <UButton
             icon="trash-2"
-            onPress={handleDelete}
+            onPress={() => useLineStore.getState().deleteGroup(group.id)}
             variant="ghost"
             color="neutral"
           />
@@ -102,7 +89,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
             },
           }}
         />
-      </UButton>
+      </View>
     </GestureHandlerRootView>
   )
 }

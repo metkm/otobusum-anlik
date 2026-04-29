@@ -37,7 +37,7 @@ export const GroupIdScreen = () => {
         <FlatList
           data={group?.codes}
           renderItem={({ item }) => (
-            <View className="flex-row items-center gap-1">
+            <View className="flex-row items-stretch gap-1">
               <UButton
                 icon="trash-2"
                 onPress={() => {
@@ -45,10 +45,10 @@ export const GroupIdScreen = () => {
                     return
                   useLineStore.getState().deleteLine(item, group.id)
                 }}
-                variant="ghost"
                 color="neutral"
               />
-              <UText className="px-2 py-1 font-medium">{item}</UText>
+
+              <UText className="px-2 py-1 font-inter-medium rounded-md bg-muted align-middle">{item}</UText>
             </View>
           )}
           contentContainerClassName="gap-2"

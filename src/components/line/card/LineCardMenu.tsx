@@ -64,9 +64,9 @@ export const LineCardMenu = () => {
             renderItem={({ item }) => {
               return (
                 <View className="p-2 gap-1">
-                  <UText className="text-muted text-sm font-medium">{item.HATKODU}</UText>
+                  <UText className="text-muted text-xs font-inter-medium">{item.HATKODU}</UText>
                   <UText>{item.MESAJ}</UText>
-                  <UText className="text-muted text-sm font-medium">{item.GUNCELLEME_SAATI}</UText>
+                  <UText className="text-muted text-xs font-inter-medium">{item.GUNCELLEME_SAATI}</UText>
                 </View>
               )
             }}
