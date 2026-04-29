@@ -99,7 +99,7 @@ const ui = tv({
   ],
   slots: {
     base: 'bg-muted flex flex-row items-center gap-1.5 rounded-md',
-    label: 'font-medium truncate shrink-1 text-sm',
+    label: 'shrink font-inter-medium',
     icon: '',
   },
 })

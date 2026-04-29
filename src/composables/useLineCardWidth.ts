@@ -18,6 +18,6 @@ export const useLineCardWidth = () => {
 
   return {
     cardWidth,
-    snapInterval: cardWidth,
+    snapInterval: cardWidth - (spacing * 1),
   }
 }

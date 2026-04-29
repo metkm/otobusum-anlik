@@ -42,24 +42,21 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
   }
 
   return (
-    <GestureHandlerRootView style={{ flexDirection: 'row', gap: 8 }}>
-      {canDelete && (
-        <UButton
-          icon="trash-2"
-          onPress={handleDelete}
-          variant="ghost"
-          color="neutral"
-        />
+    <GestureHandlerRootView style={{ flexDirection: 'row', alignItems: 'stretch', gap: 8 }}>
+      {selected && (
+        <View className="rounded-md bg-primary w-8 items-center justify-center">
+          <UIcon name="check" />
+        </View>
       )}
 
       <UButton
         key={group.id}
-        className="grow justify-between shrink"
+        className="grow justify-between shrink gap-0"
         variant="soft"
         color="neutral"
         onPress={handlePress}
       >
-        <View className="flex-col shrink gap-2">
+        <View className="flex-col shrink gap-1 grow">
           <UText
             className="shrink truncate pl-1 font-medium"
             numberOfLines={1}
@@ -67,7 +64,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
             {group.name}
           </UText>
 
-          <View className="flex-row gap-2 flex-wrap">
+          <View className="flex-row gap-1 flex-wrap">
             {group.codes.length < 1
               ? (
                   <UText className="font-medium text-xs text-muted pl-1">{i18n.t('emptyGroup')}</UText>
@@ -76,7 +73,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
                   group.codes.map(code => (
                     <UText
                       key={code}
-                      className="bg-default px-2 rounded-md font-medium"
+                      className="bg-default px-2 py-1 rounded-md font-medium text-sm"
                     >
                       {code}
                     </UText>
@@ -85,11 +82,26 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
           </View>
         </View>
 
-        {selected && (
-          <View className="rounded-md bg-primary size-8 items-center justify-center">
-            <UIcon name="check" size={20} />
-          </View>
+        {canDelete && (
+          <UButton
+            icon="trash-2"
+            onPress={handleDelete}
+            variant="ghost"
+            color="neutral"
+          />
         )}
+
+        <UButton
+          icon="edit-3"
+          variant="ghost"
+          color="neutral"
+          to={{
+            pathname: '/groups/[groupId]',
+            params: {
+              groupId: group.id,
+            },
+          }}
+        />
       </UButton>
     </GestureHandlerRootView>
   )
@@ -103,7 +115,7 @@ export const GroupsScreen = () => {
   const flatlistRef = useRef<FlatList>(null)
 
   return (
-    <View className="shrink">
+    <View className="grow shrink">
       <Animated.FlatList
         ref={flatlistRef}
         data={groups}
@@ -117,14 +129,14 @@ export const GroupsScreen = () => {
             />
           </Animated.View>
         )}
-        className="shrink p-2 pt-5"
-        contentContainerClassName="gap-2 pb-7 h-full"
+        className="shrink grow p-2 pt-5"
+        contentContainerClassName="gap-2 grow pb-7"
       />
 
       <GestureHandlerRootView style={{ flexGrow: 1, flexShrink: 0 }}>
         <UButton
           label={i18n.t('createNewGroup')}
-          className="mb-2 mx-2"
+          className="mb-2 mx-2 mt-auto"
           block
           icon="plus-circle"
           variant="soft"

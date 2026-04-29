@@ -1,4 +1,5 @@
-import { View, ViewProps, FlatList } from 'react-native'
+import { View, ViewProps } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler'
 
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
 import { UIcon } from '@/components/u/UIcon'
@@ -11,6 +12,10 @@ import { LineCardRoutes } from './LineCardRoutes'
 
 import { useLineBuses, useLineStops, useLineTheme } from '@/composables'
 import { cn } from '@/utils/cn'
+
+// const ITEM_SIZE = 38
+// const COLLAPSED = (ITEM_SIZE * 2) + (8 * 1)
+// const EXPANDED = COLLAPSED * 2
 
 const ErrorState = ({ message }: { message?: string }) => {
   return (
@@ -53,7 +58,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
               <UText className="w-6.5 text-center text-sm font-medium">{index + 1}</UText>
 
               <View
-                className="items-center justify-center size-10 rounded-full border-2 border-muted"
+                className="items-center justify-center size-9 rounded-full border-2 border-muted"
                 style={border}
               >
                 {buses.find(b => b.closest_stop_code === item.code) && (

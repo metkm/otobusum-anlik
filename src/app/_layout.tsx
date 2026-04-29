@@ -6,10 +6,10 @@ import { DarkTheme, DefaultTheme, ThemeProvider, type Theme, type ParamListBase 
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { withLayoutContext } from 'expo-router'
 import React from 'react'
-import { Dimensions, useColorScheme } from 'react-native'
+import { useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import Animated, { interpolate, useAnimatedReaction, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
-import { SafeAreaListener, useSafeAreaInsets } from 'react-native-safe-area-context'
+import Animated, { useAnimatedReaction, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
+import { SafeAreaListener } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
 import { persister, queryClient } from '@/api/client'
@@ -23,7 +23,7 @@ export const Sheet = withLayoutContext<
   TrueSheetNavigationEventMap
 >(Navigator)
 
-const width = Dimensions.get('window').width
+// const width = Dimensions.get('window').width
 
 const RootContent = () => {
   const background = useCSSVariable('--background-color-default')
@@ -32,17 +32,17 @@ const RootContent = () => {
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
   const index = useSharedValue(0)
-  const insets = useSafeAreaInsets()
+  // const insets = useSafeAreaInsets()
   const { animatedIndex } = useReanimatedTrueSheet()
 
   const style = useAnimatedStyle(() => ({
     flex: 1,
-    transform: [
-      {
-        scale: interpolate(index.value, [-1, 0], [1, (width - insets.top) / width], 'clamp'),
-      },
-    ],
-    borderRadius: interpolate(index.value, [-1, 0], [0, 8], 'clamp'),
+    // transform: [
+    //   {
+    //     scale: interpolate(index.value, [-1, 0], [1, (width - insets.top) / width], 'clamp'),
+    //   },
+    // ],
+    // borderRadius: interpolate(index.value, [-1, 0], [0, 8], 'clamp'),
     overflow: 'hidden',
   }))
 
@@ -70,8 +70,9 @@ const RootContent = () => {
         <Sheet.Screen name="stop" />
         <Sheet.Screen
           name="groups"
-          options={{ scrollable: true, detents: [0.5, 1] }}
+          options={{ detents: [0.5, 1], scrollable: true }}
         />
+        {/* <Sheet.Screen name="groups/[groupId]" options={{ detents: [0.5, 1] }} /> */}
       </Sheet>
     </Animated.View>
   )

@@ -5,7 +5,6 @@ import { useShallow } from 'zustand/react/shallow'
 import { UButton } from './u/UButton'
 
 import { useLineStore } from '@/stores'
-import { cn } from '@/utils/cn'
 
 export const MapButtons = () => {
   const lines = useLineStore(useShallow(state => state.getLines()))
@@ -30,8 +29,9 @@ export const MapButtons = () => {
 
   return (
     <Animated.View
-      className={cn('left-2 gap-2 absolute z-10 items-start')}
+      className="left-2 right-2 gap-2 absolute z-10 items-start"
       style={style}
+      pointerEvents="box-none"
     >
       <UButton
         icon="search"

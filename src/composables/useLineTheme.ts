@@ -40,7 +40,7 @@ export const useLineTheme = () => {
   const code = use(LineContext)
 
   const colorScheme = useColorScheme()
-  const themes = useThemeStore(useShallow(state => state.themes()))
+  const themes = useThemeStore(useShallow(state => state.getThemes()))
   const prefer = colorScheme === 'unspecified' ? 'dark' : colorScheme
 
   if (!code)

@@ -28,9 +28,10 @@ export interface Schemes {
 
 interface ThemeStore {
   themesByCity: Record<City, Record<string, Schemes>>
-  themes: () => Record<string, Schemes>
+  getThemes: () => Record<string, Schemes>
   createTheme: (code: string) => void
   deleteTheme: (code: string) => void
+  deleteUnusedThemes: (codes: string[]) => void
 }
 
 export const useThemeStore = create(
@@ -40,7 +41,7 @@ export const useThemeStore = create(
         istanbul: {},
         izmir: {},
       },
-      themes: () => get().themesByCity[useFilterStore.getState().city],
+      getThemes: () => get().themesByCity[useFilterStore.getState().city],
       createTheme: (code: string) => {
         const { schemes, palettes } = createRandomTheme()
         const city = useFilterStore.getState().city
@@ -75,6 +76,23 @@ export const useThemeStore = create(
       deleteTheme: code => set((state) => {
         const city = useFilterStore.getState().city
         delete state.themesByCity[city][code]
+      }),
+      deleteUnusedThemes: codes => set((state) => {
+        const city = useFilterStore.getState().city
+
+        const themeCodes = Object.keys(state.getThemes())
+        // const lineCodes = useLineStore.getState().lines[city].flatMap(gr => gr.codes)
+
+        for (let index = 0; index < themeCodes.length; index++) {
+          const code = themeCodes[index]
+          if (!code)
+            continue
+
+          if (codes.includes(code))
+            continue
+
+          delete state.themesByCity[city][code]
+        }
       }),
     })),
     {

@@ -75,8 +75,9 @@ interface LineCodeSlice {
   createGroup: () => void
   selectGroup: (id: string) => void
   deleteGroup: (id: string) => void
+  updateGroupName: (id: string, name: string) => void
   addLine: (code: string, groupId?: string) => void
-  deleteLine: (code: string) => void
+  deleteLine: (code: string, groupId?: string) => void
   getLineGroup: () => LineGroup | undefined
   getLines: () => string[]
 }
@@ -118,25 +119,41 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
     if (i === -1 || i === undefined)
       return
 
-    if (state.groupId === groups.at(i)?.id) {
+    state.lines[city]?.splice(i, 1)
+
+    if (state.groupId === id) {
       state.groupId = groups.at(0)!.id
     }
 
-    state.lines[city]?.splice(i, 1)
+    useThemeStore
+      .getState()
+      .deleteUnusedThemes(state.lines[city].flatMap(gr => gr.codes))
+  }),
+  updateGroupName: (id, name) => set((state) => {
+    const city = useFilterStore.getState().city
+
+    const group = state.lines[city].find(gr => gr.id === id)
+    if (!group)
+      return
+
+    group.name = name
   }),
   addLine: (code, groupId) => set((state) => {
     const city = useFilterStore.getState().city
     const codes = state.lines[city].find(c => c.id === (groupId || state.groupId))?.codes
 
-    if (codes?.includes(code))
+    if (!codes)
+      return
+
+    if (codes.includes(code))
       return
 
     codes?.push(code)
     useThemeStore.getState().createTheme(code)
   }),
-  deleteLine: code => set((state) => {
+  deleteLine: (code, groupId) => set((state) => {
     const city = useFilterStore.getState().city
-    const codes = state.lines[city]?.find(c => c.id === state.groupId)?.codes
+    const codes = state.lines[city]?.find(c => c.id === (groupId || state.groupId))?.codes
 
     const i = codes?.findIndex(c => c === code)
     if (i === -1 || i === undefined)

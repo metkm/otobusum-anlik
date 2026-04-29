@@ -5,14 +5,22 @@ import { useShallow } from 'zustand/react/shallow'
 import { LineCards } from '@/components/line/LineCards'
 import { LineTimetable } from '@/components/line/LineTimetable'
 import { CarouselContext, UCarousel } from '@/components/u/UCarousel'
+import { UText } from '@/components/u/UText'
 
 import { useLineCardWidth } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { useLineStore } from '@/stores'
+import { i18n } from '@/translations/i18n'
 
 const LineTimetables = () => {
   const lines = useLineStore(useShallow(state => state.getLines()))
   const { snapInterval } = useLineCardWidth()
+
+  if (lines.length < 2) {
+    return (
+      <UText className="flex-1 align-middle mx-2 text-center text-muted font-inter-medium">{i18n.t('timetableEmpty')}</UText>
+    )
+  }
 
   return (
     <UCarousel

@@ -60,9 +60,12 @@
   }
 }
 
-@theme inline {
-  --font-inter: 'Inter';
+@theme {
+  --font-inter: 'Inter-Regular';
+  --font-inter-medium: 'Inter-Medium';
+}
 
+@theme inline {
   --background-color-default: var(--ui-bg);
   --background-color-muted: var(--ui-bg-muted);
 

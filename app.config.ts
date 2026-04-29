@@ -35,7 +35,7 @@ const config: ExpoConfig = {
         apiKey: process.env.EXPO_PUBLIC_MAP_API,
       },
     },
-    softwareKeyboardLayoutMode: 'pan',
+    softwareKeyboardLayoutMode: 'resize',
     adaptiveIcon: {
       foregroundImage: './src/assets/adaptive-icon.png',
       backgroundColor: '#0a0a0a',
@@ -71,7 +71,7 @@ const config: ExpoConfig = {
     [
       'expo-font',
       {
-        fonts: ['./src/assets/fonts/Inter-Variable.ttf'],
+        fonts: ['./src/assets/fonts/Inter-Medium.ttf', './src/assets/fonts/Inter-Regular.ttf'],
       },
     ],
   ],
