@@ -177,10 +177,18 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
 
     codes?.splice(i, 1)
 
-    const isLineUsedInAnyGroup = state.lines[city].some(group => group.codes.some(code => code === code))
-    if (!isLineUsedInAnyGroup) {
-      useThemeStore.getState().deleteTheme(code)
+    const groups = state.lines[city]
+    for (let index = 0; index < groups.length; index++) {
+      const group = groups[index]
+
+      if (!group || group.id === groupId)
+        continue
+
+      if (group.codes.includes(code))
+        return
     }
+
+    useThemeStore.getState().deleteTheme(code)
   }),
   getLineGroup: () => {
     const city = useFilterStore.getState().city
