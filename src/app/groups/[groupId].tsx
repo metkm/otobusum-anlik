@@ -2,7 +2,7 @@ import { router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router/build/hooks'
 import { useRef } from 'react'
 import { View } from 'react-native'
-import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler'
+import { FlatList, GestureHandlerRootView, TextInput } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
@@ -15,17 +15,27 @@ import { i18n } from '@/translations/i18n'
 export const GroupIdScreen = () => {
   const params = useLocalSearchParams()
   const name = useRef('')
+  const inputRef = useRef<TextInput>(null)
 
   const city = useFilterStore(useShallow(state => state.city))
   const groups = useLineStore(useShallow(state => state.lines[city]))
 
   const group = groups.find(gr => gr.id === params.groupId)
 
+  const handleSave = () => {
+    if (!group)
+      return
+
+    useLineStore.getState().updateGroupName(group.id, name.current)
+    inputRef.current?.clear()
+  }
+
   return (
     <View className="px-2 pt-5 gap-2 pb-2 grow">
       <View className="gap-1">
-        <UText className="ml-2">{group?.name}</UText>
+        <UText className="ml-2 font-inter-medium">{group?.name}</UText>
         <UInput
+          ref={inputRef}
           placeholder={i18n.t('newGroupTitlePlaceholder')}
           onChangeText={(text) => {
             name.current = text
@@ -33,7 +43,7 @@ export const GroupIdScreen = () => {
         />
       </View>
 
-      <GestureHandlerRootView style={{ flexGrow: 1, gap: 8 }}>
+      {(group && group.codes.length > 1) && (
         <FlatList
           data={group?.codes}
           renderItem={({ item }) => (
@@ -53,19 +63,16 @@ export const GroupIdScreen = () => {
           )}
           contentContainerClassName="gap-2"
         />
+      )}
 
+      <GestureHandlerRootView style={{ flexGrow: 1, gap: 8 }}>
         <UButton
           label={i18n.t('save')}
           size="lg"
           block
           icon="save"
           variant="soft"
-          onPress={() => {
-            if (!group)
-              return
-
-            useLineStore.getState().updateGroupName(group.id, name.current)
-          }}
+          onPress={handleSave}
         />
 
         {groups.length > 1 && (

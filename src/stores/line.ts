@@ -7,7 +7,7 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { randomUUID } from 'expo-crypto'
-import { Alert } from 'react-native'
+import { Alert, ToastAndroid } from 'react-native'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
@@ -160,6 +160,11 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
 
     if (!codes)
       return
+
+    if (codes.length > 3) {
+      ToastAndroid.show(i18n.t('lineLimitExceeded'), ToastAndroid.SHORT)
+      return
+    }
 
     if (codes.includes(code))
       return

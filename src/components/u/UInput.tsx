@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react'
-import { TextInputProps, View } from 'react-native'
+import { View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 
 import { UActivityIndicator } from './UActivityIndicator'
@@ -12,7 +12,7 @@ export const UInput = ({
   icon,
   loading,
   ...props
-}: { icon?: ComponentProps<typeof UIcon>['name'], loading?: boolean } & TextInputProps) => {
+}: { icon?: ComponentProps<typeof UIcon>['name'], loading?: boolean } & ComponentProps<TextInput>) => {
   const _icon = loading
     ? <UActivityIndicator />
     : icon

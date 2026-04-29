@@ -9,7 +9,7 @@ import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
 import { UText } from '@/components/u/UText'
 
-import { ExitScaleOut } from '@/constants/animation'
+import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
 import { useFilterStore, useLineStore } from '@/stores'
 import { i18n } from '@/translations/i18n'
 import { LineGroup } from '@/types/line'
@@ -30,12 +30,19 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
   return (
     <GestureHandlerRootView style={{ flexDirection: 'row', gap: 8 }}>
       {selected && (
-        <View className="rounded-md bg-primary w-8 items-center justify-center">
+        <Animated.View
+          exiting={ExitScaleOut}
+          entering={EnterScaleIn}
+          className="rounded-md bg-primary w-8 items-center justify-center"
+        >
           <UIcon name="check" />
-        </View>
+        </Animated.View>
       )}
 
-      <View className="flex-row flex-1 bg-muted rounded-md pr-2 gap-1">
+      <Animated.View
+        className="flex-row flex-1 bg-muted rounded-md pr-2 gap-1 h-16"
+        layout={LinearTransition}
+      >
         <UButton
           key={group.id}
           onPress={handlePress}
@@ -69,27 +76,34 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
           </View>
         </UButton>
 
-        {canDelete && (
+        <Animated.View layout={LinearTransition} className="gap-1 flex-row items-center">
+          <Animated.View
+            exiting={ExitScaleOut}
+            entering={EnterScaleIn}
+          >
+            {canDelete && (
+              <UButton
+                icon="trash-2"
+                onPress={() => useLineStore.getState().deleteGroup(group.id)}
+                variant="ghost"
+                color="neutral"
+              />
+            )}
+          </Animated.View>
+
           <UButton
-            icon="trash-2"
-            onPress={() => useLineStore.getState().deleteGroup(group.id)}
+            icon="edit-3"
             variant="ghost"
             color="neutral"
+            to={{
+              pathname: '/groups/[groupId]',
+              params: {
+                groupId: group.id,
+              },
+            }}
           />
-        )}
-
-        <UButton
-          icon="edit-3"
-          variant="ghost"
-          color="neutral"
-          to={{
-            pathname: '/groups/[groupId]',
-            params: {
-              groupId: group.id,
-            },
-          }}
-        />
-      </View>
+        </Animated.View>
+      </Animated.View>
     </GestureHandlerRootView>
   )
 }
@@ -108,7 +122,10 @@ export const GroupsScreen = () => {
         data={groups}
         itemLayoutAnimation={LinearTransition}
         renderItem={({ item }) => (
-          <Animated.View exiting={ExitScaleOut}>
+          <Animated.View
+            exiting={ExitScaleOut}
+            entering={EnterScaleIn}
+          >
             <GroupItem
               group={item}
               selected={groupId === item.id}
