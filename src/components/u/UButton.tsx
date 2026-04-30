@@ -53,14 +53,14 @@ const ui = tv({
       variant: 'solid',
       className: {
         base: 'bg-primary',
-        label: 'text-inverted',
+        label: 'text-default',
       },
     },
     {
       color: 'primary',
       variant: 'soft',
       className: {
-        base: 'bg-primary/10',
+        base: 'bg-primary/15',
         label: 'text-default',
       },
     },

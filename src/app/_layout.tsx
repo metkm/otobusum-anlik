@@ -9,10 +9,14 @@ import React from 'react'
 import { useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Animated, { useAnimatedReaction, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
-import { SafeAreaListener } from 'react-native-safe-area-context'
+import { SafeAreaListener, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
+import { UButton } from '@/components/u/UButton'
+
 import { persister, queryClient } from '@/api/client'
+import { useLineStore } from '@/stores'
+import { i18n } from '@/translations/i18n'
 
 const { Navigator } = createTrueSheetNavigator()
 
@@ -23,10 +27,9 @@ export const Sheet = withLayoutContext<
   TrueSheetNavigationEventMap
 >(Navigator)
 
-// const width = Dimensions.get('window').width
-
 const RootContent = () => {
   const background = useCSSVariable('--background-color-default')
+  const insets = useSafeAreaInsets()
 
   const colorScheme = useColorScheme()
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
@@ -64,15 +67,32 @@ const RootContent = () => {
             'worklet'
             index.value = payload.index
           },
+          footerStyle: {
+            paddingBottom: insets.bottom,
+            paddingHorizontal: 8,
+          },
         }}
       >
         <Sheet.Screen name="(home)" />
-        <Sheet.Screen name="stop" />
         <Sheet.Screen
-          name="groups"
-          options={{ detents: [0.5, 1], scrollable: true }}
+          name="(sheet)/groups"
+          options={{
+            detents: [0.5, 1],
+            footer: (
+              <GestureHandlerRootView>
+                <UButton
+                  label={i18n.t('createNewGroup')}
+                  block
+                  icon="plus-circle"
+                  size="lg"
+                  onPress={() => {
+                    useLineStore.getState().createGroup()
+                  }}
+                />
+              </GestureHandlerRootView>
+            ),
+          }}
         />
-        {/* <Sheet.Screen name="groups/[groupId]" options={{ detents: [0.5, 1] }} /> */}
       </Sheet>
     </Animated.View>
   )

@@ -1,5 +1,6 @@
+import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation'
 import { useLocalSearchParams } from 'expo-router'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { View } from 'react-native'
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler'
 import Animated, { LinearTransition } from 'react-native-reanimated'
@@ -116,41 +117,25 @@ export const GroupsScreen = () => {
   const flatlistRef = useRef<FlatList>(null)
 
   return (
-    <View className="grow shrink">
-      <Animated.FlatList
-        ref={flatlistRef}
-        data={groups}
-        itemLayoutAnimation={LinearTransition}
-        renderItem={({ item }) => (
-          <Animated.View
-            exiting={ExitScaleOut}
-            entering={EnterScaleIn}
-          >
-            <GroupItem
-              group={item}
-              selected={groupId === item.id}
-              canDelete={groups.length > 1}
-            />
-          </Animated.View>
-        )}
-        className="shrink grow p-2 pt-5"
-        contentContainerClassName="gap-2 grow pb-7"
-      />
-
-      <GestureHandlerRootView style={{ flexGrow: 1, flexShrink: 0 }}>
-        <UButton
-          label={i18n.t('createNewGroup')}
-          className="mb-2 mx-2 mt-auto"
-          block
-          icon="plus-circle"
-          variant="soft"
-          size="lg"
-          onPress={() => {
-            useLineStore.getState().createGroup()
-          }}
-        />
-      </GestureHandlerRootView>
-    </View>
+    <Animated.FlatList
+      ref={flatlistRef}
+      data={groups}
+      itemLayoutAnimation={LinearTransition}
+      renderItem={({ item }) => (
+        <Animated.View
+          exiting={ExitScaleOut}
+          entering={EnterScaleIn}
+        >
+          <GroupItem
+            group={item}
+            selected={groupId === item.id}
+            canDelete={groups.length > 1}
+          />
+        </Animated.View>
+      )}
+      className="shrink grow p-2 pt-5"
+      contentContainerClassName="gap-2 grow pb-7"
+    />
   )
 }
 

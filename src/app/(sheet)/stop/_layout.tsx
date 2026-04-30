@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router'
 
-import { Sheet } from '../_layout'
+import { Sheet } from '../../_layout'
 
 import { LineContext } from '@/composables/useLine'
 
