@@ -21,7 +21,7 @@ export const GroupsLayout = () => {
         },
         backgroundColor: background as string ?? baseTheme.colors.background,
         footerStyle: {
-          paddingBottom: insets.bottom,
+          paddingBottom: insets.bottom + 8,
           paddingHorizontal: 8,
         },
       }}

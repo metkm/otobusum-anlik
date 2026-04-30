@@ -5,6 +5,7 @@ import { ReanimatedTrueSheetProvider, useReanimatedTrueSheet } from '@lodev09/re
 import { DarkTheme, DefaultTheme, ThemeProvider, type Theme, type ParamListBase } from '@react-navigation/native'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { withLayoutContext } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -68,7 +69,7 @@ const RootContent = () => {
             index.value = payload.index
           },
           footerStyle: {
-            paddingBottom: insets.bottom,
+            paddingBottom: insets.bottom + 8,
             paddingHorizontal: 8,
           },
         }}
@@ -125,6 +126,8 @@ export const RootLayout = () => {
         },
       }}
     >
+      <StatusBar style="auto" />
+
       <GestureHandlerRootView
         style={{ flexGrow: 1, backgroundColor: background as string }}
       >
