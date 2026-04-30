@@ -2,13 +2,14 @@ import { Layer, Map as _Map, RasterSource, type MapRef, type LngLatBounds, type 
 import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import React, { RefObject, useRef, useState } from 'react'
-import { ActivityIndicator, useColorScheme } from 'react-native'
+import { ActivityIndicator } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useSettingsStore } from '../stores/settings'
 
 import rawStyleJson from '@/assets/style.json'
-import { getMapStyle } from '@/constants/mapStyles'
+import { useColorScheme } from '@/composables/useLineTheme'
+import { LONG_CACHE_MS } from '@/constants/app'
 
 export interface TheMapProps {
   children?: React.ReactNode
@@ -16,18 +17,18 @@ export interface TheMapProps {
   ref?: RefObject<MapRef | null>
 }
 
-// const StyledMap = withUniwind(Map)
 const styleJson = JSON.stringify(rawStyleJson)
 
 export const Map = ({ children, cameraProps, style, ...props }: { initialMapBounds?: LngLatBounds, cameraProps?: CameraProps } & Omit<MapProps, 'mapStyle'>) => {
   const map = useRef<MapRef>(null)
   const [visible, setVisible] = useState(false)
+  const themeScheme = useColorScheme()
 
-  const colorScheme = useColorScheme()
   const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
+  const { scheme: mapScheme, style: mapStyle } = useSettingsStore(useShallow(state => state.getMapStyle(themeScheme)))
 
   const { data } = useQuery({
-    queryKey: [`map-session-creation-${showTraffic}-${'dark'}`],
+    queryKey: ['map-session', showTraffic, mapScheme],
     queryFn: () =>
       ky.post<{ session: string }>(`https://tile.googleapis.com/v1/createSession`, {
         searchParams: { key: process.env.EXPO_PUBLIC_MAP_API },
@@ -36,11 +37,13 @@ export const Map = ({ children, cameraProps, style, ...props }: { initialMapBoun
           language: 'en-US',
           region: 'TR',
           layerTypes: showTraffic ? ['layerTraffic'] : [],
-          styles: getMapStyle(colorScheme),
+          styles: mapStyle,
+          scale: 'scaleFactor2x',
+          highDpi: 'true',
         }),
       })
         .json(),
-    staleTime: 86_400_000,
+    staleTime: LONG_CACHE_MS,
   })
 
   if (!data) {
@@ -64,7 +67,7 @@ export const Map = ({ children, cameraProps, style, ...props }: { initialMapBoun
       mapStyle={styleJson}
     >
       <RasterSource
-        key="raster-source"
+        key={themeScheme}
         id="google-raster-source"
         tiles={tiles}
         tileSize={256}

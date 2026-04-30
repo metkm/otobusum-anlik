@@ -8,11 +8,13 @@ export const UQueryState = <T,>({
   query,
   loading,
   error,
+  errorMessage,
   children,
 }: {
   query: UseQueryResult<T>
   loading?: () => React.ReactNode
   error?: (error: DefaultError) => React.ReactNode
+  errorMessage?: string
   children?: React.ReactNode
 }) => {
   if (query.isFetching)
@@ -20,8 +22,11 @@ export const UQueryState = <T,>({
 
   if (query.isError)
     return error?.(query.error) ?? (
-      <UText className="text-error grow text-center align-middle text-xs truncate shrink" numberOfLines={1}>
-        {query.error.message}
+      <UText
+        className="text-error grow text-center align-middle text-xs truncate shrink"
+        numberOfLines={1}
+      >
+        {errorMessage ?? query.error.message}
       </UText>
     )
 

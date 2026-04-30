@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { randomUUID } from 'expo-crypto'
 import { Alert, ToastAndroid } from 'react-native'
 import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
+import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
 import { useFilterStore } from './filter'
@@ -166,11 +166,15 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
       return
     }
 
-    if (codes.includes(code))
+    if (codes.includes(code)) {
+      ToastAndroid.show(i18n.t('lineAlreadyInGroup'), ToastAndroid.SHORT)
       return
+    }
 
     codes?.push(code)
     useThemeStore.getState().createTheme(code)
+
+    ToastAndroid.show(i18n.t('added', { code }), ToastAndroid.SHORT)
   }),
   deleteLine: (code, groupId) => set((state) => {
     const city = useFilterStore.getState().city
@@ -227,14 +231,19 @@ const createLineRouteSlice = immer<LineRouteSlice>((set, get) => ({
 }))
 
 export const useLineStore = create(
-  persist<LineCodeSlice & LineRouteSlice>((...a) => ({
-    ...createLineCodeSlice(...a),
-    ...createLineRouteSlice(...a),
-  }), {
-    name: 'lines-store',
-    storage: createJSONStorage(() => AsyncStorage),
-    version: 4,
-  }),
+  persist(
+    subscribeWithSelector<LineCodeSlice & LineRouteSlice>((...a) => (
+      {
+        ...createLineCodeSlice(...a),
+        ...createLineRouteSlice(...a),
+      }),
+    ),
+    {
+      name: 'lines-store',
+      storage: createJSONStorage(() => AsyncStorage),
+      version: 4,
+    },
+  ),
 )
 
 // export const useLineStore = create(

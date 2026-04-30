@@ -23,7 +23,10 @@ export const LineCardName = () => {
         exiting={FadeOutUp}
         className="shrink"
       >
-        <UQueryState query={lineBusesQuery}>
+        <UQueryState
+          query={lineBusesQuery}
+          errorMessage={i18n.t('errorGettingBusLocations')}
+        >
           <UText className="text-xs text-muted font-inter-medium">
             {i18n.t('updateCount', { count: remaining })}
           </UText>

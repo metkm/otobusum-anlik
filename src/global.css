@@ -85,6 +85,7 @@
 
   --color-primary: var(--ui-primary);
   --color-error: var(--ui-error);
+  --color-bg: var(--ui-bg);
 }
 
 /* @theme static {

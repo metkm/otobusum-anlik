@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
+import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
 import { City } from '@/types/city'
@@ -15,18 +15,21 @@ export interface FiltersStore {
 
 export const useFilterStore = create(
   persist(
-    immer<FiltersStore>((set, _get) => ({
-      city: 'istanbul',
-      hiddenLines: [],
-      toggleLineHidden: (code: string) => set((state) => {
-        const i = state.hiddenLines.indexOf(code)
-        if (i === -1) {
-          state.hiddenLines.push(code)
-        } else {
-          state.hiddenLines.splice(i, 1)
-        }
+    subscribeWithSelector(
+      immer<FiltersStore>((set, _get) => ({
+        city: 'istanbul',
+        hiddenLines: [],
+        toggleLineHidden: (code: string) => set((state) => {
+          const i = state.hiddenLines.indexOf(code)
+          if (i === -1) {
+            state.hiddenLines.push(code)
+          } else {
+            state.hiddenLines.splice(i, 1)
+          }
+        }),
       }),
-    }),
+      ),
+
     ),
     {
       name: 'filter-storage',

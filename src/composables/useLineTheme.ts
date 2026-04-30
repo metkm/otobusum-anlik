@@ -1,10 +1,10 @@
 import { use } from 'react'
-import { useColorScheme } from 'react-native'
+import { useColorScheme as _useColorScheme } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { LineContext } from './useLine'
 
-import { useThemeStore } from '@/stores'
+import { ColorScheme, useSettingsStore, useThemeStore } from '@/stores'
 
 type VariantConfig<V, S> = {
   variants: {
@@ -36,17 +36,29 @@ const createLineVariants = <V extends object, S>(config: VariantConfig<V, S>): V
   return result
 }
 
+export const useColorScheme = (): ColorScheme => {
+  const colorSchemeStore = useSettingsStore(useShallow(state => state.colorScheme))
+  const colorScheme = _useColorScheme()
+
+  if (colorSchemeStore)
+    return colorSchemeStore
+
+  return colorScheme === 'unspecified' ? 'dark' : colorScheme
+
+  // const sc = colorSchemeStore || colorScheme
+  // return sc === 'unspecified' ? 'dark' : sc
+}
+
 export const useLineTheme = () => {
   const code = use(LineContext)
 
-  const colorScheme = useColorScheme()
   const themes = useThemeStore(useShallow(state => state.getThemes()))
-  const prefer = colorScheme === 'unspecified' ? 'dark' : colorScheme
+  const colorScheme = useColorScheme()
 
   if (!code)
     return
 
-  const theme = themes[code]?.[prefer]
+  const theme = themes[code]?.[colorScheme === undefined ? 'dark' : colorScheme]
   if (!theme)
     return
 

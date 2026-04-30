@@ -53,7 +53,7 @@ const ui = tv({
       variant: 'solid',
       className: {
         base: 'bg-primary',
-        label: 'text-default',
+        label: 'text-inverted',
       },
     },
     {
@@ -180,7 +180,6 @@ export const UButton = ({
           className={uiLabel()}
           numberOfLines={1}
           style={themeText}
-          // style={themeStyle ? { color: themeStyle?.color } : undefined}
         >
           {label}
         </UText>

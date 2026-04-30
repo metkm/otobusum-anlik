@@ -1,4 +1,4 @@
-import { Camera, type ViewStateChangeEvent } from '@maplibre/maplibre-react-native'
+import { Camera, UserLocation, type ViewStateChangeEvent } from '@maplibre/maplibre-react-native'
 import { NativeSyntheticEvent, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -10,7 +10,9 @@ import { MapButtons } from '@/components/MapButtons'
 import { useSettingsStore } from '@/stores'
 
 export const HomeScreen = () => {
-  const initialMapBounds = useSettingsStore(useShallow(state => state.initialMapBounds))
+  // const initialMapBounds = useSettingsStore(useShallow(state => state.initialMapBounds))
+  const initialMapBounds = useSettingsStore.getState().initialMapBounds
+  const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
 
   const onMapRegionChange = (event: NativeSyntheticEvent<ViewStateChangeEvent>) => {
     useSettingsStore.setState(() => ({
@@ -23,6 +25,8 @@ export const HomeScreen = () => {
       <Map onRegionDidChange={onMapRegionChange}>
         <Camera initialViewState={{ bounds: initialMapBounds }} />
         <LineMarkers />
+
+        {showMyLocation && <UserLocation heading />}
       </Map>
 
       <MapButtons />
