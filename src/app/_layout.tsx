@@ -16,7 +16,7 @@ import { Uniwind, useCSSVariable } from 'uniwind'
 import { UButton } from '@/components/u/UButton'
 
 import { persister, queryClient } from '@/api/client'
-import { useLineStore } from '@/stores'
+import { useLineStore, useSettingsStore } from '@/stores'
 import { i18n } from '@/translations/i18n'
 
 const { Navigator } = createTrueSheetNavigator()
@@ -36,7 +36,6 @@ const RootContent = () => {
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
   const index = useSharedValue(0)
-  // const insets = useSafeAreaInsets()
   const { animatedIndex } = useReanimatedTrueSheet()
 
   const style = useAnimatedStyle(() => ({
@@ -53,6 +52,11 @@ const RootContent = () => {
   useAnimatedReaction(() => animatedIndex.value, () => {
     index.value = animatedIndex.value
   })
+
+  const storeColor = useSettingsStore.getState().colorScheme
+  if (storeColor) {
+    Uniwind.setTheme(storeColor)
+  }
 
   return (
     <Animated.View style={style}>

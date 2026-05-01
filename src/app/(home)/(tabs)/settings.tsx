@@ -9,12 +9,11 @@ import { USheet } from '@/components/u/USheet'
 import { USwitch } from '@/components/u/USwitch'
 import { UText } from '@/components/u/UText'
 
-import { useColorScheme } from '@/composables/useLineTheme'
-import { MapStyle, mapStyles } from '@/constants/mapStyles'
+import { MapStyle, MapStyleValue, mapStyles } from '@/constants/mapStyles'
 import { useSettingsStore } from '@/stores'
 import { i18n } from '@/translations/i18n'
 
-const appThemes: {
+const appThemeOptions: {
   label: string
   value: 'dark' | 'light' | undefined
 }[] = [
@@ -32,18 +31,44 @@ const appThemes: {
   },
 ]
 
+const mapThemeOptions: { label: string, key: MapStyle | undefined, value: MapStyleValue | undefined }[] = [
+  {
+    label: i18n.t('dark'),
+    key: 'dark',
+    value: mapStyles['dark'],
+  },
+  {
+    label: i18n.t('night'),
+    key: 'night',
+    value: mapStyles['dark'],
+  },
+  {
+    label: i18n.t('light'),
+    key: 'light',
+    value: mapStyles['light'],
+  },
+  {
+    label: i18n.t('retro'),
+    key: 'retro',
+    value: mapStyles['retro'],
+  },
+  {
+    label: i18n.t('system'),
+    key: undefined,
+    value: undefined,
+  },
+]
+
 export const SettingsScreen = () => {
   const mapStyleSheet = useRef<TrueSheet>(null)
   const appStyleSheet = useRef<TrueSheet>(null)
 
-  const colorScheme = useColorScheme()
-
   const toggleMyLocation = useSettingsStore(useShallow(state => state.toggleMyLocation))
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
   const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
-  const colorSchemeStore = useSettingsStore(useShallow(state => state.colorScheme))
 
-  const { scheme: mapScheme } = useSettingsStore(useShallow(state => state.getMapStyle(colorScheme)))
+  const mapStyleStore = useSettingsStore(useShallow(state => state.mapStyle))
+  const colorSchemeStore = useSettingsStore(useShallow(state => state.colorScheme))
 
   const toggleTraffic = () => {
     useSettingsStore.setState((state) => {
@@ -78,7 +103,7 @@ export const SettingsScreen = () => {
       </UButton>
 
       <UButton
-        label={i18n.t(mapScheme)}
+        label={i18n.t(mapStyleStore ?? 'system')}
         color="neutral"
         size="lg"
         block
@@ -93,16 +118,17 @@ export const SettingsScreen = () => {
         detents={['auto']}
         contentContainerClassName="px-2 gap-2"
       >
-        {Object.keys(mapStyles).map(mapStyle => (
+        {mapThemeOptions.map(option => (
           <UButton
-            key={mapStyle}
-            label={i18n.t(mapStyle)}
-            variant={mapStyle === mapScheme ? 'solid' : 'ghost'}
-            color={mapStyle === mapScheme ? 'primary' : 'neutral'}
+            key={option.label}
+            label={option.label}
+            variant={option.key === mapStyleStore ? 'solid' : 'ghost'}
+            color={option.key === mapStyleStore ? 'primary' : 'neutral'}
             block
             onPress={() => {
+              console.log(option.key)
               useSettingsStore.setState((state) => {
-                state.mapStyle = mapStyle as MapStyle
+                state.mapStyle = option.key
               })
 
               mapStyleSheet.current?.dismiss()
@@ -112,7 +138,7 @@ export const SettingsScreen = () => {
       </USheet>
 
       <UButton
-        label={!colorSchemeStore ? i18n.t('system') : i18n.t(colorScheme)}
+        label={i18n.t(colorSchemeStore ?? 'system')}
         color="neutral"
         size="lg"
         onPress={() => appStyleSheet.current?.present()}
@@ -126,7 +152,7 @@ export const SettingsScreen = () => {
         detents={['auto']}
         contentContainerClassName="px-2 gap-2"
       >
-        {appThemes.map(sc => (
+        {appThemeOptions.map(sc => (
           <UButton
             key={sc.label}
             label={sc.label}

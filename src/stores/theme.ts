@@ -51,7 +51,7 @@ export const useThemeStore = create(
             state.themesByCity[city][code] = {
               dark: {
                 'ui-bg': hexFromArgb(schemes.dark.surface),
-                'ui-bg-muted': hexFromArgb(palettes.neutral.tone(10)),
+                'ui-bg-muted': hexFromArgb(palettes.neutral.tone(12)),
                 'ui-text-muted': hexFromArgb(palettes.neutral.tone(90)),
                 'ui-text': hexFromArgb(schemes.dark.onSurface),
                 'ui-text-inverted': hexFromArgb(schemes.dark.inverseOnSurface),

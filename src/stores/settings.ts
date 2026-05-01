@@ -1,6 +1,7 @@
 import { type LngLatBounds } from '@maplibre/maplibre-react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { requestForegroundPermissionsAsync } from 'expo-location'
+import { Appearance } from 'react-native'
 import { create } from 'zustand'
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
@@ -17,7 +18,7 @@ export interface SettingsStore {
   mapStyle?: MapStyle
   colorScheme?: ColorScheme
   toggleMyLocation: () => void
-  getMapStyle: (colorScheme: 'light' | 'dark') => { scheme: MapStyle, style: MapStyleValue }
+  getMapStyle: () => { scheme: MapStyle, style: MapStyleValue }
 }
 
 export const useSettingsStore = create(
@@ -46,9 +47,13 @@ export const useSettingsStore = create(
             state.showMyLocation = showLocation
           })
         },
-        getMapStyle: (colorScheme) => {
+        getMapStyle: () => {
           const prefferedMapStyle = get().mapStyle
-          const scheme = prefferedMapStyle ?? (colorScheme === 'dark' ? 'night' : 'light')
+          const colorSchemeDevice = Appearance.getColorScheme()
+
+          const scheme = prefferedMapStyle === undefined
+            ? (colorSchemeDevice === 'dark' ? 'night' : 'light')
+            : prefferedMapStyle
 
           return {
             scheme,
