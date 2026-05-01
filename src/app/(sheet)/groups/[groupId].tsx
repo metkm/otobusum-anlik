@@ -4,6 +4,9 @@ import { useLocalSearchParams } from 'expo-router/build/hooks'
 import { useEffect, useRef } from 'react'
 import { View } from 'react-native'
 import { FlatList, GestureHandlerRootView, TextInput } from 'react-native-gesture-handler'
+import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
+import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
@@ -13,9 +16,13 @@ import { UText } from '@/components/u/UText'
 import { useFilterStore, useLineStore } from '@/stores'
 import { i18n } from '@/translations/i18n'
 
+const AnimatedGestureHandlerRootView = Animated.createAnimatedComponent(GestureHandlerRootView)
+
 export const GroupIdScreen = () => {
   const params = useLocalSearchParams()
   const navigation = useTrueSheetNavigation()
+  const insets = useSafeAreaInsets()
+  const { progress } = useReanimatedKeyboardAnimation()
 
   const name = useRef('')
   const inputRef = useRef<TextInput>(null)
@@ -23,12 +30,17 @@ export const GroupIdScreen = () => {
   const city = useFilterStore(useShallow(state => state.city))
   const groups = useLineStore(useShallow(state => state.lines[city]))
 
+  const style = useAnimatedStyle(() => ({
+    gap: 8,
+    paddingBottom: interpolate(progress.value, [0, 1], [insets.bottom + 8, 8], 'clamp'),
+  }))
+
   const group = groups.find(gr => gr.id === params.groupId)
 
   useEffect(() => {
     navigation.setOptions({
       footer: (
-        <GestureHandlerRootView style={{ gap: 8 }}>
+        <AnimatedGestureHandlerRootView style={style}>
           <UButton
             label={i18n.t('save')}
             size="lg"
@@ -52,7 +64,7 @@ export const GroupIdScreen = () => {
               block
             />
           )}
-        </GestureHandlerRootView>
+        </AnimatedGestureHandlerRootView>
       ),
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps

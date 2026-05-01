@@ -1,7 +1,7 @@
 import '../global.css'
 
 import { createTrueSheetNavigator, TrueSheetNavigationEventMap, TrueSheetNavigationOptions, TrueSheetNavigationState } from '@lodev09/react-native-true-sheet/navigation'
-import { ReanimatedTrueSheetProvider, useReanimatedTrueSheet } from '@lodev09/react-native-true-sheet/reanimated'
+import { ReanimatedTrueSheetProvider } from '@lodev09/react-native-true-sheet/reanimated'
 import { DarkTheme, DefaultTheme, ThemeProvider, type Theme, type ParamListBase } from '@react-navigation/native'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { withLayoutContext } from 'expo-router'
@@ -9,7 +9,7 @@ import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import Animated, { useAnimatedReaction, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { SafeAreaListener, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
@@ -35,23 +35,23 @@ const RootContent = () => {
   const colorScheme = useColorScheme()
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
-  const index = useSharedValue(0)
-  const { animatedIndex } = useReanimatedTrueSheet()
+  // const index = useSharedValue(0)
+  // const { animatedIndex } = useReanimatedTrueSheet()
 
-  const style = useAnimatedStyle(() => ({
-    flex: 1,
-    // transform: [
-    //   {
-    //     scale: interpolate(index.value, [-1, 0], [1, (width - insets.top) / width], 'clamp'),
-    //   },
-    // ],
-    // borderRadius: interpolate(index.value, [-1, 0], [0, 8], 'clamp'),
-    overflow: 'hidden',
-  }))
+  // const style = useAnimatedStyle(() => ({
+  //   flex: 1,
+  //   transform: [
+  //     {
+  //       scale: interpolate(index.value, [-1, 0], [1, (width - insets.top) / width], 'clamp'),
+  //     },
+  //   ],
+  //   borderRadius: interpolate(index.value, [-1, 0], [0, 8], 'clamp'),
+  //   overflow: 'hidden',
+  // }))
 
-  useAnimatedReaction(() => animatedIndex.value, () => {
-    index.value = animatedIndex.value
-  })
+  // useAnimatedReaction(() => animatedIndex.value, () => {
+  //   index.value = animatedIndex.value
+  // })
 
   const storeColor = useSettingsStore.getState().colorScheme
   if (storeColor) {
@@ -59,7 +59,7 @@ const RootContent = () => {
   }
 
   return (
-    <Animated.View style={style}>
+    <KeyboardProvider>
       <Sheet
         screenOptions={{
           grabberOptions: {
@@ -67,11 +67,11 @@ const RootContent = () => {
             height: 4,
           },
           backgroundColor: background as string ?? baseTheme.colors.background,
-          reanimated: true,
-          positionChangeHandler: (payload) => {
-            'worklet'
-            index.value = payload.index
-          },
+          // reanimated: true,
+          // positionChangeHandler: (payload) => {
+          //   'worklet'
+          //   index.value = payload.index
+          // },
           footerStyle: {
             paddingBottom: insets.bottom + 8,
             paddingHorizontal: 8,
@@ -100,7 +100,7 @@ const RootContent = () => {
           }}
         />
       </Sheet>
-    </Animated.View>
+    </KeyboardProvider>
   )
 }
 
