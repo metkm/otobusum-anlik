@@ -1,6 +1,5 @@
-import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation'
 import { useLocalSearchParams } from 'expo-router'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { View } from 'react-native'
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler'
 import Animated, { LinearTransition } from 'react-native-reanimated'
@@ -10,6 +9,8 @@ import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
 import { UText } from '@/components/u/UText'
 
+import { useLineTheme } from '@/composables'
+import { LineContext } from '@/composables/useLine'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
 import { useFilterStore, useLineStore } from '@/stores'
 import { i18n } from '@/translations/i18n'
@@ -17,7 +18,10 @@ import { LineGroup } from '@/types/line'
 
 const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?: boolean, canDelete?: boolean }) => {
   const params = useLocalSearchParams()
-  const addToGroup = params.addToGroup
+  const addToGroup = params.addToGroup as string | undefined
+
+  const theme = useLineTheme()
+  const backgroundWithColor = theme?.backgroundWithColor()
 
   const handlePress = () => {
     if (addToGroup) {
@@ -35,8 +39,12 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
           exiting={ExitScaleOut}
           entering={EnterScaleIn}
           className="rounded-md bg-primary w-8 items-center justify-center"
+          style={backgroundWithColor}
         >
-          <UIcon name="check" />
+          <UIcon
+            name="check"
+            color={backgroundWithColor?.color}
+          />
         </Animated.View>
       )}
 
@@ -110,6 +118,9 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
 }
 
 export const GroupsScreen = () => {
+  const params = useLocalSearchParams()
+  const addToGroup = params.addToGroup as string | undefined
+
   const city = useFilterStore(useShallow(state => state.city))
   const groups = useLineStore(useShallow(state => state.lines[city]))
   const groupId = useLineStore(useShallow(state => state.groupId))
@@ -117,25 +128,26 @@ export const GroupsScreen = () => {
   const flatlistRef = useRef<FlatList>(null)
 
   return (
-    <Animated.FlatList
-      ref={flatlistRef}
-      data={groups}
-      itemLayoutAnimation={LinearTransition}
-      renderItem={({ item }) => (
-        <Animated.View
-          exiting={ExitScaleOut}
-          entering={EnterScaleIn}
-        >
-          <GroupItem
-            group={item}
-            selected={groupId === item.id}
-            canDelete={groups.length > 1}
-          />
-        </Animated.View>
-      )}
-      className="shrink grow p-2 pt-5"
-      contentContainerClassName="gap-2 grow pb-7"
-    />
+    <LineContext value={addToGroup}>
+      <Animated.FlatList
+        ref={flatlistRef}
+        data={groups}
+        itemLayoutAnimation={LinearTransition}
+        renderItem={({ item }) => (
+          <Animated.View
+            exiting={ExitScaleOut}
+            entering={EnterScaleIn}
+          >
+            <GroupItem
+              group={item}
+              selected={groupId === item.id}
+              canDelete={groups.length > 1}
+            />
+          </Animated.View>
+        )}
+        contentContainerClassName="px-2 pt-5 pb-15.5 gap-2"
+      />
+    </LineContext>
   )
 }
 

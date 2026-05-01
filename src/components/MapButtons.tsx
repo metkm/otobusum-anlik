@@ -1,10 +1,14 @@
 import { useEffect } from 'react'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
+import { withUniwind } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from './u/UButton'
 
 import { useLineStore } from '@/stores'
+
+const AnimatedGestureHandlerRootView = Animated.createAnimatedComponent(withUniwind(GestureHandlerRootView))
 
 export const MapButtons = () => {
   const lines = useLineStore(useShallow(state => state.getLines()))
@@ -28,8 +32,8 @@ export const MapButtons = () => {
   }))
 
   return (
-    <Animated.View
-      className="left-2 right-2 gap-2 absolute z-10 items-start"
+    <AnimatedGestureHandlerRootView
+      className="left-2 bottom-2 gap-2 absolute z-10 items-start"
       style={style}
       pointerEvents="box-none"
     >
@@ -38,14 +42,15 @@ export const MapButtons = () => {
         to="/search"
         size="lg"
         color="neutral"
-        style={{ elevation: 5 }}
+        style={{ elevation: 2 }}
+        className="bg-default"
       />
 
       {lines.length > 1 && (
         <UButton
           icon="repeat"
           color="neutral"
-          style={{ elevation: 5 }}
+          style={{ elevation: 2 }}
           size="lg"
           onPress={() => {
             lines.forEach(code => changeRouteDirection(code))
@@ -56,29 +61,12 @@ export const MapButtons = () => {
       <UButton
         icon="component"
         color="neutral"
-        style={{ elevation: 5 }}
+        style={{ elevation: 2 }}
         size="lg"
         to="/groups"
         label={group?.name}
+        className="bg-default"
       />
-    </Animated.View>
+    </AnimatedGestureHandlerRootView>
   )
 }
-
-// <View className="ml-2 mb-2 gap-2">
-//   <UButton
-//     icon="search"
-//     to="/search"
-//     size="lg"
-//     color="neutral"
-//     style={{ elevation: 5 }}
-//   />
-
-//   <UButton
-//     icon="repeat"
-//     color="neutral"
-//     style={{ elevation: 5 }}
-//     size="lg"
-//     onPress={changeAllRouteDirections}
-//   />
-// </View>

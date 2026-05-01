@@ -131,6 +131,7 @@ export const SettingsScreen = () => {
             key={sc.label}
             label={sc.label}
             color={colorSchemeStore === sc.value ? 'primary' : 'neutral'}
+            variant={colorSchemeStore === sc.value ? 'solid' : 'ghost'}
             onPress={() => {
               useSettingsStore.setState((state) => {
                 state.colorScheme = sc.value

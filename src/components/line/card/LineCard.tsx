@@ -13,10 +13,6 @@ import { LineCardRoutes } from './LineCardRoutes'
 import { useLineBuses, useLineStops, useLineTheme } from '@/composables'
 import { cn } from '@/utils/cn'
 
-// const ITEM_SIZE = 38
-// const COLLAPSED = (ITEM_SIZE * 2) + (8 * 1)
-// const EXPANDED = COLLAPSED * 2
-
 const ErrorState = ({ message }: { message?: string }) => {
   return (
     <View className="h-22 items-center justify-center">
@@ -38,7 +34,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
   return (
     <View
       className={cn('bg-muted p-2 rounded-md gap-2', className)}
-      style={[{ elevation: 5 }, background, style]}
+      style={[{ elevation: 2 }, background, style]}
       {...props}
     >
       <View className="flex-row items-center justify-between pl-1">

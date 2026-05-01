@@ -92,6 +92,7 @@ const RootContent = () => {
                 />
               </GestureHandlerRootView>
             ),
+            scrollable: true,
           }}
         />
       </Sheet>

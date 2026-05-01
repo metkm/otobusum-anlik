@@ -119,7 +119,7 @@ export const LineCardRoutes = () => {
               data={sortedRoutes}
               renderItem={renderItem}
               extraData={routeCode}
-              contentContainerClassName="gap-2 px-2 pb-2"
+              contentContainerClassName="px-2 gap-2 pb-2"
             />
           </USheet>
         )}

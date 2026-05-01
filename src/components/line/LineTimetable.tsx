@@ -146,7 +146,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
 
   return (
     <View
-      style={[{ width: cardWidth, elevation: 5 }, background]}
+      style={[{ width: cardWidth, elevation: 2 }, background]}
       className={cn('bg-muted rounded-md', className)}
     >
       <View className="m-2 mb-0">
@@ -205,44 +205,6 @@ export const LineTimetable = ({ className }: ViewProps) => {
             </View>
           ))}
         </ScrollView>
-
-        {/* <ScrollView
-          contentContainerClassName="flex-row p-2"
-          fadingEdgeLength={10}
-        >
-          <View className="gap-2">
-            {hours.map(hour => (
-              <UText
-                key={hour}
-                className="size-8 font-inter-medium items-center text-center align-middle rounded-md"
-                style={theme?.backgroundWithColor({ variant: 'solid' })}
-              >
-                {hour}
-              </UText>
-            ))}
-          </View>
-
-          <ScrollView horizontal contentContainerClassName="flex-col gap-2">
-            {hours.map(hour => (
-              <View key={hour} className="flex-row">
-                {groupedByHour[hour]?.map(time => (
-                  <UText
-                    key={`${code}-${time}-${routeCode}`}
-                    className="size-8 align-middle text-center"
-                    style={[
-                      cancelledTimes?.includes(`${hour}:${time}`) && {
-                        textDecorationLine: 'line-through',
-                        opacity: 0.5,
-                      },
-                    ]}
-                  >
-                    {time}
-                  </UText>
-                ))}
-              </View>
-            ))}
-          </ScrollView>
-        </ScrollView> */}
       </UQueryState>
     </View>
   )

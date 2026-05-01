@@ -44,9 +44,6 @@ export const useColorScheme = (): ColorScheme => {
     return colorSchemeStore
 
   return colorScheme === 'unspecified' ? 'dark' : colorScheme
-
-  // const sc = colorSchemeStore || colorScheme
-  // return sc === 'unspecified' ? 'dark' : sc
 }
 
 export const useLineTheme = () => {
@@ -133,17 +130,4 @@ export const useLineTheme = () => {
       },
     ],
   })
-
-  // const borderStyle = border({ variant: 'solid' })
-
-  // return createLineVariants(variant, theme)
-
-  // const colorScheme = useColorScheme()
-  // const themes = useThemeStore(useShallow(state => state.themes()))
-  // const prefer = colorScheme === 'unspecified' ? 'dark' : colorScheme
-
-  // if (!code)
-  //   return
-
-  // return themes[code]?.[prefer]
 }

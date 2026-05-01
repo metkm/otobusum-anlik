@@ -145,7 +145,6 @@ export const UButton = ({
       className={cn(
         uiBase(),
         className,
-        'disabled:bg-red-500',
       )}
       onPress={handlePress}
       style={[themeBackground, style]}
