@@ -11,6 +11,7 @@ export type ColorScheme = 'light' | 'dark'
 
 export interface SettingsStore {
   initialMapBounds: LngLatBounds
+  bearing: number
   showMyLocation: boolean
   showTraffic: boolean
   mapStyle?: MapStyle
@@ -24,6 +25,7 @@ export const useSettingsStore = create(
     subscribeWithSelector(
       immer<SettingsStore>((set, get) => ({
         initialMapBounds: [26.218823938242565, 36.08430119633523, 30.10080291867854, 42.351104713710356],
+        bearing: 0,
         showMyLocation: false,
         showTraffic: true,
         mapStyle: undefined,
