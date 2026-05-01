@@ -79,7 +79,7 @@ export const GroupIdScreen = () => {
         />
       </View>
 
-      {(group && group.codes.length > 1) && (
+      {(group && group.codes.length > 0) && (
         <FlatList
           data={group?.codes}
           renderItem={({ item }) => (
