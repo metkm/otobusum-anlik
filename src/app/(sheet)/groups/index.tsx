@@ -29,7 +29,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
       return
     }
 
-    useLineStore.getState().selectGroup(group.id)
+    useLineStore.setState(() => ({ groupId: group.id }))
   }
 
   return (

@@ -33,30 +33,4 @@ export const createRandomTheme = () => {
   const argbColor = argbFromHex(hexColor)
 
   return themeFromSourceColor(argbColor)
-
-  // const result = themeFromSourceColor(argbColor)
-
-  // const palette = result.palettes.neutral
-
-  // const mapping = {
-  //   50: 95,
-  //   100: 90,
-  //   200: 80,
-  //   300: 70,
-  //   400: 60,
-  //   500: 50,
-  //   600: 40,
-  //   700: 30,
-  //   800: 20,
-  //   900: 10,
-  //   950: 5,
-  // }
-
-  // const colors = []
-
-  // for (const [_shade, tone] of Object.entries(mapping)) {
-  //   colors.push(hexFromArgb(palette.tone(tone)))
-  // }
-
-  // return colors
 }

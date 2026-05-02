@@ -65,6 +65,8 @@ export const useSettingsStore = create(
     {
       name: 'settings-storage',
       storage: createJSONStorage(() => AsyncStorage),
+      migrate: () => {},
+      version: 4,
     },
   ),
 )

@@ -204,6 +204,7 @@ export const SettingsScreen = () => {
                 state.city = c
               })
             }}
+            block
           />
         ))}
       </USheet>
