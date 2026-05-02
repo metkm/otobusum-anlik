@@ -1,5 +1,7 @@
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
+import Constants from 'expo-constants'
 import { useRef } from 'react'
+import { Linking } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Uniwind } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
@@ -10,8 +12,9 @@ import { USwitch } from '@/components/u/USwitch'
 import { UText } from '@/components/u/UText'
 
 import { MapStyle, MapStyleValue, mapStyles } from '@/constants/mapStyles'
-import { useSettingsStore } from '@/stores'
+import { useFilterStore, useSettingsStore } from '@/stores'
 import { i18n } from '@/translations/i18n'
+import { City } from '@/types/city'
 
 const appThemeOptions: {
   label: string
@@ -62,10 +65,12 @@ const mapThemeOptions: { label: string, key: MapStyle | undefined, value: MapSty
 export const SettingsScreen = () => {
   const mapStyleSheet = useRef<TrueSheet>(null)
   const appStyleSheet = useRef<TrueSheet>(null)
+  const citySheet = useRef<TrueSheet>(null)
 
   const toggleMyLocation = useSettingsStore(useShallow(state => state.toggleMyLocation))
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
   const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
+  const city = useFilterStore(useShallow(state => state.city))
 
   const mapStyleStore = useSettingsStore(useShallow(state => state.mapStyle))
   const colorSchemeStore = useSettingsStore(useShallow(state => state.colorScheme))
@@ -81,6 +86,8 @@ export const SettingsScreen = () => {
       className="m-safe"
       contentContainerClassName="p-2 gap-2"
     >
+      <UText className="text-lg font-inter-medium ml-2">{i18n.t('map')}</UText>
+
       <UButton
         label={i18n.t('showMyLocation')}
         color="neutral"
@@ -126,7 +133,6 @@ export const SettingsScreen = () => {
             color={option.key === mapStyleStore ? 'primary' : 'neutral'}
             block
             onPress={() => {
-              console.log(option.key)
               useSettingsStore.setState((state) => {
                 state.mapStyle = option.key
               })
@@ -170,55 +176,61 @@ export const SettingsScreen = () => {
           />
         ))}
       </USheet>
+
+      <UButton
+        label={city}
+        variant="soft"
+        color="neutral"
+        size="lg"
+        className="justify-between"
+        onPress={() => citySheet.current?.present()}
+      >
+        <UText>{i18n.t('city')}</UText>
+      </UButton>
+
+      <USheet
+        ref={citySheet}
+        detents={['auto']}
+        contentContainerClassName="px-2 gap-2"
+      >
+        {(['izmir', 'istanbul'] as City[]).map(c => (
+          <UButton
+            key={c}
+            label={c}
+            variant={c === city ? 'solid' : 'ghost'}
+            color={c === city ? 'primary' : 'neutral'}
+            onPress={() => {
+              useFilterStore.setState((state) => {
+                state.city = c
+              })
+            }}
+          />
+        ))}
+      </USheet>
+
+      <UText className="text-lg font-inter-medium ml-2">{i18n.t('other')}</UText>
+
+      <UButton
+        label={i18n.t('license', { city: 'istanbul' })}
+        onPress={() => Linking.openURL('https://data.ibb.gov.tr/license')}
+        variant="soft"
+        color="neutral"
+        size="lg"
+      />
+
+      <UButton
+        label={i18n.t('license', { city: 'izmir' })}
+        onPress={() => Linking.openURL('https://acikveri.bizizmir.com/tr/license')}
+        variant="soft"
+        color="neutral"
+        size="lg"
+      />
+
+      <UText className="text-muted font-inter-medium ml-auto mr-2 text-xs">
+        {`${i18n.t('version')} ${Constants.expoConfig?.version}`}
+      </UText>
     </ScrollView>
-
-  // <ScrollView
-  //   style={{ marginTop: insets.top }}
-  //   contentContainerStyle={[styles.scrollContainer]}
-  // >
-  //   <SettingsGroupContainer title={i18n.t('map')}>
-  //     <SettingsLocation />
-  //     <SettingsTraffic />
-
-  //     {Platform.OS !== 'web' && (
-  //       <SettingsCluster />
-  //     )}
-  //   </SettingsGroupContainer>
-
-  //   <SettingsGroupContainer title={i18n.t('theme')}>
-  //     <SettingsTheme />
-  //   </SettingsGroupContainer>
-
-  //   <SettingsGroupContainer title={i18n.t('other')}>
-  //     <SettingCity />
-
-  //     <SettingsContainer
-  //       type="link"
-  //       title={i18n.t('license', { city: 'istanbul' })}
-  //       onPress={() => Linking.openURL('https://data.ibb.gov.tr/license')}
-  //     />
-  //     <SettingsContainer
-  //       type="link"
-  //       title={i18n.t('license', { city: 'izmir' })}
-  //       onPress={() => Linking.openURL('https://acikveri.bizizmir.com/tr/license')}
-  //     />
-  //   </SettingsGroupContainer>
-
-  //   <UiText style={styles.version}>
-  //     {`${i18n.t('version')} ${Constants.expoConfig?.version}`}
-  //   </UiText>
-  // </ScrollView>
   )
 }
-
-// const styles = StyleSheet.create({
-//   scrollContainer: {
-//     gap: 8,
-//     padding: 8,
-//   },
-//   version: {
-//     alignSelf: 'flex-end',
-//   },
-// })
 
 export default SettingsScreen

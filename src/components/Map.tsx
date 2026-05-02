@@ -30,7 +30,7 @@ export const Map = ({ children, cameraProps, style, ...props }: { initialMapBoun
 
   const initialMapBounds = useSettingsStore.getState().initialMapBounds
   const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
-  const { scheme: mapScheme, style: mapStyle } = useSettingsStore(useShallow(state => state.getMapStyle(themeScheme)))
+  const { scheme: mapScheme, style: mapStyle } = useSettingsStore(useShallow(state => state.getMapStyle()))
 
   const { data } = useQuery({
     queryKey: ['map-session', showTraffic, mapScheme],

@@ -6,8 +6,6 @@ import { immer } from 'zustand/middleware/immer'
 import { City } from '@/types/city'
 
 export interface FiltersStore {
-  // selectedRoutes: Record<string, RouteCode>
-  // selectedGroup?: string
   city: City
   hiddenLines: string[]
   toggleLineHidden: (code: string) => void
@@ -29,7 +27,6 @@ export const useFilterStore = create(
         }),
       }),
       ),
-
     ),
     {
       name: 'filter-storage',

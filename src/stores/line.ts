@@ -93,10 +93,10 @@ interface LineRouteSlice {
 
 const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
   lines: {
-    istanbul: [{ id: 'abc', name: 'default', codes: ['KM12'] }],
-    izmir: [],
+    istanbul: [{ id: 'default', name: 'default', codes: [] }],
+    izmir: [{ id: 'default', name: 'default', codes: [] }],
   },
-  groupId: 'abc',
+  groupId: 'default',
   createGroup: () => set((state) => {
     const city = useFilterStore.getState().city
     const uuid = randomUUID()

@@ -11,7 +11,7 @@ import { UText } from '@/components/u/UText'
 import { useLineTheme } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { isStop, MIN_CHARACTER_LIMIT, useSearch } from '@/composables/useSearch'
-import { useLineStore } from '@/stores'
+import { useFilterStore, useLineStore } from '@/stores'
 import { i18n } from '@/translations/i18n'
 import { BusLine, BusStop } from '@/types/bus'
 
@@ -65,6 +65,7 @@ const RenderItemStop = ({ item }: { item: BusStop }) => {
 
 export const SearchScreen = () => {
   const [query, setQuery] = useState('')
+  const city = useFilterStore(useShallow(state => state.city))
 
   const { query: searchQuery } = useSearch(query)
   const results = [
@@ -75,8 +76,8 @@ export const SearchScreen = () => {
   const neededCharacterCount = MIN_CHARACTER_LIMIT - query.length + 1
 
   return (
-    <View className="grow m-safe p-2 gap-2">
-      <View className="flex-row gap-2">
+    <View className="grow m-safe gap-2">
+      <View className="flex-row gap-2 mt-2 mx-2">
         <UButton
           icon="arrow-left"
           block
@@ -95,6 +96,8 @@ export const SearchScreen = () => {
         />
       </View>
 
+      <UText className="text-center text-muted font-inter-medium text-xs">{i18n.t('selectedCity', { city })}</UText>
+
       {neededCharacterCount > 0 && (
         <UText className="text-center text-muted font-inter-medium text-xs">
           {`${neededCharacterCount} more characters are needed for search`}
@@ -102,7 +105,6 @@ export const SearchScreen = () => {
       )}
 
       <UQueryState query={searchQuery}>
-
         {(results.length < 1 && searchQuery.isSuccess)
           ? (
               <UText className="text-muted font-inter-medium  grow text-center align-middle">{i18n.t('emptySearch')}</UText>
@@ -121,7 +123,8 @@ export const SearchScreen = () => {
                     </LineContext>
                   )
                 }}
-                contentContainerClassName="gap-2"
+                className="flex-1"
+                contentContainerClassName="gap-2 p-2"
                 fadingEdgeLength={10}
               />
             )}
