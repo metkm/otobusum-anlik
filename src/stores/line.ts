@@ -12,26 +12,8 @@ import { i18n } from '@/translations/i18n'
 import { City } from '@/types/city'
 import { LineGroup, RouteCode, RouteDirection } from '@/types/line'
 
-export type LineThemeColorSchemeV3 = {
-  surface: string
-  surfaceContainer: string
-  surfaceContainerHigh: string
-  onSurface: string
-  onSurfaceDimmed: string
-  primary: string
-  onPrimary: string
-  error: string
-  onError: string
-
-  // These 2 fields are exists in material theme but not in the
-  // neutral colors. Only filled when colors are derived from material theme
-  primaryContainer?: string
-  onPrimaryContainer?: string
-}
-
 export interface LineStoreV3 {
   lines: Record<City, string[]>
-  lineTheme: Record<City, Record<string, { dark: LineThemeColorSchemeV3, light: LineThemeColorSchemeV3 }>>
   lineGroups: Record<City, Record<string, { id: string, lineCodes: string[], title: string }>>
 }
 

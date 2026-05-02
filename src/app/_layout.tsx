@@ -13,6 +13,7 @@ import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { SafeAreaListener, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
+import { MapProvider } from '@/components/MapProvider'
 import { UButton } from '@/components/u/UButton'
 
 import { persister, queryClient } from '@/api/client'
@@ -35,24 +36,6 @@ const RootContent = () => {
   const colorScheme = useColorScheme()
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
-  // const index = useSharedValue(0)
-  // const { animatedIndex } = useReanimatedTrueSheet()
-
-  // const style = useAnimatedStyle(() => ({
-  //   flex: 1,
-  //   transform: [
-  //     {
-  //       scale: interpolate(index.value, [-1, 0], [1, (width - insets.top) / width], 'clamp'),
-  //     },
-  //   ],
-  //   borderRadius: interpolate(index.value, [-1, 0], [0, 8], 'clamp'),
-  //   overflow: 'hidden',
-  // }))
-
-  // useAnimatedReaction(() => animatedIndex.value, () => {
-  //   index.value = animatedIndex.value
-  // })
-
   const storeColor = useSettingsStore.getState().colorScheme
   if (storeColor) {
     Uniwind.setTheme(storeColor)
@@ -60,46 +43,43 @@ const RootContent = () => {
 
   return (
     <KeyboardProvider>
-      <Sheet
-        screenOptions={{
-          grabberOptions: {
-            topMargin: 8,
-            height: 4,
-          },
-          backgroundColor: background as string ?? baseTheme.colors.background,
-          // reanimated: true,
-          // positionChangeHandler: (payload) => {
-          //   'worklet'
-          //   index.value = payload.index
-          // },
-          footerStyle: {
-            paddingBottom: insets.bottom + 8,
-            paddingHorizontal: 8,
-          },
-        }}
-      >
-        <Sheet.Screen name="(home)" />
-        <Sheet.Screen
-          name="(sheet)/groups"
-          options={{
-            detents: [0.5, 1],
-            footer: (
-              <GestureHandlerRootView>
-                <UButton
-                  label={i18n.t('createNewGroup')}
-                  block
-                  icon="plus-circle"
-                  size="lg"
-                  onPress={() => {
-                    useLineStore.getState().createGroup()
-                  }}
-                />
-              </GestureHandlerRootView>
-            ),
-            scrollable: true,
+      <MapProvider>
+        <Sheet
+          screenOptions={{
+            grabberOptions: {
+              topMargin: 8,
+              height: 4,
+            },
+            backgroundColor: background as string ?? baseTheme.colors.background,
+            footerStyle: {
+              paddingBottom: insets.bottom + 8,
+              paddingHorizontal: 8,
+            },
           }}
-        />
-      </Sheet>
+        >
+          <Sheet.Screen name="(home)" />
+          <Sheet.Screen
+            name="(sheet)/groups"
+            options={{
+              detents: [0.5, 1],
+              footer: (
+                <GestureHandlerRootView>
+                  <UButton
+                    label={i18n.t('createNewGroup')}
+                    block
+                    icon="plus-circle"
+                    size="lg"
+                    onPress={() => {
+                      useLineStore.getState().createGroup()
+                    }}
+                  />
+                </GestureHandlerRootView>
+              ),
+              scrollable: true,
+            }}
+          />
+        </Sheet>
+      </MapProvider>
     </KeyboardProvider>
   )
 }
@@ -150,77 +130,6 @@ export const RootLayout = () => {
       </GestureHandlerRootView>
     </PersistQueryClientProvider>
   )
-
-  // const { schemeColor, colorScheme } = useTheme()
-
-  // const targetTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
-
-  // const modifiedTheme: Theme = {
-  //   ...targetTheme,
-  //   colors: {
-  //     ...targetTheme.colors,
-  //     background: schemeColor.surface,
-  //     card: schemeColor.surfaceContainer,
-  //   },
-  // }
-
-  // setBackgroundColorAsync(modifiedTheme.colors.background)
-
-  // const dehydrateOptions: DehydrateOptions = {
-  //   shouldDehydrateQuery: (query) => {
-  //     return !!query.meta?.persist
-  //   },
-  // }
-
-  // return (
-  //   <PersistQueryClientProvider
-  //     client={queryClient}
-  //     persistOptions={{
-  //       persister,
-  //       dehydrateOptions,
-  //     }}
-  //   >
-  //     <TheStatusBar />
-
-  //     <GestureHandlerRootView>
-  //       <ThemeProvider value={modifiedTheme}>
-  //         <BottomSheetModalProvider>
-  //           <SafeAreaProvider>
-  //             <Stack
-  //               screenOptions={{
-  //                 headerTitleAlign: 'center',
-  //                 headerTitleStyle: {
-  //                   fontSize: fontSizes['md'],
-  //                 },
-  //                 headerBackButtonDisplayMode: 'minimal',
-  //               }}
-  //             >
-  //               <Stack.Screen
-  //                 name="(tabs)"
-  //                 options={{
-  //                   headerShown: false,
-  //                 }}
-  //               />
-  //               <Stack.Screen
-  //                 name="modal"
-  //                 options={{
-  //                   presentation: 'modal',
-  //                   headerShown: false,
-  //                 }}
-  //               />
-  //               <Stack.Screen
-  //                 name="group/[groupId]/edit"
-  //                 options={{
-  //                   headerTitle: i18n.t('editGroupTitle'),
-  //                 }}
-  //               />
-  //             </Stack>
-  //           </SafeAreaProvider>
-  //         </BottomSheetModalProvider>
-  //       </ThemeProvider>
-  //     </GestureHandlerRootView>
-  //   </PersistQueryClientProvider>
-  // )
 }
 
 export default RootLayout

@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { useLine } from './useLine'
 
-import { LONG_CACHE_MS } from '@/constants/app'
+import { CACHE_MS_1_MONTH } from '@/constants/app'
 import { useLineStore } from '@/stores'
 import { RouteCode, RouteDirection } from '@/types/line'
 
@@ -26,7 +26,7 @@ export const useLineRoutes = () => {
   const query = useQuery({
     queryKey: ['line', code, 'routes'],
     queryFn: () => ky.get<LineRoute[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${code}`).json(),
-    staleTime: LONG_CACHE_MS,
+    staleTime: CACHE_MS_1_MONTH,
     meta: { persist: true },
   })
 

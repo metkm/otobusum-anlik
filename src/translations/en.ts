@@ -48,4 +48,5 @@ export default {
   other: 'Other',
   city: 'City',
   emptySearch: 'No results found',
+  directionToStop: 'Directions to this stop',
 }

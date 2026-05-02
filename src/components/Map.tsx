@@ -12,7 +12,7 @@ import { UActivityIndicator } from './u/UActivityIndicator'
 import rawStyleJson from '@/assets/style.json'
 import { useColorScheme } from '@/composables/useLineTheme'
 import { useMap } from '@/composables/useMap'
-import { LONG_CACHE_MS } from '@/constants/app'
+import { CACHE_MS_1_WEEK } from '@/constants/app'
 
 export interface TheMapProps {
   children?: React.ReactNode
@@ -48,11 +48,17 @@ export const Map = ({ children, cameraProps, style, ...props }: { initialMapBoun
         }),
       })
         .json(),
-    staleTime: LONG_CACHE_MS,
+    staleTime: CACHE_MS_1_WEEK,
+    meta: { persist: true },
   })
 
   if (!data) {
-    return <UActivityIndicator />
+    return (
+      <UActivityIndicator
+        className="m-auto"
+        sizeClassName="size-16"
+      />
+    )
   }
 
   const tiles = [`https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}?session=${data.session}&key=${process.env.EXPO_PUBLIC_MAP_API}`]

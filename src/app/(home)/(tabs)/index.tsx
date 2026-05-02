@@ -6,7 +6,6 @@ import { LineCards } from '@/components/line/LineCards'
 import { LineMarkers } from '@/components/line/LineMarkers'
 import { Map } from '@/components/Map'
 import { MapButtons } from '@/components/MapButtons'
-import { MapProvider } from '@/components/MapProvider'
 
 import { useSettingsStore } from '@/stores'
 
@@ -14,7 +13,7 @@ export const HomeScreen = () => {
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
 
   return (
-    <MapProvider>
+    <>
       <Map>
         <LineMarkers />
         {showMyLocation && <UserLocation heading />}
@@ -25,7 +24,7 @@ export const HomeScreen = () => {
       <View className="absolute bottom-0">
         <LineCards />
       </View>
-    </MapProvider>
+    </>
   )
 }
 

@@ -4,7 +4,7 @@ import ky from 'ky'
 import { useLine } from './useLine'
 import { useLineRoutes } from './useLineRoutes'
 
-import { LONG_CACHE_MS } from '@/constants/app'
+import { CACHE_MS_1_MONTH } from '@/constants/app'
 
 export type Time = `${number}:${number}:${number}`
 
@@ -29,7 +29,7 @@ export const useLineTimetable = () => {
         direction,
       },
     }).json(),
-    staleTime: LONG_CACHE_MS,
+    staleTime: CACHE_MS_1_MONTH,
     meta: { persist: true },
   })
 

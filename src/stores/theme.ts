@@ -98,20 +98,6 @@ export const useThemeStore = create(
     {
       name: 'theme-storage',
       storage: createJSONStorage(() => AsyncStorage),
-      // migrate: (persistedState: unknown, version: number) => {
-      //   const store = persistedState as ThemeStore
-
-      //   console.log(version, 'test')
-      //   if (version === undefined) {
-      //     for (const value of Object.values(store.themesByCity)) {
-      //       for (const code of Object.keys(value)) {
-      //         store.createTheme(code)
-      //       }
-      //     }
-      //   }
-
-      //   return store
-      // },
       version: 4,
     },
   ),

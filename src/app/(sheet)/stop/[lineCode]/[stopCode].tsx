@@ -1,6 +1,7 @@
 import { Camera } from '@maplibre/maplibre-react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { Linking, View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import { Map } from '@/components/Map'
 import { UActivityIndicator } from '@/components/u/UActivityIndicator'
@@ -26,7 +27,7 @@ export const StopScreen = () => {
     if (!data)
       return
 
-    const scheme = `geo:0,0?q=${data.stop.lng},${data.stop.lat}&label=${data.stop.name}`
+    const scheme = `geo:0,0?q=${data.stop.lat},${data.stop.lng}&label=${data.stop.name}`
     try {
       await Linking.openURL(scheme)
     } catch (error) {
@@ -37,7 +38,7 @@ export const StopScreen = () => {
   return (
     <View className="gap-2 pt-5 pb-2 px-2">
       {data && (
-        <View className="h-40">
+        <View className="h-40 rounded-md overflow-hidden">
           <Map
             dragPan={false}
             touchZoom={false}
@@ -48,12 +49,14 @@ export const StopScreen = () => {
         </View>
       )}
 
-      <UButton
-        label={i18n.t('stopDirections')}
-        onPress={openDirectionsToStop}
-        icon="droplet"
-        block
-      />
+      <GestureHandlerRootView style={{ flexShrink: 0 }}>
+        <UButton
+          label={i18n.t('directionToStop')}
+          onPress={openDirectionsToStop}
+          icon="droplet"
+          block
+        />
+      </GestureHandlerRootView>
 
       <View>
         <UText className="text-muted">{data?.stop.code}</UText>

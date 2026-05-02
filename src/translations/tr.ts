@@ -13,7 +13,6 @@ export default {
   doorNo: 'Kapı No',
   settings: 'Ayarlar',
   showMyLocation: 'Haritada konumumu göster',
-  // closeToThisStop: 'Şu an bu durağa yakınsınız',
   showTraffic: 'Haritada trafik bilgisini göster',
   lineAlreadyInGroup: 'Bu hat zaten grupta',
   lineLimitExceeded: 'Aynı anda sadece 4 tane hat seçebilirsiniz',
@@ -48,4 +47,5 @@ export default {
   other: 'Diğer',
   city: 'Şehir',
   emptySearch: 'Herhangi bir sonuç bulunamadı',
+  directionToStop: 'Bu durağa yol tarifi',
 }
