@@ -79,7 +79,7 @@ export const GroupIdScreen = () => {
   }
 
   return (
-    <View className="px-2 pt-5 gap-2 pb-16">
+    <View className={`px-2 pt-5 gap-2 ${groups.length > 1 ? 'pb-28' : 'pb-15'}`}>
       <View className="gap-1">
         <UText className="ml-2 font-inter-medium">{group?.name}</UText>
         <UInput
