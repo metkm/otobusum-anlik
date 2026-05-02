@@ -1,0 +1,154 @@
+import { useLocalSearchParams } from 'expo-router'
+import { useRef } from 'react'
+import { View } from 'react-native'
+import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler'
+import Animated, { LinearTransition } from 'react-native-reanimated'
+import { useShallow } from 'zustand/react/shallow'
+
+import { UButton } from '@/components/u/UButton'
+import { UIcon } from '@/components/u/UIcon'
+import { UText } from '@/components/u/UText'
+
+import { useLineTheme } from '@/composables'
+import { LineContext } from '@/composables/useLine'
+import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
+import { useFilterStore, useLineStore } from '@/stores'
+import { i18n } from '@/translations/i18n'
+import { LineGroup } from '@/types/line'
+
+const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?: boolean, canDelete?: boolean }) => {
+  const params = useLocalSearchParams()
+  const addToGroup = params.addToGroup as string | undefined
+
+  const theme = useLineTheme()
+  const backgroundWithColor = theme?.backgroundWithColor()
+
+  const handlePress = () => {
+    if (addToGroup) {
+      useLineStore.getState().addLine(addToGroup as string, group.id)
+      return
+    }
+
+    useLineStore.getState().setGroupId(group.id)
+  }
+
+  return (
+    <GestureHandlerRootView style={{ flexDirection: 'row', gap: 8 }}>
+      {selected && (
+        <Animated.View
+          exiting={ExitScaleOut}
+          entering={EnterScaleIn}
+          className="rounded-md bg-primary w-8 items-center justify-center"
+          style={backgroundWithColor}
+        >
+          <UIcon
+            name="check"
+            color={backgroundWithColor?.color}
+          />
+        </Animated.View>
+      )}
+
+      <Animated.View
+        className="flex-row flex-1 bg-muted rounded-md pr-2 gap-1 h-16"
+        layout={LinearTransition}
+      >
+        <UButton
+          key={group.id}
+          onPress={handlePress}
+          variant="ghost"
+          className="flex-1"
+        >
+          <View className="justify-center gap-1 grow">
+            <UText
+              className="shrink truncate font-inter-medium"
+              numberOfLines={1}
+            >
+              {group.name}
+            </UText>
+
+            <View className="flex-row flex-wrap gap-1">
+              {group.codes.length < 1
+                ? (
+                    <UText className="font-inter-medium text-xs text-muted">{i18n.t('emptyGroup')}</UText>
+                  )
+                : (
+                    group.codes.map(code => (
+                      <UText
+                        key={code}
+                        className="font-inter-medium text-xs rounded-md bg-default h-6 w-12 text-center align-middle"
+                      >
+                        {code}
+                      </UText>
+                    ))
+                  )}
+            </View>
+          </View>
+        </UButton>
+
+        <Animated.View layout={LinearTransition} className="gap-1 flex-row items-center">
+          <Animated.View
+            exiting={ExitScaleOut}
+            entering={EnterScaleIn}
+          >
+            {canDelete && (
+              <UButton
+                icon="trash-2"
+                onPress={() => useLineStore.getState().deleteGroup(group.id)}
+                variant="ghost"
+                color="neutral"
+              />
+            )}
+          </Animated.View>
+
+          <UButton
+            icon="edit-3"
+            variant="ghost"
+            color="neutral"
+            to={{
+              pathname: '/groups/[groupId]',
+              params: {
+                groupId: group.id,
+              },
+            }}
+          />
+        </Animated.View>
+      </Animated.View>
+    </GestureHandlerRootView>
+  )
+}
+
+export const GroupsScreen = () => {
+  const params = useLocalSearchParams()
+  const addToGroup = params.addToGroup as string | undefined
+
+  const city = useFilterStore(useShallow(state => state.city))
+  const groups = useLineStore(useShallow(state => state.lines[city]))
+  const groupId = useLineStore(useShallow(state => state.getGroupId()))
+
+  const flatlistRef = useRef<FlatList>(null)
+
+  return (
+    <LineContext value={addToGroup}>
+      <Animated.FlatList
+        ref={flatlistRef}
+        data={groups}
+        itemLayoutAnimation={LinearTransition}
+        renderItem={({ item }) => (
+          <Animated.View
+            exiting={ExitScaleOut}
+            entering={EnterScaleIn}
+          >
+            <GroupItem
+              group={item}
+              selected={groupId === item.id}
+              canDelete={groups.length > 1}
+            />
+          </Animated.View>
+        )}
+        contentContainerClassName="px-2 pt-5 pb-15.5 gap-2"
+      />
+    </LineContext>
+  )
+}
+
+export default GroupsScreen

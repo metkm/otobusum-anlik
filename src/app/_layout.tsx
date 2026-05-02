@@ -1,53 +1,101 @@
-import '@/assets/styles.css'
+import '../global.css'
 
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
-import { DarkTheme, DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native'
-import { DehydrateOptions } from '@tanstack/react-query'
+import { createTrueSheetNavigator, TrueSheetNavigationEventMap, TrueSheetNavigationOptions, TrueSheetNavigationState } from '@lodev09/react-native-true-sheet/navigation'
+import { ReanimatedTrueSheetProvider } from '@lodev09/react-native-true-sheet/reanimated'
+import { DarkTheme, DefaultTheme, ThemeProvider, type Theme, type ParamListBase } from '@react-navigation/native'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
-import { Stack } from 'expo-router'
-import * as SplashScreen from 'expo-splash-screen'
-import { setBackgroundColorAsync } from 'expo-system-ui'
+import { withLayoutContext } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
+import React from 'react'
+import { useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { enableFreeze, enableScreens } from 'react-native-screens'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
+import { SafeAreaListener, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Uniwind, useCSSVariable } from 'uniwind'
 
-import { TheStatusBar } from '@/components/TheStatusBar'
-
-import { useTheme } from '@/hooks/useTheme'
+import { MapProvider } from '@/components/MapProvider'
+import { UButton } from '@/components/u/UButton'
 
 import { persister, queryClient } from '@/api/client'
-import { fontSizes } from '@/constants/uiSizes'
+import { useLineStore, useSettingsStore } from '@/stores'
 import { i18n } from '@/translations/i18n'
 
-SplashScreen.preventAutoHideAsync()
+const { Navigator } = createTrueSheetNavigator()
 
-SplashScreen.setOptions({
-  duration: 50,
-  fade: true,
-})
+export const Sheet = withLayoutContext<
+  TrueSheetNavigationOptions,
+  typeof Navigator,
+  TrueSheetNavigationState<ParamListBase>,
+  TrueSheetNavigationEventMap
+>(Navigator)
 
-enableFreeze(true)
-enableScreens(true)
+const RootContent = () => {
+  const background = useCSSVariable('--background-color-default')
+  const insets = useSafeAreaInsets()
 
-export const RootLayout = () => {
-  const { schemeColor, colorScheme } = useTheme()
+  const colorScheme = useColorScheme()
+  const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
-  const targetTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
-
-  const modifiedTheme: Theme = {
-    ...targetTheme,
-    colors: {
-      ...targetTheme.colors,
-      background: schemeColor.surface,
-      card: schemeColor.surfaceContainer,
-    },
+  const storeColor = useSettingsStore.getState().colorScheme
+  if (storeColor) {
+    Uniwind.setTheme(storeColor)
   }
 
-  setBackgroundColorAsync(modifiedTheme.colors.background)
+  return (
+    <KeyboardProvider>
+      <MapProvider>
+        <Sheet
+          screenOptions={{
+            grabberOptions: {
+              topMargin: 8,
+              height: 4,
+            },
+            backgroundColor: background as string ?? baseTheme.colors.background,
+            footerStyle: {
+              paddingBottom: insets.bottom + 8,
+              paddingHorizontal: 8,
+            },
+          }}
+        >
+          <Sheet.Screen name="(home)" />
+          <Sheet.Screen
+            name="(sheet)/groups"
+            options={{
+              detents: [0.5, 1],
+              footer: (
+                <GestureHandlerRootView>
+                  <UButton
+                    label={i18n.t('createNewGroup')}
+                    block
+                    icon="plus-circle"
+                    size="lg"
+                    onPress={() => {
+                      useLineStore.getState().createGroup()
+                    }}
+                  />
+                </GestureHandlerRootView>
+              ),
+              scrollable: true,
+            }}
+          />
+        </Sheet>
+      </MapProvider>
+    </KeyboardProvider>
+  )
+}
 
-  const dehydrateOptions: DehydrateOptions = {
-    shouldDehydrateQuery: (query) => {
-      return !!query.meta?.persist
+export const RootLayout = () => {
+  const background = useCSSVariable('--background-color-default')
+
+  const colorScheme = useColorScheme()
+  const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
+
+  const theme: Theme = {
+    ...baseTheme,
+    colors: {
+      ...baseTheme.colors,
+      background: background as string ?? baseTheme.colors.background,
+      card: background as string ?? baseTheme.colors.background,
     },
   }
 
@@ -56,47 +104,29 @@ export const RootLayout = () => {
       client={queryClient}
       persistOptions={{
         persister,
-        dehydrateOptions,
+        dehydrateOptions: {
+          shouldDehydrateQuery: (query) => {
+            return !!query.meta?.persist
+          },
+        },
       }}
     >
-      <TheStatusBar />
+      <StatusBar style="auto" />
 
-      <GestureHandlerRootView>
-        <ThemeProvider value={modifiedTheme}>
-          <BottomSheetModalProvider>
-            <SafeAreaProvider>
-              <Stack
-                screenOptions={{
-                  headerTitleAlign: 'center',
-                  headerTitleStyle: {
-                    fontSize: fontSizes['md'],
-                  },
-                  headerBackButtonDisplayMode: 'minimal',
-                }}
-              >
-                <Stack.Screen
-                  name="(tabs)"
-                  options={{
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="modal"
-                  options={{
-                    presentation: 'modal',
-                    headerShown: false,
-                  }}
-                />
-                <Stack.Screen
-                  name="group/[groupId]/edit"
-                  options={{
-                    headerTitle: i18n.t('editGroupTitle'),
-                  }}
-                />
-              </Stack>
-            </SafeAreaProvider>
-          </BottomSheetModalProvider>
-        </ThemeProvider>
+      <GestureHandlerRootView
+        style={{ flexGrow: 1, backgroundColor: background as string }}
+      >
+        <SafeAreaListener
+          onChange={({ insets }) => {
+            Uniwind.updateInsets(insets)
+          }}
+        >
+          <ThemeProvider value={theme}>
+            <ReanimatedTrueSheetProvider>
+              <RootContent />
+            </ReanimatedTrueSheetProvider>
+          </ThemeProvider>
+        </SafeAreaListener>
       </GestureHandlerRootView>
     </PersistQueryClientProvider>
   )

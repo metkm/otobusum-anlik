@@ -7,13 +7,13 @@
         "./src/*"
       ]
     },
-    "noUncheckedIndexedAccess": true,
-    "jsx": "react-jsx"
+    "noUncheckedIndexedAccess": true
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    ".expo/types/**/*.ts"
+    "nativewind-env.d.ts"
   ]
 }

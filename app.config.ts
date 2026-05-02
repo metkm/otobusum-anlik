@@ -8,7 +8,7 @@ const config: ExpoConfig = {
   icon: './src/assets/icon.png',
   scheme: 'otobusum-anlik',
   userInterfaceStyle: 'automatic',
-  newArchEnabled: false,
+  // newArchEnabled: false,
   extra: {
     eas: {
       projectId: '2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
@@ -29,20 +29,13 @@ const config: ExpoConfig = {
   runtimeVersion: {
     policy: 'appVersion',
   },
-  androidStatusBar: {
-    barStyle: 'light-content',
-    translucent: true,
-  },
-  androidNavigationBar: {
-    enforceContrast: false,
-  },
   android: {
     config: {
       googleMaps: {
         apiKey: process.env.EXPO_PUBLIC_MAP_API,
       },
     },
-    softwareKeyboardLayoutMode: 'pan',
+    softwareKeyboardLayoutMode: 'resize',
     adaptiveIcon: {
       foregroundImage: './src/assets/adaptive-icon.png',
       backgroundColor: '#0a0a0a',
@@ -53,6 +46,7 @@ const config: ExpoConfig = {
     'expo-router',
     'expo-localization',
     'expo-location',
+    '@maplibre/maplibre-react-native',
     [
       'expo-splash-screen',
       {
@@ -60,9 +54,30 @@ const config: ExpoConfig = {
         backgroundColor: '#0a0a0a',
       },
     ],
+    [
+      'expo-navigation-bar',
+      {
+        enforceContrast: false,
+      },
+    ],
+    [
+      'expo-build-properties',
+      {
+        android: {
+          usesCleartextTraffic: true,
+        },
+      },
+    ],
+    [
+      'expo-font',
+      {
+        fonts: ['./src/assets/fonts/Inter-Medium.ttf', './src/assets/fonts/Inter-Regular.ttf'],
+      },
+    ],
   ],
   experiments: {
     typedRoutes: true,
+    reactCompiler: true,
   },
 }
 
