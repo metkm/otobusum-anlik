@@ -37,6 +37,7 @@ interface ThemeStore {
 
 const migrate = async (persistedState: unknown, version: number) => {
   const store = persistedState as ThemeStore
+  console.log(await AsyncStorage.getItem('temp_line_theme_migration'))
 
   if (version === undefined) {
     const raw = await AsyncStorage.getItem('temp_line_theme_migration')

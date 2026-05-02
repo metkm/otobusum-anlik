@@ -82,6 +82,7 @@ export const MapButtons = () => {
           onPress={() => {
             lines.forEach(code => changeRouteDirection(code))
           }}
+          className="bg-default"
         />
       )}
 

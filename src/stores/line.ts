@@ -194,17 +194,28 @@ const createLineRouteSlice = immer<LineRouteSlice>((set, get) => ({
 
 const migrate = (persistedStore: unknown, version: number) => {
   const oldStore = persistedStore as LineStoreV3
-  const newStore = {} as LineStore
+  const newStore = {
+    lines: {
+      istanbul: [],
+      izmir: [],
+    },
+  } as Partial<LineStore>
 
   if (version === 3) {
     // migrate lines
     for (const [city, value] of Object.entries(oldStore.lines)) {
+      if (!newStore.lines)
+        continue
+
       newStore.lines[city as City] = [{ id: 'default', name: 'default', codes: value }]
     }
 
     // migrate groups
     for (const [city, groups] of Object.entries(oldStore.lineGroups)) {
       for (const [id, value] of Object.entries(groups)) {
+        if (!newStore.lines)
+          continue
+
         newStore.lines[city as City].push({ id, name: value.title, codes: value.lineCodes })
       }
     }
