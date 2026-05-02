@@ -34,20 +34,6 @@ interface ThemeStore {
   deleteUnusedThemes: (codes: string[]) => void
 }
 
-const migrate = async (persistedState: unknown, version: number) => {
-  const store = persistedState as ThemeStore
-
-  if (version === undefined) {
-    for (const value of Object.values(store.themesByCity)) {
-      for (const code of Object.keys(value)) {
-        store.createTheme(code)
-      }
-    }
-  }
-
-  return store
-}
-
 export const useThemeStore = create(
   persist(
     subscribeWithSelector(
@@ -112,7 +98,20 @@ export const useThemeStore = create(
     {
       name: 'theme-storage',
       storage: createJSONStorage(() => AsyncStorage),
-      migrate,
+      // migrate: (persistedState: unknown, version: number) => {
+      //   const store = persistedState as ThemeStore
+
+      //   console.log(version, 'test')
+      //   if (version === undefined) {
+      //     for (const value of Object.values(store.themesByCity)) {
+      //       for (const code of Object.keys(value)) {
+      //         store.createTheme(code)
+      //       }
+      //     }
+      //   }
+
+      //   return store
+      // },
       version: 4,
     },
   ),

@@ -212,12 +212,15 @@ const migrate = (persistedStore: unknown, version: number) => {
   } as Partial<LineStore>
 
   if (version === 3) {
+    const allCodes = new Set<string>()
+
     // migrate lines
     for (const [city, value] of Object.entries(oldStore.lines)) {
       if (!newStore.lines)
         continue
 
       newStore.lines[city as City] = [{ id: 'default', name: 'default', codes: value }]
+      value.forEach(c => allCodes.add(c))
     }
 
     // migrate groups
@@ -227,7 +230,12 @@ const migrate = (persistedStore: unknown, version: number) => {
           continue
 
         newStore.lines[city as City].push({ id, name: value.title, codes: value.lineCodes })
+        value.lineCodes.forEach(c => allCodes.add(c))
       }
+    }
+
+    for (const code of allCodes) {
+      useThemeStore.getState().createTheme(code)
     }
   }
 
