@@ -29,7 +29,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
       return
     }
 
-    useLineStore.setState(() => ({ groupId: group.id }))
+    useLineStore.getState().setGroupId(group.id)
   }
 
   return (
@@ -123,7 +123,7 @@ export const GroupsScreen = () => {
 
   const city = useFilterStore(useShallow(state => state.city))
   const groups = useLineStore(useShallow(state => state.lines[city]))
-  const groupId = useLineStore(useShallow(state => state.groupId))
+  const groupId = useLineStore(useShallow(state => state.getGroupId()))
 
   const flatlistRef = useRef<FlatList>(null)
 
