@@ -5,7 +5,6 @@ import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middl
 import { immer } from 'zustand/middleware/immer'
 
 import { useFilterStore } from './filter'
-import { LineStoreV3 } from './line'
 
 import { City } from '@/types/city'
 import { createRandomTheme } from '@/utils/color'
@@ -37,21 +36,16 @@ interface ThemeStore {
 
 const migrate = async (persistedState: unknown, version: number) => {
   const store = persistedState as ThemeStore
-  console.log(await AsyncStorage.getItem('temp_line_theme_migration'))
 
   if (version === undefined) {
-    const raw = await AsyncStorage.getItem('temp_line_theme_migration')
-    if (!raw)
-      return
-
-    const lineThemesParsed = JSON.parse(raw) as LineStoreV3['lineTheme']
-
-    for (const value of Object.values(lineThemesParsed)) {
+    for (const value of Object.values(store.themesByCity)) {
       for (const code of Object.keys(value)) {
         store.createTheme(code)
       }
     }
   }
+
+  return store
 }
 
 export const useThemeStore = create(

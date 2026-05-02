@@ -229,8 +229,6 @@ const migrate = (persistedStore: unknown, version: number) => {
         newStore.lines[city as City].push({ id, name: value.title, codes: value.lineCodes })
       }
     }
-
-    AsyncStorage.setItem('temp_line_theme_migration', JSON.stringify(oldStore.lineTheme))
   }
 
   return newStore
