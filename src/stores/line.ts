@@ -109,7 +109,7 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
   }),
   addLine: (code, groupId) => set((state) => {
     const city = useFilterStore.getState().city
-    const codes = state.lines[city].find(c => c.id === (groupId || state.groupId))?.codes
+    const codes = state.lines[city].find(c => c.id === (groupId || state.getGroupId()))?.codes
 
     if (!codes)
       return
@@ -131,7 +131,7 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
   }),
   deleteLine: (code, groupId) => set((state) => {
     const city = useFilterStore.getState().city
-    const codes = state.lines[city]?.find(c => c.id === (groupId || state.groupId))?.codes
+    const codes = state.lines[city]?.find(c => c.id === (groupId || state.getGroupId()))?.codes
 
     const i = codes?.findIndex(c => c === code)
     if (i === -1 || i === undefined)
