@@ -54,7 +54,7 @@ export const LineMarkerBuses = () => {
           type="circle"
           paint={{ 'circle-radius': 16, 'circle-color': backgroundWithColor?.backgroundColor ?? defaultBg as string }}
           layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
-          layerIndex={12}
+          layerIndex={210}
           minzoom={10}
           maxzoom={18}
         />
@@ -70,7 +70,7 @@ export const LineMarkerBuses = () => {
             'icon-opacity-transition': { duration: 0 },
             'icon-color-transition': { duration: 0 },
           }}
-          layerIndex={13}
+          layerIndex={310}
           minzoom={10}
           maxzoom={18}
         />

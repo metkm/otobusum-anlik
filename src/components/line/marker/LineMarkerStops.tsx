@@ -57,7 +57,7 @@ export const LineMarkerStops = () => {
         layout={{
           visibility: isLineHidden ? 'none' : 'visible',
         }}
-        layerIndex={12}
+        layerIndex={110}
         minzoom={11}
       />
     </GeoJSONSource>
