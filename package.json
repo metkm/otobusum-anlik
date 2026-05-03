@@ -31,6 +31,7 @@
     "expo-crypto": "~55.0.14",
     "expo-dev-client": "~55.0.24",
     "expo-font": "~55.0.6",
+    "expo-image": "^55.0.9",
     "expo-linking": "~55.0.12",
     "expo-localization": "~55.0.13",
     "expo-location": "~55.1.8",

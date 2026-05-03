@@ -7,7 +7,7 @@ export const UText = ({ className, ...props }: TextProps) => {
   return (
     <Text
       className={cn(
-        'font-inter text-default',
+        'font-inter text-default leading-tight',
         className,
       )}
       {...props}

@@ -24,7 +24,8 @@ interface LineCodeSlice {
   createGroup: () => void
   deleteGroup: (id: string) => void
   updateGroupName: (id: string, name: string) => void
-  addLine: (code: string, groupId?: string) => void
+  addLine: (code: string) => void
+  addLineToGroup: (code: string, groupId: string) => void
   deleteLine: (code: string, groupId?: string) => void
   getLineGroup: () => LineGroup | undefined
   getLines: () => string[]
@@ -107,9 +108,9 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
 
     group.name = name
   }),
-  addLine: (code, groupId) => set((state) => {
+  addLine: code => set((state) => {
     const city = useFilterStore.getState().city
-    const codes = state.lines[city].find(c => c.id === (groupId || state.getGroupId()))?.codes
+    const codes = state.lines[city].find(c => c.id === state.getGroupId())?.codes
 
     if (!codes)
       return
@@ -128,6 +129,10 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
     useThemeStore.getState().createTheme(code)
 
     ToastAndroid.show(i18n.t('added', { code }), ToastAndroid.SHORT)
+  }),
+  addLineToGroup: (code, groupId) => set((state) => {
+    const city = useFilterStore.getState().city
+    state.lines[city].find(c => c.id === groupId)?.codes.push(code)
   }),
   deleteLine: (code, groupId) => set((state) => {
     const city = useFilterStore.getState().city

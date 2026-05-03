@@ -12,7 +12,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { SafeAreaListener, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
+import { useShallow } from 'zustand/react/shallow'
 
+import { AppOnboarding } from '@/components/AppOnboarding'
 import { MapProvider } from '@/components/MapProvider'
 import { UButton } from '@/components/u/UButton'
 
@@ -30,6 +32,8 @@ export const Sheet = withLayoutContext<
 >(Navigator)
 
 const RootContent = () => {
+  const showOnBoarding = useSettingsStore(useShallow(state => state.showOnBoarding))
+
   const background = useCSSVariable('--background-color-default')
   const insets = useSafeAreaInsets()
 
@@ -39,6 +43,10 @@ const RootContent = () => {
   const storeColor = useSettingsStore.getState().colorScheme
   if (storeColor) {
     Uniwind.setTheme(storeColor)
+  }
+
+  if (showOnBoarding) {
+    return <AppOnboarding />
   }
 
   return (

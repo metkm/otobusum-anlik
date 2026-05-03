@@ -95,19 +95,21 @@ export const GroupIdScreen = () => {
         <FlatList
           data={group?.codes}
           renderItem={({ item }) => (
-            <View className="flex-row items-stretch gap-1">
-              <UButton
-                icon="trash-2"
-                onPress={() => {
-                  if (!group)
-                    return
-                  useLineStore.getState().deleteLine(item, group.id)
-                }}
-                color="neutral"
-              />
+            <GestureHandlerRootView>
+              <View className="flex-row items-stretch gap-1">
+                <UButton
+                  icon="trash-2"
+                  onPress={() => {
+                    if (!group)
+                      return
+                    useLineStore.getState().deleteLine(item, group.id)
+                  }}
+                  color="neutral"
+                />
 
-              <UText className="px-2 py-1 font-inter-medium rounded-md bg-muted align-middle">{item}</UText>
-            </View>
+                <UText className="px-2 py-1 font-inter-medium rounded-md bg-muted align-middle">{item}</UText>
+              </View>
+            </GestureHandlerRootView>
           )}
           contentContainerClassName="gap-2"
         />

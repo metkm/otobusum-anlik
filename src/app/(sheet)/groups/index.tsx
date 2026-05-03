@@ -25,7 +25,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
 
   const handlePress = () => {
     if (addToGroup) {
-      useLineStore.getState().addLine(addToGroup as string, group.id)
+      useLineStore.getState().addLineToGroup(addToGroup as string, group.id)
       return
     }
 

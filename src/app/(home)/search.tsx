@@ -100,7 +100,7 @@ export const SearchScreen = () => {
 
       {neededCharacterCount > 0 && (
         <UText className="text-center text-muted font-inter-medium text-xs">
-          {`${neededCharacterCount} more characters are needed for search`}
+          {i18n.t('neededCharacterCountToSearch', { count: neededCharacterCount })}
         </UText>
       )}
 

@@ -95,7 +95,7 @@ export const LineCardMenu = () => {
         />
 
         <UButton
-          label="Refresh colors"
+          label={i18n.t('refreshColors')}
           onPress={() => createTheme(code)}
           size="lg"
           block
