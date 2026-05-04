@@ -1,9 +1,7 @@
-import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation'
 import { useLocalSearchParams } from 'expo-router'
-import { useEffect, useRef } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler'
+import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -12,7 +10,7 @@ import { UIcon } from '@/components/u/UIcon'
 import { UText } from '@/components/u/UText'
 
 import { useLineTheme } from '@/composables'
-import { LineContext, useLine } from '@/composables/useLine'
+import { LineContext } from '@/composables/useLine'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
 import { useLineStore } from '@/stores'
 import { LineGroup } from '@/types/line'
@@ -120,83 +118,83 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
   )
 }
 
-const Header = () => {
-  const { code } = useLine()
-
-  const groupId = useLineStore(useShallow(state => state.getGroupId()))
-  const groups = useLineStore(useShallow(state => state.getGroups()))
-
-  const filteredGroups = groups.filter(gr => gr.codes.includes(code))
-
-  return (
-    <Animated.FlatList
-      data={filteredGroups}
-      itemLayoutAnimation={LinearTransition}
-      layout={LinearTransition}
-      renderItem={({ item }) => (
-        <Animated.View
-          exiting={ExitScaleOut}
-          entering={EnterScaleIn}
-        >
-          <GroupItem
-            group={item}
-            selected={groupId === item.id}
-            canDelete={groups.length > 1}
-          />
-        </Animated.View>
-      )}
-      className="px-2 pb-2 border-b border-muted"
-      contentContainerClassName="gap-2"
-    />
-  )
-}
-
 export const GroupsScreen = () => {
-  const navigation = useTrueSheetNavigation()
   const params = useLocalSearchParams()
   const addToGroup = params.addToGroup as string | undefined
 
   const groupId = useLineStore(useShallow(state => state.getGroupId()))
   const groups = useLineStore(useShallow(state => state.getGroups()))
 
-  const flatlistRef = useRef<FlatList>(null)
-
-  useEffect(() => {
-    const parent = navigation.getParent()
-    if (!parent || !addToGroup)
-      return
-
-    parent.setOptions({
-      header: (
-        <LineContext value={addToGroup}>
-          <UText className="leading-tight text-muted p-2 pt-5">
-            <Trans
-              i18nKey="lineInGroups"
-              values={{ code: addToGroup }}
-              components={{
-                code: <UText className="text-lg font-bold leading-tight text-muted" />,
-              }}
-            />
-          </UText>
-
-          <Header />
-        </LineContext>
-      ),
-    })
-  }, [navigation, addToGroup])
-
-  if (!addToGroup)
-    return
-
-  const groupsFiltered = groups.filter(gr => !gr.codes.includes(addToGroup))
+  const defaultGroups = addToGroup ? groups.filter(gr => !gr.codes.includes(addToGroup)) : groups
+  const groupsWithCode = addToGroup ? groups.filter(gr => gr.codes.includes(addToGroup)) : []
 
   return (
     <LineContext value={addToGroup}>
-      <Animated.FlatList
-        ref={flatlistRef}
-        data={groupsFiltered}
-        itemLayoutAnimation={LinearTransition}
+      <ScrollView contentContainerClassName="pt-5 gap-2">
+        {groupsWithCode.length > 0 && (
+          <>
+            <Animated.View
+              layout={LinearTransition}
+              className="gap-2 px-2"
+            >
+              <UText className="leading-tight text-muted pl-1">
+                <Trans
+                  i18nKey="lineInGroups"
+                  values={{ code: addToGroup }}
+                  components={{
+                    code: <UText className="text-lg font-bold leading-tight text-muted" />,
+                  }}
+                />
+              </UText>
+
+              {groupsWithCode.map(group => (
+                <Animated.View
+                  key={group.id}
+                  exiting={ExitScaleOut}
+                  entering={EnterScaleIn}
+                  layout={LinearTransition}
+                >
+                  <GroupItem
+                    group={group}
+                    canDelete={groups.length > 1}
+                    selected={group.id === groupId}
+                  />
+                </Animated.View>
+              ))}
+            </Animated.View>
+
+            <Animated.View
+              layout={LinearTransition}
+              className="h-0.5 bg-muted"
+            />
+          </>
+        )}
+
+        <Animated.View
+          layout={LinearTransition}
+          className="gap-2 px-2 pb-15"
+        >
+          {defaultGroups.map(group => (
+            <Animated.View
+              key={group.id}
+              exiting={ExitScaleOut}
+              entering={EnterScaleIn}
+              layout={LinearTransition}
+            >
+              <GroupItem
+                group={group}
+                canDelete={groups.length > 1}
+                selected={group.id === groupId}
+              />
+            </Animated.View>
+          ))}
+        </Animated.View>
+      </ScrollView>
+
+      {/* <Animated.FlatList
+        data={groupsWithoutCode}
         layout={LinearTransition}
+        itemLayoutAnimation={LinearTransition}
         renderItem={({ item }) => (
           <Animated.View
             exiting={ExitScaleOut}
@@ -204,15 +202,38 @@ export const GroupsScreen = () => {
           >
             <GroupItem
               group={item}
-              selected={groupId === item.id}
-              canDelete={groups.length > 1}
+              canDelete={true}
             />
           </Animated.View>
         )}
-        contentContainerClassName={`px-2 pb-15.5 gap-2 ${addToGroup ? 'pt-2' : 'pt-5'}`}
-      />
+        contentContainerClassName="p-2 gap-2"
+      /> */}
     </LineContext>
   )
+
+  // return (
+  //   <LineContext value={addToGroup}>
+  //     <Animated.FlatList
+  //       ref={flatlistRef}
+  //       data={groupsFiltered}
+  //       itemLayoutAnimation={LinearTransition}
+  //       layout={LinearTransition}
+  //       renderItem={({ item }) => (
+  //         <Animated.View
+  //           exiting={ExitScaleOut}
+  //           entering={EnterScaleIn}
+  //         >
+  //           <GroupItem
+  //             group={item}
+  //             selected={groupId === item.id}
+  //             canDelete={groups.length > 1}
+  //           />
+  //         </Animated.View>
+  //       )}
+  //       contentContainerClassName={`px-2 pb-15.5 gap-2 ${addToGroup ? 'pt-2' : 'pt-5'}`}
+  //     />
+  //   </LineContext>
+  // )
 }
 
 export default GroupsScreen
