@@ -33,7 +33,6 @@ export const LineCardMenu = () => {
     announcementsSheet.current?.present()
   }
 
-  console.log('isLine', isLineHidden)
   return (
     <>
       <UButton
