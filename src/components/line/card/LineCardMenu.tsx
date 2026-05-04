@@ -12,15 +12,15 @@ import { useLine, useLineNews, useLineTheme } from '@/composables'
 import { useFilterStore, useLineStore, useThemeStore } from '@/stores'
 
 export const LineCardMenu = () => {
-  const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
-  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
-  const deleteLine = useLineStore(useShallow(state => state.deleteLine))
-  const createTheme = useThemeStore(useShallow(state => state.createTheme))
-
   const { code } = useLine()
   const { news } = useLineNews()
   const { t } = useTranslation()
   const theme = useLineTheme()
+
+  const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
+  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
+  const deleteLine = useLineStore(useShallow(state => state.deleteLine))
+  const createTheme = useThemeStore(useShallow(state => state.createTheme))
 
   const menuSheet = useRef<TrueSheet>(null)
   const announcementsSheet = useRef<TrueSheet>(null)
@@ -33,6 +33,7 @@ export const LineCardMenu = () => {
     announcementsSheet.current?.present()
   }
 
+  console.log('isLine', isLineHidden)
   return (
     <>
       <UButton
