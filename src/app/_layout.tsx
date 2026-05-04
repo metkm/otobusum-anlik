@@ -7,6 +7,7 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { withLayoutContext } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
+import { I18nextProvider, useTranslation } from 'react-i18next'
 import { useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
@@ -20,7 +21,7 @@ import { UButton } from '@/components/u/UButton'
 
 import { persister, queryClient } from '@/api/client'
 import { useLineStore, useSettingsStore } from '@/stores'
-import { i18n } from '@/translations/i18n'
+import i18n from '@/translations/i18n'
 
 const { Navigator } = createTrueSheetNavigator()
 
@@ -33,6 +34,7 @@ export const Sheet = withLayoutContext<
 
 const RootContent = () => {
   const showOnBoarding = useSettingsStore(useShallow(state => state.showOnBoarding))
+  const { t } = useTranslation()
 
   const background = useCSSVariable('--background-color-default')
   const insets = useSafeAreaInsets()
@@ -73,7 +75,7 @@ const RootContent = () => {
               footer: (
                 <GestureHandlerRootView>
                   <UButton
-                    label={i18n.t('createNewGroup')}
+                    label={t('createNewGroup')}
                     block
                     icon="plus-circle"
                     size="lg"
@@ -108,35 +110,37 @@ export const RootLayout = () => {
   }
 
   return (
-    <PersistQueryClientProvider
-      client={queryClient}
-      persistOptions={{
-        persister,
-        dehydrateOptions: {
-          shouldDehydrateQuery: (query) => {
-            return !!query.meta?.persist
+    <I18nextProvider i18n={i18n} defaultNS="translation">
+      <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={{
+          persister,
+          dehydrateOptions: {
+            shouldDehydrateQuery: (query) => {
+              return !!query.meta?.persist
+            },
           },
-        },
-      }}
-    >
-      <StatusBar style="auto" />
-
-      <GestureHandlerRootView
-        style={{ flexGrow: 1, backgroundColor: background as string }}
+        }}
       >
-        <SafeAreaListener
-          onChange={({ insets }) => {
-            Uniwind.updateInsets(insets)
-          }}
+        <StatusBar style="auto" />
+
+        <GestureHandlerRootView
+          style={{ flexGrow: 1, backgroundColor: background as string }}
         >
-          <ThemeProvider value={theme}>
-            <ReanimatedTrueSheetProvider>
-              <RootContent />
-            </ReanimatedTrueSheetProvider>
-          </ThemeProvider>
-        </SafeAreaListener>
-      </GestureHandlerRootView>
-    </PersistQueryClientProvider>
+          <SafeAreaListener
+            onChange={({ insets }) => {
+              Uniwind.updateInsets(insets)
+            }}
+          >
+            <ThemeProvider value={theme}>
+              <ReanimatedTrueSheetProvider>
+                <RootContent />
+              </ReanimatedTrueSheetProvider>
+            </ThemeProvider>
+          </SafeAreaListener>
+        </GestureHandlerRootView>
+      </PersistQueryClientProvider>
+    </I18nextProvider>
   )
 }
 

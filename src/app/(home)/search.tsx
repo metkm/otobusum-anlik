@@ -1,5 +1,6 @@
 import { router } from 'expo-router'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FlatList, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -12,7 +13,6 @@ import { useLineTheme } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { isStop, MIN_CHARACTER_LIMIT, useSearch } from '@/composables/useSearch'
 import { useFilterStore, useLineStore } from '@/stores'
-import { i18n } from '@/translations/i18n'
 import { BusLine, BusStop } from '@/types/bus'
 
 const RenderItemLine = ({ item }: { item: BusLine }) => {
@@ -66,6 +66,7 @@ const RenderItemStop = ({ item }: { item: BusStop }) => {
 export const SearchScreen = () => {
   const [query, setQuery] = useState('')
   const city = useFilterStore(useShallow(state => state.city))
+  const { t } = useTranslation()
 
   const { query: searchQuery } = useSearch(query)
   const results = [
@@ -88,7 +89,7 @@ export const SearchScreen = () => {
 
         <UInput
           autoFocus={true}
-          placeholder={i18n.t('searchPlaceholder')}
+          placeholder={t('searchPlaceholder')}
           onChangeText={q => setQuery(q)}
           loading={searchQuery.isFetching}
           icon="search"
@@ -96,18 +97,18 @@ export const SearchScreen = () => {
         />
       </View>
 
-      <UText className="text-center text-muted font-inter-medium text-xs">{i18n.t('selectedCity', { city })}</UText>
+      <UText className="text-center text-muted font-inter-medium text-xs">{t('selectedCity', { city })}</UText>
 
       {neededCharacterCount > 0 && (
         <UText className="text-center text-muted font-inter-medium text-xs">
-          {i18n.t('neededCharacterCountToSearch', { count: neededCharacterCount })}
+          {t('neededCharacterCountToSearch', { count: neededCharacterCount })}
         </UText>
       )}
 
       <UQueryState query={searchQuery}>
         {(results.length < 1 && searchQuery.isSuccess)
           ? (
-              <UText className="text-muted font-inter-medium  grow text-center align-middle">{i18n.t('emptySearch')}</UText>
+              <UText className="text-muted font-inter-medium  grow text-center align-middle">{t('emptySearch')}</UText>
             )
           : (
               <FlatList

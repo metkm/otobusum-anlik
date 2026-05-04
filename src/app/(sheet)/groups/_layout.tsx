@@ -1,11 +1,8 @@
 import { DarkTheme, DefaultTheme } from '@react-navigation/native'
 import { useColorScheme } from 'react-native'
-import Animated from 'react-native-reanimated'
 import { useCSSVariable } from 'uniwind'
 
 import { Sheet } from '@/app/_layout'
-
-const AnimatedSheet = Animated.createAnimatedComponent(Sheet)
 
 export const GroupsLayout = () => {
   const background = useCSSVariable('--background-color-default')
@@ -14,7 +11,7 @@ export const GroupsLayout = () => {
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
   return (
-    <AnimatedSheet
+    <Sheet
       screenOptions={{
         grabberOptions: {
           topMargin: 8,
@@ -28,7 +25,7 @@ export const GroupsLayout = () => {
     >
       <Sheet.Screen name="index" />
       <Sheet.Screen name="[groupId]" />
-    </AnimatedSheet>
+    </Sheet>
   )
 }
 

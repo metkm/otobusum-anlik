@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { randomUUID } from 'expo-crypto'
+import { t } from 'i18next'
 import { Alert, ToastAndroid } from 'react-native'
 import { create } from 'zustand'
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
@@ -8,7 +9,6 @@ import { immer } from 'zustand/middleware/immer'
 import { useFilterStore } from './filter'
 import { useThemeStore } from './theme'
 
-import { i18n } from '@/translations/i18n'
 import { City } from '@/types/city'
 import { LineGroup, RouteCode, RouteDirection } from '@/types/line'
 
@@ -27,9 +27,10 @@ interface LineCodeSlice {
   addLine: (code: string) => void
   addLineToGroup: (code: string, groupId: string) => void
   deleteLine: (code: string, groupId?: string) => void
-  getLineGroup: () => LineGroup | undefined
-  getLines: () => string[]
   getGroupId: () => string
+  getGroups: () => LineGroup[]
+  getLineGroup: (groupId?: string) => LineGroup | undefined
+  getLines: () => string[]
 }
 
 interface LineRouteSlice {
@@ -66,12 +67,12 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
   }),
   deleteGroup: async (id) => {
     await new Promise<void>((resolve) => {
-      Alert.alert(i18n.t('deleteGroup'), i18n.t('areYouSure'), [
+      Alert.alert(t('deleteGroup'), t('areYouSure'), [
         {
-          text: i18n.t('cancel'),
+          text: t('cancel'),
         },
         {
-          text: i18n.t('delete'),
+          text: t('delete'),
           onPress: () => resolve(),
         },
       ])
@@ -116,22 +117,27 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
       return
 
     if (codes.length > 3) {
-      ToastAndroid.show(i18n.t('lineLimitExceeded'), ToastAndroid.SHORT)
+      ToastAndroid.show(t('lineLimitExceeded'), ToastAndroid.SHORT)
       return
     }
 
     if (codes.includes(code)) {
-      ToastAndroid.show(i18n.t('lineAlreadyInGroup'), ToastAndroid.SHORT)
+      ToastAndroid.show(t('lineAlreadyInGroup'), ToastAndroid.SHORT)
       return
     }
 
     codes?.push(code)
     useThemeStore.getState().createTheme(code)
 
-    ToastAndroid.show(i18n.t('added', { code }), ToastAndroid.SHORT)
+    ToastAndroid.show(t('added', { code }), ToastAndroid.SHORT)
   }),
   addLineToGroup: (code, groupId) => set((state) => {
     const city = useFilterStore.getState().city
+    const group = state.getLineGroup(groupId)
+
+    if (!group || group.codes.includes(code))
+      return
+
     state.lines[city].find(c => c.id === groupId)?.codes.push(code)
   }),
   deleteLine: (code, groupId) => set((state) => {
@@ -158,9 +164,9 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
     useThemeStore.getState().deleteTheme(code)
   }),
   getGroupId: () => get().groupId[useFilterStore.getState().city],
-  getLineGroup: () => {
-    const city = useFilterStore.getState().city
-    return get().lines[city].find(gr => gr.id === get().getGroupId())
+  getGroups: () => get().lines[useFilterStore.getState().city],
+  getLineGroup: (groupId?: string) => {
+    return get().getGroups().find(gr => gr.id === (groupId ?? get().getGroupId()))
   },
   getLines: () => get().getLineGroup()?.codes || [],
 }))

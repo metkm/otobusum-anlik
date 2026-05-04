@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View, ViewProps } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
@@ -11,7 +12,6 @@ import { UText } from '../u/UText'
 import { useLineCardWidth, useLineNews, useLineRoutes, useLineTheme, useLineTimetable } from '@/composables'
 import { Time } from '@/composables/useLineTimetable'
 import { useFilterStore } from '@/stores'
-import { i18n } from '@/translations/i18n'
 import { City } from '@/types/city'
 import { cn } from '@/utils/cn'
 import { groupDeparturesByHour } from '@/utils/groupDepartures'
@@ -25,57 +25,12 @@ const thursday = 1 << 5
 const friday = 1 << 6
 const saturday = 1 << 7
 
-const options: Record<City, { label: string, value: number }[]> = {
-  istanbul: [
-    {
-      value: monday | tuesday | wednesday | thursday | friday,
-      label: i18n.t('workday'),
-    },
-    {
-      value: saturday,
-      label: i18n.t('saturday'),
-    },
-    {
-      value: sunday,
-      label: i18n.t('sunday'),
-    },
-  ],
-  izmir: [
-    {
-      value: saturday,
-      label: i18n.t('saturday'),
-    },
-    {
-      value: monday,
-      label: i18n.t('monday'),
-    },
-    {
-      value: tuesday,
-      label: i18n.t('tuesday'),
-    },
-    {
-      value: wednesday,
-      label: i18n.t('wednesday'),
-    },
-    {
-      value: thursday,
-      label: i18n.t('thursday'),
-    },
-    {
-      value: friday,
-      label: i18n.t('friday'),
-    },
-    {
-      value: sunday,
-      label: i18n.t('sunday'),
-    },
-  ],
-}
-
 const now = new Date()
 const nowDay = now.getDay()
 
 export const LineTimetable = ({ className }: ViewProps) => {
+  const { t } = useTranslation()
+
   const city = useFilterStore(useShallow(state => state.city))
   const [day, setDay] = useState(() => 1 << (nowDay + 1))
 
@@ -143,6 +98,53 @@ export const LineTimetable = ({ className }: ViewProps) => {
 
   const backgroundWithColor = theme?.backgroundWithColor()
   const backgroundMuted = theme?.background({ variant: 'soft' })
+
+  const options: Record<City, { label: string, value: number }[]> = {
+    istanbul: [
+      {
+        value: monday | tuesday | wednesday | thursday | friday,
+        label: t('workday'),
+      },
+      {
+        value: saturday,
+        label: t('saturday'),
+      },
+      {
+        value: sunday,
+        label: t('sunday'),
+      },
+    ],
+    izmir: [
+      {
+        value: saturday,
+        label: t('saturday'),
+      },
+      {
+        value: monday,
+        label: t('monday'),
+      },
+      {
+        value: tuesday,
+        label: t('tuesday'),
+      },
+      {
+        value: wednesday,
+        label: t('wednesday'),
+      },
+      {
+        value: thursday,
+        label: t('thursday'),
+      },
+      {
+        value: friday,
+        label: t('friday'),
+      },
+      {
+        value: sunday,
+        label: t('sunday'),
+      },
+    ],
+  }
 
   return (
     <View

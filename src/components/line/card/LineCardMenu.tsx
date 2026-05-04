@@ -1,5 +1,6 @@
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FlatList, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -9,16 +10,16 @@ import { UText } from '@/components/u/UText'
 
 import { useLine, useLineNews, useLineTheme } from '@/composables'
 import { useFilterStore, useLineStore, useThemeStore } from '@/stores'
-import { i18n } from '@/translations/i18n'
 
 export const LineCardMenu = () => {
-  const { code } = useLine()
   const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
   const deleteLine = useLineStore(useShallow(state => state.deleteLine))
   const createTheme = useThemeStore(useShallow(state => state.createTheme))
 
+  const { code } = useLine()
   const { news } = useLineNews()
+  const { t } = useTranslation()
   const theme = useLineTheme()
 
   const menuSheet = useRef<TrueSheet>(null)
@@ -81,7 +82,7 @@ export const LineCardMenu = () => {
         contentContainerClassName="px-2 gap-2"
       >
         <UButton
-          label={i18n.t('addToGroup')}
+          label={t('addToGroup')}
           icon="circle-plus"
           size="lg"
           block
@@ -95,7 +96,7 @@ export const LineCardMenu = () => {
         />
 
         <UButton
-          label={i18n.t('refreshColors')}
+          label={t('refreshColors')}
           onPress={() => createTheme(code)}
           size="lg"
           block
@@ -108,7 +109,7 @@ export const LineCardMenu = () => {
         </UButton>
 
         <UButton
-          label={i18n.t('deleteLine')}
+          label={t('deleteLine')}
           icon="trash-2"
           onPress={() => deleteLine(code)}
           size="lg"

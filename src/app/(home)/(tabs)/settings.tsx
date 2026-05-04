@@ -1,6 +1,7 @@
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import Constants from 'expo-constants'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Linking } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Uniwind } from 'uniwind'
@@ -13,56 +14,11 @@ import { UText } from '@/components/u/UText'
 
 import { MapStyle, MapStyleValue, mapStyles } from '@/constants/mapStyles'
 import { useFilterStore, useSettingsStore } from '@/stores'
-import { i18n } from '@/translations/i18n'
 import { City } from '@/types/city'
 
-const appThemeOptions: {
-  label: string
-  value: 'dark' | 'light' | undefined
-}[] = [
-  {
-    label: i18n.t('dark'),
-    value: 'dark',
-  },
-  {
-    label: i18n.t('light'),
-    value: 'light',
-  },
-  {
-    label: i18n.t('system'),
-    value: undefined,
-  },
-]
-
-const mapThemeOptions: { label: string, key: MapStyle | undefined, value: MapStyleValue | undefined }[] = [
-  {
-    label: i18n.t('dark'),
-    key: 'dark',
-    value: mapStyles['dark'],
-  },
-  {
-    label: i18n.t('night'),
-    key: 'night',
-    value: mapStyles['dark'],
-  },
-  {
-    label: i18n.t('light'),
-    key: 'light',
-    value: mapStyles['light'],
-  },
-  {
-    label: i18n.t('retro'),
-    key: 'retro',
-    value: mapStyles['retro'],
-  },
-  {
-    label: i18n.t('system'),
-    key: undefined,
-    value: undefined,
-  },
-]
-
 export const SettingsScreen = () => {
+  const { t } = useTranslation()
+
   const mapStyleSheet = useRef<TrueSheet>(null)
   const appStyleSheet = useRef<TrueSheet>(null)
   const citySheet = useRef<TrueSheet>(null)
@@ -75,6 +31,52 @@ export const SettingsScreen = () => {
   const mapStyleStore = useSettingsStore(useShallow(state => state.mapStyle))
   const colorSchemeStore = useSettingsStore(useShallow(state => state.colorScheme))
 
+  const appThemeOptions: {
+    label: string
+    value: 'dark' | 'light' | undefined
+  }[] = [
+    {
+      label: t('dark'),
+      value: 'dark',
+    },
+    {
+      label: t('light'),
+      value: 'light',
+    },
+    {
+      label: t('system'),
+      value: undefined,
+    },
+  ]
+
+  const mapThemeOptions: { label: string, key: MapStyle | undefined, value: MapStyleValue | undefined }[] = [
+    {
+      label: t('dark'),
+      key: 'dark',
+      value: mapStyles['dark'],
+    },
+    {
+      label: t('night'),
+      key: 'night',
+      value: mapStyles['dark'],
+    },
+    {
+      label: t('light'),
+      key: 'light',
+      value: mapStyles['light'],
+    },
+    {
+      label: t('retro'),
+      key: 'retro',
+      value: mapStyles['retro'],
+    },
+    {
+      label: t('system'),
+      key: undefined,
+      value: undefined,
+    },
+  ]
+
   const toggleTraffic = () => {
     useSettingsStore.setState((state) => {
       state.showTraffic = !state.showTraffic
@@ -86,10 +88,10 @@ export const SettingsScreen = () => {
       className="m-safe"
       contentContainerClassName="p-2 gap-2"
     >
-      <UText className="text-lg font-inter-medium ml-2">{i18n.t('map')}</UText>
+      <UText className="text-lg font-inter-medium ml-2">{t('map')}</UText>
 
       <UButton
-        label={i18n.t('showMyLocation')}
+        label={t('showMyLocation')}
         color="neutral"
         size="lg"
         onPress={toggleMyLocation}
@@ -98,7 +100,7 @@ export const SettingsScreen = () => {
       </UButton>
 
       <UButton
-        label={i18n.t('showTraffic')}
+        label={t('showTraffic')}
         color="neutral"
         size="lg"
         onPress={toggleTraffic}
@@ -110,14 +112,14 @@ export const SettingsScreen = () => {
       </UButton>
 
       <UButton
-        label={i18n.t(mapStyleStore ?? 'system')}
+        label={t(mapStyleStore ?? 'system')}
         color="neutral"
         size="lg"
         block
         onPress={() => mapStyleSheet.current?.present()}
         className="justify-between"
       >
-        <UText className="font-inter-medium">{i18n.t('mapTheme')}</UText>
+        <UText className="font-inter-medium">{t('mapTheme')}</UText>
       </UButton>
 
       <USheet
@@ -144,13 +146,13 @@ export const SettingsScreen = () => {
       </USheet>
 
       <UButton
-        label={i18n.t(colorSchemeStore ?? 'system')}
+        label={t(colorSchemeStore ?? 'system')}
         color="neutral"
         size="lg"
         onPress={() => appStyleSheet.current?.present()}
         className="justify-between"
       >
-        <UText>{i18n.t('appTheme')}</UText>
+        <UText>{t('appTheme')}</UText>
       </UButton>
 
       <USheet
@@ -185,7 +187,7 @@ export const SettingsScreen = () => {
         className="justify-between"
         onPress={() => citySheet.current?.present()}
       >
-        <UText>{i18n.t('city')}</UText>
+        <UText>{t('city')}</UText>
       </UButton>
 
       <USheet
@@ -209,10 +211,10 @@ export const SettingsScreen = () => {
         ))}
       </USheet>
 
-      <UText className="text-lg font-inter-medium ml-2">{i18n.t('other')}</UText>
+      <UText className="text-lg font-inter-medium ml-2">{t('other')}</UText>
 
       <UButton
-        label={i18n.t('license', { city: 'istanbul' })}
+        label={t('license', { city: 'istanbul' })}
         onPress={() => Linking.openURL('https://data.ibb.gov.tr/license')}
         variant="soft"
         color="neutral"
@@ -220,7 +222,7 @@ export const SettingsScreen = () => {
       />
 
       <UButton
-        label={i18n.t('license', { city: 'izmir' })}
+        label={t('license', { city: 'izmir' })}
         onPress={() => Linking.openURL('https://acikveri.bizizmir.com/tr/license')}
         variant="soft"
         color="neutral"
@@ -228,7 +230,7 @@ export const SettingsScreen = () => {
       />
 
       <UText className="text-muted font-inter-medium ml-auto mr-2 text-xs">
-        {`${i18n.t('version')} ${Constants.expoConfig?.version}`}
+        {`${t('version')} ${Constants.expoConfig?.version}`}
       </UText>
     </ScrollView>
   )

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
@@ -10,15 +11,15 @@ import { UText } from '@/components/u/UText'
 import { useLineCardWidth } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { useLineStore } from '@/stores'
-import { i18n } from '@/translations/i18n'
 
 const LineTimetables = () => {
   const lines = useLineStore(useShallow(state => state.getLines()))
   const { snapInterval } = useLineCardWidth()
+  const { t } = useTranslation()
 
   if (lines.length < 1) {
     return (
-      <UText className="flex-1 align-middle mx-2 text-center text-muted font-inter-medium">{i18n.t('timetableEmpty')}</UText>
+      <UText className="flex-1 align-middle mx-2 text-center text-muted font-inter-medium">{t('timetableEmpty')}</UText>
     )
   }
 

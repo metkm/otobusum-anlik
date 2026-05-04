@@ -1,12 +1,11 @@
 import { Tabs } from 'expo-router'
 import { ComponentProps } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { cn } from 'tailwind-variants'
 import { useCSSVariable } from 'uniwind'
 
 import { UIcon } from '@/components/u/UIcon'
-
-import { i18n } from '@/translations/i18n'
 
 const screens = [
   {
@@ -28,6 +27,7 @@ const screens = [
 
 export const TabsLayout = () => {
   const color = useCSSVariable('--text-color-default')
+  const { t } = useTranslation()
 
   return (
     <Tabs screenOptions={{ headerShown: false }}>
@@ -36,7 +36,7 @@ export const TabsLayout = () => {
           key={screen.name}
           name={screen.name}
           options={{
-            tabBarLabel: i18n.t(screen.label),
+            tabBarLabel: t(screen.label),
             tabBarLabelStyle: {
               color: color as string,
             },

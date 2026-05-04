@@ -2,6 +2,7 @@ import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigat
 import { router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router/build/hooks'
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { FlatList, GestureHandlerRootView, TextInput } from 'react-native-gesture-handler'
 import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
@@ -14,7 +15,6 @@ import { UInput } from '@/components/u/UInput'
 import { UText } from '@/components/u/UText'
 
 import { useFilterStore, useLineStore } from '@/stores'
-import { i18n } from '@/translations/i18n'
 
 const AnimatedGestureHandlerRootView = Animated.createAnimatedComponent(GestureHandlerRootView)
 
@@ -23,6 +23,7 @@ export const GroupIdScreen = () => {
   const navigation = useTrueSheetNavigation()
   const insets = useSafeAreaInsets()
   const { progress } = useReanimatedKeyboardAnimation()
+  const { t } = useTranslation()
 
   const name = useRef('')
   const inputRef = useRef<TextInput>(null)
@@ -42,7 +43,7 @@ export const GroupIdScreen = () => {
       footer: (
         <AnimatedGestureHandlerRootView style={style}>
           <UButton
-            label={i18n.t('save')}
+            label={t('save')}
             size="lg"
             block
             icon="save"
@@ -51,7 +52,7 @@ export const GroupIdScreen = () => {
 
           {groups.length > 1 && (
             <UButton
-              label={i18n.t('deleteGroup')}
+              label={t('deleteGroup')}
               icon="trash-2"
               onPress={() => {
                 if (!group)
@@ -84,7 +85,7 @@ export const GroupIdScreen = () => {
         <UText className="ml-2 font-inter-medium">{group?.name}</UText>
         <UInput
           ref={inputRef}
-          placeholder={i18n.t('newGroupTitlePlaceholder')}
+          placeholder={t('newGroupTitlePlaceholder')}
           onChangeText={(text) => {
             name.current = text
           }}

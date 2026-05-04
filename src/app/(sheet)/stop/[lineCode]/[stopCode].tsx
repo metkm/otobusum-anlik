@@ -1,5 +1,6 @@
 import { Camera } from '@maplibre/maplibre-react-native'
 import { useLocalSearchParams } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 import { Linking, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
@@ -9,9 +10,9 @@ import { UButton } from '@/components/u/UButton'
 import { UText } from '@/components/u/UText'
 
 import { useStop } from '@/composables'
-import { i18n } from '@/translations/i18n'
 
 export const StopScreen = () => {
+  const { t } = useTranslation()
   const searchParams = useLocalSearchParams()
   const stopCode = parseInt(searchParams.stopCode! as string)
 
@@ -51,7 +52,7 @@ export const StopScreen = () => {
 
       <GestureHandlerRootView style={{ flexShrink: 0 }}>
         <UButton
-          label={i18n.t('directionToStop')}
+          label={t('directionToStop')}
           onPress={openDirectionsToStop}
           icon="droplet"
           block
@@ -66,7 +67,7 @@ export const StopScreen = () => {
 
       {data.buses.length > 0 && (
         <View>
-          <UText>{i18n.t('linesThatUseStop')}</UText>
+          <UText>{t('linesThatUseStop')}</UText>
 
           <View className="flex-row flex-wrap gap-2 mt-1">
             {data.buses.map(bus => (
