@@ -73,15 +73,15 @@ const RootContent = () => {
             options={{
               detents: [0.5, 1],
               footer: (
-                <GestureHandlerRootView>
+                <GestureHandlerRootView style={{ alignItems: 'flex-end' }}>
                   <UButton
-                    label={t('createNewGroup')}
-                    block
+                    label={t('newGroup')}
                     icon="plus-circle"
                     size="lg"
                     onPress={() => {
                       useLineStore.getState().createGroup()
                     }}
+                    className="w-max"
                   />
                 </GestureHandlerRootView>
               ),

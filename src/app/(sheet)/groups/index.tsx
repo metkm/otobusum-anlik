@@ -35,7 +35,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
 
   return (
     <GestureHandlerRootView style={{ flexDirection: 'row', gap: 8 }}>
-      {selected && (
+      {!addToGroup && selected && (
         <Animated.View
           exiting={ExitScaleOut}
           entering={EnterScaleIn}
@@ -50,14 +50,14 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
       )}
 
       <Animated.View
-        className="flex-row flex-1 bg-muted rounded-md pr-2 gap-1 h-16"
+        className="flex-row items-stretch rounded-md gap-1 h-16 grow"
         layout={LinearTransition}
       >
         <UButton
           key={group.id}
           onPress={handlePress}
           variant="ghost"
-          className="flex-1"
+          className="flex-1 bg-muted"
         >
           <View className="justify-center gap-1 grow">
             <UText
@@ -76,7 +76,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
                     group.codes.map(code => (
                       <UText
                         key={code}
-                        className="font-inter-medium text-xs rounded-md bg-default h-6 w-12 text-center align-middle"
+                        className="font-inter-medium text-xs rounded-md bg-default h-6 w-12 text-center align-middle border border-muted"
                       >
                         {code}
                       </UText>
@@ -86,10 +86,14 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
           </View>
         </UButton>
 
-        <Animated.View layout={LinearTransition} className="gap-1 flex-row items-center">
+        <Animated.View
+          layout={LinearTransition}
+          className="gap-1 flex-row items-stretch"
+        >
           <Animated.View
             exiting={ExitScaleOut}
             entering={EnterScaleIn}
+            className="flex-row items-stretch"
           >
             {canDelete && (
               <UButton
@@ -97,6 +101,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
                 onPress={() => useLineStore.getState().deleteGroup(group.id)}
                 variant="ghost"
                 color="neutral"
+                className="bg-muted"
               />
             )}
           </Animated.View>
@@ -111,6 +116,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
                 groupId: group.id,
               },
             }}
+            className="bg-muted"
           />
         </Animated.View>
       </Animated.View>
@@ -163,10 +169,12 @@ export const GroupsScreen = () => {
               ))}
             </Animated.View>
 
-            <Animated.View
-              layout={LinearTransition}
-              className="h-0.5 bg-muted"
-            />
+            {defaultGroups.length > 0 && (
+              <Animated.View
+                layout={LinearTransition}
+                className="h-0.5 bg-muted"
+              />
+            )}
           </>
         )}
 
@@ -190,50 +198,8 @@ export const GroupsScreen = () => {
           ))}
         </Animated.View>
       </ScrollView>
-
-      {/* <Animated.FlatList
-        data={groupsWithoutCode}
-        layout={LinearTransition}
-        itemLayoutAnimation={LinearTransition}
-        renderItem={({ item }) => (
-          <Animated.View
-            exiting={ExitScaleOut}
-            entering={EnterScaleIn}
-          >
-            <GroupItem
-              group={item}
-              canDelete={true}
-            />
-          </Animated.View>
-        )}
-        contentContainerClassName="p-2 gap-2"
-      /> */}
     </LineContext>
   )
-
-  // return (
-  //   <LineContext value={addToGroup}>
-  //     <Animated.FlatList
-  //       ref={flatlistRef}
-  //       data={groupsFiltered}
-  //       itemLayoutAnimation={LinearTransition}
-  //       layout={LinearTransition}
-  //       renderItem={({ item }) => (
-  //         <Animated.View
-  //           exiting={ExitScaleOut}
-  //           entering={EnterScaleIn}
-  //         >
-  //           <GroupItem
-  //             group={item}
-  //             selected={groupId === item.id}
-  //             canDelete={groups.length > 1}
-  //           />
-  //         </Animated.View>
-  //       )}
-  //       contentContainerClassName={`px-2 pb-15.5 gap-2 ${addToGroup ? 'pt-2' : 'pt-5'}`}
-  //     />
-  //   </LineContext>
-  // )
 }
 
 export default GroupsScreen

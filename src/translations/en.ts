@@ -16,7 +16,7 @@ export default {
   showTraffic: 'Show traffic information on the map',
   lineAlreadyInGroup: 'This line is already in the group',
   lineLimitExceeded: 'Only 4 lines can be selected at the same time',
-  createNewGroup: 'Create new group',
+  newGroup: 'New group',
   emptyGroup: 'This group is empty',
   save: 'Save',
   version: 'Version',

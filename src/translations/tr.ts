@@ -16,7 +16,7 @@ export default {
   showTraffic: 'Haritada trafik bilgisini göster',
   lineAlreadyInGroup: 'Bu hat zaten grupta',
   lineLimitExceeded: 'Aynı anda sadece 4 tane hat seçebilirsiniz',
-  createNewGroup: 'Yeni grup oluştur',
+  newGroup: 'Yeni grup',
   emptyGroup: 'Bu grup boş',
   save: 'Kaydet',
   version: 'Versiyon',
