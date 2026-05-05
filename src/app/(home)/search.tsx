@@ -22,7 +22,7 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
   const backgroundWithColor = theme?.backgroundWithColor({ variant: 'solid' })
 
   return (
-    <View className="flex-row items-center gap-2 shrink">
+    <View className="flex-row items-stretch gap-2 shrink">
       <UButton
         variant="ghost"
         color="neutral"
@@ -47,6 +47,7 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
           params: { addToGroup: item.code },
         }}
         variant="soft"
+        size="lg"
       />
     </View>
   )
@@ -93,7 +94,6 @@ export const SearchScreen = () => {
           onChangeText={q => setQuery(q)}
           loading={searchQuery.isFetching}
           icon="search"
-          className="flex-1"
         />
       </View>
 
@@ -125,7 +125,7 @@ export const SearchScreen = () => {
                   )
                 }}
                 className="flex-1"
-                contentContainerClassName="gap-2 p-2"
+                contentContainerClassName="px-2 gap-2"
                 fadingEdgeLength={10}
               />
             )}

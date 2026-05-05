@@ -40,9 +40,6 @@ const ui = tv({
     block: {
       true: 'justify-center',
     },
-    square: {
-      true: '',
-    },
     disabled: {
       true: 'opacity-75',
     },
@@ -76,7 +73,7 @@ const ui = tv({
       color: 'neutral',
       variant: 'soft',
       className: {
-        base: 'bg-muted',
+        base: 'bg-muted/50',
         label: 'text-default',
       },
     },
@@ -99,7 +96,7 @@ const ui = tv({
   ],
   slots: {
     base: 'bg-muted flex flex-row items-center gap-1.5 rounded-md',
-    label: 'shrink font-inter-medium',
+    label: 'shrink font-inter-medium text-xs',
     icon: '',
   },
 })

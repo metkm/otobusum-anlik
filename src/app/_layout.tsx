@@ -7,7 +7,7 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { withLayoutContext } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { I18nextProvider, useTranslation } from 'react-i18next'
+import { I18nextProvider } from 'react-i18next'
 import { useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
@@ -17,10 +17,9 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { AppOnboarding } from '@/components/AppOnboarding'
 import { MapProvider } from '@/components/MapProvider'
-import { UButton } from '@/components/u/UButton'
 
 import { persister, queryClient } from '@/api/client'
-import { useLineStore, useSettingsStore } from '@/stores'
+import { useSettingsStore } from '@/stores'
 import i18n from '@/translations/i18n'
 
 const { Navigator } = createTrueSheetNavigator()
@@ -34,7 +33,6 @@ export const Sheet = withLayoutContext<
 
 const RootContent = () => {
   const showOnBoarding = useSettingsStore(useShallow(state => state.showOnBoarding))
-  const { t } = useTranslation()
 
   const background = useCSSVariable('--background-color-default')
   const insets = useSafeAreaInsets()
@@ -72,19 +70,6 @@ const RootContent = () => {
             name="(sheet)/groups"
             options={{
               detents: [0.5, 1],
-              footer: (
-                <GestureHandlerRootView style={{ alignItems: 'flex-end' }}>
-                  <UButton
-                    label={t('newGroup')}
-                    icon="plus-circle"
-                    size="lg"
-                    onPress={() => {
-                      useLineStore.getState().createGroup()
-                    }}
-                    className="w-max"
-                  />
-                </GestureHandlerRootView>
-              ),
               scrollable: true,
             }}
           />
@@ -124,9 +109,7 @@ export const RootLayout = () => {
       >
         <StatusBar style="auto" />
 
-        <GestureHandlerRootView
-          style={{ flexGrow: 1, backgroundColor: background as string }}
-        >
+        <GestureHandlerRootView style={{ flexGrow: 1, backgroundColor: background as string }}>
           <SafeAreaListener
             onChange={({ insets }) => {
               Uniwind.updateInsets(insets)

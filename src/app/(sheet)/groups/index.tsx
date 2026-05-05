@@ -1,4 +1,6 @@
+import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation'
 import { useLocalSearchParams } from 'expo-router'
+import { useEffect } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
@@ -18,8 +20,8 @@ import { LineGroup } from '@/types/line'
 const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?: boolean, canDelete?: boolean }) => {
   const { t } = useTranslation()
   const theme = useLineTheme()
-
   const params = useLocalSearchParams()
+
   const addToGroup = params.addToGroup as string | undefined
 
   const backgroundWithColor = theme?.backgroundWithColor()
@@ -56,8 +58,9 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
         <UButton
           key={group.id}
           onPress={handlePress}
-          variant="ghost"
-          className="flex-1 bg-muted"
+          className="flex-1"
+          variant="soft"
+          color="neutral"
         >
           <View className="justify-center gap-1 grow">
             <UText
@@ -76,7 +79,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
                     group.codes.map(code => (
                       <UText
                         key={code}
-                        className="font-inter-medium text-xs rounded-md bg-default h-6 w-12 text-center align-middle border border-muted"
+                        className="font-inter-medium text-xs rounded-md bg-default/50 h-6 w-12 text-center align-middle border border-muted/50"
                       >
                         {code}
                       </UText>
@@ -101,7 +104,6 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
                 onPress={() => useLineStore.getState().deleteGroup(group.id)}
                 variant="ghost"
                 color="neutral"
-                className="bg-muted"
               />
             )}
           </Animated.View>
@@ -116,7 +118,6 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
                 groupId: group.id,
               },
             }}
-            className="bg-muted"
           />
         </Animated.View>
       </Animated.View>
@@ -125,80 +126,115 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
 }
 
 export const GroupsScreen = () => {
+  const { t } = useTranslation()
   const params = useLocalSearchParams()
+  const theme = useLineTheme()
+  const navigation = useTrueSheetNavigation()
   const addToGroup = params.addToGroup as string | undefined
 
   const groupId = useLineStore(useShallow(state => state.getGroupId()))
   const groups = useLineStore(useShallow(state => state.getGroups()))
 
+  const backgroundWithColor = theme?.backgroundWithColor({ variant: 'ghost' })
+
+  useEffect(() => {
+    const options = {
+      backgroundColor: backgroundWithColor?.backgroundColor,
+      footer: (
+        <GestureHandlerRootView style={{ alignItems: 'flex-end' }}>
+          <LineContext value={addToGroup}>
+            <UButton
+              label={t('newGroup')}
+              icon="plus-circle"
+              size="lg"
+              onPress={() => {
+                useLineStore.getState().createGroup()
+              }}
+              className="w-max"
+            />
+          </LineContext>
+        </GestureHandlerRootView>
+      ),
+    }
+
+    navigation.setOptions(options)
+    navigation.getParent()?.setOptions(options)
+  }, [addToGroup, backgroundWithColor?.backgroundColor, navigation, t])
+
   const defaultGroups = addToGroup ? groups.filter(gr => !gr.codes.includes(addToGroup)) : groups
   const groupsWithCode = addToGroup ? groups.filter(gr => gr.codes.includes(addToGroup)) : []
 
   return (
-    <LineContext value={addToGroup}>
-      <ScrollView contentContainerClassName="pt-5 gap-2">
-        {groupsWithCode.length > 0 && (
-          <>
-            <Animated.View
-              layout={LinearTransition}
-              className="gap-2 px-2"
+    <ScrollView contentContainerClassName="pt-5 gap-2">
+      {groupsWithCode.length > 0 && (
+        <>
+          <Animated.View
+            layout={LinearTransition}
+            className="gap-2 px-2"
+          >
+            <UText
+              className="leading-tight text-muted pl-1"
+              style={backgroundWithColor}
             >
-              <UText className="leading-tight text-muted pl-1">
-                <Trans
-                  i18nKey="lineInGroups"
-                  values={{ code: addToGroup }}
-                  components={{
-                    code: <UText className="text-lg font-bold leading-tight text-muted" />,
-                  }}
-                />
-              </UText>
+              <Trans
+                i18nKey="lineInGroups"
+                values={{ code: addToGroup }}
+                components={{
+                  code: (
+                    <UText
+                      className="text-lg font-bold leading-tight text-muted"
+                      style={backgroundWithColor}
+                    />
+                  ),
+                }}
+              />
+            </UText>
 
-              {groupsWithCode.map(group => (
-                <Animated.View
-                  key={group.id}
-                  exiting={ExitScaleOut}
-                  entering={EnterScaleIn}
-                  layout={LinearTransition}
-                >
-                  <GroupItem
-                    group={group}
-                    canDelete={groups.length > 1}
-                    selected={group.id === groupId}
-                  />
-                </Animated.View>
-              ))}
-            </Animated.View>
-
-            {defaultGroups.length > 0 && (
+            {groupsWithCode.map(group => (
               <Animated.View
+                key={group.id}
+                exiting={ExitScaleOut}
+                entering={EnterScaleIn}
                 layout={LinearTransition}
-                className="h-0.5 bg-muted"
-              />
-            )}
-          </>
-        )}
+              >
+                <GroupItem
+                  group={group}
+                  canDelete={groups.length > 1}
+                  selected={group.id === groupId}
+                />
+              </Animated.View>
+            ))}
+          </Animated.View>
 
-        <Animated.View
-          layout={LinearTransition}
-          className="gap-2 px-2 pb-15"
-        >
-          {defaultGroups.map(group => (
+          {defaultGroups.length > 0 && (
             <Animated.View
-              key={group.id}
-              exiting={ExitScaleOut}
-              entering={EnterScaleIn}
               layout={LinearTransition}
-            >
-              <GroupItem
-                group={group}
-                canDelete={groups.length > 1}
-                selected={group.id === groupId}
-              />
-            </Animated.View>
-          ))}
-        </Animated.View>
-      </ScrollView>
-    </LineContext>
+              className="h-0.5 bg-muted"
+            />
+          )}
+        </>
+      )}
+
+      <Animated.View
+        layout={LinearTransition}
+        className="gap-2 px-2 pb-15"
+      >
+        {defaultGroups.map(group => (
+          <Animated.View
+            key={group.id}
+            exiting={ExitScaleOut}
+            entering={EnterScaleIn}
+            layout={LinearTransition}
+          >
+            <GroupItem
+              group={group}
+              canDelete={groups.length > 1}
+              selected={group.id === groupId}
+            />
+          </Animated.View>
+        ))}
+      </Animated.View>
+    </ScrollView>
   )
 }
 

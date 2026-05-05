@@ -30,6 +30,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
 
   const background = theme?.backgroundWithColor({ variant: 'ghost' })
   const border = theme?.border({ variant: 'solid' })
+  const color = theme?.text({ variant: 'ghost' })
 
   return (
     <View
@@ -66,7 +67,13 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
                 )}
               </View>
 
-              <UText className="text-xs truncate shrink" numberOfLines={2}>{item.name}</UText>
+              <UText
+                className="text-xs truncate shrink"
+                numberOfLines={2}
+                style={color}
+              >
+                {item.name}
+              </UText>
             </View>
           )}
           className="max-h-22"

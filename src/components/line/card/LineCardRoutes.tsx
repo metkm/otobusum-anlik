@@ -18,29 +18,27 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
   const { query: busesQuery } = useLineBuses()
 
   const theme = useLineTheme()
-  const backgroundWithColor = theme?.backgroundWithColor({ variant: isSelected ? 'solid' : 'soft' })
+  const color = theme?.text({ variant: isSelected ? 'solid' : 'ghost' })
 
   return (
     <UButton
       label={item.name}
-      variant="soft"
+      variant={isSelected ? 'solid' : 'ghost'}
+      color="neutral"
       onPress={() => setRoute(code, item.code)}
       className="flex-col justify-start items-start"
     >
       <View className="flex-row justify-center gap-1">
-        <View
-          className="px-2 py-1 gap-1 rounded-md flex-row items-center"
-          style={backgroundWithColor}
-        >
+        <View className="px-2 py-1 gap-1 rounded-md flex-row items-center">
           <UIcon
             name="bus-front"
             sizeClassName="size-4"
-            color={backgroundWithColor?.color}
+            color={color?.color}
           />
 
           <UText
             className="font-inter-medium text-xs"
-            style={backgroundWithColor}
+            style={color}
           >
             {busesQuery.data?.reduce((acc, curr) => curr.route_code === item.code ? acc + 1 : acc, 0)}
           </UText>
@@ -48,7 +46,7 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
 
         <UText
           className="px-2 py-1 font-inter-medium rounded-md text-xs align-middle"
-          style={backgroundWithColor}
+          style={color}
         >
           {item.code.split('_').slice(1).join('_')}
         </UText>
@@ -89,9 +87,10 @@ export const LineCardRoutes = () => {
   }
 
   return (
-    <View className="flex-row gap-2 grow">
+    <View className="flex-row items-center gap-2 grow ">
       <UButton
         icon="repeat"
+        variant="soft"
         disabled={otherDirectionRoute === undefined}
         onPress={() => {
           changeRouteDirection(code)
@@ -101,6 +100,7 @@ export const LineCardRoutes = () => {
       <UButton
         label={route?.name || routeCode}
         variant="soft"
+        color="neutral"
         icon="route"
         onPress={presentRoutes}
         block

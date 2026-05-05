@@ -27,8 +27,8 @@ export const MapButtons = () => {
       lines.length < 1
         ? 8
         : lines.length < 2
-          ? 200
-          : 208,
+          ? 198
+          : 204,
     )
   }, [bottomInset, lines.length])
 

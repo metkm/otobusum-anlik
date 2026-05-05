@@ -96,13 +96,13 @@ export const useLineTheme = () => {
         variant: 'soft',
         style: {
           background: {
-            backgroundColor: theme['ui-bg-muted'],
+            backgroundColor: `${theme['ui-primary']}0F`,
           },
           border: {
             borderColor: theme['ui-border-muted'],
           },
           text: {
-            color: theme['ui-text'],
+            color: theme['ui-primary'],
           },
           backgroundWithColor: {
             backgroundColor: theme['ui-bg-muted'],

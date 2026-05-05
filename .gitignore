@@ -46,3 +46,4 @@ expo-env.d.ts
 # @end expo-cli
 
 server/target
+.nuxt

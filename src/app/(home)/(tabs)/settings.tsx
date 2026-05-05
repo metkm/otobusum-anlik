@@ -93,6 +93,7 @@ export const SettingsScreen = () => {
       <UButton
         label={t('showMyLocation')}
         color="neutral"
+        variant="soft"
         size="lg"
         onPress={toggleMyLocation}
       >
@@ -103,6 +104,7 @@ export const SettingsScreen = () => {
         label={t('showTraffic')}
         color="neutral"
         size="lg"
+        variant="soft"
         onPress={toggleTraffic}
       >
         <USwitch
@@ -116,6 +118,7 @@ export const SettingsScreen = () => {
         color="neutral"
         size="lg"
         block
+        variant="soft"
         onPress={() => mapStyleSheet.current?.present()}
         className="justify-between"
       >
@@ -148,6 +151,7 @@ export const SettingsScreen = () => {
       <UButton
         label={t(colorSchemeStore ?? 'system')}
         color="neutral"
+        variant="soft"
         size="lg"
         onPress={() => appStyleSheet.current?.present()}
         className="justify-between"

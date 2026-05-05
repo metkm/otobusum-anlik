@@ -14,6 +14,7 @@ import { UButton } from '@/components/u/UButton'
 import { UInput } from '@/components/u/UInput'
 import { UText } from '@/components/u/UText'
 
+import { useLineTheme } from '@/composables'
 import { useFilterStore, useLineStore } from '@/stores'
 
 const AnimatedGestureHandlerRootView = Animated.createAnimatedComponent(GestureHandlerRootView)
@@ -22,6 +23,8 @@ export const GroupIdScreen = () => {
   const params = useLocalSearchParams()
   const navigation = useTrueSheetNavigation()
   const insets = useSafeAreaInsets()
+
+  const theme = useLineTheme()
   const { progress } = useReanimatedKeyboardAnimation()
   const { t } = useTranslation()
 
@@ -30,6 +33,8 @@ export const GroupIdScreen = () => {
 
   const city = useFilterStore(useShallow(state => state.city))
   const groups = useLineStore(useShallow(state => state.lines[city]))
+
+  const background = theme?.background({ variant: 'ghost' })
 
   const style = useAnimatedStyle(() => ({
     gap: 8,
@@ -40,6 +45,7 @@ export const GroupIdScreen = () => {
 
   useEffect(() => {
     navigation.setOptions({
+      backgroundColor: background?.backgroundColor,
       footer: (
         <AnimatedGestureHandlerRootView style={style}>
           <UButton
@@ -48,6 +54,7 @@ export const GroupIdScreen = () => {
             block
             icon="save"
             onPress={handleSave}
+            variant="soft"
           />
 
           {groups.length > 1 && (
@@ -63,6 +70,7 @@ export const GroupIdScreen = () => {
               }}
               size="lg"
               block
+              variant="soft"
             />
           )}
         </AnimatedGestureHandlerRootView>
@@ -89,6 +97,7 @@ export const GroupIdScreen = () => {
           onChangeText={(text) => {
             name.current = text
           }}
+          variant="soft"
         />
       </View>
 
@@ -106,9 +115,10 @@ export const GroupIdScreen = () => {
                     useLineStore.getState().deleteLine(item, group.id)
                   }}
                   color="neutral"
+                  variant="soft"
                 />
 
-                <UText className="px-2 py-1 font-inter-medium rounded-md bg-muted align-middle">{item}</UText>
+                <UText className="px-2 py-1 font-inter-medium rounded-md bg-muted/50 align-middle">{item}</UText>
               </View>
             </GestureHandlerRootView>
           )}
