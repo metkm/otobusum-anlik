@@ -17,6 +17,7 @@ const ui = tv({
   },
   slots: {
     base: 'rounded-md px-3',
+    icon: 'text-muted',
   },
 })
 
@@ -25,13 +26,15 @@ export const UInput = ({
   className,
   icon,
   loading,
+  containerClassName,
   ...props
 }: {
   variant?: 'outline' | 'soft'
   icon?: ComponentProps<typeof UIcon>['name']
   loading?: boolean
+  containerClassName?: string
 } & ComponentProps<TextInput>) => {
-  const { base: uiBase } = ui({ variant })
+  const { base: uiBase, icon: uiIcon } = ui({ variant })
 
   const _icon = loading
     ? <UActivityIndicator />
@@ -39,24 +42,23 @@ export const UInput = ({
       ? (
           <UIcon
             name={icon}
-            colorClassName="text-default"
+            colorClassName={uiIcon()}
           />
         )
       : undefined
 
   return (
-    <View className="relative">
+    <View className={cn('relative', containerClassName)}>
       <TextInput
-        // 'bg-muted rounded-md px-3',
         className={cn(
           uiBase(),
-          _icon ? 'pl-9' : undefined,
+          _icon ? 'pl-8' : undefined,
           className,
         )}
         {...props}
       />
 
-      <View className="absolute left-2 inset-y-0 justify-center">
+      <View className="absolute left-2.5 inset-y-0 justify-center">
         {_icon}
       </View>
     </View>

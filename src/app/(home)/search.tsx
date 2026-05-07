@@ -94,6 +94,7 @@ export const SearchScreen = () => {
           onChangeText={q => setQuery(q)}
           loading={searchQuery.isFetching}
           icon="search"
+          containerClassName="grow"
         />
       </View>
 
