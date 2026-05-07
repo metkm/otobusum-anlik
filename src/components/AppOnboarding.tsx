@@ -1,4 +1,5 @@
 import Onboarding from '@blazejkustra/react-native-onboarding'
+import { t } from 'i18next'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { useCSSVariable } from 'uniwind'
@@ -56,13 +57,13 @@ const Step = ({
               icon="arrow-left"
               onPress={onBack}
               variant="soft"
-              label="Back"
+              label={t('back')}
             />
           </>
         )}
 
         <UButton
-          label={isLast ? 'That\'s it!' : 'Next'}
+          label={isLast ? t('thatsIt') : t('next')}
           size="lg"
           block
           onPress={onNext}

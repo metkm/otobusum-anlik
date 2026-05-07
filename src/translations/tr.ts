@@ -59,4 +59,7 @@ export default {
   welcome: 'Hoşgeldin',
   getStarted: 'Başlayalım!',
   lineInGroups: '<code>{{code}}</code>\'in olduğu gruplar:',
+  back: 'Geri',
+  thatsIt: 'Bu kadar!',
+  next: 'Sıradaki',
 }

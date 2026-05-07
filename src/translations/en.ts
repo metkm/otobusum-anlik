@@ -59,4 +59,7 @@ export default {
   welcome: 'Welcome',
   getStarted: 'Get started',
   lineInGroups: '<code>{{code}}</code> is in groups:',
+  back: 'Back',
+  thatsIt: 'That\'s it!',
+  next: 'Next',
 }
