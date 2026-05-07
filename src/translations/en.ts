@@ -62,4 +62,5 @@ export default {
   back: 'Back',
   thatsIt: 'That\'s it!',
   next: 'Next',
+  goToSearch: 'Go to search',
 }

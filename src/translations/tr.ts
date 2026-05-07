@@ -62,4 +62,5 @@ export default {
   back: 'Geri',
   thatsIt: 'Bu kadar!',
   next: 'Sıradaki',
+  goToSearch: 'Aramaya git',
 }

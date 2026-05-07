@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { LineCards } from '@/components/line/LineCards'
 import { LineTimetable } from '@/components/line/LineTimetable'
+import { UButton } from '@/components/u/UButton'
 import { CarouselContext, UCarousel } from '@/components/u/UCarousel'
 import { UText } from '@/components/u/UText'
 
@@ -19,7 +20,17 @@ const LineTimetables = () => {
 
   if (lines.length < 1) {
     return (
-      <UText className="flex-1 align-middle mx-2 text-center text-muted font-inter-medium">{t('timetableEmpty')}</UText>
+      <View className="flex items-center justify-center grow gap-2 p-2">
+        <UText className="text-muted font-inter-medium text-center max-w-xs">{t('timetableEmpty')}</UText>
+
+        <UButton
+          label={t('goToSearch')}
+          icon="search"
+          variant="soft"
+          color="neutral"
+          to="/search"
+        />
+      </View>
     )
   }
 

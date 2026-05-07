@@ -58,7 +58,7 @@ const ui = tv({
       variant: 'soft',
       className: {
         base: 'bg-primary/15',
-        label: 'text-default',
+        label: 'text-primary',
       },
     },
     {
