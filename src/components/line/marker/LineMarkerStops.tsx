@@ -19,7 +19,7 @@ export const LineMarkerStops = () => {
   if (!lineStopsQuery.data)
     return
 
-  const backgroundSoft = theme?.background({ variant: 'soft' })
+  const backgroundSoft = theme?.background({ variant: 'soft' })?.backgroundColor.slice(0, -2)
   const borderSoft = theme?.border({ variant: 'soft' })
 
   const features: Feature[] = lineStopsQuery.data.map(bus => ({
@@ -50,7 +50,7 @@ export const LineMarkerStops = () => {
         type="circle"
         paint={{
           'circle-radius': 6,
-          'circle-color': backgroundSoft?.backgroundColor ?? defaultBg as string,
+          'circle-color': backgroundSoft ?? defaultBg as string,
           'circle-stroke-width': 2,
           'circle-stroke-color': borderSoft?.borderColor ?? defaultBorder as string,
         }}
