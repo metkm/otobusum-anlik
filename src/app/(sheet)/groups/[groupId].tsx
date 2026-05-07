@@ -8,6 +8,7 @@ import { FlatList, GestureHandlerRootView, TextInput } from 'react-native-gestur
 import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
@@ -24,6 +25,7 @@ export const GroupIdScreen = () => {
   const navigation = useTrueSheetNavigation()
   const insets = useSafeAreaInsets()
 
+  const backgroundDefault = useCSSVariable('--background-color-default')
   const theme = useLineTheme()
   const { progress } = useReanimatedKeyboardAnimation()
   const { t } = useTranslation()
@@ -45,7 +47,7 @@ export const GroupIdScreen = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      backgroundColor: background?.backgroundColor,
+      backgroundColor: background?.backgroundColor ?? backgroundDefault as string | undefined,
       footer: (
         <AnimatedGestureHandlerRootView style={style}>
           <UButton

@@ -5,6 +5,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import Animated, { LinearTransition } from 'react-native-reanimated'
+import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
@@ -129,6 +130,8 @@ export const GroupsScreen = () => {
   const { t } = useTranslation()
   const params = useLocalSearchParams()
   const theme = useLineTheme()
+  const background = useCSSVariable('--background-color-default')
+
   const navigation = useTrueSheetNavigation()
   const addToGroup = params.addToGroup as string | undefined
 
@@ -139,7 +142,7 @@ export const GroupsScreen = () => {
 
   useEffect(() => {
     const options = {
-      backgroundColor: backgroundWithColor?.backgroundColor,
+      backgroundColor: backgroundWithColor?.backgroundColor ?? background as string | undefined,
       footer: (
         <GestureHandlerRootView style={{ alignItems: 'flex-end' }}>
           <LineContext value={addToGroup}>
@@ -159,7 +162,7 @@ export const GroupsScreen = () => {
 
     navigation.setOptions(options)
     navigation.getParent()?.setOptions(options)
-  }, [addToGroup, backgroundWithColor?.backgroundColor, navigation, t])
+  }, [addToGroup, background, backgroundWithColor?.backgroundColor, navigation, t])
 
   const defaultGroups = addToGroup ? groups.filter(gr => !gr.codes.includes(addToGroup)) : groups
   const groupsWithCode = addToGroup ? groups.filter(gr => gr.codes.includes(addToGroup)) : []
