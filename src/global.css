@@ -58,6 +58,7 @@
 @theme {
   --font-inter: 'Inter-Regular';
   --font-inter-medium: 'Inter-Medium';
+  --font-inter-semibold: 'Inter-SemiBold';
 }
 
 @theme inline {

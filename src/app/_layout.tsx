@@ -34,9 +34,9 @@ export const Sheet = withLayoutContext<
 const RootContent = () => {
   const showOnBoarding = useSettingsStore(useShallow(state => state.showOnBoarding))
 
-  const background = useCSSVariable('--background-color-default')
-  const insets = useSafeAreaInsets()
+  const [background] = useCSSVariable(['--background-color-default']) as [string]
 
+  const insets = useSafeAreaInsets()
   const colorScheme = useColorScheme()
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 

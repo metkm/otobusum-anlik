@@ -10,7 +10,7 @@ import { cn } from '@/utils/cn'
 const StyledGestureHandlerRootView = withUniwind(GestureHandlerRootView)
 
 export const USheet = ({ ref, contentContainerClassName, children, ...props }: { ref: RefObject<TrueSheet | null>, contentContainerClassName?: string } & TrueSheetProps) => {
-  const bg = useCSSVariable('--ui-bg') as string
+  const [backgroundDefault] = useCSSVariable(['--background-color-default']) as [string]
 
   const theme = useLineTheme()
   const background = theme?.background({ variant: 'ghost' })
@@ -18,7 +18,7 @@ export const USheet = ({ ref, contentContainerClassName, children, ...props }: {
   return (
     <ReanimatedTrueSheet
       ref={ref}
-      backgroundColor={background?.backgroundColor || bg}
+      backgroundColor={background?.backgroundColor || backgroundDefault}
       grabberOptions={{
         topMargin: 8,
         height: 4,

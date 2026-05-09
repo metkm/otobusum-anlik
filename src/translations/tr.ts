@@ -63,4 +63,7 @@ export default {
   thatsIt: 'Bu kadar!',
   next: 'Sıradaki',
   goToSearch: 'Aramaya git',
+  groups: 'Gruplar',
+  chooseActiveGroup: 'Aktif grubu seç',
+  routes: 'Güzergahlar',
 }

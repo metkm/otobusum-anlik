@@ -71,7 +71,11 @@ const config: ExpoConfig = {
     [
       'expo-font',
       {
-        fonts: ['./src/assets/fonts/Inter-Medium.ttf', './src/assets/fonts/Inter-Regular.ttf'],
+        fonts: [
+          './src/assets/fonts/Inter-Medium.ttf',
+          './src/assets/fonts/Inter-Regular.ttf',
+          './src/assets/fonts/Inter-SemiBold.ttf',
+        ],
       },
     ],
   ],

@@ -1,4 +1,4 @@
-import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation'
+import { TrueSheetNavigationOptions, useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
@@ -130,7 +130,7 @@ export const GroupsScreen = () => {
   const { t } = useTranslation()
   const params = useLocalSearchParams()
   const theme = useLineTheme()
-  const background = useCSSVariable('--background-color-default')
+  const backgroundDefault = useCSSVariable('--background-color-default')
 
   const navigation = useTrueSheetNavigation()
   const addToGroup = params.addToGroup as string | undefined
@@ -138,11 +138,15 @@ export const GroupsScreen = () => {
   const groupId = useLineStore(useShallow(state => state.getGroupId()))
   const groups = useLineStore(useShallow(state => state.getGroups()))
 
-  const backgroundWithColor = theme?.backgroundWithColor({ variant: 'ghost' })
+  const text = theme?.text({ variant: 'ghost' })
+  const background = theme?.background({ variant: 'ghost' })
 
   useEffect(() => {
-    const options = {
-      backgroundColor: backgroundWithColor?.backgroundColor ?? background as string | undefined,
+    if (addToGroup)
+      return
+
+    const options: Partial<TrueSheetNavigationOptions> = {
+      backgroundColor: background?.backgroundColor ?? backgroundDefault as string | undefined,
       footer: (
         <GestureHandlerRootView style={{ alignItems: 'flex-end' }}>
           <LineContext value={addToGroup}>
@@ -158,26 +162,31 @@ export const GroupsScreen = () => {
           </LineContext>
         </GestureHandlerRootView>
       ),
+      header: (
+        <View className="p-2 pt-5 border-b border-b-muted">
+          <UText className="text-lg font-inter-semibold leading-tight">{t('groups')}</UText>
+          <UText className="text-xs text-muted leading-tight">{t('chooseActiveGroup')}</UText>
+        </View>
+      ),
     }
 
-    navigation.setOptions(options)
     navigation.getParent()?.setOptions(options)
-  }, [addToGroup, background, backgroundWithColor?.backgroundColor, navigation, t])
+  }, [addToGroup, background?.backgroundColor, backgroundDefault, navigation, t])
 
   const defaultGroups = addToGroup ? groups.filter(gr => !gr.codes.includes(addToGroup)) : groups
   const groupsWithCode = addToGroup ? groups.filter(gr => gr.codes.includes(addToGroup)) : []
 
   return (
-    <ScrollView contentContainerClassName="pt-5 gap-2">
+    <ScrollView contentContainerClassName="pt-2 gap-2">
       {groupsWithCode.length > 0 && (
         <>
           <Animated.View
             layout={LinearTransition}
-            className="gap-2 px-2"
+            className="gap-2 px-2 mt-3"
           >
             <UText
-              className="leading-tight text-muted pl-1"
-              style={backgroundWithColor}
+              className="leading-tight text-muted"
+              style={text}
             >
               <Trans
                 i18nKey="lineInGroups"
@@ -185,8 +194,8 @@ export const GroupsScreen = () => {
                 components={{
                   code: (
                     <UText
-                      className="text-lg font-bold leading-tight text-muted"
-                      style={backgroundWithColor}
+                      className="text-lg font-inter-semibold leading-tight"
+                      style={text}
                     />
                   ),
                 }}

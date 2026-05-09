@@ -63,4 +63,7 @@ export default {
   thatsIt: 'That\'s it!',
   next: 'Next',
   goToSearch: 'Go to search',
+  groups: 'Groups',
+  chooseActiveGroup: 'Choose the active group',
+  routes: 'Routes',
 }

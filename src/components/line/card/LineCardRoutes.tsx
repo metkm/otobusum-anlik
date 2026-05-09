@@ -1,5 +1,6 @@
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FlatList, ListRenderItem, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -58,6 +59,7 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
 export const LineCardRoutes = () => {
   const routeSheet = useRef<TrueSheet>(null)
 
+  const { t } = useTranslation()
   const { code } = useLine()
   const { query: routesQuery, route, routeCode, otherDirectionRoute } = useLineRoutes()
   const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
@@ -114,12 +116,18 @@ export const LineCardRoutes = () => {
             ref={routeSheet}
             scrollable
             detents={[0.5, 1]}
+            header={(
+              <View className="p-2 pt-5 border-b border-muted">
+                <UText className="text-lg font-inter-semibold leading-tight">{t('routes')}</UText>
+              </View>
+            )}
+            contentContainerClassName="pt-0"
           >
             <FlatList
               data={sortedRoutes}
               renderItem={renderItem}
               extraData={routeCode}
-              contentContainerClassName="px-2 gap-2"
+              contentContainerClassName="px-2 pt-2 gap-2"
             />
           </USheet>
         )}

@@ -20,7 +20,7 @@ export const LineCardName = () => {
   return (
     <View className="flex-row items-center gap-2 shrink grow overflow-hidden">
       <UText
-        className="font-bold text-lg"
+        className="font-inter-semibold text-lg"
         style={color}
       >
         {code}
