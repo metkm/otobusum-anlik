@@ -66,4 +66,5 @@ export default {
   groups: 'Groups',
   chooseActiveGroup: 'Choose the active group',
   routes: 'Routes',
+  addLineToGroup: 'Add {{code}} to group',
 }

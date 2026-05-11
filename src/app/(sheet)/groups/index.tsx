@@ -138,13 +138,10 @@ export const GroupsScreen = () => {
   const groupId = useLineStore(useShallow(state => state.getGroupId()))
   const groups = useLineStore(useShallow(state => state.getGroups()))
 
-  const text = theme?.text({ variant: 'ghost' })
+  const text = theme?.text({ variant: 'soft' })
   const background = theme?.background({ variant: 'ghost' })
 
   useEffect(() => {
-    if (addToGroup)
-      return
-
     const options: Partial<TrueSheetNavigationOptions> = {
       backgroundColor: background?.backgroundColor ?? backgroundDefault as string | undefined,
       footer: (
@@ -165,7 +162,7 @@ export const GroupsScreen = () => {
       header: (
         <View className="p-2 pt-5 border-b border-b-muted">
           <UText className="text-lg font-inter-semibold leading-tight">{t('groups')}</UText>
-          <UText className="text-xs text-muted leading-tight">{t('chooseActiveGroup')}</UText>
+          <UText className="text-xs text-muted leading-tight">{addToGroup ? t('addLineToGroup', { code: addToGroup }) : t('chooseActiveGroup')}</UText>
         </View>
       ),
     }
@@ -182,19 +179,16 @@ export const GroupsScreen = () => {
         <>
           <Animated.View
             layout={LinearTransition}
-            className="gap-2 px-2 mt-3"
+            className="gap-2 px-2"
           >
-            <UText
-              className="leading-tight text-muted"
-              style={text}
-            >
+            <UText className="text-muted text-xs">
               <Trans
                 i18nKey="lineInGroups"
                 values={{ code: addToGroup }}
                 components={{
                   code: (
                     <UText
-                      className="text-lg font-inter-semibold leading-tight"
+                      className="font-inter-semibold leading-tight"
                       style={text}
                     />
                   ),
@@ -221,7 +215,7 @@ export const GroupsScreen = () => {
           {defaultGroups.length > 0 && (
             <Animated.View
               layout={LinearTransition}
-              className="h-0.5 bg-muted"
+              className="h-px bg-(--ui-border-muted)"
             />
           )}
         </>

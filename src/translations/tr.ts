@@ -58,7 +58,7 @@ export default {
   boardingStep3Description: 'Otobüs hatlarını farklı gruplara istediğin şekilde ekleyebilirsin.',
   welcome: 'Hoşgeldin',
   getStarted: 'Başlayalım!',
-  lineInGroups: '<code>{{code}}</code>\'in olduğu gruplar:',
+  lineInGroups: '<code>{{code}}</code>\ olan gruplar:',
   back: 'Geri',
   thatsIt: 'Bu kadar!',
   next: 'Sıradaki',
@@ -66,4 +66,5 @@ export default {
   groups: 'Gruplar',
   chooseActiveGroup: 'Aktif grubu seç',
   routes: 'Güzergahlar',
+  addLineToGroup: '{{code}} ekleyeceğin grubu seç',
 }
