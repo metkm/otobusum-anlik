@@ -18,6 +18,7 @@ export interface SettingsStore {
   mapStyle?: MapStyle
   colorScheme?: ColorScheme
   showOnBoarding: boolean
+  hideMap?: boolean
   toggleMyLocation: () => void
   getMapStyle: () => { scheme: MapStyle, style: MapStyleValue }
 }
@@ -33,6 +34,7 @@ export const useSettingsStore = create(
         mapStyle: undefined,
         colorScheme: undefined,
         showOnBoarding: true,
+        hideMap: false,
         toggleMyLocation: async () => {
           let showLocation = get().showMyLocation
 

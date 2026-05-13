@@ -26,6 +26,7 @@ export const SettingsScreen = () => {
   const toggleMyLocation = useSettingsStore(useShallow(state => state.toggleMyLocation))
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
   const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
+  const hideMap = useSettingsStore(useShallow(state => state.hideMap))
   const city = useFilterStore(useShallow(state => state.city))
 
   const mapStyleStore = useSettingsStore(useShallow(state => state.mapStyle))
@@ -83,6 +84,12 @@ export const SettingsScreen = () => {
     })
   }
 
+  const toggleMap = () => {
+    useSettingsStore.setState((state) => {
+      state.hideMap = !state.hideMap
+    })
+  }
+
   return (
     <ScrollView
       className="m-safe"
@@ -101,16 +108,23 @@ export const SettingsScreen = () => {
       </UButton>
 
       <UButton
+        label="Hide Map"
+        color="neutral"
+        variant="soft"
+        size="lg"
+        onPress={toggleMap}
+      >
+        <USwitch value={hideMap} />
+      </UButton>
+
+      <UButton
         label={t('showTraffic')}
         color="neutral"
         size="lg"
         variant="soft"
         onPress={toggleTraffic}
       >
-        <USwitch
-          value={showTraffic}
-          onValueChange={toggleTraffic}
-        />
+        <USwitch value={showTraffic} />
       </UButton>
 
       <UButton

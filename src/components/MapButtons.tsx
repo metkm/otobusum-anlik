@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
+import Animated, { useSharedValue, withSpring } from 'react-native-reanimated'
 import { withUniwind } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -9,15 +9,17 @@ import { UButton } from './u/UButton'
 import { useMap } from '@/composables'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
 import { useLineStore, useSettingsStore } from '@/stores'
+import { cn } from '@/utils/cn'
 
 const AnimatedGestureHandlerRootView = Animated.createAnimatedComponent(withUniwind(GestureHandlerRootView))
 
 export const MapButtons = () => {
   const { map, camera } = useMap()
 
-  const bearing = useSettingsStore(useShallow(state => state.bearing))
   const lines = useLineStore(useShallow(state => state.getLines()))
   const group = useLineStore(useShallow(state => state.getLineGroup()))
+  const bearing = useSettingsStore(useShallow(state => state.bearing))
+  const hideMap = useSettingsStore(useShallow(state => state.hideMap))
   const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
 
   const bottomInset = useSharedValue(8)
@@ -32,14 +34,12 @@ export const MapButtons = () => {
     )
   }, [bottomInset, lines.length])
 
-  const style = useAnimatedStyle(() => ({
-    bottom: bottomInset.value,
-  }))
-
   return (
     <AnimatedGestureHandlerRootView
-      className="left-2 bottom-2 gap-2 absolute z-10 items-start"
-      style={style}
+      className={cn(
+        'items-start pl-2 gap-2',
+        hideMap && 'flex-row',
+      )}
       pointerEvents="box-none"
     >
       {bearing !== 0 && (
@@ -70,7 +70,6 @@ export const MapButtons = () => {
         size="lg"
         color="neutral"
         style={{ elevation: 2 }}
-        className="bg-default"
       />
 
       {lines.length > 1 && (
@@ -82,7 +81,6 @@ export const MapButtons = () => {
           onPress={() => {
             lines.forEach(code => changeRouteDirection(code))
           }}
-          className="bg-default"
         />
       )}
 
@@ -93,7 +91,6 @@ export const MapButtons = () => {
         size="lg"
         to="/groups"
         label={group?.name}
-        className="bg-default"
       />
     </AnimatedGestureHandlerRootView>
   )

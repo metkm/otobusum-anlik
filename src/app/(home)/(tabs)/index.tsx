@@ -6,25 +6,30 @@ import { LineCards } from '@/components/line/LineCards'
 import { LineMarkers } from '@/components/line/LineMarkers'
 import { Map } from '@/components/Map'
 import { MapButtons } from '@/components/MapButtons'
+import { MapOverlay } from '@/components/MapOverlay'
 
 import { useSettingsStore } from '@/stores'
 
 export const HomeScreen = () => {
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
+  const hideMap = useSettingsStore(useShallow(state => state.hideMap))
 
   return (
-    <>
-      <Map>
-        <LineMarkers />
-        {showMyLocation && <UserLocation heading />}
-      </Map>
+    <View className="flex-col flex-1">
+      {
+        !hideMap && (
+          <Map>
+            <LineMarkers />
+            {showMyLocation && <UserLocation heading />}
+          </Map>
+        )
+      }
 
-      <MapButtons />
-
-      <View className="absolute bottom-0">
+      <MapOverlay>
+        <MapButtons />
         <LineCards />
-      </View>
-    </>
+      </MapOverlay>
+    </View>
   )
 }
 

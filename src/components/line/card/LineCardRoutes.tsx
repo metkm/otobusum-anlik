@@ -89,7 +89,7 @@ export const LineCardRoutes = () => {
   }
 
   return (
-    <View className="flex-row items-center gap-2 grow ">
+    <View className="flex-row items-center gap-2">
       <UButton
         icon="repeat"
         variant="soft"

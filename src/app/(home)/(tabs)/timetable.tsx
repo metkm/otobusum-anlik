@@ -3,7 +3,6 @@ import { View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
-import { LineCards } from '@/components/line/LineCards'
 import { LineTimetable } from '@/components/line/LineTimetable'
 import { UButton } from '@/components/u/UButton'
 import { CarouselContext, UCarousel } from '@/components/u/UCarousel'
@@ -20,7 +19,7 @@ const LineTimetables = () => {
 
   if (lines.length < 1) {
     return (
-      <View className="flex items-center justify-center grow gap-2 p-2">
+      <View className="flex items-center justify-center gap-2 p-2">
         <UText className="text-muted font-inter-medium text-center max-w-xs">{t('timetableEmpty')}</UText>
 
         <UButton
@@ -55,7 +54,6 @@ export const TimetableScreen = () => {
   return (
     <View className="mt-safe mx-safe pt-2 flex-1">
       <CarouselContext value={offset}>
-        <LineCards />
         <LineTimetables />
       </CarouselContext>
     </View>
