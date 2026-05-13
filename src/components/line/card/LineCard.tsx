@@ -80,7 +80,6 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
           contentContainerClassName="px-2 gap-2"
           initialNumToRender={2}
           maxToRenderPerBatch={3}
-          removeClippedSubviews
           fadingEdgeLength={10}
           windowSize={2}
         />
