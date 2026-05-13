@@ -1,6 +1,5 @@
 import { View, ViewProps } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
-import { useShallow } from 'zustand/react/shallow'
 
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
 import { UIcon } from '@/components/u/UIcon'
@@ -12,7 +11,6 @@ import { LineCardName } from './LineCardName'
 import { LineCardRoutes } from './LineCardRoutes'
 
 import { useLineBuses, useLineStops, useLineTheme } from '@/composables'
-import { useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
 const ErrorState = ({ message }: { message?: string }) => {
@@ -28,7 +26,6 @@ const ErrorState = ({ message }: { message?: string }) => {
 export const LineCard = ({ className, style, ...props }: ViewProps) => {
   const { buses } = useLineBuses()
   const { query: lineStopsQuery } = useLineStops()
-  const hideMap = useSettingsStore(useShallow(state => state.hideMap))
   const theme = useLineTheme()
 
   const background = theme?.backgroundWithColor({ variant: 'ghost' })
@@ -37,7 +34,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
 
   return (
     <View
-      className={cn('bg-muted p-2 rounded-md gap-2', className)}
+      className={cn('flex flex-col bg-muted p-2 rounded-md gap-2', className)}
       style={[{ elevation: 2 }, background, style]}
       {...props}
     >
@@ -79,11 +76,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
               </UText>
             </View>
           )}
-          className={cn(
-            'grow',
-            // 'flex-1',
-            !hideMap && 'max-h-24',
-          )}
+          className="grow"
           contentContainerClassName="px-2 gap-2"
           initialNumToRender={2}
           maxToRenderPerBatch={3}

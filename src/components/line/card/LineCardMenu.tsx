@@ -9,7 +9,7 @@ import { USheet } from '@/components/u/USheet'
 import { UText } from '@/components/u/UText'
 
 import { useLine, useLineNews, useLineTheme } from '@/composables'
-import { useFilterStore, useLineStore, useThemeStore } from '@/stores'
+import { useFilterStore, useLineStore, useSettingsStore, useThemeStore } from '@/stores'
 
 export const LineCardMenu = () => {
   const { code } = useLine()
@@ -21,6 +21,7 @@ export const LineCardMenu = () => {
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
   const deleteLine = useLineStore(useShallow(state => state.deleteLine))
   const createTheme = useThemeStore(useShallow(state => state.createTheme))
+  const lineCardExpanded = useSettingsStore(useShallow(state => state.lineCardExpanded))
 
   const menuSheet = useRef<TrueSheet>(null)
   const announcementsSheet = useRef<TrueSheet>(null)
@@ -107,6 +108,19 @@ export const LineCardMenu = () => {
             className="size-4 rounded-md"
           />
         </UButton>
+
+        <UButton
+          label={t(lineCardExpanded ? 'shrink' : 'expand')}
+          icon={lineCardExpanded ? 'shrink' : 'expand'}
+          size="lg"
+          block
+          variant="soft"
+          onPress={() => {
+            useSettingsStore.setState((state) => {
+              state.lineCardExpanded = !state.lineCardExpanded
+            })
+          }}
+        />
 
         <UButton
           label={t('deleteLine')}

@@ -68,4 +68,6 @@ export default {
   routes: 'Güzergahlar',
   addLineToGroup: '{{code}} ekleyeceğin grubu seç',
   hideMap: 'Haritayı gizle',
+  expand: 'Genişlet',
+  shrink: 'Küçült',
 }

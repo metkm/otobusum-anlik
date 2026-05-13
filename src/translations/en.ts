@@ -68,4 +68,6 @@ export default {
   routes: 'Routes',
   addLineToGroup: 'Add {{code}} to group',
   hideMap: 'Hide map',
+  expand: 'Expand',
+  shrink: 'Shrink',
 }
