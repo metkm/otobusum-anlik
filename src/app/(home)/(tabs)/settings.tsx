@@ -108,7 +108,7 @@ export const SettingsScreen = () => {
       </UButton>
 
       <UButton
-        label="Hide Map"
+        label={t('hideMap')}
         color="neutral"
         variant="soft"
         size="lg"

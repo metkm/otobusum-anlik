@@ -67,4 +67,5 @@ export default {
   chooseActiveGroup: 'Aktif grubu seç',
   routes: 'Güzergahlar',
   addLineToGroup: '{{code}} ekleyeceğin grubu seç',
+  hideMap: 'Haritayı gizle',
 }

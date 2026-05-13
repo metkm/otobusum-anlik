@@ -67,4 +67,5 @@ export default {
   chooseActiveGroup: 'Choose the active group',
   routes: 'Routes',
   addLineToGroup: 'Add {{code}} to group',
+  hideMap: 'Hide map',
 }
