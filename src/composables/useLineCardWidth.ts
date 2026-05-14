@@ -13,11 +13,15 @@ export const useLineCardWidth = () => {
     spacing = 4
   }
 
-  const isOneElement = lines.length < 2
-  const cardWidth = width - (isOneElement ? 0 : spacing * 6)
+  const gap = spacing * 2
+  const sidePeek = spacing * 4
+  const cardWidth = lines.length > 1 ? width - sidePeek * 2 : width
+
+  const snapInterval = cardWidth - (spacing * 2) + (sidePeek / 2)
 
   return {
     cardWidth,
-    snapInterval: cardWidth - (spacing * 1),
+    gap,
+    snapInterval,
   }
 }

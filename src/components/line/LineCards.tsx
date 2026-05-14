@@ -20,7 +20,7 @@ export const LineCards = ({ className }: { className?: string, buttonsHeight?: S
 
   return (
     <UCarousel
-      snapInterval={snapInterval + 8}
+      snapInterval={snapInterval}
       style={{ width }}
       contentClassName={cn(
         'gap-2',

@@ -75,8 +75,11 @@ export const UCarousel = ({
       }, () => {
         if (!snapInterval)
           return
-        const rounded = roundToStep(clamp(offset.value, offsetLimit.value, 0), snapInterval)
-        offset.value = withSpring(rounded)
+
+        const clamped = clamp(offset.value, offsetLimit.value, 0)
+        const rounded = roundToStep(clamped, snapInterval)
+
+        offset.value = withSpring(clamp(rounded, offsetLimit.value, 0)) // clamped twice to remove padding on last element
       })
     })
 

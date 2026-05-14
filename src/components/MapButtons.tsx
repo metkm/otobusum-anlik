@@ -71,6 +71,7 @@ export const MapButtons = (props: ViewProps) => {
           size="lg"
           color="neutral"
           style={{ elevation: 2 }}
+          className="bg-default"
         />
       </AnimatedGestureHandlerRootView>
 
@@ -87,6 +88,7 @@ export const MapButtons = (props: ViewProps) => {
             onPress={() => {
               lines.forEach(code => changeRouteDirection(code))
             }}
+            className="bg-default"
           />
         </AnimatedGestureHandlerRootView>
       )}
@@ -102,6 +104,7 @@ export const MapButtons = (props: ViewProps) => {
           size="lg"
           to="/groups"
           label={group?.name}
+          className="bg-default"
         />
       </AnimatedGestureHandlerRootView>
     </View>
