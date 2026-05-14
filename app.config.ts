@@ -3,12 +3,11 @@ import { ExpoConfig } from 'expo/config'
 const config: ExpoConfig = {
   name: 'Otobüsüm Anlık',
   slug: 'otobusum-anlik',
-  version: '1.4.1',
+  version: '1.4.2',
   orientation: 'portrait',
   icon: './src/assets/icon.png',
   scheme: 'otobusum-anlik',
   userInterfaceStyle: 'automatic',
-  // newArchEnabled: false,
   extra: {
     eas: {
       projectId: '2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
