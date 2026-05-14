@@ -157,7 +157,7 @@ export const LineCardMenu = () => {
         />
 
         <UButton
-          label="Zoom"
+          label={t('zoom')}
           icon="zoom-in"
           block
           variant="soft"

@@ -70,4 +70,5 @@ export default {
   hideMap: 'Hide map',
   expand: 'Expand',
   shrink: 'Shrink',
+  zoom: 'Zoom',
 }

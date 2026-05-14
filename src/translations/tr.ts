@@ -70,4 +70,5 @@ export default {
   hideMap: 'Haritayı gizle',
   expand: 'Genişlet',
   shrink: 'Küçült',
+  zoom: 'Yakınlaştır',
 }
