@@ -19,13 +19,14 @@ export const MapButtons = (props: ViewProps) => {
   const group = useLineStore(useShallow(state => state.getLineGroup()))
   const bearing = useSettingsStore(useShallow(state => state.bearing))
   const lineCardExpanded = useSettingsStore(useShallow(state => state.lineCardExpanded))
+  const hideMap = useSettingsStore(useShallow(state => state.hideMap))
   const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
 
   return (
     <View
       className={cn(
         'pl-2 gap-2',
-        lineCardExpanded ? 'flex-row' : 'items-start',
+        (lineCardExpanded || hideMap) ? 'flex-row' : 'items-start',
       )}
       pointerEvents="box-none"
       {...props}

@@ -15,7 +15,7 @@ export const MapOverlay = ({ className, ...props }: ViewProps) => {
       className={cn(
         'absolute bottom-0',
         hideMap
-          ? 'h-full pt-safe'
+          ? 'h-full pt-safe-offset-2'
           : lineCardExpanded
             ? 'h-3/4'
             : '',
