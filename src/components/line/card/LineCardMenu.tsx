@@ -39,7 +39,7 @@ export const LineCardMenu = () => {
   }
 
   const zoomToLine = () => {
-    if (!route || !route.path)
+    if (!route || !route.path || route.path.length < 2)
       return
 
     let north = 0
