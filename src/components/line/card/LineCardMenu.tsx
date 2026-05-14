@@ -47,8 +47,6 @@ export const LineCardMenu = () => {
     let east = 0
     let west = Infinity
 
-    console.log(route.path)
-
     for (const point of route.path) {
       north = Math.max(north, point.lat)
       south = Math.min(south, point.lat)
