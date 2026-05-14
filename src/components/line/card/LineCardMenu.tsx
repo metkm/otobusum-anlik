@@ -8,14 +8,18 @@ import { UButton } from '@/components/u/UButton'
 import { USheet } from '@/components/u/USheet'
 import { UText } from '@/components/u/UText'
 
-import { useLine, useLineNews, useLineTheme } from '@/composables'
+import { useLine, useLineNews, useLineTheme, useMap } from '@/composables'
+import { useLineRoutes } from '@/composables/useLineRoutes'
 import { useFilterStore, useLineStore, useSettingsStore, useThemeStore } from '@/stores'
 
 export const LineCardMenu = () => {
   const { code } = useLine()
   const { news } = useLineNews()
   const { t } = useTranslation()
+  const { camera } = useMap()
+
   const theme = useLineTheme()
+  const { route } = useLineRoutes()
 
   const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
@@ -32,6 +36,38 @@ export const LineCardMenu = () => {
 
   const presentAnnouncements = () => {
     announcementsSheet.current?.present()
+  }
+
+  const zoomToLine = () => {
+    if (!route || !route.path)
+      return
+
+    let north = 0
+    let south = Infinity
+    let east = 0
+    let west = Infinity
+
+    console.log(route.path)
+
+    for (const point of route.path) {
+      north = Math.max(north, point.lat)
+      south = Math.min(south, point.lat)
+
+      east = Math.max(east, point.lng)
+      west = Math.min(west, point.lng)
+    }
+
+    camera.current?.fitBounds(
+      [west, south, east, north],
+      {
+        duration: 1000,
+        padding: {
+          bottom: 120,
+          left: 25,
+          right: 25,
+        },
+      },
+    )
   }
 
   return (
@@ -120,6 +156,15 @@ export const LineCardMenu = () => {
               state.lineCardExpanded = !state.lineCardExpanded
             })
           }}
+        />
+
+        <UButton
+          label="Zoom"
+          icon="zoom-in"
+          block
+          variant="soft"
+          size="lg"
+          onPress={zoomToLine}
         />
 
         <UButton
