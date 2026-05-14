@@ -1,7 +1,6 @@
-import { useEffect } from 'react'
+import { ViewProps, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import Animated, { useSharedValue, withSpring } from 'react-native-reanimated'
-import { withUniwind } from 'uniwind'
+import Animated, { createAnimatedComponent, LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from './u/UButton'
@@ -11,87 +10,99 @@ import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
 import { useLineStore, useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
-const AnimatedGestureHandlerRootView = Animated.createAnimatedComponent(withUniwind(GestureHandlerRootView))
+const AnimatedGestureHandlerRootView = createAnimatedComponent(GestureHandlerRootView)
 
-export const MapButtons = () => {
+export const MapButtons = (props: ViewProps) => {
   const { map, camera } = useMap()
 
   const lines = useLineStore(useShallow(state => state.getLines()))
   const group = useLineStore(useShallow(state => state.getLineGroup()))
   const bearing = useSettingsStore(useShallow(state => state.bearing))
-  const hideMap = useSettingsStore(useShallow(state => state.hideMap))
+  const lineCardExpanded = useSettingsStore(useShallow(state => state.lineCardExpanded))
   const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
 
-  const bottomInset = useSharedValue(8)
-
-  useEffect(() => {
-    bottomInset.value = withSpring(
-      lines.length < 1
-        ? 8
-        : lines.length < 2
-          ? 198
-          : 204,
-    )
-  }, [bottomInset, lines.length])
-
   return (
-    <AnimatedGestureHandlerRootView
+    <View
       className={cn(
-        'items-start pl-2 gap-2',
-        hideMap && 'flex-row',
+        'pl-2 gap-2',
+        lineCardExpanded ? 'flex-row' : 'items-start',
       )}
       pointerEvents="box-none"
+      {...props}
     >
       {bearing !== 0 && (
-        <Animated.View entering={EnterScaleIn} exiting={ExitScaleOut}>
-          <UButton
-            icon="compass"
-            size="lg"
-            color="neutral"
-            style={{ elevation: 2 }}
-            className="bg-default"
-            onPress={async () => {
-              const center = await map.current?.getCenter()
-              if (!center)
-                return
+        <Animated.View
+          entering={EnterScaleIn}
+          exiting={ExitScaleOut}
+        >
+          <AnimatedGestureHandlerRootView
+            layout={LinearTransition}
+            style={{ width: 'auto' }}
+          >
+            <UButton
+              icon="compass"
+              size="lg"
+              color="neutral"
+              style={{ elevation: 2 }}
+              className="bg-default"
+              onPress={async () => {
+                const center = await map.current?.getCenter()
+                if (!center)
+                  return
 
-              camera.current?.easeTo({
-                center,
-                bearing: 0,
-              })
-            }}
-          />
+                camera.current?.easeTo({
+                  center,
+                  bearing: 0,
+                })
+              }}
+            />
+          </AnimatedGestureHandlerRootView>
         </Animated.View>
       )}
 
-      <UButton
-        icon="search"
-        to="/search"
-        size="lg"
-        color="neutral"
-        style={{ elevation: 2 }}
-      />
+      <AnimatedGestureHandlerRootView
+        layout={LinearTransition}
+        style={{ width: 'auto' }}
+      >
+        <UButton
+          icon="search"
+          to="/search"
+          size="lg"
+          color="neutral"
+          style={{ elevation: 2 }}
+        />
+      </AnimatedGestureHandlerRootView>
 
       {lines.length > 1 && (
+        <AnimatedGestureHandlerRootView
+          layout={LinearTransition}
+          style={{ width: 'auto' }}
+        >
+          <UButton
+            icon="repeat"
+            color="neutral"
+            style={{ elevation: 2 }}
+            size="lg"
+            onPress={() => {
+              lines.forEach(code => changeRouteDirection(code))
+            }}
+          />
+        </AnimatedGestureHandlerRootView>
+      )}
+
+      <AnimatedGestureHandlerRootView
+        layout={LinearTransition}
+        style={{ width: 'auto' }}
+      >
         <UButton
-          icon="repeat"
+          icon="component"
           color="neutral"
           style={{ elevation: 2 }}
           size="lg"
-          onPress={() => {
-            lines.forEach(code => changeRouteDirection(code))
-          }}
+          to="/groups"
+          label={group?.name}
         />
-      )}
-
-      <UButton
-        icon="component"
-        color="neutral"
-        style={{ elevation: 2 }}
-        size="lg"
-        to="/groups"
-        label={group?.name}
-      />
-    </AnimatedGestureHandlerRootView>
+      </AnimatedGestureHandlerRootView>
+    </View>
   )
 }

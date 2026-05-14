@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native'
-import Animated, { LinearTransition } from 'react-native-reanimated'
+import Animated, { LinearTransition, SharedValue } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UCarousel } from '../u/UCarousel'
@@ -12,9 +12,9 @@ import { ExitScaleOut } from '@/constants/animation'
 import { useLineStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
-const width = Dimensions.get('window').width
+const { width } = Dimensions.get('window')
 
-export const LineCards = ({ className }: { className?: string }) => {
+export const LineCards = ({ className }: { className?: string, buttonsHeight?: SharedValue<number> }) => {
   const { cardWidth, snapInterval } = useLineCardWidth()
   const lines = useLineStore(useShallow(state => state.getLines()))
 
@@ -26,7 +26,7 @@ export const LineCards = ({ className }: { className?: string }) => {
         'gap-2',
         lines.length > 1 ? 'p-2 pt-0' : 'p-0',
       )}
-      className="grow"
+      className={className}
     >
       {lines.map(code => (
         <Animated.View

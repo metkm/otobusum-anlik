@@ -15,7 +15,7 @@ export const HomeScreen = () => {
   const hideMap = useSettingsStore(useShallow(state => state.hideMap))
 
   return (
-    <View className="flex-col flex-1">
+    <View className="flex-1">
       {
         !hideMap && (
           <Map>
@@ -25,9 +25,9 @@ export const HomeScreen = () => {
         )
       }
 
-      <MapOverlay>
+      <MapOverlay className="gap-2">
         <MapButtons />
-        <LineCards />
+        <LineCards className="flex-1" />
       </MapOverlay>
     </View>
   )

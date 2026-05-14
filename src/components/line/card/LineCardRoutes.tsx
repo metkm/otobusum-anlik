@@ -2,6 +2,7 @@ import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlatList, ListRenderItem, View } from 'react-native'
+import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
@@ -89,7 +90,7 @@ export const LineCardRoutes = () => {
   }
 
   return (
-    <View className="flex-row items-center gap-2">
+    <Animated.View layout={LinearTransition} className="flex-row items-center gap-2">
       <UButton
         icon="repeat"
         variant="soft"
@@ -131,6 +132,6 @@ export const LineCardRoutes = () => {
             />
           </USheet>
         )}
-    </View>
+    </Animated.View>
   )
 }

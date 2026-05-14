@@ -13,14 +13,15 @@ export const MapOverlay = ({ className, ...props }: ViewProps) => {
     <Animated.View
       layout={LinearTransition}
       className={cn(
-        'gap-2 items-start',
+        'absolute bottom-0',
         hideMap
-          ? 'flex-1 pt-safe'
+          ? 'h-full pt-safe'
           : lineCardExpanded
-            ? `absolute bottom-0 top-[calc(env(safe-area-inset-top)+100)]`
-            : 'absolute bottom-0 max-h-92',
+            ? 'h-3/4'
+            : '',
         className,
       )}
+      pointerEvents="box-none"
       {...props}
     />
   )

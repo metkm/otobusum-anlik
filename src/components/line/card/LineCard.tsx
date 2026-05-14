@@ -1,5 +1,5 @@
 import { View, ViewProps } from 'react-native'
-import { FlatList } from 'react-native-gesture-handler'
+import Animated, { LinearTransition } from 'react-native-reanimated'
 
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
 import { UIcon } from '@/components/u/UIcon'
@@ -24,8 +24,8 @@ const ErrorState = ({ message }: { message?: string }) => {
 }
 
 export const LineCard = ({ className, style, ...props }: ViewProps) => {
-  const { buses } = useLineBuses()
   const { query: lineStopsQuery } = useLineStops()
+  const { buses } = useLineBuses()
   const theme = useLineTheme()
 
   const background = theme?.backgroundWithColor({ variant: 'ghost' })
@@ -33,8 +33,9 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
   const color = theme?.text({ variant: 'ghost' })
 
   return (
-    <View
-      className={cn('flex flex-col bg-muted p-2 rounded-md gap-2', className)}
+    <Animated.View
+      layout={LinearTransition}
+      className={cn('bg-muted p-2 rounded-md gap-2', className)}
       style={[{ elevation: 2 }, background, style]}
       {...props}
     >
@@ -48,7 +49,8 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
         loading={() => <SkeletonLineStops />}
         error={error => <ErrorState message={error.message} />}
       >
-        <FlatList
+        <Animated.FlatList
+          layout={LinearTransition}
           data={lineStopsQuery.data || []}
           renderItem={({ item, index }) => (
             <View className="flex-row items-center gap-2">
@@ -76,7 +78,7 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
               </UText>
             </View>
           )}
-          className="grow"
+          className="h-28"
           contentContainerClassName="px-2 gap-2"
           initialNumToRender={2}
           maxToRenderPerBatch={3}
@@ -86,6 +88,6 @@ export const LineCard = ({ className, style, ...props }: ViewProps) => {
       </UQueryState>
 
       <LineCardRoutes />
-    </View>
+    </Animated.View>
   )
 }
