@@ -38,7 +38,7 @@ export const LineCards = ({ className }: { className?: string, buttonsHeight?: S
             <LineCard
               style={{ width: cardWidth }}
               className={cn(
-                'flex-1',
+                'grow',
                 lines.length < 2 && 'rounded-none',
               )}
             />

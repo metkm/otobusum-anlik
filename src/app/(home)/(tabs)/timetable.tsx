@@ -3,6 +3,7 @@ import { View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
+import { LineCards } from '@/components/line/LineCards'
 import { LineTimetable } from '@/components/line/LineTimetable'
 import { UButton } from '@/components/u/UButton'
 import { CarouselContext, UCarousel } from '@/components/u/UCarousel'
@@ -54,6 +55,7 @@ export const TimetableScreen = () => {
   return (
     <View className="mt-safe mx-safe pt-2 flex-1">
       <CarouselContext value={offset}>
+        <LineCards />
         <LineTimetables />
       </CarouselContext>
     </View>
