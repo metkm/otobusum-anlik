@@ -47,6 +47,7 @@ export default {
   other: 'Other',
   city: 'City',
   emptySearch: 'No results found',
+  emptySearchDescription: 'Maybe try for searching something else?',
   directionToStop: 'Directions to this stop',
   refreshColors: 'Refresh colors',
   neededCharacterCountToSearch: '{{count}} more characters are needed to search',

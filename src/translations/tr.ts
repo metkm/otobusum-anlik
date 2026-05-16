@@ -47,6 +47,7 @@ export default {
   other: 'Diğer',
   city: 'Şehir',
   emptySearch: 'Herhangi bir sonuç bulunamadı',
+  emptySearchDescription: 'Belki başka bir şey aramayı deneyebilirsin?',
   directionToStop: 'Bu durağa yol tarifi',
   refreshColors: 'Renkleri yenile',
   neededCharacterCountToSearch: 'Aramak için {{count}} karakter daha lazım',

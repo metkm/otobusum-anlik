@@ -5,6 +5,7 @@ import { FlatList, View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
+import { UEmpty } from '@/components/u/UEmpty'
 import { UInput } from '@/components/u/UInput'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
@@ -107,9 +108,15 @@ export const SearchScreen = () => {
       )}
 
       <UQueryState query={searchQuery}>
+
         {(results.length < 1 && searchQuery.isSuccess)
           ? (
-              <UText className="text-muted font-inter-medium  grow text-center align-middle">{t('emptySearch')}</UText>
+              <UEmpty
+                title={t('emptySearch')}
+                description={t('emptySearchDescription')}
+                icon="search"
+                className="mt-2 grow"
+              />
             )
           : (
               <FlatList

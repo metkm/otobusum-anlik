@@ -80,6 +80,9 @@
   --border-color-default: var(--ui-border);
   --border-color-muted: var(--ui-border-muted);
 
+  --ring-color-default: var(--ui-border);
+  --ring-color-muted: var(--ui-border-muted);
+
   --color-primary: var(--ui-primary);
   --color-error: var(--ui-error);
   --color-bg: var(--ui-bg);

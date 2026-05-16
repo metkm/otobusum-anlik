@@ -6,6 +6,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { SkeletonTimetable } from '../u/skeleton/SkeletonTimetable'
 import { UButton } from '../u/UButton'
+import { UEmpty } from '../u/UEmpty'
 import { UQueryState } from '../u/UQueryState'
 import { UText } from '../u/UText'
 
@@ -213,7 +214,11 @@ export const LineTimetable = ({ className }: ViewProps) => {
                 </ScrollView>
               )
             : (
-                <UText className="text-muted font-inter-medium text-center align-middle grow">{t('timetableEmptyRange')}</UText>
+                <UEmpty
+                  title={t('timetableEmptyRange')}
+                  icon="clock-fading"
+                  className="grow"
+                />
               )
         }
 
