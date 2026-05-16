@@ -80,7 +80,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
   }, [lineTimetableQuery.data, day])
 
   const groupedByHour = groupDeparturesByHour(filteredData)
-  const hourEntries = Object.entries(groupedByHour)
+  const hourEntries = Object.entries(groupedByHour).sort()
 
   const cancelledTimes = lineNewsQuery.data?.map((ann) => {
     if (!ann.MESAJ.includes('dan Saat')) return
