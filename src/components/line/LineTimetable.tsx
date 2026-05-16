@@ -78,6 +78,9 @@ export const LineTimetable = ({ className }: ViewProps) => {
     return Array.from(new Set(times))
   }, [lineTimetableQuery.data, day])
 
+  const groupedByHour = groupDeparturesByHour(filteredData)
+  const hourEntries = Object.entries(groupedByHour)
+
   const cancelledTimes = lineNewsQuery.data?.map((ann) => {
     if (!ann.MESAJ.includes('dan Saat')) return
 
@@ -93,8 +96,6 @@ export const LineTimetable = ({ className }: ViewProps) => {
     const time = msgSplit.at(1)?.split('de hareket etmesi planlanan').at(0)?.trim()
     return time
   })
-
-  const groupedByHour = groupDeparturesByHour(filteredData)
 
   const backgroundWithColor = theme?.backgroundWithColor()
   const backgroundMuted = theme?.background({ variant: 'soft' })
@@ -174,39 +175,48 @@ export const LineTimetable = ({ className }: ViewProps) => {
         query={lineTimetableQuery}
         loading={() => <SkeletonTimetable />}
       >
-        <ScrollView fadingEdgeLength={10}>
-          {Object.entries(groupedByHour).map(([hour, minutes], index) => (
-            <View
-              key={hour}
-              className="flex-row items-center shrink p-2 gap-2"
-              style={(index % 2 !== 0) && backgroundMuted}
-            >
-              <UText
-                className="font-inter-medium w-7 h-full min-h-7 text-center align-middle rounded-md"
-                style={backgroundWithColor}
-              >
-                {hour}
-              </UText>
+        {
+          hourEntries.length > 1
+            ? (
+                <ScrollView fadingEdgeLength={10}>
+                  {hourEntries.map(([hour, minutes], index) => (
+                    <View
+                      key={hour}
+                      className="flex-row items-center shrink p-2 gap-2"
+                      style={(index % 2 !== 0) && backgroundMuted}
+                    >
+                      <UText
+                        className="font-inter-medium w-7 h-full min-h-7 text-center align-middle rounded-md"
+                        style={backgroundWithColor}
+                      >
+                        {hour}
+                      </UText>
 
-              <View className="flex-row flex-wrap items-center gap-2 shrink">
-                {minutes.map(min => (
-                  <UText
-                    key={min}
-                    className="leading-tight"
-                    style={[
-                      cancelledTimes?.includes(`${hour}:${min}`) && {
-                        textDecorationLine: 'line-through',
-                        opacity: 0.5,
-                      },
-                    ]}
-                  >
-                    {min}
-                  </UText>
-                ))}
-              </View>
-            </View>
-          ))}
-        </ScrollView>
+                      <View className="flex-row flex-wrap items-center gap-2 shrink">
+                        {minutes.map(min => (
+                          <UText
+                            key={min}
+                            className="leading-tight"
+                            style={[
+                              cancelledTimes?.includes(`${hour}:${min}`) && {
+                                textDecorationLine: 'line-through',
+                                opacity: 0.5,
+                              },
+                            ]}
+                          >
+                            {min}
+                          </UText>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              )
+            : (
+                <UText className="text-muted font-inter-medium text-center align-middle grow">{t('timetableEmptyRange')}</UText>
+              )
+        }
+
       </UQueryState>
     </View>
   )
