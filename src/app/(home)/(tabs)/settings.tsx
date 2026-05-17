@@ -12,6 +12,7 @@ import { USheet } from '@/components/u/USheet'
 import { USwitch } from '@/components/u/USwitch'
 import { UText } from '@/components/u/UText'
 
+import { queryClient } from '@/api/client'
 import { MapStyle, MapStyleValue, mapStyles } from '@/constants/mapStyles'
 import { useFilterStore, useSettingsStore } from '@/stores'
 import { City } from '@/types/city'
@@ -88,6 +89,10 @@ export const SettingsScreen = () => {
     useSettingsStore.setState((state) => {
       state.hideMap = !state.hideMap
     })
+  }
+
+  const clearCache = () => {
+    queryClient.removeQueries()
   }
 
   return (
@@ -230,6 +235,14 @@ export const SettingsScreen = () => {
       </USheet>
 
       <UText className="text-lg font-inter-medium ml-2">{t('other')}</UText>
+
+      <UButton
+        label="Clear Cache"
+        onPress={clearCache}
+        variant="soft"
+        color="neutral"
+        size="lg"
+      />
 
       <UButton
         label={t('license', { city: 'istanbul' })}
