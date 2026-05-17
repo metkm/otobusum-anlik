@@ -4,7 +4,7 @@ import { SkeletonPulse } from './SkeletonPulse'
 
 export const SkeletonLineStops = () => {
   return (
-    <View className="gap-2 px-2">
+    <View className="h-28 overflow-hidden gap-2 px-2">
       {[1, 2, 3].map(i => (
         <View key={i} className="flex-row items-center gap-2">
           <SkeletonPulse className="h-6 w-6.5" />
