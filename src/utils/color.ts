@@ -27,9 +27,10 @@ const hexFromHsl = (h: number, s: number, l: number) => {
   return `#${f(0)}${f(8)}${f(4)}`
 }
 
-export const createRandomTheme = () => {
-  const hslColor = createRandomHslColor()
-  const hexColor = hexFromHsl(...hslColor)
+export const createRandomTheme = (hslColor?: [number, number, number]) => {
+  const color = hslColor ?? createRandomHslColor()
+
+  const hexColor = hexFromHsl(...color)
   const argbColor = argbFromHex(hexColor)
 
   return themeFromSourceColor(argbColor)

@@ -72,4 +72,6 @@ export default {
   expand: 'Genişlet',
   shrink: 'Küçült',
   zoom: 'Yakınlaştır',
+  colorPicker: 'Renk seçici',
+  clearCache: 'Önbelleği temizle',
 }

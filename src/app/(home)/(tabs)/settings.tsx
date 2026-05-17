@@ -237,7 +237,7 @@ export const SettingsScreen = () => {
       <UText className="text-lg font-inter-medium ml-2">{t('other')}</UText>
 
       <UButton
-        label="Clear Cache"
+        label={t('clearCache')}
         onPress={clearCache}
         variant="soft"
         color="neutral"

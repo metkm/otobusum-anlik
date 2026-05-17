@@ -72,4 +72,6 @@ export default {
   expand: 'Expand',
   shrink: 'Shrink',
   zoom: 'Zoom',
+  colorPicker: 'Color picker',
+  clearCache: 'Clear cache',
 }

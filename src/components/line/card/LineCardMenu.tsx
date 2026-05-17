@@ -8,7 +8,9 @@ import { UButton } from '@/components/u/UButton'
 import { USheet } from '@/components/u/USheet'
 import { UText } from '@/components/u/UText'
 
-import { useLine, useLineNews, useLineTheme, useMap } from '@/composables'
+import { LineModalsColorPicker } from '../modals/ColorPicker'
+
+import { useLine, useLineNews, useMap } from '@/composables'
 import { useLineRoutes } from '@/composables/useLineRoutes'
 import { useFilterStore, useLineStore, useSettingsStore, useThemeStore } from '@/stores'
 
@@ -17,8 +19,6 @@ export const LineCardMenu = () => {
   const { news } = useLineNews()
   const { t } = useTranslation()
   const { camera } = useMap()
-
-  const theme = useLineTheme()
   const { route } = useLineRoutes()
 
   const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
@@ -130,18 +130,19 @@ export const LineCardMenu = () => {
           }}
         />
 
-        <UButton
-          label={t('refreshColors')}
-          onPress={() => createTheme(code, true)}
-          size="lg"
-          block
-          variant="soft"
-        >
-          <View
-            style={theme?.background({ variant: 'solid' })}
-            className="size-4 rounded-md"
+        <View className="flex-row gap-2">
+          <UButton
+            label={t('refreshColors')}
+            onPress={() => createTheme(code, true)}
+            icon="palette"
+            size="lg"
+            block
+            variant="soft"
+            className="grow"
           />
-        </UButton>
+
+          <LineModalsColorPicker />
+        </View>
 
         <UButton
           label={t(lineCardExpanded ? 'shrink' : 'expand')}
