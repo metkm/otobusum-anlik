@@ -1,6 +1,13 @@
-import { ExpoConfig } from 'expo/config'
+import { ConfigContext } from 'expo/config'
+import buildProperties from 'expo-build-properties/plugin'
+import font from 'expo-font/plugin'
+import localization from 'expo-localization/plugin'
+import location from 'expo-location/plugin'
+import router from 'expo-router/plugin'
+import splashScreen from 'expo-splash-screen/plugin'
 
-const config: ExpoConfig = {
+export default ({ config }: ConfigContext) => ({
+  ...config,
   name: 'Otobüsüm Anlık',
   slug: 'otobusum-anlik',
   version: '1.4.4',
@@ -12,12 +19,6 @@ const config: ExpoConfig = {
     eas: {
       projectId: '2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
     },
-  },
-  web: {
-    favicon: './assets/icon.png',
-  },
-  ios: {
-    supportsTablet: true,
   },
   updates: {
     url: 'https://u.expo.dev/2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
@@ -34,7 +35,6 @@ const config: ExpoConfig = {
         apiKey: process.env.EXPO_PUBLIC_MAP_API,
       },
     },
-    softwareKeyboardLayoutMode: 'resize',
     adaptiveIcon: {
       foregroundImage: './src/assets/adaptive-icon.png',
       backgroundColor: '#0a0a0a',
@@ -42,46 +42,117 @@ const config: ExpoConfig = {
     package: 'com.anonymous.otobusumanlik',
   },
   plugins: [
-    'expo-router',
-    'expo-localization',
-    'expo-location',
+    router(),
+    localization(),
+    location(),
+    buildProperties({
+      android: {
+        usePrecompiledHeaders: true,
+      },
+    }),
+    splashScreen({
+      image: './src/assets/icon.png',
+      backgroundColor: '#0a0a0a',
+    }),
+    font({
+      fonts: [
+        './src/assets/fonts/Inter-Medium.ttf',
+        './src/assets/fonts/Inter-Regular.ttf',
+        './src/assets/fonts/Inter-SemiBold.ttf',
+      ],
+    }),
     '@maplibre/maplibre-react-native',
-    [
-      'expo-splash-screen',
-      {
-        image: './src/assets/icon.png',
-        backgroundColor: '#0a0a0a',
-      },
-    ],
-    [
-      'expo-navigation-bar',
-      {
-        enforceContrast: false,
-      },
-    ],
-    [
-      'expo-build-properties',
-      {
-        android: {
-          usesCleartextTraffic: true,
-        },
-      },
-    ],
-    [
-      'expo-font',
-      {
-        fonts: [
-          './src/assets/fonts/Inter-Medium.ttf',
-          './src/assets/fonts/Inter-Regular.ttf',
-          './src/assets/fonts/Inter-SemiBold.ttf',
-        ],
-      },
-    ],
   ],
   experiments: {
-    typedRoutes: true,
     reactCompiler: true,
   },
-}
+} satisfies ConfigContext['config'])
 
-export default config
+// import { ExpoConfig } from 'expo/config'
+
+// const config: ExpoConfig = {
+//   name: 'Otobüsüm Anlık',
+//   slug: 'otobusum-anlik',
+//   version: '1.4.4',
+//   orientation: 'portrait',
+//   icon: './src/assets/icon.png',
+//   scheme: 'otobusum-anlik',
+//   userInterfaceStyle: 'automatic',
+//   extra: {
+//     eas: {
+//       projectId: '2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
+//     },
+//   },
+//   web: {
+//     favicon: './assets/icon.png',
+//   },
+//   ios: {
+//     supportsTablet: true,
+//   },
+//   updates: {
+//     url: 'https://u.expo.dev/2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
+//     requestHeaders: {
+//       'expo-channel-name': 'production',
+//     },
+//   },
+//   runtimeVersion: {
+//     policy: 'appVersion',
+//   },
+//   android: {
+//     config: {
+//       googleMaps: {
+//         apiKey: process.env.EXPO_PUBLIC_MAP_API,
+//       },
+//     },
+//     softwareKeyboardLayoutMode: 'resize',
+//     adaptiveIcon: {
+//       foregroundImage: './src/assets/adaptive-icon.png',
+//       backgroundColor: '#0a0a0a',
+//     },
+//     package: 'com.anonymous.otobusumanlik',
+//   },
+//   plugins: [
+//     'expo-router',
+//     'expo-localization',
+//     'expo-location',
+//     '@maplibre/maplibre-react-native',
+//     [
+//       'expo-splash-screen',
+//       {
+//         image: './src/assets/icon.png',
+//         backgroundColor: '#0a0a0a',
+//       },
+//     ],
+//     [
+//       'expo-navigation-bar',
+//       {
+//         enforceContrast: false,
+//       },
+//     ],
+//     [
+//       'expo-build-properties',
+//       {
+//         android: {
+//           usesCleartextTraffic: true,
+//           usePrecompiledHeaders: true,
+//         },
+//       },
+//     ],
+//     [
+//       'expo-font',
+//       {
+//         fonts: [
+//           './src/assets/fonts/Inter-Medium.ttf',
+//           './src/assets/fonts/Inter-Regular.ttf',
+//           './src/assets/fonts/Inter-SemiBold.ttf',
+//         ],
+//       },
+//     ],
+//   ],
+//   experiments: {
+//     typedRoutes: true,
+//     reactCompiler: true,
+//   },
+// }
+
+// export default config

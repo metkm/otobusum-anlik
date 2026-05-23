@@ -32,6 +32,7 @@
     @variant dark {
       --ui-bg: var(--color-neutral-900);
       --ui-bg-muted: var(--color-neutral-800);
+      --ui-bg-accented: var(--color-neutral-700);
       --ui-border: var(--color-neutral-800);
       --ui-border-muted: var(--color-neutral-700);
       --ui-text-muted: var(--color-neutral-400);
@@ -44,6 +45,7 @@
     @variant light {
       --ui-bg: white;
       --ui-bg-muted: var(--color-neutral-50);
+      --ui-bg-accented: var(--color-neutral-200);
       --ui-border: var(--color-neutral-200);
       --ui-border-muted: var(--color-neutral-200);
       --ui-text-muted: var(--color-neutral-500);
@@ -64,6 +66,7 @@
 @theme inline {
   --background-color-default: var(--ui-bg);
   --background-color-muted: var(--ui-bg-muted);
+  --background-color-accented: var(--ui-bg-accented);
 
   --text-color-muted: var(--ui-text-muted);
   --text-color-default: var(--ui-text);

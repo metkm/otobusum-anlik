@@ -18,7 +18,7 @@ export interface SettingsStore {
   mapStyle?: MapStyle
   colorScheme?: ColorScheme
   showOnBoarding: boolean
-  hideMap?: boolean
+  hideMap: boolean
   lineCardExpanded?: boolean
   toggleMyLocation: () => void
   getMapStyle: () => { scheme: MapStyle, style: MapStyleValue }
