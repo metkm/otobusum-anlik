@@ -60,7 +60,8 @@ export const LineCardMenu = () => {
       {
         duration: 1000,
         padding: {
-          bottom: 120,
+          bottom: 250,
+          top: 80,
           left: 25,
           right: 25,
         },

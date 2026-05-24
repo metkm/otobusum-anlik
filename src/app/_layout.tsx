@@ -1,4 +1,4 @@
-import '../global.css'
+import '@/global.css'
 
 import { createTrueSheetNavigator, TrueSheetNavigationEventMap, TrueSheetNavigationOptions, TrueSheetNavigationState } from '@lodev09/react-native-true-sheet/navigation'
 import { ReanimatedTrueSheetProvider } from '@lodev09/react-native-true-sheet/reanimated'
