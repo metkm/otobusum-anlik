@@ -74,4 +74,5 @@ export default {
   zoom: 'Zoom',
   colorPicker: 'Color picker',
   clearCache: 'Clear cache',
+  emptyStops: 'No stops found for this line',
 }

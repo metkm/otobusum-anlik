@@ -74,4 +74,5 @@ export default {
   zoom: 'Yakınlaştır',
   colorPicker: 'Renk seçici',
   clearCache: 'Önbelleği temizle',
+  emptyStops: 'Bu hatta duraklar boş',
 }

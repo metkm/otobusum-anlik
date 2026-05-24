@@ -1,8 +1,10 @@
+import { t } from 'i18next'
 import { View } from 'react-native'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
 import { UButton } from '@/components/u/UButton'
+import { UEmpty } from '@/components/u/UEmpty'
 import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
@@ -81,6 +83,16 @@ const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
 
 export const LineCardStops = () => {
   const { query: lineStopsQuery } = useLineStops()
+
+  if (lineStopsQuery.data && lineStopsQuery.data.length < 1) {
+    return (
+      <UEmpty
+        title={t('emptyStops')}
+        icon="bus"
+        className="grow"
+      />
+    )
+  }
 
   return (
     <UQueryState

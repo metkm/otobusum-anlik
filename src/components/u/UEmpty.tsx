@@ -24,7 +24,7 @@ export const UEmpty = ({
           name={icon}
           sizeClassName="size-6"
           colorClassName="text-default"
-          className="bg-muted/50 rounded-md p-2"
+          className="bg-muted rounded-md p-2"
         />
       )}
 
