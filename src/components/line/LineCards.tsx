@@ -39,7 +39,7 @@ export const LineCards = ({ className }: { className?: string, buttonsHeight?: S
               style={{ width: cardWidth }}
               className={cn(
                 'grow',
-                lines.length < 2 && 'rounded-none',
+                lines.length < 2 && 'rounded-b-none',
               )}
             />
           </LineContext>
