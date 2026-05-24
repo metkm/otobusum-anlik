@@ -141,7 +141,7 @@ export const SettingsScreen = () => {
         onPress={() => mapStyleSheet.current?.present()}
         className="justify-between"
       >
-        <UText className="font-inter-medium">{t('mapTheme')}</UText>
+        <UText className="font-inter-medium text-xs">{t('mapTheme')}</UText>
       </UButton>
 
       <USheet
@@ -175,7 +175,7 @@ export const SettingsScreen = () => {
         onPress={() => appStyleSheet.current?.present()}
         className="justify-between"
       >
-        <UText>{t('appTheme')}</UText>
+        <UText className="font-inter-medium text-xs">{t('appTheme')}</UText>
       </UButton>
 
       <USheet
@@ -210,7 +210,7 @@ export const SettingsScreen = () => {
         className="justify-between"
         onPress={() => citySheet.current?.present()}
       >
-        <UText>{t('city')}</UText>
+        <UText className="font-inter-medium text-xs">{t('city')}</UText>
       </UButton>
 
       <USheet
