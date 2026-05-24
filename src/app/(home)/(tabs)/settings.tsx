@@ -1,10 +1,11 @@
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import Constants from 'expo-constants'
+import { Image } from 'expo-image'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-import { Uniwind } from 'uniwind'
+import { Uniwind, withUniwind } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
@@ -16,6 +17,8 @@ import { queryClient } from '@/api/client'
 import { MapStyle, MapStyleValue, mapStyles } from '@/constants/mapStyles'
 import { useFilterStore, useSettingsStore } from '@/stores'
 import { City } from '@/types/city'
+
+const StyledImage = withUniwind(Image)
 
 export const SettingsScreen = () => {
   const { t } = useTranslation()
@@ -259,6 +262,19 @@ export const SettingsScreen = () => {
         color="neutral"
         size="lg"
       />
+
+      <UButton
+        variant="soft"
+        color="neutral"
+        className="ml-auto"
+        onPress={() => Linking.openURL('https://github.com/metkm/otobusum-anlik')}
+      >
+        <StyledImage
+          source={require('@/assets/icons/github.svg')}
+          className="size-12"
+          tintColorClassName="accent-(--ui-text)"
+        />
+      </UButton>
 
       <UText className="text-muted font-inter-medium ml-auto mr-2 text-xs">
         {`${t('version')} ${Constants.expoConfig?.version}`}

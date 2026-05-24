@@ -1,6 +1,7 @@
 import { ConfigContext } from 'expo/config'
 import buildProperties from 'expo-build-properties/plugin'
 import font from 'expo-font/plugin'
+import image from 'expo-image/plugin'
 import localization from 'expo-localization/plugin'
 import location from 'expo-location/plugin'
 import router from 'expo-router/plugin'
@@ -61,6 +62,7 @@ export default ({ config }: ConfigContext) => ({
         './src/assets/fonts/Inter-SemiBold.ttf',
       ],
     }),
+    image(),
     '@maplibre/maplibre-react-native',
   ],
   experiments: {
