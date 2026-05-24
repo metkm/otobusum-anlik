@@ -60,10 +60,11 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
 export const LineCardRoutes = () => {
   const routeSheet = useRef<TrueSheet>(null)
 
+  const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
   const { t } = useTranslation()
   const { code } = useLine()
   const { query: routesQuery, route, routeCode, otherDirectionRoute } = useLineRoutes()
-  const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
+  const { buses } = useLineBuses()
 
   const sortedRoutes = [...(routesQuery.data || [])]
     .sort((a, b) => {
@@ -90,7 +91,15 @@ export const LineCardRoutes = () => {
   }
 
   return (
-    <Animated.View layout={LinearTransition} className="flex-row items-center gap-2">
+    <Animated.View
+      layout={LinearTransition}
+      className="flex-row items-center gap-2"
+    >
+      <View className="flex-row items-center gap-1.5 rounded-md p-2">
+        <UIcon name="bus-front" />
+        <UText className="text-xs font-inter-medium">{buses.length}</UText>
+      </View>
+
       <UButton
         icon="repeat"
         variant="soft"

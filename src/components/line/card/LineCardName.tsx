@@ -13,8 +13,8 @@ export const LineCardName = () => {
   const { query: lineBusesQuery } = useLineBuses()
   const { remaining } = useCountdown(lineBusesQuery.dataUpdatedAt, LINE_UPDATE_INTERVAL)
   const { t } = useTranslation()
-
   const theme = useLineTheme()
+
   const color = theme?.text({ variant: 'ghost' })
 
   return (
