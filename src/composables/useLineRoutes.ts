@@ -5,7 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useLine } from './useLine'
 
 import { CACHE_MS_2_WEEK } from '@/constants/app'
-import { useLineStore } from '@/stores'
+import { useFilterStore, useLineStore } from '@/stores'
 import { RouteCode, RouteDirection } from '@/types/line'
 
 export interface LineRoute {
@@ -21,11 +21,16 @@ export interface LineRoute {
 
 export const useLineRoutes = () => {
   const { code } = useLine()
+  const city = useFilterStore(useShallow(state => state.city))
   const routeCode = useLineStore(useShallow(state => state.getRoutes()[code])) || `${code}_G_D0` as RouteCode
 
   const query = useQuery({
     queryKey: ['line', code, 'routes'],
-    queryFn: () => ky.get<LineRoute[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${code}`).json(),
+    queryFn: () => ky.get<LineRoute[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${code}`, {
+      searchParams: {
+        city,
+      },
+    }).json(),
     staleTime: CACHE_MS_2_WEEK,
     meta: { persist: true },
   })

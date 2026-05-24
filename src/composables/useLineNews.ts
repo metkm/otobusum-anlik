@@ -3,6 +3,8 @@ import ky from 'ky'
 
 import { useLine } from './useLine'
 
+import { CACHE_MS_30_MINUTES } from '@/constants/app'
+
 interface Announcement {
   HAT: string
   HATKODU: string
@@ -44,7 +46,7 @@ export function useLineNews() {
       const responseParsed: Announcement[] = JSON.parse(innerContent)
       return responseParsed
     },
-    staleTime: 60_000 * 30,
+    staleTime: CACHE_MS_30_MINUTES,
   })
 
   const news = query.data?.filter(a => a.HATKODU === code) || []
