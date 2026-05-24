@@ -95,8 +95,8 @@ export const LineCardRoutes = () => {
       layout={LinearTransition}
       className="flex-row items-center gap-2"
     >
-      <View className="flex-row items-center gap-1.5 rounded-md p-2">
-        <UIcon name="bus-front" />
+      <View className="flex-row items-center gap-1.5 p-2">
+        <UIcon name="bus-front" colorClassName="text-default" />
         <UText className="text-xs font-inter-medium">{buses.length}</UText>
       </View>
 
