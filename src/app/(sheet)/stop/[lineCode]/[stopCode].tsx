@@ -66,7 +66,7 @@ export const StopScreen = () => {
       </View>
 
       {data.buses.length > 0 && (
-        <View>
+        <GestureHandlerRootView style={{ flexShrink: 0 }}>
           <UText>{t('linesThatUseStop')}</UText>
 
           <View className="flex-row flex-wrap gap-2 mt-1">
@@ -75,10 +75,16 @@ export const StopScreen = () => {
                 key={bus}
                 label={bus}
                 variant="soft"
+                to={{
+                  pathname: '/groups',
+                  params: {
+                    addToGroup: bus,
+                  },
+                }}
               />
             ))}
           </View>
-        </View>
+        </GestureHandlerRootView>
       )}
     </View>
   )
