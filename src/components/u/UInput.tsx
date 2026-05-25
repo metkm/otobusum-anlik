@@ -16,7 +16,7 @@ const ui = tv({
     },
   },
   slots: {
-    base: 'rounded-md px-3',
+    base: 'rounded-md px-3 grow',
     icon: 'text-muted',
   },
 })
@@ -27,6 +27,7 @@ export const UInput = ({
   icon,
   loading,
   containerClassName,
+  children,
   ...props
 }: {
   variant?: 'outline' | 'soft'
@@ -48,7 +49,7 @@ export const UInput = ({
       : undefined
 
   return (
-    <View className={cn('relative', containerClassName)}>
+    <View className={cn('relative flex-row items-center', containerClassName)}>
       <TextInput
         className={cn(
           uiBase(),
@@ -58,9 +59,13 @@ export const UInput = ({
         {...props}
       />
 
-      <View className="absolute left-2.5 inset-y-0 justify-center">
-        {_icon}
-      </View>
+      {_icon && (
+        <View className="absolute left-2.5">
+          {_icon}
+        </View>
+      )}
+
+      {children}
     </View>
   )
 }

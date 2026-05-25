@@ -2,6 +2,7 @@ import { router } from 'expo-router'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlatList, View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useDebounce } from 'use-debounce'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -100,7 +101,18 @@ export const SearchScreen = () => {
           loading={searchQuery.isFetching}
           icon="search"
           containerClassName="grow"
-        />
+        >
+          {query.length > MIN_CHARACTER_LIMIT && (
+            <GestureHandlerRootView style={{ position: 'absolute', right: 4 }}>
+              <UButton
+                icon="x"
+                variant="ghost"
+                color="neutral"
+                onPress={() => setQuery('')}
+              />
+            </GestureHandlerRootView>
+          )}
+        </UInput>
       </View>
 
       <UText className="text-center text-muted font-inter-medium text-xs">{t('selectedCity', { city })}</UText>
@@ -112,7 +124,6 @@ export const SearchScreen = () => {
       )}
 
       <UQueryState query={searchQuery}>
-
         {(results.length < 1 && searchQuery.isSuccess)
           ? (
               <UEmpty
