@@ -1,7 +1,6 @@
 import { GeoJSONSource, Layer } from '@maplibre/maplibre-react-native'
 import { router } from 'expo-router'
-// eslint-disable-next-line import/no-unresolved
-import { Feature } from 'geojson'
+import type { Feature } from 'geojson'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 

@@ -2,6 +2,7 @@ import { router } from 'expo-router'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlatList, View } from 'react-native'
+import { useDebounce } from 'use-debounce'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
@@ -70,7 +71,9 @@ export const SearchScreen = () => {
   const city = useFilterStore(useShallow(state => state.city))
   const { t } = useTranslation()
 
-  const { query: searchQuery } = useSearch(query)
+  const [debouncedQuery] = useDebounce(query, 500)
+  const { query: searchQuery } = useSearch(debouncedQuery)
+
   const results = [
     ...(searchQuery.data?.lines || []),
     ...(searchQuery.data?.stops || []),

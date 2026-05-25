@@ -13,12 +13,10 @@
   "dependencies": {
     "@blazejkustra/react-native-onboarding": "^1.0.1",
     "@expo/metro-runtime": "~56.0.12",
-    "@expo/ui": "~56.0.13",
     "@lodev09/react-native-true-sheet": "^3.10.1",
     "@maplibre/maplibre-react-native": "^11.0.1",
     "@material/material-color-utilities": "^0.4.0",
     "@react-native-async-storage/async-storage": "2.2.0",
-    "@react-native-vector-icons/common": "^13.0.0",
     "@react-native-vector-icons/get-image": "^13.0.0",
     "@react-native-vector-icons/lucide": "^13.1.0",
     "@react-navigation/native": "^7.2.4",
@@ -37,11 +35,9 @@
     "expo-linking": "~56.0.11",
     "expo-localization": "~56.0.6",
     "expo-location": "~56.0.13",
-    "expo-navigation-bar": "~56.0.3",
     "expo-router": "~56.2.6",
     "expo-splash-screen": "~56.0.10",
     "expo-status-bar": "~56.0.4",
-    "expo-system-ui": "~56.0.5",
     "expo-updates": "~56.0.16",
     "i18next": "^26.0.8",
     "immer": "^11.1.4",
@@ -66,7 +62,6 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/react": "~19.2.14",
     "eslint": "^9.39.4",
