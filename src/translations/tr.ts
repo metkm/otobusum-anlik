@@ -75,4 +75,5 @@ export default {
   colorPicker: 'Renk seçici',
   clearCache: 'Önbelleği temizle',
   emptyStops: 'Bu hatta duraklar boş',
+  expandStopsWhenScrolled: 'Durak listesini kaydırdığında otomatik olarak genişlet',
 }

@@ -14,6 +14,7 @@ export interface SettingsStore {
   initialMapBounds: LngLatBounds
   bearing: number
   showMyLocation: boolean
+  expandStopsWhenScrolled: boolean
   showTraffic: boolean
   mapStyle?: MapStyle
   colorScheme?: ColorScheme
@@ -31,6 +32,7 @@ export const useSettingsStore = create(
         initialMapBounds: [26.218823938242565, 36.08430119633523, 30.10080291867854, 42.351104713710356],
         bearing: 0,
         showMyLocation: false,
+        expandStopsWhenScrolled: false,
         showTraffic: true,
         mapStyle: undefined,
         colorScheme: undefined,

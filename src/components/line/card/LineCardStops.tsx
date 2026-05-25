@@ -1,6 +1,8 @@
 import { t } from 'i18next'
 import { View } from 'react-native'
-import Animated, { LinearTransition } from 'react-native-reanimated'
+import Animated, { LinearTransition, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
+import { useDebouncedCallback } from 'use-debounce'
+import { useShallow } from 'zustand/react/shallow'
 
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
 import { UButton } from '@/components/u/UButton'
@@ -10,6 +12,7 @@ import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
 import { useLineStops, useLineBuses, useLineTheme, useMap } from '@/composables'
+import { useSettingsStore } from '@/stores'
 import { BusStop } from '@/types/bus'
 
 const ErrorState = ({ message }: { message?: string }) => {
@@ -81,8 +84,23 @@ const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
   )
 }
 
+const COLLAPSED = 112
+const EXPANDED = 192
+
 export const LineCardStops = () => {
+  const expandStopsWhenScrolled = useSettingsStore(useShallow(state => state.expandStopsWhenScrolled))
   const { query: lineStopsQuery } = useLineStops()
+  const containerHeight = useSharedValue(COLLAPSED)
+
+  const containerStyle = useAnimatedStyle(() => ({
+    height: containerHeight.value,
+  }))
+
+  const debouncedMomentumScrollEnd = useDebouncedCallback(() => {
+    if (!expandStopsWhenScrolled && containerHeight.value !== EXPANDED)
+      return
+    containerHeight.value = COLLAPSED
+  }, 1500)
 
   if (lineStopsQuery.data && lineStopsQuery.data.length < 1) {
     return (
@@ -92,6 +110,12 @@ export const LineCardStops = () => {
         className="grow"
       />
     )
+  }
+
+  const onScrollBeginDrag = () => {
+    if (!expandStopsWhenScrolled)
+      return
+    containerHeight.value = EXPANDED
   }
 
   return (
@@ -104,12 +128,15 @@ export const LineCardStops = () => {
         layout={LinearTransition}
         data={lineStopsQuery.data || []}
         renderItem={({ item, index }) => <StopItem item={item} index={index} />}
-        className="h-28"
         contentContainerClassName="px-2 gap-2"
         initialNumToRender={2}
-        maxToRenderPerBatch={3}
         fadingEdgeLength={10}
-        windowSize={2}
+        windowSize={6}
+        style={containerStyle}
+        onScrollBeginDrag={onScrollBeginDrag}
+        onMomentumScrollEnd={debouncedMomentumScrollEnd}
+        scrollEventThrottle={16}
+        directionalLockEnabled
       />
     </UQueryState>
   )

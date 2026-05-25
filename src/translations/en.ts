@@ -75,4 +75,5 @@ export default {
   colorPicker: 'Color picker',
   clearCache: 'Clear cache',
   emptyStops: 'No stops found for this line',
+  expandStopsWhenScrolled: 'Automatically expand stop list when scrolled',
 }

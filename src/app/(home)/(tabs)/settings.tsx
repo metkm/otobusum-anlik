@@ -27,6 +27,7 @@ export const SettingsScreen = () => {
   const appStyleSheet = useRef<TrueSheet>(null)
   const citySheet = useRef<TrueSheet>(null)
 
+  const expandStopsWhenScrolled = useSettingsStore(useShallow(state => state.expandStopsWhenScrolled))
   const toggleMyLocation = useSettingsStore(useShallow(state => state.toggleMyLocation))
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
   const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
@@ -91,6 +92,12 @@ export const SettingsScreen = () => {
   const toggleMap = () => {
     useSettingsStore.setState((state) => {
       state.hideMap = !state.hideMap
+    })
+  }
+
+  const toggleExpandStopsWhenScrolled = () => {
+    useSettingsStore.setState((state) => {
+      state.expandStopsWhenScrolled = !state.expandStopsWhenScrolled
     })
   }
 
@@ -169,6 +176,18 @@ export const SettingsScreen = () => {
           />
         ))}
       </USheet>
+
+      <UText className="text-lg font-inter-medium ml-2">{t('settings')}</UText>
+
+      <UButton
+        label={t('expandStopsWhenScrolled')}
+        color="neutral"
+        variant="soft"
+        size="lg"
+        onPress={toggleExpandStopsWhenScrolled}
+      >
+        <USwitch value={expandStopsWhenScrolled} />
+      </UButton>
 
       <UButton
         label={t(colorSchemeStore ?? 'system')}

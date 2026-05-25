@@ -42,7 +42,7 @@ export const UCarousel = ({
   const offsetLimit = useDerivedValue(() => -(contentWidth.value - width), [])
 
   const pan = Gesture.Pan()
-    .minDistance(50)
+    .activeOffsetX([-25, 25])
     .onStart(() => {
       offsetStart.value = offset.value
     })
@@ -102,10 +102,7 @@ export const UCarousel = ({
       className={cn('flex-row', className)}
       {...props}
     >
-      <GestureDetector
-        gesture={pan}
-        touchAction="pan-x"
-      >
+      <GestureDetector gesture={pan}>
         <Animated.View
           style={[containerStyle]}
           className={cn('flex flex-row', contentClassName)}
