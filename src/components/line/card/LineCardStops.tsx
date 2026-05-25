@@ -49,7 +49,7 @@ const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
       <UText className="w-6.5 text-center font-inter-medium">{index + 1}</UText>
 
       <View
-        className="items-center justify-center size-9 rounded-full border-2 border-muted"
+        className="items-center justify-center size-8 rounded-full border-2 border-muted"
         style={border}
       >
         {closestBus && (

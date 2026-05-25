@@ -21,11 +21,10 @@ import { useFilterStore, useLineStore } from '@/stores'
 const AnimatedGestureHandlerRootView = Animated.createAnimatedComponent(GestureHandlerRootView)
 
 export const GroupIdScreen = () => {
-  const params = useLocalSearchParams()
-  const navigation = useTrueSheetNavigation()
-  const insets = useSafeAreaInsets()
-
   const backgroundDefault = useCSSVariable('--background-color-default')
+  const navigation = useTrueSheetNavigation()
+  const params = useLocalSearchParams()
+  const insets = useSafeAreaInsets()
   const theme = useLineTheme()
   const { progress } = useReanimatedKeyboardAnimation()
   const { t } = useTranslation()

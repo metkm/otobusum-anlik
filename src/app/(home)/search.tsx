@@ -85,6 +85,7 @@ export const SearchScreen = () => {
           icon="arrow-left"
           block
           variant="soft"
+          size="lg"
           className="aspect-square"
           onPress={() => router.back()}
         />

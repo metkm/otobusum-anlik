@@ -11,7 +11,7 @@ import { cn } from '@/utils/cn'
 const ui = tv({
   variants: {
     variant: {
-      outline: 'border border-muted',
+      outline: 'ring ring-inset ring-muted',
       soft: 'bg-muted/50',
     },
   },

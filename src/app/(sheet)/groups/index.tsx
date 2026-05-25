@@ -48,6 +48,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
           <UIcon
             name="check"
             color={backgroundWithColor?.color}
+            colorClassName="text-inverted"
           />
         </Animated.View>
       )}
