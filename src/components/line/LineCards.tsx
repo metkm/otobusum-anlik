@@ -5,9 +5,8 @@ import { UCarousel } from '../u/UCarousel'
 
 import { LineCard } from './card/LineCard'
 
-import { useLineCardWidth } from '@/composables'
+import { useLineCardWidth, useLines } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { useLines } from '@/composables/useLines'
 import { ExitScaleOut } from '@/constants/animation'
 import { cn } from '@/utils/cn'
 

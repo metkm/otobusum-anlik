@@ -5,8 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from './u/UButton'
 
-import { useMap } from '@/composables'
-import { useLines } from '@/composables/useLines'
+import { useMap, useLines } from '@/composables'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
 import { useFilterStore, useLineStore, useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'

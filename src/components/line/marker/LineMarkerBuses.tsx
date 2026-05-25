@@ -4,8 +4,7 @@ import type { Feature } from 'geojson'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine, useLineBuses, useLineRoutes, useLineTheme } from '@/composables'
-import { useLines } from '@/composables/useLines'
+import { useLine, useLines, useLineBuses, useLineRoutes, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerBuses = () => {

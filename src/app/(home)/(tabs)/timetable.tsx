@@ -8,9 +8,8 @@ import { UButton } from '@/components/u/UButton'
 import { CarouselContext, UCarousel } from '@/components/u/UCarousel'
 import { UText } from '@/components/u/UText'
 
-import { useLineCardWidth } from '@/composables'
+import { useLineCardWidth, useLines } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { useLines } from '@/composables/useLines'
 
 const LineTimetables = () => {
   const lines = useLines()
