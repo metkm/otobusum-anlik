@@ -6,8 +6,9 @@ import { useShallow } from 'zustand/react/shallow'
 import { UButton } from './u/UButton'
 
 import { useMap } from '@/composables'
+import { useLines } from '@/composables/useLines'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
-import { useLineStore, useSettingsStore } from '@/stores'
+import { useFilterStore, useLineStore, useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
 const AnimatedGestureHandlerRootView = createAnimatedComponent(GestureHandlerRootView)
@@ -15,8 +16,10 @@ const AnimatedGestureHandlerRootView = createAnimatedComponent(GestureHandlerRoo
 export const MapButtons = (props: ViewProps) => {
   const { map, camera } = useMap()
 
-  const lines = useLineStore(useShallow(state => state.getLines()))
-  const group = useLineStore(useShallow(state => state.getLineGroup()))
+  const lines = useLines()
+  const city = useFilterStore(useShallow(state => state.city))
+  const group = useLineStore(useShallow(state => state.lines[city].find(x => x.id === state.groupId[city])))
+
   const bearing = useSettingsStore(useShallow(state => state.bearing))
   const lineCardExpanded = useSettingsStore(useShallow(state => state.lineCardExpanded))
   const hideMap = useSettingsStore(useShallow(state => state.hideMap))

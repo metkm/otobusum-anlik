@@ -17,7 +17,7 @@ export interface LineStoreV3 {
   lineGroups: Record<City, Record<string, { id: string, lineCodes: string[], title: string }>>
 }
 
-interface LineCodeSlice {
+export interface LineCodeSlice {
   lines: Record<City, LineGroup[]>
   groupId: Record<City, string>
   setGroupId: (id: string) => void
@@ -25,15 +25,14 @@ interface LineCodeSlice {
   deleteGroup: (id: string) => void
   updateGroupName: (id: string, name: string) => void
   addLine: (code: string, groupId?: string) => void
-  // addLineToGroup: (code: string, groupId: string) => void
   deleteLine: (code: string, groupId?: string) => void
-  getGroupId: () => string
-  getGroups: () => LineGroup[]
-  getLineGroup: (groupId?: string) => LineGroup | undefined
-  getLines: () => string[]
+  // getGroupId: () => string
+  // getGroups: () => LineGroup[]
+  // getLineGroup: (groupId?: string) => LineGroup | undefined
+  // getLines: () => string[]
 }
 
-interface LineRouteSlice {
+export interface LineRouteSlice {
   routes: Record<City, Record<string, RouteCode>>
   setRoute: (code: string, routeCode: RouteCode) => void
   changeRouteDirection: (code: string) => void
@@ -42,7 +41,7 @@ interface LineRouteSlice {
 
 type LineStore = (LineCodeSlice & LineRouteSlice)
 
-const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
+const createLineCodeSlice = immer<LineCodeSlice>(set => ({
   lines: {
     istanbul: [{ id: 'default', name: 'default', codes: [] }],
     izmir: [{ id: 'default', name: 'default', codes: [] }],
@@ -91,7 +90,7 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
 
       state.lines[city]?.splice(i, 1)
 
-      if (state.getGroupId() === id) {
+      if (state.groupId[city] === id) {
         state.groupId[city] = groups.at(0)!.id
       }
 
@@ -111,7 +110,8 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
   }),
   addLine: (code, groupId) => set((state) => {
     const city = useFilterStore.getState().city
-    const grId = groupId ?? state.getGroupId()
+    const grId = groupId ?? state.groupId[city]
+
     const codes = state.lines[city].find(c => c.id === grId)?.codes
 
     if (!codes)
@@ -134,7 +134,9 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
   }),
   deleteLine: (code, groupId) => set((state) => {
     const city = useFilterStore.getState().city
-    const codes = state.lines[city]?.find(c => c.id === (groupId || state.getGroupId()))?.codes
+    const grId = groupId ?? state.groupId[city]
+
+    const codes = state.lines[city]?.find(c => c.id === (groupId || grId))?.codes
 
     const i = codes?.findIndex(c => c === code)
     if (i === -1 || i === undefined)
@@ -155,12 +157,11 @@ const createLineCodeSlice = immer<LineCodeSlice>((set, get) => ({
 
     useThemeStore.getState().deleteTheme(code)
   }),
-  getGroupId: () => get().groupId[useFilterStore.getState().city],
-  getGroups: () => get().lines[useFilterStore.getState().city],
-  getLineGroup: (groupId?: string) => {
-    return get().getGroups().find(gr => gr.id === (groupId ?? get().getGroupId()))
-  },
-  getLines: () => get().getLineGroup()?.codes || [],
+  // getGroups: () => get().lines[useFilterStore.getState().city],
+  // getLineGroup: (groupId?: string) => {
+  //   return get().getGroups().find(gr => gr.id === (groupId ?? get().getGroupId()))
+  // },
+  // getLines: () => get().getLineGroup()?.codes || [],
 }))
 
 const createLineRouteSlice = immer<LineRouteSlice>((set, get) => ({

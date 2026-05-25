@@ -5,12 +5,13 @@ import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLine, useLineBuses, useLineRoutes, useLineTheme } from '@/composables'
-import { useFilterStore, useLineStore } from '@/stores'
+import { useLines } from '@/composables/useLines'
+import { useFilterStore } from '@/stores'
 
 export const LineMarkerBuses = () => {
   const defaultBg = useCSSVariable('--ui-bg')
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
-  const lineCount = useLineStore(useShallow(state => state.getLines().length))
+  const lines = useLines()
   const { query: lineBusesQuery, buses } = useLineBuses()
   const { code } = useLine()
   const { routeCode } = useLineRoutes()
@@ -37,7 +38,7 @@ export const LineMarkerBuses = () => {
       },
     }))
 
-  const minZoom = lineCount < 2 ? undefined : 8
+  const minZoom = lines.length < 2 ? undefined : 8
 
   return (
     <>

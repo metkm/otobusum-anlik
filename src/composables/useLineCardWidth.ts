@@ -1,11 +1,10 @@
 import { Platform, useWindowDimensions } from 'react-native'
 import { useCSSVariable } from 'uniwind'
-import { useShallow } from 'zustand/react/shallow'
 
-import { useLineStore } from '@/stores'
+import { useLines } from './useLines'
 
 export const useLineCardWidth = () => {
-  const lines = useLineStore(useShallow(state => state.getLines()))
+  const lines = useLines()
   const { width } = useWindowDimensions()
 
   let spacing = useCSSVariable('--spacing') as number

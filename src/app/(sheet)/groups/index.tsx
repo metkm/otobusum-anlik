@@ -15,7 +15,7 @@ import { UText } from '@/components/u/UText'
 import { useLineTheme } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
-import { useLineStore } from '@/stores'
+import { useFilterStore, useLineStore } from '@/stores'
 import { LineGroup } from '@/types/line'
 
 const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?: boolean, canDelete?: boolean }) => {
@@ -135,8 +135,9 @@ export const GroupsScreen = () => {
   const navigation = useTrueSheetNavigation()
   const addToGroup = params.addToGroup as string | undefined
 
-  const groupId = useLineStore(useShallow(state => state.getGroupId()))
-  const groups = useLineStore(useShallow(state => state.getGroups()))
+  const city = useFilterStore(useShallow(state => state.city))
+  const groupId = useLineStore(useShallow(state => state.groupId[city]))
+  const groups = useLineStore(useShallow(state => state.lines[city]))
 
   const text = theme?.text({ variant: 'soft' })
   const background = theme?.background({ variant: 'ghost' })

@@ -1,6 +1,5 @@
 import { Dimensions } from 'react-native'
 import Animated, { LinearTransition, SharedValue } from 'react-native-reanimated'
-import { useShallow } from 'zustand/react/shallow'
 
 import { UCarousel } from '../u/UCarousel'
 
@@ -8,15 +7,15 @@ import { LineCard } from './card/LineCard'
 
 import { useLineCardWidth } from '@/composables'
 import { LineContext } from '@/composables/useLine'
+import { useLines } from '@/composables/useLines'
 import { ExitScaleOut } from '@/constants/animation'
-import { useLineStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
 const { width } = Dimensions.get('window')
 
 export const LineCards = ({ className }: { className?: string, buttonsHeight?: SharedValue<number> }) => {
   const { cardWidth, snapInterval } = useLineCardWidth()
-  const lines = useLineStore(useShallow(state => state.getLines()))
+  const lines = useLines()
 
   return (
     <UCarousel

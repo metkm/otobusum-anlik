@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
-import { useShallow } from 'zustand/react/shallow'
 
 import { LineCards } from '@/components/line/LineCards'
 import { LineTimetable } from '@/components/line/LineTimetable'
@@ -11,10 +10,10 @@ import { UText } from '@/components/u/UText'
 
 import { useLineCardWidth } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { useLineStore } from '@/stores'
+import { useLines } from '@/composables/useLines'
 
 const LineTimetables = () => {
-  const lines = useLineStore(useShallow(state => state.getLines()))
+  const lines = useLines()
   const { snapInterval } = useLineCardWidth()
   const { t } = useTranslation()
 
