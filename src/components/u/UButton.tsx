@@ -73,7 +73,7 @@ const ui = tv({
       color: 'neutral',
       variant: 'soft',
       className: {
-        base: 'bg-muted/50',
+        base: 'bg-elevated',
         label: 'text-default',
       },
     },

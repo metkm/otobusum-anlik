@@ -38,31 +38,32 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
 
   return (
     <GestureHandlerRootView style={{ flexDirection: 'row', gap: 8 }}>
-      {!addToGroup && selected && (
+      {!addToGroup && (
         <Animated.View
           exiting={ExitScaleOut}
           entering={EnterScaleIn}
-          className="rounded-md bg-primary w-8 items-center justify-center"
+          className="justify-center items-center m-auto bg-elevated size-8 rounded-md overflow-hidden"
           style={backgroundWithColor}
         >
-          <UIcon
-            name="check"
-            color={backgroundWithColor?.color}
-            colorClassName="text-inverted"
-          />
+          {selected && (
+            <UIcon
+              name="check"
+              color={backgroundWithColor?.color}
+              colorClassName="text-inverted"
+              sizeClassName="size-4"
+              className="bg-primary p-2"
+            />
+          )}
         </Animated.View>
       )}
 
-      <Animated.View
-        className="flex-row items-stretch rounded-md gap-1 h-16 grow"
-        layout={LinearTransition}
-      >
+      <View className="flex-row items-stretch rounded-md gap-1 h-16 grow">
         <UButton
           key={group.id}
           onPress={handlePress}
           className="flex-1"
-          variant="soft"
           color="neutral"
+          variant="soft"
         >
           <View className="justify-center gap-1 grow">
             <UText
@@ -122,7 +123,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
             }}
           />
         </Animated.View>
-      </Animated.View>
+      </View>
     </GestureHandlerRootView>
   )
 }

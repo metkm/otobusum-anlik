@@ -18,7 +18,7 @@ const LineTimetables = () => {
 
   if (lines.length < 1) {
     return (
-      <View className="flex items-center justify-center gap-2 p-2">
+      <View className="flex items-center justify-center gap-2 p-2 grow">
         <UText className="text-muted font-inter-medium text-center max-w-xs">{t('timetableEmpty')}</UText>
 
         <UButton
