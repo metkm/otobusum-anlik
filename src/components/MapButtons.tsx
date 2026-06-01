@@ -20,6 +20,7 @@ export const MapButtons = (props: ViewProps) => {
   const group = useLineStore(useShallow(state => state.lines[city].find(x => x.id === state.groupId[city])))
 
   const bearing = useSettingsStore(useShallow(state => state.bearing))
+  const pitch = useSettingsStore(useShallow(state => state.pitch))
   const lineCardExpanded = useSettingsStore(useShallow(state => state.lineCardExpanded))
   const hideMap = useSettingsStore(useShallow(state => state.hideMap))
   const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
@@ -33,7 +34,7 @@ export const MapButtons = (props: ViewProps) => {
       pointerEvents="box-none"
       {...props}
     >
-      {bearing !== 0 && (
+      {(bearing !== 0 || pitch !== 0) && (
         <Animated.View
           entering={EnterScaleIn}
           exiting={ExitScaleOut}
@@ -56,6 +57,7 @@ export const MapButtons = (props: ViewProps) => {
                 camera.current?.easeTo({
                   center,
                   bearing: 0,
+                  pitch: 0,
                 })
               }}
             />

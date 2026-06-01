@@ -129,13 +129,18 @@ export const LineCardStops = () => {
         data={lineStopsQuery.data || []}
         renderItem={({ item, index }) => <StopItem item={item} index={index} />}
         contentContainerClassName="px-2 gap-2"
-        initialNumToRender={2}
+        initialNumToRender={3}
         fadingEdgeLength={10}
         windowSize={6}
         style={containerStyle}
         onScrollBeginDrag={onScrollBeginDrag}
         onMomentumScrollEnd={debouncedMomentumScrollEnd}
         scrollEventThrottle={16}
+        getItemLayout={(_, index) => ({
+          index,
+          length: 32,
+          offset: 32 * index,
+        })}
         directionalLockEnabled
       />
     </UQueryState>

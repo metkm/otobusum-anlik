@@ -59,6 +59,7 @@ export const LineCardMenu = () => {
       [west, south, east, north],
       {
         duration: 1000,
+        pitch: 0,
         padding: {
           bottom: 250,
           top: 80,

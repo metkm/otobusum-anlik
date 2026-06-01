@@ -38,6 +38,7 @@
     "expo-router": "~56.2.6",
     "expo-splash-screen": "~56.0.10",
     "expo-status-bar": "~56.0.4",
+    "expo-system-ui": "^56.0.5",
     "expo-updates": "~56.0.16",
     "i18next": "^26.0.8",
     "immer": "^11.1.4",

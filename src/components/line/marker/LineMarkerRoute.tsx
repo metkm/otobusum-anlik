@@ -56,7 +56,7 @@ export const LineMarkerRoute = () => {
               'line-cap': 'round',
               'visibility': isLineHidden ? 'none' : 'visible',
             }}
-            layerIndex={10}
+            layerIndex={800}
           />
 
           <Layer
@@ -72,7 +72,7 @@ export const LineMarkerRoute = () => {
             paint={{
               'icon-opacity': 0.5,
             }}
-            layerIndex={11}
+            layerIndex={801}
           />
         </GeoJSONSource>
       )}

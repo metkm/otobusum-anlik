@@ -52,11 +52,12 @@ export const LineMarkerStops = () => {
           'circle-color': backgroundSoft ?? defaultBg as string,
           'circle-stroke-width': 2,
           'circle-stroke-color': borderSoft?.borderColor ?? defaultBorder as string,
+          'circle-pitch-alignment': 'map',
         }}
         layout={{
           visibility: isLineHidden ? 'none' : 'visible',
         }}
-        layerIndex={110}
+        layerIndex={850}
         minzoom={11}
       />
     </GeoJSONSource>

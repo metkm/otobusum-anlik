@@ -62,19 +62,14 @@ export const SettingsScreen = () => {
       value: mapStyles['dark'],
     },
     {
-      label: t('night'),
-      key: 'night',
-      value: mapStyles['dark'],
+      label: t('bright'),
+      key: 'bright',
+      value: mapStyles['bright'],
     },
     {
-      label: t('light'),
-      key: 'light',
-      value: mapStyles['light'],
-    },
-    {
-      label: t('retro'),
-      key: 'retro',
-      value: mapStyles['retro'],
+      label: t('liberty'),
+      key: 'liberty',
+      value: mapStyles['liberty'],
     },
     {
       label: t('system'),

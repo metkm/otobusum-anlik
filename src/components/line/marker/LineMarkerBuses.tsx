@@ -51,9 +51,13 @@ export const LineMarkerBuses = () => {
       >
         <Layer
           type="circle"
-          paint={{ 'circle-radius': 16, 'circle-color': backgroundWithColor?.backgroundColor ?? defaultBg as string }}
+          paint={{
+            'circle-radius': 16,
+            'circle-color': backgroundWithColor?.backgroundColor ?? defaultBg as string,
+            'circle-pitch-alignment': 'map',
+          }}
           layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
-          layerIndex={210}
+          layerIndex={900}
           minzoom={minZoom}
         />
 
@@ -63,12 +67,13 @@ export const LineMarkerBuses = () => {
             'icon-image': iconImage,
             'icon-size': 0.3,
             'visibility': isLineHidden ? 'none' : 'visible',
+            'icon-pitch-alignment': 'map',
           }}
           paint={{
             'icon-opacity-transition': { duration: 0 },
             'icon-color-transition': { duration: 0 },
           }}
-          layerIndex={310}
+          layerIndex={950}
           minzoom={minZoom}
         />
       </GeoJSONSource>

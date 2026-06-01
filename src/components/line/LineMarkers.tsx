@@ -8,9 +8,9 @@ export const LineMarkers = () => {
 
   return lines.map(code => (
     <LineContext value={code} key={code}>
-      <LineMarkerBuses />
       <LineMarkerRoute />
       <LineMarkerStops />
+      <LineMarkerBuses />
     </LineContext>
   ))
 }

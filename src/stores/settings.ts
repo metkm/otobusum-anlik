@@ -13,6 +13,7 @@ export type ColorScheme = 'light' | 'dark'
 export interface SettingsStore {
   initialMapBounds: LngLatBounds
   bearing: number
+  pitch: number
   showMyLocation: boolean
   expandStopsWhenScrolled: boolean
   showTraffic: boolean
@@ -31,6 +32,7 @@ export const useSettingsStore = create(
       immer<SettingsStore>((set, get) => ({
         initialMapBounds: [26.218823938242565, 36.08430119633523, 30.10080291867854, 42.351104713710356],
         bearing: 0,
+        pitch: 0,
         showMyLocation: false,
         expandStopsWhenScrolled: false,
         showTraffic: true,
@@ -57,16 +59,16 @@ export const useSettingsStore = create(
         },
         getMapStyle: () => {
           const prefferedMapStyle = get().mapStyle
-          const colorSchemeDevice = Appearance.getColorScheme()
+          const colorSchemeDevice = Appearance.getColorScheme() === 'dark' ? 'dark' : 'liberty'
 
           const scheme = prefferedMapStyle === undefined
-            ? (colorSchemeDevice === 'dark' ? 'night' : 'light')
+            ? colorSchemeDevice
             : prefferedMapStyle
 
-          return {
-            scheme,
-            style: mapStyles[scheme],
-          }
+          // we do this because scheme that comes from prefferedmapstyle might be a old value that is not supported anymore
+          const style = mapStyles[scheme] ? mapStyles[scheme] : mapStyles[colorSchemeDevice]
+
+          return { scheme, style }
         },
       })),
     ),
