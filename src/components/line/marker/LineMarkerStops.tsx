@@ -7,19 +7,39 @@ import { useShallow } from 'zustand/react/shallow'
 import { useLine, useLineStops, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores'
 
-export const LineMarkerStops = () => {
+export const LineMarkerStopLayer = ({ isHidden }: { isHidden?: boolean }) => {
   const [defaultBg, defaultBorder] = useCSSVariable(['--ui-bg', '--ui-border'])
-
-  const { code } = useLine()
-  const { query: lineStopsQuery } = useLineStops()
-  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
   const theme = useLineTheme()
-
-  if (!lineStopsQuery.data)
-    return
 
   const backgroundSoft = theme?.background({ variant: 'soft' })?.backgroundColor.slice(0, -2)
   const borderSoft = theme?.border({ variant: 'soft' })
+
+  return (
+    <Layer
+      type="circle"
+      paint={{
+        'circle-radius': 6,
+        'circle-color': backgroundSoft ?? defaultBg as string,
+        'circle-stroke-width': 2,
+        'circle-stroke-color': borderSoft?.borderColor ?? defaultBorder as string,
+        'circle-pitch-alignment': 'map',
+      }}
+      layout={{
+        visibility: isHidden ? 'none' : 'visible',
+      }}
+      layerIndex={850}
+      minzoom={11}
+    />
+  )
+}
+
+export const LineMarkerStops = () => {
+  const { code } = useLine()
+  const { query: lineStopsQuery } = useLineStops()
+  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
+
+  if (!lineStopsQuery.data)
+    return
 
   const features: Feature[] = lineStopsQuery.data.map(bus => ({
     type: 'Feature',
@@ -45,21 +65,7 @@ export const LineMarkerStops = () => {
         router.push(`/stop/${code}/${stopCode}`)
       }}
     >
-      <Layer
-        type="circle"
-        paint={{
-          'circle-radius': 6,
-          'circle-color': backgroundSoft ?? defaultBg as string,
-          'circle-stroke-width': 2,
-          'circle-stroke-color': borderSoft?.borderColor ?? defaultBorder as string,
-          'circle-pitch-alignment': 'map',
-        }}
-        layout={{
-          visibility: isLineHidden ? 'none' : 'visible',
-        }}
-        layerIndex={850}
-        minzoom={11}
-      />
+      <LineMarkerStopLayer isHidden={isLineHidden} />
     </GeoJSONSource>
   )
 }

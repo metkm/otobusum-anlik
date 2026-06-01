@@ -73,6 +73,12 @@ const RootContent = () => {
               scrollable: true,
             }}
           />
+          <Sheet.Screen
+            name="(sheet)/stop"
+            options={{
+              detents: ['auto', 0.5],
+            }}
+          />
         </Sheet>
       </MapProvider>
     </KeyboardProvider>

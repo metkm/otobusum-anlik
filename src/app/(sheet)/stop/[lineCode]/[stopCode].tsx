@@ -1,9 +1,10 @@
-import { Camera } from '@maplibre/maplibre-react-native'
+import { Camera, GeoJSONSource } from '@maplibre/maplibre-react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { Linking, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
+import { LineMarkerStopLayer } from '@/components/line/marker/LineMarkerStops'
 import { Map } from '@/components/Map'
 import { UActivityIndicator } from '@/components/u/UActivityIndicator'
 import { UButton } from '@/components/u/UButton'
@@ -37,57 +38,71 @@ export const StopScreen = () => {
   }
 
   return (
-    <View className="gap-2 pt-5 pb-2 px-2">
+    <View className="pb-2">
       {data && (
-        <View className="h-40 rounded-md overflow-hidden">
+        <View className="h-48 rounded-md overflow-hidden">
           <Map
             dragPan={false}
             touchZoom={false}
             doubleTapZoom={false}
           >
             <Camera center={[data.stop.lng, data.stop.lat]} zoom={15} />
+
+            <GeoJSONSource data={{
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'Point',
+                coordinates: [data.stop.lng, data.stop.lat],
+              },
+            }}
+            >
+              <LineMarkerStopLayer isHidden={false} />
+            </GeoJSONSource>
           </Map>
         </View>
       )}
 
-      <GestureHandlerRootView style={{ flexShrink: 0 }}>
-        <UButton
-          label={t('directionToStop')}
-          onPress={openDirectionsToStop}
-          icon="droplet"
-          block
-        />
-      </GestureHandlerRootView>
+      <View className="p-2 gap-2">
+        <GestureHandlerRootView style={{ flexShrink: 0 }}>
+          <UButton
+            label={t('directionToStop')}
+            onPress={openDirectionsToStop}
+            icon="droplet"
+            block
+          />
+        </GestureHandlerRootView>
 
-      <View>
-        <UText className="text-muted">{data?.stop.code}</UText>
-        <UText className="text-lg font-inter-medium">{data?.stop.name}</UText>
-        {data.stop.province && (
-          <UText className="text-muted">{data?.stop.province}</UText>
+        <View>
+          <UText className="text-muted text-xs">{data?.stop.code}</UText>
+          <UText className="text-lg font-inter-medium">{data?.stop.name}</UText>
+          {data.stop.province && (
+            <UText className="text-muted text-xs">{data?.stop.province}</UText>
+          )}
+        </View>
+
+        {data.buses.length > 0 && (
+          <GestureHandlerRootView style={{ flexShrink: 0 }}>
+            <UText className="text-muted text-xs">{t('linesThatUseStop')}</UText>
+
+            <View className="flex-row flex-wrap gap-2 mt-1">
+              {data.buses.map(bus => (
+                <UButton
+                  key={bus}
+                  label={bus}
+                  variant="soft"
+                  to={{
+                    pathname: '/groups',
+                    params: {
+                      addToGroup: bus,
+                    },
+                  }}
+                />
+              ))}
+            </View>
+          </GestureHandlerRootView>
         )}
       </View>
-
-      {data.buses.length > 0 && (
-        <GestureHandlerRootView style={{ flexShrink: 0 }}>
-          <UText>{t('linesThatUseStop')}</UText>
-
-          <View className="flex-row flex-wrap gap-2 mt-1">
-            {data.buses.map(bus => (
-              <UButton
-                key={bus}
-                label={bus}
-                variant="soft"
-                to={{
-                  pathname: '/groups',
-                  params: {
-                    addToGroup: bus,
-                  },
-                }}
-              />
-            ))}
-          </View>
-        </GestureHandlerRootView>
-      )}
     </View>
   )
 }
