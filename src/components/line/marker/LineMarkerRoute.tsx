@@ -23,9 +23,9 @@ export const LineMarkerRoute = () => {
   const iconImage = `route-arrow-${code}`
 
   const background = theme?.background({ variant: 'solid' })
-  const backgroundSoft = theme?.background({ variant: 'soft' })
+  const text = theme?.text()
 
-  images[iconImage] = Lucide.getImageSourceSync(direction === 'G' ? 'arrow-right' : 'arrow-left', 20, backgroundSoft?.backgroundColor).uri
+  images[iconImage] = Lucide.getImageSourceSync(direction === 'G' ? 'arrow-right' : 'arrow-left', 20, text?.color).uri
 
   return (
     <>
@@ -50,7 +50,12 @@ export const LineMarkerRoute = () => {
             type="line"
             paint={{
               'line-color': background?.backgroundColor ?? defaultBg as string,
-              'line-width': 8,
+              'line-width': [
+                'interpolate',
+                ['linear'], ['zoom'],
+                12, 8,
+                17, 12,
+              ],
             }}
             layout={{
               'line-join': 'round',
@@ -66,13 +71,12 @@ export const LineMarkerRoute = () => {
             layout={{
               'symbol-placement': 'line',
               'icon-image': iconImage,
-              'icon-rotation-alignment': 'map',
               'icon-size': 0.2,
-              'symbol-spacing': 20,
+              'symbol-spacing': 34,
               'visibility': isLineHidden ? 'none' : 'visible',
             }}
             paint={{
-              'icon-opacity': 0.5,
+              'icon-opacity': 1,
             }}
             layerIndex={15_000}
             afterId={`route-path-${code}`}
