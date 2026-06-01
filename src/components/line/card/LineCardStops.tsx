@@ -14,6 +14,7 @@ import { UText } from '@/components/u/UText'
 import { useLineStops, useLineBuses, useLineTheme, useMap } from '@/composables'
 import { useSettingsStore } from '@/stores'
 import { BusStop } from '@/types/bus'
+import { getClosestPoint } from '@/utils/getClosestPoint'
 
 const ErrorState = ({ message }: { message?: string }) => {
   return (
@@ -29,12 +30,19 @@ const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
   const theme = useLineTheme()
   const { buses } = useLineBuses()
   const { camera } = useMap()
+  const { query: lineStopsQuery } = useLineStops()
 
   const border = theme?.border({ variant: 'solid' })
   const color = theme?.text({ variant: 'ghost' })
   const background = theme?.backgroundWithColor({ variant: 'ghost' })
 
-  const closestBus = buses.find(b => b.closest_stop_code === item.code)
+  const closestBus = buses.find((bus) => {
+    if (!lineStopsQuery.data)
+      return false
+
+    const closestStop = getClosestPoint(bus, lineStopsQuery.data)
+    return closestStop?.id && closestStop.id === item.id
+  })
 
   const goToBus = () => {
     if (!closestBus)
