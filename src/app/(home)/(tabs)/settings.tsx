@@ -30,7 +30,7 @@ export const SettingsScreen = () => {
   const expandStopsWhenScrolled = useSettingsStore(useShallow(state => state.expandStopsWhenScrolled))
   const toggleMyLocation = useSettingsStore(useShallow(state => state.toggleMyLocation))
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
-  const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
+  // const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
   const hideMap = useSettingsStore(useShallow(state => state.hideMap))
   const city = useFilterStore(useShallow(state => state.city))
 
@@ -78,11 +78,11 @@ export const SettingsScreen = () => {
     },
   ]
 
-  const toggleTraffic = () => {
-    useSettingsStore.setState((state) => {
-      state.showTraffic = !state.showTraffic
-    })
-  }
+  // const toggleTraffic = () => {
+  //   useSettingsStore.setState((state) => {
+  //     state.showTraffic = !state.showTraffic
+  //   })
+  // }
 
   const toggleMap = () => {
     useSettingsStore.setState((state) => {
@@ -127,7 +127,7 @@ export const SettingsScreen = () => {
         <USwitch value={hideMap} />
       </UButton>
 
-      <UButton
+      {/* <UButton
         label={t('showTraffic')}
         color="neutral"
         size="lg"
@@ -135,7 +135,7 @@ export const SettingsScreen = () => {
         onPress={toggleTraffic}
       >
         <USwitch value={showTraffic} />
-      </UButton>
+      </UButton> */}
 
       <UButton
         label={t(mapStyleStore ?? 'system')}

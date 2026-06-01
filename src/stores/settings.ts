@@ -16,7 +16,7 @@ export interface SettingsStore {
   pitch: number
   showMyLocation: boolean
   expandStopsWhenScrolled: boolean
-  showTraffic: boolean
+  // showTraffic: boolean
   mapStyle?: MapStyle
   colorScheme?: ColorScheme
   showOnBoarding: boolean
@@ -35,7 +35,7 @@ export const useSettingsStore = create(
         pitch: 0,
         showMyLocation: false,
         expandStopsWhenScrolled: false,
-        showTraffic: true,
+        // showTraffic: true,
         mapStyle: undefined,
         colorScheme: undefined,
         showOnBoarding: true,
