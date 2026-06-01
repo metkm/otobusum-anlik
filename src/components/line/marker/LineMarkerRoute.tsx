@@ -46,6 +46,7 @@ export const LineMarkerRoute = () => {
           }}
         >
           <Layer
+            id={`route-path-${code}`}
             type="line"
             paint={{
               'line-color': background?.backgroundColor ?? defaultBg as string,
@@ -56,10 +57,11 @@ export const LineMarkerRoute = () => {
               'line-cap': 'round',
               'visibility': isLineHidden ? 'none' : 'visible',
             }}
-            layerIndex={800}
+            layerIndex={10_000}
           />
 
           <Layer
+            id={`route-path-arrows-${code}`}
             type="symbol"
             layout={{
               'symbol-placement': 'line',
@@ -72,7 +74,8 @@ export const LineMarkerRoute = () => {
             paint={{
               'icon-opacity': 0.5,
             }}
-            layerIndex={801}
+            layerIndex={15_000}
+            afterId={`route-path-${code}`}
           />
         </GeoJSONSource>
       )}

@@ -50,6 +50,7 @@ export const LineMarkerBuses = () => {
         }}
       >
         <Layer
+          id={`bus-circle-${code}`}
           type="circle"
           paint={{
             'circle-radius': 16,
@@ -57,8 +58,9 @@ export const LineMarkerBuses = () => {
             'circle-pitch-alignment': 'map',
           }}
           layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
-          layerIndex={900}
+          layerIndex={30_000}
           minzoom={minZoom}
+          afterId={`stops-${code}`}
         />
 
         <Layer
@@ -73,7 +75,8 @@ export const LineMarkerBuses = () => {
             'icon-opacity-transition': { duration: 0 },
             'icon-color-transition': { duration: 0 },
           }}
-          layerIndex={950}
+          layerIndex={40_000}
+          afterId={`bus-circle-${code}`}
           minzoom={minZoom}
         />
       </GeoJSONSource>

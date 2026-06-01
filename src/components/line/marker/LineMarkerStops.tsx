@@ -10,12 +10,14 @@ import { useFilterStore } from '@/stores'
 export const LineMarkerStopLayer = ({ isHidden }: { isHidden?: boolean }) => {
   const [defaultBg, defaultBorder] = useCSSVariable(['--ui-bg', '--ui-border'])
   const theme = useLineTheme()
+  const { code } = useLine()
 
   const backgroundSoft = theme?.background({ variant: 'soft' })?.backgroundColor.slice(0, -2)
   const borderSoft = theme?.border({ variant: 'soft' })
 
   return (
     <Layer
+      id={`stops-${code}`}
       type="circle"
       paint={{
         'circle-radius': 6,
@@ -27,7 +29,8 @@ export const LineMarkerStopLayer = ({ isHidden }: { isHidden?: boolean }) => {
       layout={{
         visibility: isHidden ? 'none' : 'visible',
       }}
-      layerIndex={850}
+      layerIndex={20_000}
+      afterId={`route-path-arrows-${code}`}
       minzoom={11}
     />
   )

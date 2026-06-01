@@ -42,7 +42,7 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
             className="font-inter-medium text-xs"
             style={color}
           >
-            {busesQuery.data?.reduce((acc, curr) => curr.route_code === item.code ? acc + 1 : acc, 0)}
+            {busesQuery.data?.reduce((acc, curr) => curr.route_code === item.code ? acc + 1 : acc, 0) ?? 0}
           </UText>
         </View>
 
