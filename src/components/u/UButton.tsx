@@ -114,6 +114,7 @@ export const UButton = ({
   style,
   disabled,
   loading,
+  labelClassName,
   ...props
 }: {
   label?: string
@@ -125,6 +126,7 @@ export const UButton = ({
   block?: boolean
   disabled?: boolean
   loading?: boolean
+  labelClassName?: string
 } & BaseButtonProps) => {
   const theme = useLineTheme()
   const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, variant, size, block, disabled })
@@ -173,7 +175,10 @@ export const UButton = ({
 
       {label && (
         <UText
-          className={uiLabel()}
+          className={cn(
+            uiLabel(),
+            labelClassName,
+          )}
           numberOfLines={1}
           style={themeText}
         >

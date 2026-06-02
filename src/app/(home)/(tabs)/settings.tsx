@@ -3,7 +3,7 @@ import Constants from 'expo-constants'
 import { Image } from 'expo-image'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Linking } from 'react-native'
+import { Linking, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Uniwind, withUniwind } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
@@ -55,21 +55,24 @@ export const SettingsScreen = () => {
     },
   ]
 
-  const mapThemeOptions: { label: string, key: MapStyle | undefined, value: MapStyleValue | undefined }[] = [
+  const mapThemeOptions: { label: string, key: MapStyle | undefined, value: MapStyleValue | undefined, preview?: string }[] = [
     {
       label: t('dark'),
       key: 'dark',
       value: mapStyles['dark'],
+      preview: require('@/assets/maps/dark.png'),
     },
     {
       label: t('bright'),
       key: 'bright',
       value: mapStyles['bright'],
+      preview: require('@/assets/maps/bright.png'),
     },
     {
       label: t('liberty'),
       key: 'liberty',
       value: mapStyles['liberty'],
+      preview: require('@/assets/maps/liberty.png'),
     },
     {
       label: t('system'),
@@ -168,7 +171,17 @@ export const SettingsScreen = () => {
 
               mapStyleSheet.current?.dismiss()
             }}
-          />
+            labelClassName="min-w-14"
+          >
+            <View className="mr-2">
+              {option.preview && (
+                <StyledImage
+                  source={option.preview}
+                  className="rounded-md h-16 w-28"
+                />
+              )}
+            </View>
+          </UButton>
         ))}
       </USheet>
 

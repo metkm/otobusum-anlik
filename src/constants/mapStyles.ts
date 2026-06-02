@@ -1,3 +1,5 @@
+import type { StyleSpecification } from '@maplibre/maplibre-react-native'
+
 export const mapStyles = {
   dark: {
     version: 8,
@@ -2412,9 +2414,28 @@ export const mapStyles = {
         },
       },
     ],
-  },
+  } as StyleSpecification,
   liberty: {
     version: 8,
+    sky: {
+      'sky-color': '#199EF3',
+      'sky-horizon-blend': 0.5,
+      'horizon-color': '#ffffff',
+      'horizon-fog-blend': 0.5,
+      'fog-color': '#0000ff',
+      'fog-ground-blend': 0.5,
+      'atmosphere-blend': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        0,
+        1,
+        10,
+        1,
+        12,
+        0,
+      ],
+    },
     sources: {
       ne2_shaded: {
         maxzoom: 6,
@@ -7601,7 +7622,7 @@ export const mapStyles = {
         },
       },
     ],
-  },
+  } as StyleSpecification,
   bright: 'https://tiles.openfreemap.org/styles/bright',
   // night: [
   //   {

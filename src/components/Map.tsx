@@ -36,6 +36,7 @@ export const Map = ({ children, cameraProps, style, ...props }: { initialMapBoun
       compass={false}
       onRegionDidChange={onMapRegionChange}
       style={{ flex: 1 }}
+      androidView="texture"
       {...props}
       mapStyle={mapStyle}
     >
