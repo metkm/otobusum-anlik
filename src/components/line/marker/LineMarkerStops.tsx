@@ -1,4 +1,4 @@
-import { GeoJSONSource, Layer } from '@maplibre/maplibre-react-native'
+import { GeoJSONSource, Layer, type LayerProps } from '@maplibre/maplibre-react-native'
 import { router } from 'expo-router'
 import type { Feature } from 'geojson'
 import { useCSSVariable } from 'uniwind'
@@ -7,7 +7,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useLine, useLineStops, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores'
 
-export const LineMarkerStopLayer = ({ isHidden }: { isHidden?: boolean }) => {
+export const LineMarkerStopLayer = ({ isHidden, ...props }: { isHidden?: boolean } & Omit<Extract<LayerProps, { type: 'circle' }>, 'style' | 'type'>) => {
   const [defaultBg, defaultBorder] = useCSSVariable(['--ui-bg', '--ui-border'])
   const theme = useLineTheme()
   const { code } = useLine()
@@ -32,6 +32,7 @@ export const LineMarkerStopLayer = ({ isHidden }: { isHidden?: boolean }) => {
       layerIndex={20_000}
       afterId={`route-path-arrows-${code}`}
       minzoom={11}
+      {...props}
     />
   )
 }

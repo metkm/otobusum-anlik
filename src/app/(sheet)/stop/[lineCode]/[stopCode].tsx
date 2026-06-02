@@ -59,7 +59,10 @@ export const StopScreen = () => {
                 },
               }}
               >
-                <LineMarkerStopLayer isHidden={false} />
+                <LineMarkerStopLayer
+                  isHidden={false}
+                  afterId={undefined}
+                />
               </GeoJSONSource>
             </Map>
           </MapProvider>
