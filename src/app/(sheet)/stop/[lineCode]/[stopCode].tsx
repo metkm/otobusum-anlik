@@ -6,6 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import { LineMarkerStopLayer } from '@/components/line/marker/LineMarkerStops'
 import { Map } from '@/components/Map'
+import { MapProvider } from '@/components/MapProvider'
 import { UActivityIndicator } from '@/components/u/UActivityIndicator'
 import { UButton } from '@/components/u/UButton'
 import { UText } from '@/components/u/UText'
@@ -41,25 +42,27 @@ export const StopScreen = () => {
     <View className="pb-2">
       {data && (
         <View className="h-48 rounded-md overflow-hidden">
-          <Map
-            dragPan={false}
-            touchZoom={false}
-            doubleTapZoom={false}
-          >
-            <Camera center={[data.stop.lng, data.stop.lat]} zoom={15} />
-
-            <GeoJSONSource data={{
-              type: 'Feature',
-              properties: {},
-              geometry: {
-                type: 'Point',
-                coordinates: [data.stop.lng, data.stop.lat],
-              },
-            }}
+          <MapProvider>
+            <Map
+              dragPan={false}
+              touchZoom={false}
+              doubleTapZoom={false}
             >
-              <LineMarkerStopLayer isHidden={false} />
-            </GeoJSONSource>
-          </Map>
+              <Camera center={[data.stop.lng, data.stop.lat]} zoom={15} />
+
+              <GeoJSONSource data={{
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                  type: 'Point',
+                  coordinates: [data.stop.lng, data.stop.lat],
+                },
+              }}
+              >
+                <LineMarkerStopLayer isHidden={false} />
+              </GeoJSONSource>
+            </Map>
+          </MapProvider>
         </View>
       )}
 
