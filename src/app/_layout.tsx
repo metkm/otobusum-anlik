@@ -1,3 +1,4 @@
+// @ts-expect-error
 import '@/global.css'
 
 import { createTrueSheetNavigator, TrueSheetNavigationEventMap, TrueSheetNavigationOptions, TrueSheetNavigationState } from '@lodev09/react-native-true-sheet/navigation'
