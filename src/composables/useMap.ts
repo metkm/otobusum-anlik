@@ -1,9 +1,10 @@
-import type { CameraRef, MapRef } from '@maplibre/maplibre-react-native'
+import type { CameraRef, LngLatBounds, MapRef } from '@maplibre/maplibre-react-native'
 import { createContext, RefObject, use } from 'react'
 
 export const MapContext = createContext<{
   map: RefObject<MapRef | null>
   camera: RefObject<CameraRef | null>
+  fitBounds: (bounds: LngLatBounds) => void
 } | null>(null)
 
 export const useMap = () => {

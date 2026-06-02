@@ -12,17 +12,36 @@ import { UInput } from '@/components/u/UInput'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
-import { useLineTheme } from '@/composables'
+import { queryClient } from '@/api/client'
+import { useLineTheme, useMap } from '@/composables'
 import { LineContext } from '@/composables/useLine'
+import { LineRoute, useLineRoutes } from '@/composables/useLineRoutes'
 import { isStop, MIN_CHARACTER_LIMIT, useSearch } from '@/composables/useSearch'
 import { useFilterStore, useLineStore } from '@/stores'
 import { BusLine, BusStop } from '@/types/bus'
+import { getLatLngBounds } from '@/utils/bounds'
 
 const RenderItemLine = ({ item }: { item: BusLine }) => {
   const addLine = useLineStore(useShallow(state => state.addLine))
+
+  const { fitBounds } = useMap()
+  const { route } = useLineRoutes()
   const theme = useLineTheme()
 
   const backgroundWithColor = theme?.backgroundWithColor({ variant: 'solid' })
+
+  const addLineAndZoom = async () => {
+    addLine(item.code)
+
+    await queryClient.ensureQueryData<LineRoute[]>({
+      queryKey: ['line', item.code, 'routes'],
+    })
+
+    if (!route?.path)
+      return
+
+    fitBounds(getLatLngBounds(route.path))
+  }
 
   return (
     <View className="flex-row items-stretch gap-2 shrink">
@@ -30,9 +49,7 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
         variant="ghost"
         color="neutral"
         label={item.name}
-        onPress={() => {
-          addLine(item.code)
-        }}
+        onPress={addLineAndZoom}
         className="flex-1"
       >
         <UText

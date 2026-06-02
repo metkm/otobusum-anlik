@@ -13,12 +13,13 @@ import { LineModalsColorPicker } from '../modals/ColorPicker'
 import { useLine, useLineNews, useMap } from '@/composables'
 import { useLineRoutes } from '@/composables/useLineRoutes'
 import { useFilterStore, useLineStore, useSettingsStore, useThemeStore } from '@/stores'
+import { getLatLngBounds } from '@/utils/bounds'
 
 export const LineCardMenu = () => {
   const { code } = useLine()
   const { news } = useLineNews()
   const { t } = useTranslation()
-  const { camera } = useMap()
+  const { fitBounds } = useMap()
   const { route } = useLineRoutes()
 
   const toggleLineHidden = useFilterStore(useShallow(state => state.toggleLineHidden))
@@ -39,35 +40,10 @@ export const LineCardMenu = () => {
   }
 
   const zoomToLine = () => {
-    if (!route || !route.path || route.path.length < 2)
+    if (!route || !route.path)
       return
 
-    let north = 0
-    let south = Infinity
-    let east = 0
-    let west = Infinity
-
-    for (const point of route.path) {
-      north = Math.max(north, point.lat)
-      south = Math.min(south, point.lat)
-
-      east = Math.max(east, point.lng)
-      west = Math.min(west, point.lng)
-    }
-
-    camera.current?.fitBounds(
-      [west, south, east, north],
-      {
-        duration: 1000,
-        pitch: 0,
-        padding: {
-          bottom: 250,
-          top: 80,
-          left: 25,
-          right: 25,
-        },
-      },
-    )
+    fitBounds(getLatLngBounds(route.path))
   }
 
   return (
