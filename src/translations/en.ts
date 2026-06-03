@@ -76,4 +76,8 @@ export default {
   clearCache: 'Clear cache',
   emptyStops: 'No stops found for this line',
   expandStopsWhenScrolled: 'Automatically expand stop list when scrolled',
+  operator: 'Operator',
+  plate: 'Plate',
+  speed: 'Speed',
+  garage: 'Garage',
 }

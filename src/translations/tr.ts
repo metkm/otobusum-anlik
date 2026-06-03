@@ -76,4 +76,8 @@ export default {
   clearCache: 'Önbelleği temizle',
   emptyStops: 'Bu hatta duraklar boş',
   expandStopsWhenScrolled: 'Durak listesini kaydırdığında otomatik olarak genişlet',
+  operator: 'Operatör',
+  plate: 'Plaka',
+  speed: 'Hız',
+  garage: 'Garaj',
 }

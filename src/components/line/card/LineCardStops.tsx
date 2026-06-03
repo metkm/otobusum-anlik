@@ -81,12 +81,25 @@ const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
       </UText>
 
       {closestBus && (
-        <UButton
-          icon="locate"
-          className="ml-auto"
-          variant="soft"
-          onPress={goToBus}
-        />
+        <>
+          <UButton
+            icon="locate"
+            className="ml-auto"
+            variant="soft"
+            onPress={goToBus}
+          />
+
+          <UButton
+            icon="info"
+            to={{
+              pathname: '/bus-info/[doorNo]',
+              params: {
+                doorNo: closestBus?.bus_id,
+              },
+            }}
+            variant="soft"
+          />
+        </>
       )}
     </View>
   )

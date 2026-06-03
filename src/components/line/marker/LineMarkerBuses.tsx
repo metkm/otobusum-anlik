@@ -1,5 +1,6 @@
 import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibre-react-native'
 import Lucide from '@react-native-vector-icons/lucide'
+import { router } from 'expo-router'
 import type { Feature } from 'geojson'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
@@ -9,11 +10,13 @@ import { useFilterStore } from '@/stores'
 
 export const LineMarkerBuses = () => {
   const defaultBg = useCSSVariable('--ui-bg')
-  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
-  const lines = useLines()
-  const { query: lineBusesQuery, buses } = useLineBuses()
+
   const { code } = useLine()
   const { routeCode } = useLineRoutes()
+  const { query: lineBusesQuery, buses } = useLineBuses()
+
+  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
+  const lines = useLines()
   const theme = useLineTheme()
 
   if (!lineBusesQuery.data)
@@ -30,7 +33,9 @@ export const LineMarkerBuses = () => {
   const features: Feature[] = buses.filter(bus => bus.route_code === routeCode)
     .map(bus => ({
       type: 'Feature',
-      properties: {},
+      properties: {
+        doorNo: bus.bus_id,
+      },
       geometry: {
         type: 'Point',
         coordinates: [bus.lng, bus.lat],
@@ -47,6 +52,12 @@ export const LineMarkerBuses = () => {
         data={{
           type: 'FeatureCollection',
           features,
+        }}
+        onPress={(event) => {
+          const doorNo = event.nativeEvent.features[0]?.properties?.doorNo
+          if (!doorNo)
+            return
+          router.navigate(`/bus-info/${doorNo}`)
         }}
       >
         <Layer

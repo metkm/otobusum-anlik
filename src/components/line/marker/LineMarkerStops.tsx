@@ -66,7 +66,7 @@ export const LineMarkerStops = () => {
         const stopCode = event.nativeEvent.features[0]?.properties?.code
         if (!stopCode)
           return
-        router.push(`/stop/${code}/${stopCode}`)
+        router.navigate(`/stop/${code}/${stopCode}`)
       }}
     >
       <LineMarkerStopLayer isHidden={isLineHidden} />
