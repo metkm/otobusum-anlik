@@ -108,7 +108,7 @@ export const UCarousel = ({
           className={cn('flex flex-row', contentClassName)}
           onLayout={({ nativeEvent }) => {
             const cw = nativeEvent.layout.width
-            contentWidth.value = cw
+            contentWidth.set(cw)
           }}
         >
           {children}
