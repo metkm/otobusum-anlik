@@ -1,7 +1,8 @@
+import { LegendList } from '@legendapp/list/react-native'
 import { router } from 'expo-router'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlatList, View } from 'react-native'
+import { View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useDebounce } from 'use-debounce'
 import { useShallow } from 'zustand/react/shallow'
@@ -151,7 +152,7 @@ export const SearchScreen = () => {
               />
             )
           : (
-              <FlatList
+              <LegendList
                 data={results}
                 renderItem={({ item }) => {
                   if (isStop(item)) {
@@ -164,9 +165,11 @@ export const SearchScreen = () => {
                     </LineContext>
                   )
                 }}
+                keyExtractor={item => item.id.toString()}
                 className="flex-1"
-                contentContainerClassName="px-2 gap-2"
+                contentContainerStyle={{ paddingHorizontal: 8, gap: 8 }}
                 fadingEdgeLength={10}
+                recycleItems
               />
             )}
       </UQueryState>

@@ -1,7 +1,8 @@
+import { LegendList } from '@legendapp/list/react-native'
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlatList, ListRenderItem, View } from 'react-native'
+import { View } from 'react-native'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -20,7 +21,7 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
   const { query: busesQuery } = useLineBuses()
 
   const theme = useLineTheme()
-  const color = theme?.text({ variant: isSelected ? 'solid' : 'ghost' })
+  const backgroundWithColor = theme?.backgroundWithColor({ variant: isSelected ? 'solid' : 'soft' })
 
   return (
     <UButton
@@ -28,19 +29,19 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
       variant={isSelected ? 'solid' : 'ghost'}
       color="neutral"
       onPress={() => setRoute(code, item.code)}
-      className="flex-col justify-start items-start"
+      className="flex-col justify-start items-start h-15.5"
     >
       <View className="flex-row justify-center gap-1">
-        <View className="px-2 py-1 gap-1 rounded-md flex-row items-center">
+        <View className="px-2 py-1 gap-1 rounded-md flex-row items-center" style={backgroundWithColor}>
           <UIcon
             name="bus-front"
             sizeClassName="size-4"
-            color={color?.color}
+            color={backgroundWithColor?.color}
           />
 
           <UText
             className="font-inter-medium text-xs"
-            style={color}
+            style={backgroundWithColor}
           >
             {busesQuery.data?.reduce((acc, curr) => curr.route_code === item.code ? acc + 1 : acc, 0) ?? 0}
           </UText>
@@ -48,7 +49,7 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
 
         <UText
           className="px-2 py-1 font-inter-medium rounded-md text-xs align-middle"
-          style={color}
+          style={backgroundWithColor}
         >
           {item.code.split('_').slice(1).join('_')}
         </UText>
@@ -77,19 +78,6 @@ export const LineCardRoutes = () => {
       return Number(ad) - Number(bd)
     })
 
-  const presentRoutes = () => {
-    routeSheet.current?.present()
-  }
-
-  const renderItem: ListRenderItem<LineRoute> = ({ item }) => {
-    return (
-      <RouteItem
-        isSelected={routeCode === item.code}
-        item={item}
-      />
-    )
-  }
-
   return (
     <Animated.View
       layout={LinearTransition}
@@ -114,7 +102,9 @@ export const LineCardRoutes = () => {
         variant="soft"
         color="neutral"
         icon="route"
-        onPress={presentRoutes}
+        onPress={() => {
+          routeSheet.current?.present()
+        }}
         block
         className="grow shrink"
         loading={routesQuery.isFetching}
@@ -133,11 +123,19 @@ export const LineCardRoutes = () => {
             )}
             contentContainerClassName="pt-0"
           >
-            <FlatList
+            <LegendList
               data={sortedRoutes}
-              renderItem={renderItem}
+              renderItem={({ item }) => (
+                <RouteItem
+                  isSelected={routeCode === item.code}
+                  item={item}
+                />
+              )}
               extraData={routeCode}
-              contentContainerClassName="px-2 pt-2 gap-2"
+              keyExtractor={item => item.id.toString()}
+              contentContainerStyle={{ paddingHorizontal: 8, paddingTop: 8, gap: 8 }}
+              getFixedItemSize={() => 62 + 8}
+              recycleItems
             />
           </USheet>
         )}

@@ -1,10 +1,11 @@
+import { LegendList } from '@legendapp/list/react-native'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation'
 import { router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router/build/hooks'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import { FlatList, GestureHandlerRootView, TextInput } from 'react-native-gesture-handler'
+import { GestureHandlerRootView, TextInput } from 'react-native-gesture-handler'
 import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
 import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -44,6 +45,14 @@ export const GroupIdScreen = () => {
 
   const group = groups.find(gr => gr.id === params.groupId)
 
+  const handleSave = useCallback(() => {
+    if (!group)
+      return
+
+    useLineStore.getState().updateGroupName(group.id, name.current)
+    inputRef.current?.clear()
+  }, [group])
+
   useEffect(() => {
     navigation.setOptions({
       backgroundColor: background?.backgroundColor ?? backgroundDefault as string | undefined,
@@ -77,16 +86,7 @@ export const GroupIdScreen = () => {
         </AnimatedGestureHandlerRootView>
       ),
     })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigation])
-
-  const handleSave = () => {
-    if (!group)
-      return
-
-    useLineStore.getState().updateGroupName(group.id, name.current)
-    inputRef.current?.clear()
-  }
+  }, [background?.backgroundColor, backgroundDefault, group, groups.length, handleSave, navigation, style, t])
 
   return (
     <View className={`px-2 pt-5 gap-2 ${groups.length > 1 ? 'pb-28' : 'pb-15'}`}>
@@ -103,7 +103,7 @@ export const GroupIdScreen = () => {
       </View>
 
       {(group && group.codes.length > 0) && (
-        <FlatList
+        <LegendList
           data={group?.codes}
           renderItem={({ item }) => (
             <GestureHandlerRootView>
@@ -119,11 +119,13 @@ export const GroupIdScreen = () => {
                   variant="soft"
                 />
 
-                <UText className="px-2 py-1 font-inter-medium rounded-md bg-muted/50 align-middle">{item}</UText>
+                <UText className="px-2 py-1 font-inter-medium rounded-md bg-muted align-middle">{item}</UText>
               </View>
             </GestureHandlerRootView>
           )}
-          contentContainerClassName="gap-2"
+          contentContainerStyle={{ gap: 8 }}
+          keyExtractor={item => item}
+          recycleItems
         />
       )}
     </View>

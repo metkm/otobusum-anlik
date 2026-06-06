@@ -1,7 +1,8 @@
+import { LegendList } from '@legendapp/list/react-native'
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlatList, View } from 'react-native'
+import { View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
@@ -73,7 +74,7 @@ export const LineCardMenu = () => {
 
       {news.length > 1 && (
         <USheet ref={announcementsSheet} scrollable>
-          <FlatList
+          <LegendList
             data={news}
             renderItem={({ item }) => {
               return (
@@ -85,6 +86,8 @@ export const LineCardMenu = () => {
               )
             }}
             ItemSeparatorComponent={() => <View className="h-hairline w-full bg-muted" />}
+            keyExtractor={item => `${item.HATKODU}-${item.GUNCELLEME_SAATI}`}
+            recycleItems
           />
         </USheet>
       )}
