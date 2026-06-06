@@ -13,6 +13,7 @@
   "dependencies": {
     "@blazejkustra/react-native-onboarding": "^1.0.1",
     "@expo/metro-runtime": "~56.0.12",
+    "@legendapp/list": "^3.0.2",
     "@lodev09/react-native-true-sheet": "^3.10.1",
     "@maplibre/maplibre-react-native": "^11.0.1",
     "@material/material-color-utilities": "^0.4.0",

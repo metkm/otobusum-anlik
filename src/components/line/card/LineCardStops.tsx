@@ -1,3 +1,4 @@
+import { AnimatedLegendList } from '@legendapp/list/reanimated'
 import { t } from 'i18next'
 import { View } from 'react-native'
 import Animated, { LinearTransition, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
@@ -120,6 +121,7 @@ export const LineCardStops = () => {
   const debouncedMomentumScrollEnd = useDebouncedCallback(() => {
     if (!expandStopsWhenScrolled && containerHeight.value !== EXPANDED)
       return
+    // eslint-disable-next-line react-hooks/immutability
     containerHeight.value = COLLAPSED
   }, 1500)
 
@@ -136,6 +138,7 @@ export const LineCardStops = () => {
   const onScrollBeginDrag = () => {
     if (!expandStopsWhenScrolled)
       return
+    // eslint-disable-next-line react-hooks/immutability
     containerHeight.value = EXPANDED
   }
 
@@ -145,25 +148,25 @@ export const LineCardStops = () => {
       loading={() => <SkeletonLineStops />}
       error={error => <ErrorState message={error.message} />}
     >
-      <Animated.FlatList
+      <Animated.View
         layout={LinearTransition}
-        data={lineStopsQuery.data || []}
-        renderItem={({ item, index }) => <StopItem item={item} index={index} />}
-        contentContainerClassName="px-2 gap-2"
-        initialNumToRender={3}
-        fadingEdgeLength={10}
-        windowSize={6}
+        className="overflow-hidden"
         style={containerStyle}
-        onScrollBeginDrag={onScrollBeginDrag}
-        onMomentumScrollEnd={debouncedMomentumScrollEnd}
-        scrollEventThrottle={16}
-        getItemLayout={(_, index) => ({
-          index,
-          length: 32,
-          offset: 32 * index,
-        })}
-        directionalLockEnabled
-      />
+      >
+        <AnimatedLegendList
+          data={lineStopsQuery.data || []}
+          renderItem={({ item, index }) => <StopItem item={item} index={index} />}
+          fadingEdgeLength={10}
+          onScrollBeginDrag={onScrollBeginDrag}
+          contentContainerStyle={{ gap: 4, paddingHorizontal: 8 }}
+          onMomentumScrollEnd={debouncedMomentumScrollEnd}
+          keyExtractor={item => item.id.toString()}
+          scrollEventThrottle={16}
+          getFixedItemSize={() => 32 + 4}
+          maintainVisibleContentPosition
+          recycleItems
+        />
+      </Animated.View>
     </UQueryState>
   )
 }
