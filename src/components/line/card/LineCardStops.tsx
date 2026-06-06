@@ -1,8 +1,7 @@
 import { AnimatedLegendList } from '@legendapp/list/reanimated'
 import { t } from 'i18next'
 import { View } from 'react-native'
-import Animated, { LinearTransition, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
-import { useDebouncedCallback } from 'use-debounce'
+import { LinearTransition, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
@@ -118,12 +117,18 @@ export const LineCardStops = () => {
     height: containerHeight.value,
   }))
 
-  const debouncedMomentumScrollEnd = useDebouncedCallback(() => {
-    if (!expandStopsWhenScrolled && containerHeight.value !== EXPANDED)
-      return
-    // eslint-disable-next-line react-hooks/immutability
-    containerHeight.value = COLLAPSED
-  }, 1500)
+  const onScroll = useAnimatedScrollHandler({
+    onBeginDrag: () => {
+      if (!expandStopsWhenScrolled)
+        return
+      containerHeight.set(EXPANDED)
+    },
+    onMomentumEnd: () => {
+      if (!expandStopsWhenScrolled && containerHeight.value !== EXPANDED)
+        return
+      containerHeight.set(withDelay(1500, withTiming(COLLAPSED)))
+    },
+  })
 
   if (lineStopsQuery.data && lineStopsQuery.data.length < 1) {
     return (
@@ -135,38 +140,27 @@ export const LineCardStops = () => {
     )
   }
 
-  const onScrollBeginDrag = () => {
-    if (!expandStopsWhenScrolled)
-      return
-    // eslint-disable-next-line react-hooks/immutability
-    containerHeight.value = EXPANDED
-  }
-
   return (
     <UQueryState
       query={lineStopsQuery}
       loading={() => <SkeletonLineStops />}
       error={error => <ErrorState message={error.message} />}
     >
-      <Animated.View
+      <AnimatedLegendList
         layout={LinearTransition}
-        className="overflow-hidden"
+        data={lineStopsQuery.data || []}
+        renderItem={({ item, index }) => <StopItem item={item} index={index} />}
+        fadingEdgeLength={10}
+        contentContainerStyle={{ gap: 4, paddingHorizontal: 8 }}
+        // @ts-expect-error
         style={containerStyle}
-      >
-        <AnimatedLegendList
-          data={lineStopsQuery.data || []}
-          renderItem={({ item, index }) => <StopItem item={item} index={index} />}
-          fadingEdgeLength={10}
-          onScrollBeginDrag={onScrollBeginDrag}
-          contentContainerStyle={{ gap: 4, paddingHorizontal: 8 }}
-          onMomentumScrollEnd={debouncedMomentumScrollEnd}
-          keyExtractor={item => item.id.toString()}
-          scrollEventThrottle={16}
-          getFixedItemSize={() => 32 + 4}
-          maintainVisibleContentPosition
-          recycleItems
-        />
-      </Animated.View>
+        onScroll={onScroll}
+        keyExtractor={item => item.id.toString()}
+        scrollEventThrottle={16}
+        getFixedItemSize={() => 32 + 4}
+        maintainVisibleContentPosition
+        recycleItems
+      />
     </UQueryState>
   )
 }
