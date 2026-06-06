@@ -78,7 +78,7 @@ export const LineMarkerRoute = () => {
             paint={{
               'icon-opacity': 1,
             }}
-            layerIndex={15_000}
+            // layerIndex={3_000}
             afterId={`route-path-${code}`}
           />
         </GeoJSONSource>

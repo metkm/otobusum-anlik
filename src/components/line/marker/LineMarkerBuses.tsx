@@ -69,9 +69,8 @@ export const LineMarkerBuses = () => {
             'circle-pitch-alignment': 'map',
           }}
           layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
-          layerIndex={30_000}
+          layerIndex={5_000_000}
           minzoom={minZoom}
-          // afterId={`stops-${code}`}
         />
 
         <Layer
@@ -86,8 +85,7 @@ export const LineMarkerBuses = () => {
             'icon-opacity-transition': { duration: 0 },
             'icon-color-transition': { duration: 0 },
           }}
-          layerIndex={40_000}
-          // afterId={`bus-circle-${code}`}
+          afterId={`bus-circle-${code}`}
           minzoom={minZoom}
         />
       </GeoJSONSource>
