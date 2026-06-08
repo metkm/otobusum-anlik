@@ -16,7 +16,6 @@ export default ({ config }: ConfigContext) => ({
   orientation: 'portrait',
   icon: './src/assets/icon.png',
   scheme: 'otobusum-anlik',
-  userInterfaceStyle: 'automatic',
   extra: {
     eas: {
       projectId: '2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
@@ -32,11 +31,6 @@ export default ({ config }: ConfigContext) => ({
     policy: 'appVersion',
   },
   android: {
-    config: {
-      googleMaps: {
-        apiKey: process.env.EXPO_PUBLIC_MAP_API,
-      },
-    },
     adaptiveIcon: {
       foregroundImage: './src/assets/adaptive-icon.png',
       backgroundColor: '#0a0a0a',
