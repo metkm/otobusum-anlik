@@ -6,6 +6,7 @@ import localization from 'expo-localization/plugin'
 import location from 'expo-location/plugin'
 import router from 'expo-router/plugin'
 import splashScreen from 'expo-splash-screen/plugin'
+import statusBar from 'expo-status-bar/plugin'
 
 export default ({ config }: ConfigContext) => ({
   ...config,
@@ -63,6 +64,7 @@ export default ({ config }: ConfigContext) => ({
       ],
     }),
     image(),
+    statusBar(),
     '@maplibre/maplibre-react-native',
   ],
   experiments: {

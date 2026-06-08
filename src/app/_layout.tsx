@@ -90,6 +90,7 @@ export const RootLayout = () => {
   const background = useCSSVariable('--background-color-default')
 
   const colorScheme = useColorScheme()
+
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
   const theme: Theme = {

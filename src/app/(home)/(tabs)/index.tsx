@@ -1,4 +1,6 @@
 import { UserLocation } from '@maplibre/maplibre-react-native'
+import { useIsFocused } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 import { View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -13,9 +15,16 @@ import { useSettingsStore } from '@/stores'
 export const HomeScreen = () => {
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
   const hideMap = useSettingsStore(useShallow(state => state.hideMap))
+  const { scheme: mapScheme } = useSettingsStore(useShallow(state => state.getMapStyle()))
+
+  const isFocused = useIsFocused()
 
   return (
     <View className="flex-1">
+      {isFocused && (
+        <StatusBar style={mapScheme === 'dark' ? 'light' : 'dark'} />
+      )}
+
       {
         !hideMap && (
           <Map>
