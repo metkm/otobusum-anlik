@@ -10,6 +10,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
+import { USheetHeader } from '@/components/u/USheetHeader'
 import { UText } from '@/components/u/UText'
 
 import { useLineTheme } from '@/composables'
@@ -163,10 +164,11 @@ export const GroupsScreen = () => {
         </GestureHandlerRootView>
       ),
       header: (
-        <View className="p-2 pt-5 border-b border-b-muted">
-          <UText className="text-lg font-inter-semibold leading-tight">{t('groups')}</UText>
-          <UText className="text-xs text-muted leading-tight">{addToGroup ? t('addLineToGroup', { code: addToGroup }) : t('chooseActiveGroup')}</UText>
-        </View>
+        <USheetHeader
+          icon="component"
+          title={t('groups')}
+          description={addToGroup ? t('addLineToGroup', { code: addToGroup }) : t('chooseActiveGroup')}
+        />
       ),
     }
 

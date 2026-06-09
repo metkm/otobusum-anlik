@@ -9,6 +9,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
 import { USheet } from '@/components/u/USheet'
+import { USheetHeader } from '@/components/u/USheetHeader'
 import { UText } from '@/components/u/UText'
 
 import { useLine, useLineBuses, useLineTheme } from '@/composables'
@@ -133,9 +134,10 @@ export const LineCardRoutes = () => {
             scrollable
             detents={[0.5, 1]}
             header={(
-              <View className="p-2 pt-5 border-b border-muted">
-                <UText className="text-lg font-inter-semibold leading-tight">{t('routes')}</UText>
-              </View>
+              <USheetHeader
+                icon="route"
+                title={t('routes')}
+              />
             )}
             contentContainerClassName="pt-0"
           >

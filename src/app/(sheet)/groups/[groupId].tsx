@@ -17,6 +17,7 @@ import { UInput } from '@/components/u/UInput'
 import { UText } from '@/components/u/UText'
 
 import { useLineTheme } from '@/composables'
+import { GROUP_LINE_LIMIT } from '@/constants/app'
 import { useFilterStore, useLineStore } from '@/stores'
 
 const AnimatedGestureHandlerRootView = Animated.createAnimatedComponent(GestureHandlerRootView)
@@ -56,6 +57,7 @@ export const GroupIdScreen = () => {
   useEffect(() => {
     navigation.setOptions({
       backgroundColor: background?.backgroundColor ?? backgroundDefault as string | undefined,
+      detents: [0.5],
       footer: (
         <AnimatedGestureHandlerRootView style={style}>
           <UButton
@@ -90,7 +92,7 @@ export const GroupIdScreen = () => {
 
   return (
     <View className={`px-2 pt-5 gap-2 ${groups.length > 1 ? 'pb-28' : 'pb-15'}`}>
-      <View className="gap-1">
+      <View className="gap-2">
         <UText className="ml-2 font-inter-medium">{group?.name}</UText>
         <UInput
           ref={inputRef}
@@ -98,36 +100,42 @@ export const GroupIdScreen = () => {
           onChangeText={(text) => {
             name.current = text
           }}
-          variant="soft"
         />
       </View>
 
-      {(group && group.codes.length > 0) && (
-        <LegendList
-          data={group?.codes}
-          renderItem={({ item }) => (
-            <GestureHandlerRootView>
-              <View className="flex-row items-stretch gap-1">
-                <UButton
-                  icon="trash-2"
-                  onPress={() => {
-                    if (!group)
-                      return
-                    useLineStore.getState().deleteLine(item, group.id)
-                  }}
-                  color="neutral"
-                  variant="soft"
-                />
+      <View className="gap-2">
+        <View className="flex-row gap-2 items-center">
+          <UText className="ml-2 font-inter-medium">{t('addedLines')}</UText>
+          <UText className="text-xs font-inter-medium">{`(${group?.codes.length} / ${GROUP_LINE_LIMIT})`}</UText>
+        </View>
 
-                <UText className="px-2 py-1 font-inter-medium rounded-md bg-muted align-middle">{item}</UText>
-              </View>
-            </GestureHandlerRootView>
-          )}
-          contentContainerStyle={{ gap: 8 }}
-          keyExtractor={item => item}
-          recycleItems
-        />
-      )}
+        {(group && group.codes.length > 0) && (
+          <LegendList
+            data={group?.codes}
+            renderItem={({ item }) => (
+              <GestureHandlerRootView>
+                <View className="flex-row items-stretch gap-1">
+                  <UButton
+                    icon="trash-2"
+                    onPress={() => {
+                      if (!group)
+                        return
+                      useLineStore.getState().deleteLine(item, group.id)
+                    }}
+                    color="neutral"
+                    variant="soft"
+                  />
+
+                  <UText className="px-2 py-1 font-inter-medium rounded-md bg-muted align-middle">{item}</UText>
+                </View>
+              </GestureHandlerRootView>
+            )}
+            contentContainerStyle={{ gap: 8 }}
+            keyExtractor={item => item}
+            recycleItems
+          />
+        )}
+      </View>
     </View>
   )
 }

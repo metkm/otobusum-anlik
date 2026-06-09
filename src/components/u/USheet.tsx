@@ -25,7 +25,12 @@ export const USheet = ({ ref, contentContainerClassName, children, ...props }: {
       }}
       {...props}
     >
-      <StyledGestureHandlerRootView className={cn('grow pt-5 pb-2', contentContainerClassName)}>
+      <StyledGestureHandlerRootView className={cn(
+        'grow pb-2',
+        props.header ? 'p-0' : 'pt-5',
+        contentContainerClassName,
+      )}
+      >
         {children}
       </StyledGestureHandlerRootView>
     </ReanimatedTrueSheet>

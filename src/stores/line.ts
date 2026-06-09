@@ -9,6 +9,7 @@ import { immer } from 'zustand/middleware/immer'
 import { useFilterStore } from './filter'
 import { useThemeStore } from './theme'
 
+import { GROUP_LINE_LIMIT } from '@/constants/app'
 import { City } from '@/types/city'
 import { LineGroup, RouteCode, RouteDirection } from '@/types/line'
 
@@ -26,10 +27,6 @@ export interface LineCodeSlice {
   updateGroupName: (id: string, name: string) => void
   addLine: (code: string, groupId?: string) => void
   deleteLine: (code: string, groupId?: string) => void
-  // getGroupId: () => string
-  // getGroups: () => LineGroup[]
-  // getLineGroup: (groupId?: string) => LineGroup | undefined
-  // getLines: () => string[]
 }
 
 export interface LineRouteSlice {
@@ -117,7 +114,7 @@ const createLineCodeSlice = immer<LineCodeSlice>(set => ({
     if (!codes)
       return
 
-    if (codes.length > 3) {
+    if (codes.length >= GROUP_LINE_LIMIT) {
       ToastAndroid.show(t('lineLimitExceeded'), ToastAndroid.SHORT)
       return
     }
@@ -157,11 +154,6 @@ const createLineCodeSlice = immer<LineCodeSlice>(set => ({
 
     useThemeStore.getState().deleteTheme(code)
   }),
-  // getGroups: () => get().lines[useFilterStore.getState().city],
-  // getLineGroup: (groupId?: string) => {
-  //   return get().getGroups().find(gr => gr.id === (groupId ?? get().getGroupId()))
-  // },
-  // getLines: () => get().getLineGroup()?.codes || [],
 }))
 
 const createLineRouteSlice = immer<LineRouteSlice>((set, get) => ({

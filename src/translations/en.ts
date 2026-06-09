@@ -80,4 +80,6 @@ export default {
   plate: 'Plate',
   speed: 'Speed',
   garage: 'Garage',
+  addedLines: 'Added lines',
+  news: 'News',
 }

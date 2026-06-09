@@ -7,6 +7,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
 import { USheet } from '@/components/u/USheet'
+import { USheetHeader } from '@/components/u/USheetHeader'
 import { UText } from '@/components/u/UText'
 
 import { LineModalsColorPicker } from '../modals/ColorPicker'
@@ -73,7 +74,11 @@ export const LineCardMenu = () => {
       />
 
       {news.length > 1 && (
-        <USheet ref={announcementsSheet} scrollable>
+        <USheet
+          ref={announcementsSheet}
+          scrollable
+          header={<USheetHeader title="News" icon="newspaper" />}
+        >
           <LegendList
             data={news}
             renderItem={({ item }) => {
@@ -85,8 +90,7 @@ export const LineCardMenu = () => {
                 </View>
               )
             }}
-            ItemSeparatorComponent={() => <View className="h-hairline w-full bg-muted" />}
-            keyExtractor={item => `${item.HATKODU}-${item.GUNCELLEME_SAATI}`}
+            keyExtractor={item => `${item.HATKODU}-${item.GUNCELLEME_SAATI}-${item.MESAJ}`}
             recycleItems
           />
         </USheet>

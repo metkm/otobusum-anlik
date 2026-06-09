@@ -80,4 +80,6 @@ export default {
   plate: 'Plaka',
   speed: 'Hız',
   garage: 'Garaj',
+  addedLines: 'Ekli hatlar',
+  news: 'Haberler',
 }
