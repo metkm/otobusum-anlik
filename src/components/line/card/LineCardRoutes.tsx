@@ -15,10 +15,9 @@ import { useLine, useLineBuses, useLineTheme } from '@/composables'
 import { LineRoute, useLineRoutes } from '@/composables/useLineRoutes'
 import { useLineStore } from '@/stores'
 
-const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute }) => {
+const RouteItem = ({ isSelected, item, busCount }: { isSelected: boolean, item: LineRoute, busCount: number }) => {
   const setRoute = useLineStore(useShallow(state => state.setRoute))
   const { code } = useLine()
-  const { query: busesQuery } = useLineBuses()
 
   const theme = useLineTheme()
   const backgroundWithColor = theme?.backgroundWithColor({ variant: isSelected ? 'solid' : 'soft' })
@@ -43,7 +42,7 @@ const RouteItem = ({ isSelected, item }: { isSelected: boolean, item: LineRoute 
             className="font-inter-medium text-xs"
             style={backgroundWithColor}
           >
-            {busesQuery.data?.reduce((acc, curr) => curr.route_code === item.code ? acc + 1 : acc, 0) ?? 0}
+            {busCount}
           </UText>
         </View>
 
@@ -65,15 +64,32 @@ export const LineCardRoutes = () => {
   const { t } = useTranslation()
   const { code } = useLine()
   const { query: routesQuery, route, routeCode, otherDirectionRoute } = useLineRoutes()
-  const { buses } = useLineBuses()
+  const { buses, query: busesQuery } = useLineBuses()
+
+  const busCounts = (busesQuery.data ?? [])
+    .reduce<Record<string, number>>(
+      (acc, bus) => {
+        acc[bus.route_code] = (acc[bus.route_code] ?? 0) + 1
+        return acc
+      },
+      {},
+    )
 
   const sortedRoutes = [...(routesQuery.data || [])]
     .sort((a, b) => {
+      const aBusCount = busCounts[a.code] ?? 0
+      const bBusCount = busCounts[b.code] ?? 0
+
+      if (aBusCount !== bBusCount) {
+        return bBusCount - aBusCount
+      }
+
       const ad = a.code.split('_')[2]?.slice(1)
       const bd = b.code.split('_')[2]?.slice(1)
 
-      if (!ad || !bd)
-        return 1
+      if (!ad && !bd) return 0
+      if (!ad) return 1
+      if (!bd) return -1
 
       return Number(ad) - Number(bd)
     })
@@ -129,6 +145,7 @@ export const LineCardRoutes = () => {
                 <RouteItem
                   isSelected={routeCode === item.code}
                   item={item}
+                  busCount={busCounts[item.code] ?? 0}
                 />
               )}
               extraData={routeCode}
