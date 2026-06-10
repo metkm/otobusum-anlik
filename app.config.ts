@@ -16,6 +16,7 @@ export default ({ config }: ConfigContext) => ({
   orientation: 'portrait',
   icon: './src/assets/icon.png',
   scheme: 'otobusum-anlik',
+  userInterfaceStyle: 'automatic',
   extra: {
     eas: {
       projectId: '2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',

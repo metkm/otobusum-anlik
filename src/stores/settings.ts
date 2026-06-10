@@ -61,9 +61,10 @@ export const useSettingsStore = create(
           const prefferedMapStyle = get().mapStyle
           const colorSchemeDevice = Appearance.getColorScheme() === 'dark' ? 'dark' : 'liberty'
 
-          const scheme = prefferedMapStyle === undefined
-            ? colorSchemeDevice
-            : prefferedMapStyle
+          const scheme = prefferedMapStyle ?? colorSchemeDevice
+          // const scheme = prefferedMapStyle === undefined
+          //   ? colorSchemeDevice
+          //   : prefferedMapStyle
 
           // we do this because scheme that comes from prefferedmapstyle might be a old value that is not supported anymore
           const style = mapStyles[scheme] ? mapStyles[scheme] : mapStyles[colorSchemeDevice]
