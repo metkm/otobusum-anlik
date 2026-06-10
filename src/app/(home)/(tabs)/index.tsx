@@ -10,13 +10,14 @@ import { Map } from '@/components/Map'
 import { MapButtons } from '@/components/MapButtons'
 import { MapOverlay } from '@/components/MapOverlay'
 
+import { useMapStyle } from '@/composables/useMapStyle'
 import { useSettingsStore } from '@/stores'
 
 export const HomeScreen = () => {
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
   const hideMap = useSettingsStore(useShallow(state => state.hideMap))
-  const { scheme: mapScheme } = useSettingsStore(useShallow(state => state.getMapStyle()))
 
+  const { scheme: mapScheme } = useMapStyle()
   const isFocused = useIsFocused()
 
   return (

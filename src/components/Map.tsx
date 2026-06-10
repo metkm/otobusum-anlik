@@ -1,11 +1,11 @@
 import { Map as _Map, type MapRef, type LngLatBounds, type CameraProps, type MapProps, type ViewStateChangeEvent, Camera } from '@maplibre/maplibre-react-native'
 import React, { RefObject } from 'react'
 import { NativeSyntheticEvent } from 'react-native'
-import { useShallow } from 'zustand/react/shallow'
 
 import { useSettingsStore } from '../stores/settings'
 
 import { useMap } from '@/composables/useMap'
+import { useMapStyle } from '@/composables/useMapStyle'
 
 export interface TheMapProps {
   children?: React.ReactNode
@@ -15,10 +15,9 @@ export interface TheMapProps {
 
 export const Map = ({ children, cameraProps, style, ...props }: { initialMapBounds?: LngLatBounds, cameraProps?: CameraProps } & Omit<MapProps, 'mapStyle'>) => {
   const { camera, map } = useMap()
+  const { style: mapStyle } = useMapStyle()
 
   const initialMapBounds = useSettingsStore.getState().initialMapBounds
-
-  const { style: mapStyle } = useSettingsStore(useShallow(state => state.getMapStyle()))
 
   const onMapRegionChange = (event: NativeSyntheticEvent<ViewStateChangeEvent>) => {
     useSettingsStore.setState(() => ({

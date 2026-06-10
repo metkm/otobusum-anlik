@@ -1,12 +1,11 @@
 import { type LngLatBounds } from '@maplibre/maplibre-react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { requestForegroundPermissionsAsync } from 'expo-location'
-import { Appearance } from 'react-native'
 import { create } from 'zustand'
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
-import { mapStyles, MapStyleValue, type MapStyle } from '@/constants/mapStyles'
+import { type MapStyle } from '@/constants/mapStyles'
 
 export type ColorScheme = 'light' | 'dark'
 
@@ -23,7 +22,6 @@ export interface SettingsStore {
   hideMap: boolean
   lineCardExpanded?: boolean
   toggleMyLocation: () => void
-  getMapStyle: () => { scheme: MapStyle, style: MapStyleValue }
 }
 
 export const useSettingsStore = create(
@@ -56,20 +54,6 @@ export const useSettingsStore = create(
           return set((state) => {
             state.showMyLocation = showLocation
           })
-        },
-        getMapStyle: () => {
-          const prefferedMapStyle = get().mapStyle
-          const colorSchemeDevice = Appearance.getColorScheme() === 'dark' ? 'dark' : 'liberty'
-
-          const scheme = prefferedMapStyle ?? colorSchemeDevice
-          // const scheme = prefferedMapStyle === undefined
-          //   ? colorSchemeDevice
-          //   : prefferedMapStyle
-
-          // we do this because scheme that comes from prefferedmapstyle might be a old value that is not supported anymore
-          const style = mapStyles[scheme] ? mapStyles[scheme] : mapStyles[colorSchemeDevice]
-
-          return { scheme, style }
         },
       })),
     ),
