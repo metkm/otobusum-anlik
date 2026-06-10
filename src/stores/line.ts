@@ -33,7 +33,6 @@ export interface LineRouteSlice {
   routes: Record<City, Record<string, RouteCode>>
   setRoute: (code: string, routeCode: RouteCode) => void
   changeRouteDirection: (code: string) => void
-  getRoutes: () => Record<string, RouteCode>
 }
 
 type LineStore = (LineCodeSlice & LineRouteSlice)
@@ -174,10 +173,6 @@ const createLineRouteSlice = immer<LineRouteSlice>((set, get) => ({
 
     state.routes[city][code] = otherDirectionCode
   }),
-  getRoutes: () => {
-    const city = useFilterStore.getState().city
-    return get().routes[city]
-  },
 }))
 
 const migrate = (persistedStore: unknown, version: number) => {

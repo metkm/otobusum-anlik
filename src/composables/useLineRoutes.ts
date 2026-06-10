@@ -22,7 +22,7 @@ export interface LineRoute {
 export const useLineRoutes = () => {
   const { code } = useLine()
   const city = useFilterStore(useShallow(state => state.city))
-  const routeCode = useLineStore(useShallow(state => state.getRoutes()[code])) || `${code}_G_D0` as RouteCode
+  const routeCode = useLineStore(useShallow(state => state.routes[city][code])) || `${code}_G_D0` as RouteCode
 
   const query = useQuery({
     queryKey: ['line', code, 'routes'],
