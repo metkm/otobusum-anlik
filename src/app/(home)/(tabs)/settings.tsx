@@ -63,12 +63,6 @@ export const SettingsScreen = () => {
       preview: require('@/assets/maps/dark.png'),
     },
     {
-      label: t('bright'),
-      key: 'bright',
-      value: mapStyles['bright'],
-      preview: require('@/assets/maps/bright.png'),
-    },
-    {
       label: t('liberty'),
       key: 'liberty',
       value: mapStyles['liberty'],
@@ -80,12 +74,6 @@ export const SettingsScreen = () => {
       value: undefined,
     },
   ]
-
-  // const toggleTraffic = () => {
-  //   useSettingsStore.setState((state) => {
-  //     state.showTraffic = !state.showTraffic
-  //   })
-  // }
 
   const toggleMap = () => {
     useSettingsStore.setState((state) => {

@@ -25,7 +25,6 @@ export default {
   appTheme: 'App theme',
   dark: 'Dark',
   light: 'Light',
-  bright: 'Bright',
   liberty: 'Liberty',
   added: 'Added {{code}}',
   linesThatUseStop: 'Lines that use this stop',

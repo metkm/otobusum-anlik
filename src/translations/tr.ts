@@ -25,7 +25,6 @@ export default {
   appTheme: 'Uygulama teması',
   dark: 'Karanlık',
   light: 'Aydınlık',
-  bright: 'Aydınlık',
   liberty: 'Özgür aydınlık',
   added: '{{code}} Eklendi',
   linesThatUseStop: 'Bu durağı kullanan hatlar',

@@ -8,6 +8,7 @@ import { useFilterStore } from '@/stores'
 
 export const LineMarkerRoute = () => {
   const defaultBg = useCSSVariable('--ui-bg')
+  const defaultText = useCSSVariable('--ui-primary')
 
   const { code } = useLine()
   const { query: lineRoutesQuery, route, direction } = useLineRoutes()
@@ -24,6 +25,7 @@ export const LineMarkerRoute = () => {
 
   const background = theme?.background({ variant: 'solid' })
   const text = theme?.text()
+  const bgWithColor = theme?.backgroundWithColor({ variant: 'soft' })
 
   images[iconImage] = Lucide.getImageSourceSync(direction === 'G' ? 'arrow-right' : 'arrow-left', 20, text?.color).uri
 
@@ -70,15 +72,34 @@ export const LineMarkerRoute = () => {
             type="symbol"
             layout={{
               'symbol-placement': 'line',
+              'icon-ignore-placement': true,
               'icon-image': iconImage,
               'icon-size': 0.2,
               'symbol-spacing': 34,
-              'visibility': isLineHidden ? 'none' : 'visible',
+              'visibility': !isLineHidden ? 'none' : 'visible',
             }}
             paint={{
               'icon-opacity': 1,
             }}
-            // layerIndex={3_000}
+            afterId={`route-path-${code}`}
+          />
+
+          <Layer
+            id={`route-km-${code}`}
+            type="symbol"
+            layout={{
+              'symbol-placement': 'line',
+              'symbol-spacing': 64,
+              'text-ignore-placement': true,
+              'text-field': code,
+              'text-size': 10,
+              'text-font': ['Roboto Bold'],
+              'text-offset': [0, 0],
+            }}
+            paint={{
+              'text-color': bgWithColor?.backgroundColor ?? defaultText as string,
+              'text-opacity': 1,
+            }}
             afterId={`route-path-${code}`}
           />
         </GeoJSONSource>

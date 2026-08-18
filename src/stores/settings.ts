@@ -9,13 +9,12 @@ import { type MapStyle } from '@/constants/mapStyles'
 
 export type ColorScheme = 'light' | 'dark'
 
-export interface SettingsStore {
+export interface SettingsStoreV4 {
   initialMapBounds: LngLatBounds
   bearing: number
   pitch: number
   showMyLocation: boolean
   expandStopsWhenScrolled: boolean
-  // showTraffic: boolean
   mapStyle?: MapStyle
   colorScheme?: ColorScheme
   showOnBoarding: boolean
@@ -27,13 +26,12 @@ export interface SettingsStore {
 export const useSettingsStore = create(
   persist(
     subscribeWithSelector(
-      immer<SettingsStore>((set, get) => ({
+      immer<SettingsStoreV4>((set, get) => ({
         initialMapBounds: [26.218823938242565, 36.08430119633523, 30.10080291867854, 42.351104713710356],
         bearing: 0,
         pitch: 0,
         showMyLocation: false,
         expandStopsWhenScrolled: false,
-        // showTraffic: true,
         mapStyle: undefined,
         colorScheme: undefined,
         showOnBoarding: true,
@@ -60,8 +58,17 @@ export const useSettingsStore = create(
     {
       name: 'settings-storage',
       storage: createJSONStorage(() => AsyncStorage),
-      migrate: () => {},
-      version: 4,
+      migrate: (persistedStore: unknown, version: number) => {
+        const store = persistedStore as SettingsStoreV4
+
+        // @ts-ignore
+        if (version === 4 && store.mapStyle === 'bright') {
+          store.mapStyle = 'liberty'
+        }
+
+        return store
+      },
+      version: 4.1,
     },
   ),
 )
