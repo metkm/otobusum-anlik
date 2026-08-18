@@ -57,7 +57,7 @@ export const LineCardMenu = () => {
         color="neutral"
       />
 
-      {news.length > 1 && (
+      {news.length > 0 && (
         <UButton
           icon="newspaper"
           onPress={presentAnnouncements}
