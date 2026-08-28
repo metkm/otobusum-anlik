@@ -46,16 +46,17 @@ export const useColorScheme = (): ColorScheme => {
   return colorScheme === 'unspecified' ? 'dark' : colorScheme
 }
 
-export const useLineTheme = () => {
+export const useLineTheme = (colorScheme?: ColorScheme) => {
   const code = use(LineContext)
 
   const themes = useThemeStore(useShallow(state => state.getThemes()))
-  const colorScheme = useColorScheme()
+  const currentColorScheme = useColorScheme()
+  const resolvedColorScheme = colorScheme ?? currentColorScheme ?? 'dark'
 
   if (!code)
     return
 
-  const theme = themes[code]?.[colorScheme === undefined ? 'dark' : colorScheme]
+  const theme = themes[code]?.[resolvedColorScheme]
   if (!theme)
     return
 

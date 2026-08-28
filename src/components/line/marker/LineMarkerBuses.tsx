@@ -2,33 +2,31 @@ import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibr
 import Lucide from '@react-native-vector-icons/lucide'
 import { router } from 'expo-router'
 import type { Feature } from 'geojson'
-import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLine, useLines, useLineBuses, useLineRoutes, useLineTheme } from '@/composables'
+import { useMapStyle } from '@/composables/useMapStyle'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerBuses = () => {
-  const defaultBg = useCSSVariable('--ui-bg')
-
+  const lines = useLines()
+  const { mapColorScheme } = useMapStyle()
   const { code } = useLine()
   const { routeCode } = useLineRoutes()
   const { query: lineBusesQuery, buses } = useLineBuses()
 
+  const theme = useLineTheme(mapColorScheme)
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
-  const lines = useLines()
-  const theme = useLineTheme()
 
   if (!lineBusesQuery.data)
     return
 
-  const backgroundWithColor = theme?.backgroundWithColor({ variant: 'solid' })
-  const iconSource = Lucide.getImageSourceSync('bus-front', 20, backgroundWithColor?.color)
+  const background = theme?.background({ variant: 'solid' })
+  const text = theme?.text({ variant: 'solid' })
 
   const iconImage = `bus-${code}`
   const images: Record<string, ImageEntry> = {}
-
-  images[iconImage] = iconSource.uri
+  images[iconImage] = Lucide.getImageSourceSync('bus-front', 20, text?.color).uri
 
   const features: Feature[] = buses.filter(bus => bus.route_code === routeCode)
     .map(bus => ({
@@ -64,8 +62,13 @@ export const LineMarkerBuses = () => {
           id={`bus-circle-${code}`}
           type="circle"
           paint={{
-            'circle-radius': 16,
-            'circle-color': backgroundWithColor?.backgroundColor ?? defaultBg as string,
+            'circle-radius': [
+              'interpolate',
+              ['linear'], ['zoom'],
+              10, 10,
+              16, 16,
+            ],
+            'circle-color': background?.backgroundColor as string,
             'circle-pitch-alignment': 'map',
           }}
           layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
@@ -77,7 +80,12 @@ export const LineMarkerBuses = () => {
           type="symbol"
           layout={{
             'icon-image': iconImage,
-            'icon-size': 0.3,
+            'icon-size': [
+              'interpolate',
+              ['linear'], ['zoom'],
+              10, 0.2,
+              16, 0.3,
+            ],
             'visibility': isLineHidden ? 'none' : 'visible',
             'icon-pitch-alignment': 'map',
           }}
