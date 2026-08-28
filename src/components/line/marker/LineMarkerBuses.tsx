@@ -4,8 +4,7 @@ import { router } from 'expo-router'
 import type { Feature } from 'geojson'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine, useLines, useLineBuses, useLineRoutes, useLineTheme } from '@/composables'
-import { useMapStyle } from '@/composables/useMapStyle'
+import { useLine, useLines, useLineBuses, useLineRoutes, useLineTheme, useMapStyle } from '@/composables'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerBuses = () => {
@@ -65,14 +64,14 @@ export const LineMarkerBuses = () => {
             'circle-radius': [
               'interpolate',
               ['linear'], ['zoom'],
-              10, 10,
+              10, 14,
               16, 16,
             ],
             'circle-color': background?.backgroundColor as string,
             'circle-pitch-alignment': 'map',
           }}
           layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
-          layerIndex={5_000_000}
+          layerIndex={50_000_000}
           minzoom={minZoom}
         />
 
@@ -83,7 +82,7 @@ export const LineMarkerBuses = () => {
             'icon-size': [
               'interpolate',
               ['linear'], ['zoom'],
-              10, 0.2,
+              10, 0.25,
               16, 0.3,
             ],
             'visibility': isLineHidden ? 'none' : 'visible',

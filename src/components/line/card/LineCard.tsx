@@ -12,12 +12,13 @@ import { cn } from '@/utils/cn'
 export const LineCard = ({ className, style, ...props }: ViewProps) => {
   const theme = useLineTheme()
   const background = theme?.backgroundWithColor({ variant: 'ghost' })
+  const border = theme?.border({ variant: 'soft' })
 
   return (
     <Animated.View
       layout={LinearTransition}
-      className={cn('bg-muted p-2 rounded-md gap-2', className)}
-      style={[{ elevation: 2 }, background, style]}
+      className={cn('bg-muted p-2 rounded-md gap-2 border-2', className)}
+      style={[{ borderColor: border?.borderColor }, background, style]}
       {...props}
     >
       <View className="flex-row items-center justify-between pl-1">
