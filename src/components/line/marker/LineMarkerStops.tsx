@@ -20,7 +20,13 @@ export const LineMarkerStopLayer = ({ isHidden, ...props }: { isHidden?: boolean
       id={`stops-${code}`}
       type="circle"
       paint={{
-        'circle-radius': 6,
+        'circle-radius': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          11, 4,
+          16, 7,
+        ],
         'circle-color': backgroundSoft ?? defaultBg as string,
         'circle-stroke-width': 2,
         'circle-stroke-color': borderSoft?.borderColor ?? defaultBorder as string,
