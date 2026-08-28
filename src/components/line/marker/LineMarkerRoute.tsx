@@ -72,14 +72,13 @@ export const LineMarkerRoute = () => {
             type="symbol"
             layout={{
               'symbol-placement': 'line',
-              'icon-ignore-placement': true,
               'icon-image': iconImage,
               'icon-size': 0.2,
               'symbol-spacing': 34,
-              'visibility': !isLineHidden ? 'none' : 'visible',
+              'visibility': isLineHidden ? 'none' : 'visible',
             }}
             paint={{
-              'icon-opacity': 1,
+              'icon-opacity': 0.6,
             }}
             afterId={`route-path-${code}`}
           />
@@ -89,7 +88,7 @@ export const LineMarkerRoute = () => {
             type="symbol"
             layout={{
               'symbol-placement': 'line',
-              'symbol-spacing': 64,
+              'symbol-spacing': 10,
               'text-ignore-placement': true,
               'text-field': code,
               'text-size': 10,
@@ -98,7 +97,7 @@ export const LineMarkerRoute = () => {
             }}
             paint={{
               'text-color': bgWithColor?.backgroundColor ?? defaultText as string,
-              'text-opacity': 1,
+              'text-opacity': 0.6,
             }}
             afterId={`route-path-${code}`}
           />
