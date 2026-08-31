@@ -35,7 +35,6 @@ export const LineMarkerStopLayer = ({ isHidden, ...props }: { isHidden?: boolean
       layout={{
         visibility: isHidden ? 'none' : 'visible',
       }}
-      layerIndex={20_000}
       afterId={`route-path-arrows-${code}`}
       minzoom={11}
       {...props}
