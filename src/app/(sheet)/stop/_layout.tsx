@@ -10,7 +10,7 @@ export const StopLayout = () => {
   return (
     <LineContext value={searchParams.lineCode as string}>
       <Sheet>
-        <Sheet.Screen name="[lineCode]/[stopCode]" />
+        <Sheet.Screen name="[stopCode]" />
       </Sheet>
     </LineContext>
   )
