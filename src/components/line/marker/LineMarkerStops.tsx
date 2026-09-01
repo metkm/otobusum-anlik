@@ -10,14 +10,12 @@ import { useFilterStore } from '@/stores'
 export const LineMarkerStopLayer = ({ isHidden, ...props }: { isHidden?: boolean } & Omit<Extract<LayerProps, { type: 'circle' }>, 'style' | 'type'>) => {
   const [defaultBg, defaultBorder] = useCSSVariable(['--ui-bg', '--ui-border'])
   const theme = useLineTheme()
-  const { code } = useLine()
 
   const backgroundSoft = theme?.background({ variant: 'soft' })?.backgroundColor.slice(0, -2)
   const borderSoft = theme?.border({ variant: 'soft' })
 
   return (
     <Layer
-      id={`stops-${code}`}
       type="circle"
       paint={{
         'circle-radius': [
@@ -35,7 +33,6 @@ export const LineMarkerStopLayer = ({ isHidden, ...props }: { isHidden?: boolean
       layout={{
         visibility: isHidden ? 'none' : 'visible',
       }}
-      afterId={`route-path-arrows-${code}`}
       minzoom={11}
       {...props}
     />
@@ -71,10 +68,14 @@ export const LineMarkerStops = () => {
         const stopCode = event.nativeEvent.features[0]?.properties?.code
         if (!stopCode)
           return
-        router.navigate(`/stop/${code}/${stopCode}`)
+        router.navigate(`/stop/${stopCode}`)
       }}
     >
-      <LineMarkerStopLayer isHidden={isLineHidden} />
+      <LineMarkerStopLayer
+        isHidden={isLineHidden}
+        id={`stops-${code}`}
+        afterId={`route-path-arrows-${code}`}
+      />
     </GeoJSONSource>
   )
 }

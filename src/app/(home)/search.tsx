@@ -80,6 +80,7 @@ const RenderItemStop = ({ item }: { item: BusStop }) => {
       variant="ghost"
       color="neutral"
       label={item.name}
+      onPress={() => router.push(`/stop/${item.code}`)}
       icon="bus-front"
     />
   )
