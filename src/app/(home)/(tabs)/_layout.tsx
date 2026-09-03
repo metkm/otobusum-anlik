@@ -1,3 +1,4 @@
+import IonIcons from '@react-native-vector-icons/ionicons'
 import { Tabs } from 'expo-router'
 import { ComponentProps } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -5,23 +6,24 @@ import { View } from 'react-native'
 import { cn } from 'tailwind-variants'
 import { useCSSVariable } from 'uniwind'
 
-import { UIcon } from '@/components/u/UIcon'
-
 const screens = [
   {
     name: 'index',
     label: 'map',
-    icon: 'map',
+    icon: 'map-outline',
+    iconActive: 'map',
   },
   {
     name: 'timetable',
     label: 'timetable',
-    icon: 'clock',
+    icon: 'time-outline',
+    iconActive: 'time',
   },
   {
     name: 'settings',
     label: 'settings',
-    icon: 'settings',
+    icon: 'settings-outline',
+    iconActive: 'settings',
   },
 ]
 
@@ -41,18 +43,15 @@ export const TabsLayout = () => {
               color: color as string,
             },
             tabBarIcon: ({ focused }) => {
-              type IconName = ComponentProps<typeof UIcon>['name']
-
               return (
                 <View className={cn(
-                  'px-3 py-0.5 rounded-md',
                   focused ? 'bg-muted' : undefined,
+                  'w-12 h-6 rounded-md items-center justify-center',
                 )}
                 >
-                  <UIcon
-                    name={screen.icon as IconName}
+                  <IonIcons
+                    name={(focused ? screen.iconActive : screen.icon) as ComponentProps<typeof IonIcons>['name']}
                     color={color as string}
-                    sizeClassName="w-5"
                     size={20}
                   />
                 </View>
