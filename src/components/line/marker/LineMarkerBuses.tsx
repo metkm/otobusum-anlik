@@ -4,6 +4,8 @@ import { router } from 'expo-router'
 import type { Feature } from 'geojson'
 import { useShallow } from 'zustand/react/shallow'
 
+import { GROUP_ORDER, useMapLayerOrder } from '../MapLayerOrderContext'
+
 import { useLine, useLines, useLineBuses, useLineRoutes, useLineTheme, useMapStyle } from '@/composables'
 import { useFilterStore } from '@/stores'
 
@@ -13,6 +15,7 @@ export const LineMarkerBuses = () => {
   const { code } = useLine()
   const { routeCode } = useLineRoutes()
   const { query: lineBusesQuery, buses } = useLineBuses()
+  const { afterId } = useMapLayerOrder({ id: `bus-circle-${code}`, group: GROUP_ORDER.bus })
 
   const theme = useLineTheme(mapColorScheme)
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
@@ -71,8 +74,9 @@ export const LineMarkerBuses = () => {
             'circle-pitch-alignment': 'map',
           }}
           layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
-          layerIndex={50_000_000}
+          // layerIndex={50_000_000}
           minzoom={minZoom}
+          afterId={afterId}
         />
 
         <Layer

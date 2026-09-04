@@ -1,3 +1,4 @@
+import { MapLayerOrder } from './MapLayerOrderContext'
 import { LineMarkerBuses, LineMarkerRoute, LineMarkerStops } from './marker'
 
 import { LineContext } from '@/composables/useLine'
@@ -7,7 +8,7 @@ export const LineMarkers = () => {
   const lines = useLines()
 
   return (
-    <>
+    <MapLayerOrder>
       {lines.map(code => (
         <LineContext value={code} key={code}>
           <LineMarkerRoute />
@@ -20,6 +21,6 @@ export const LineMarkers = () => {
           <LineMarkerBuses />
         </LineContext>
       ))}
-    </>
+    </MapLayerOrder>
   )
 }
