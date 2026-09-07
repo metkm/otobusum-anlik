@@ -3,8 +3,6 @@ import Lucide from '@react-native-vector-icons/lucide'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
-import { GROUP_ORDER, useMapLayerOrder } from '../MapLayerOrderContext'
-
 import { useLine, useLineRoutes, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores'
 
@@ -16,7 +14,6 @@ export const LineMarkerRoute = () => {
   const { query: lineRoutesQuery, route, direction } = useLineRoutes()
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
   const theme = useLineTheme()
-  useMapLayerOrder({ id: `route-label-${code}`, group: GROUP_ORDER.route })
 
   if (!lineRoutesQuery.data)
     return
@@ -67,7 +64,7 @@ export const LineMarkerRoute = () => {
               'line-cap': 'round',
               'visibility': isLineHidden ? 'none' : 'visible',
             }}
-            layerIndex={10_000}
+            afterId="route-layer"
           />
 
           <Layer

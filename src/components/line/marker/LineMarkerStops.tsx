@@ -4,8 +4,6 @@ import type { Feature } from 'geojson'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
-import { GROUP_ORDER, useMapLayerOrder } from '../MapLayerOrderContext'
-
 import { useLine, useLineStops, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores'
 
@@ -45,7 +43,6 @@ export const LineMarkerStops = () => {
   const { code } = useLine()
   const { query: lineStopsQuery } = useLineStops()
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
-  const { afterId } = useMapLayerOrder({ id: `stops-${code}`, group: GROUP_ORDER.stop })
 
   if (!lineStopsQuery.data)
     return
@@ -77,8 +74,7 @@ export const LineMarkerStops = () => {
       <LineMarkerStopLayer
         isHidden={isLineHidden}
         id={`stops-${code}`}
-        // afterId={`route-path-arrows-${code}`}
-        afterId={afterId}
+        afterId="stop-layer"
       />
     </GeoJSONSource>
   )
