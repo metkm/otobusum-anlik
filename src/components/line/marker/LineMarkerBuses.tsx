@@ -87,6 +87,7 @@ export const LineMarkerBuses = () => {
             ],
             'visibility': isLineHidden ? 'none' : 'visible',
             'icon-pitch-alignment': 'map',
+            'icon-allow-overlap': true,
           }}
           paint={{
             'icon-opacity-transition': { duration: 0 },
