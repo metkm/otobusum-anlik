@@ -9,6 +9,7 @@ import { Uniwind, withUniwind } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
+import { UIcon } from '@/components/u/UIcon'
 import { USheet } from '@/components/u/USheet'
 import { USwitch } from '@/components/u/USwitch'
 import { UText } from '@/components/u/UText'
@@ -96,14 +97,18 @@ export const SettingsScreen = () => {
       className="m-safe"
       contentContainerClassName="p-2 gap-2"
     >
-      <UText className="text-lg font-inter-medium ml-2">{t('map')}</UText>
+      <View className="p-2 bg-muted flex-row items-center justify-center gap-2 rounded-full">
+        <UIcon name="map" />
+        <UText className="font-inter-semibold">{t('map')}</UText>
+      </View>
 
       <UButton
         label={t('showMyLocation')}
         color="neutral"
-        variant="soft"
+        variant="ghost"
         size="lg"
         onPress={toggleMyLocation}
+        className="flex-row-reverse justify-between"
       >
         <USwitch value={showMyLocation} />
       </UButton>
@@ -111,33 +116,33 @@ export const SettingsScreen = () => {
       <UButton
         label={t('hideMap')}
         color="neutral"
-        variant="soft"
+        variant="ghost"
         size="lg"
         onPress={toggleMap}
+        className="flex-row-reverse justify-between"
       >
         <USwitch value={hideMap} />
       </UButton>
-
-      {/* <UButton
-        label={t('showTraffic')}
-        color="neutral"
-        size="lg"
-        variant="soft"
-        onPress={toggleTraffic}
-      >
-        <USwitch value={showTraffic} />
-      </UButton> */}
 
       <UButton
         label={t(mapStyleStore ?? 'system')}
         color="neutral"
         size="lg"
         block
-        variant="soft"
+        variant="ghost"
         onPress={() => mapStyleSheet.current?.present()}
-        className="justify-between"
+        className="justify-between gap-4"
+        labelClassName="shrink-0"
       >
-        <UText className="font-inter-medium text-xs">{t('mapTheme')}</UText>
+        <View className="flex-1">
+          <UText className="font-inter-medium text-xs">{t('mapTheme')}</UText>
+          <UText
+            className="flex-1 font-inter-medium text-xs text-muted"
+            ellipsizeMode="tail"
+          >
+            {t('settingsWillChangeOnRestart')}
+          </UText>
+        </View>
       </UButton>
 
       <USheet
@@ -173,14 +178,18 @@ export const SettingsScreen = () => {
         ))}
       </USheet>
 
-      <UText className="text-lg font-inter-medium ml-2">{t('settings')}</UText>
+      <View className="p-2 bg-muted flex-row items-center justify-center gap-2 rounded-full">
+        <UIcon name="settings" />
+        <UText className="font-inter-semibold">{t('settings')}</UText>
+      </View>
 
       <UButton
         label={t('expandStopsWhenScrolled')}
         color="neutral"
-        variant="soft"
+        variant="ghost"
         size="lg"
         onPress={toggleExpandStopsWhenScrolled}
+        className="flex-row-reverse justify-between"
       >
         <USwitch value={expandStopsWhenScrolled} />
       </UButton>
@@ -188,7 +197,7 @@ export const SettingsScreen = () => {
       <UButton
         label={t(colorSchemeStore ?? 'system')}
         color="neutral"
-        variant="soft"
+        variant="ghost"
         size="lg"
         onPress={() => appStyleSheet.current?.present()}
         className="justify-between"
@@ -222,7 +231,7 @@ export const SettingsScreen = () => {
 
       <UButton
         label={city}
-        variant="soft"
+        variant="ghost"
         color="neutral"
         size="lg"
         className="justify-between"
@@ -252,12 +261,15 @@ export const SettingsScreen = () => {
         ))}
       </USheet>
 
-      <UText className="text-lg font-inter-medium ml-2">{t('other')}</UText>
+      <View className="p-2 bg-muted flex-row items-center justify-center gap-2 rounded-full">
+        <UIcon name="settings-2" />
+        <UText className="font-inter-semibold">{t('other')}</UText>
+      </View>
 
       <UButton
         label={t('clearCache')}
         onPress={clearCache}
-        variant="soft"
+        variant="ghost"
         color="neutral"
         size="lg"
       />
@@ -265,7 +277,7 @@ export const SettingsScreen = () => {
       <UButton
         label={t('license', { city: 'istanbul' })}
         onPress={() => Linking.openURL('https://data.ibb.gov.tr/license')}
-        variant="soft"
+        variant="ghost"
         color="neutral"
         size="lg"
       />
@@ -273,7 +285,7 @@ export const SettingsScreen = () => {
       <UButton
         label={t('license', { city: 'izmir' })}
         onPress={() => Linking.openURL('https://acikveri.bizizmir.com/tr/license')}
-        variant="soft"
+        variant="ghost"
         color="neutral"
         size="lg"
       />

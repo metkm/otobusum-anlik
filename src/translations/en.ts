@@ -81,4 +81,5 @@ export default {
   garage: 'Garage',
   addedLines: 'Added lines',
   news: 'News',
+  settingsWillChangeOnRestart: 'This change will take effect after restarting the app',
 }

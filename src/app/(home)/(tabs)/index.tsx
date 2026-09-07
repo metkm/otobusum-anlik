@@ -30,6 +30,7 @@ export const HomeScreen = () => {
         !hideMap && (
           <Map>
             <LineMarkers />
+
             {showMyLocation && <UserLocation heading />}
           </Map>
         )

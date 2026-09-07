@@ -81,4 +81,5 @@ export default {
   garage: 'Garaj',
   addedLines: 'Ekli hatlar',
   news: 'Haberler',
+  settingsWillChangeOnRestart: 'Bu ayar uygulamayı bir sonraki açışınızda değişecek',
 }
