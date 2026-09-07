@@ -13,29 +13,21 @@ export const LineMarkers = () => {
       <Layer
         id="route-layer"
         type="background"
-        paint={{
-          'background-opacity': 0,
-          'background-color': 'rgba(0, 0, 0, 0)',
-        }}
-        layerIndex={200}
+        paint={{ 'background-opacity': 0 }}
+        layerIndex={10_000}
       />
 
       <Layer
         id="stop-layer"
         type="background"
-        paint={{
-          'background-opacity': 0,
-        }}
+        paint={{ 'background-opacity': 0 }}
         afterId="route-layer"
       />
 
       <Layer
         id="buses-layer"
         type="background"
-        paint={{
-          'background-opacity': 0,
-          'background-color': 'rgba(0, 0, 0, 0)',
-        }}
+        paint={{ 'background-opacity': 0 }}
         afterId="stop-layer"
       />
 

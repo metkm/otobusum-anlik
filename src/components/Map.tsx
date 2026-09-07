@@ -14,12 +14,15 @@ export interface TheMapProps {
   ref?: RefObject<MapRef | null>
 }
 
+// so compiler is not upset
+const getInitialMapBounds = () => {
+  return useSettingsStore.getState().initialMapBounds
+}
+
 export const Map = ({ children, cameraProps, style, onDidFinishLoadingMap, ...props }: { initialMapBounds?: LngLatBounds, cameraProps?: CameraProps } & Omit<MapProps, 'mapStyle'>) => {
   const { camera, map } = useMap()
   const { style: mapStyle } = useMapStyle()
   const opacity = useSharedValue(0)
-
-  const initialMapBounds = useSettingsStore.getState().initialMapBounds
 
   const onMapRegionChange = (event: NativeSyntheticEvent<ViewStateChangeEvent>) => {
     useSettingsStore.setState(() => ({
@@ -52,7 +55,7 @@ export const Map = ({ children, cameraProps, style, onDidFinishLoadingMap, ...pr
       >
         <Camera
           ref={camera}
-          initialViewState={{ bounds: initialMapBounds }}
+          initialViewState={{ bounds: getInitialMapBounds() }}
         />
 
         {children}
