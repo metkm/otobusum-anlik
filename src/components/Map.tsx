@@ -18,7 +18,6 @@ export const Map = ({ children, cameraProps, style, onDidFinishLoadingMap, ...pr
   const { camera, map } = useMap()
   const { style: mapStyle } = useMapStyle()
   const opacity = useSharedValue(0)
-  const scale = useSharedValue(1.2)
 
   const initialMapBounds = useSettingsStore.getState().initialMapBounds
 
@@ -32,7 +31,6 @@ export const Map = ({ children, cameraProps, style, onDidFinishLoadingMap, ...pr
 
   const containerStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
-    transform: [{ scale: scale.value }],
     flex: 1,
   }))
 
@@ -46,8 +44,6 @@ export const Map = ({ children, cameraProps, style, onDidFinishLoadingMap, ...pr
         onRegionDidChange={onMapRegionChange}
         onDidFinishLoadingMap={(event) => {
           opacity.set(withTiming(1, { duration: 250 }))
-          scale.set(withTiming(1, { duration: 250 }))
-
           onDidFinishLoadingMap?.(event)
         }}
         style={{ flex: 1 }}
