@@ -101,8 +101,8 @@ export const LineCardRoutes = () => {
       className="flex-row items-center gap-2"
     >
       <View className="flex-row items-center gap-1.5 p-2">
-        <UIcon name="bus-front" colorClassName="text-default" />
-        <UText className="text-xs font-inter-medium">{buses.length}</UText>
+        <UIcon name="bus-front" sizeClassName="size-4.5" />
+        <UText className="text-xs font-inter-semibold">{buses.length}</UText>
       </View>
 
       <UButton
