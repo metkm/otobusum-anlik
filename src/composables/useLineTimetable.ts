@@ -5,7 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useLine } from './useLine'
 import { useLineRoutes } from './useLineRoutes'
 
-import { CACHE_MS_2_WEEK } from '@/constants/app'
+import { CACHE_MS_3_DAYS } from '@/constants/app'
 import { useFilterStore } from '@/stores'
 
 export type Time = `${number}:${number}:${number}`
@@ -33,7 +33,7 @@ export const useLineTimetable = () => {
         city,
       },
     }).json(),
-    staleTime: CACHE_MS_2_WEEK,
+    staleTime: CACHE_MS_3_DAYS,
     meta: { persist: true },
   })
 
