@@ -14,7 +14,7 @@ import { USheet } from '@/components/u/USheet'
 import { USwitch } from '@/components/u/USwitch'
 import { UText } from '@/components/u/UText'
 
-import { queryClient } from '@/api/client'
+import { queryCache } from '@/api/client'
 import { MapStyle, MapStyleValue, mapStyles } from '@/constants/mapStyles'
 import { useFilterStore, useSettingsStore } from '@/stores'
 import { City } from '@/types/city'
@@ -89,7 +89,7 @@ export const SettingsScreen = () => {
   }
 
   const clearCache = () => {
-    queryClient.removeQueries()
+    queryCache.clear()
   }
 
   return (
