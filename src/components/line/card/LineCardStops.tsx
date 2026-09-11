@@ -157,7 +157,7 @@ export const LineCardStops = () => {
         onScroll={onScroll}
         keyExtractor={item => item.id.toString()}
         scrollEventThrottle={16}
-        getFixedItemSize={() => 32 + 4}
+        getFixedItemSize={() => 32}
         recycleItems
       />
     </UQueryState>
