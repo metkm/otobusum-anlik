@@ -12,7 +12,7 @@ export default ({ config }: ConfigContext) => ({
   ...config,
   name: 'Otobüsüm Anlık',
   slug: 'otobusum-anlik',
-  version: '1.4.21',
+  version: '1.4.22',
   orientation: 'portrait',
   icon: './src/assets/icon.png',
   scheme: 'otobusum-anlik',
