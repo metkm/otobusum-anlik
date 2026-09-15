@@ -45,6 +45,8 @@ export default ({ config }: ConfigContext) => ({
     buildProperties({
       android: {
         usePrecompiledHeaders: true,
+        enableMinifyInReleaseBuilds: true,
+        enableShrinkResourcesInReleaseBuilds: true,
       },
     }),
     splashScreen({
