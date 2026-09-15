@@ -73,7 +73,7 @@ export const LineCardMenu = () => {
         color="neutral"
       />
 
-      {news.length > 1 && (
+      {news.length > 0 && (
         <USheet
           ref={announcementsSheet}
           scrollable
