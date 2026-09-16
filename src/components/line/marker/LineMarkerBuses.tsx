@@ -1,7 +1,6 @@
-import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibre-react-native'
+import { type ImageEntry, Images, Layer, LayerAnnotation } from '@maplibre/maplibre-react-native'
 import Lucide from '@react-native-vector-icons/lucide'
 import { router } from 'expo-router'
-import type { Feature } from 'geojson'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLine, useLines, useLineBuses, useLineRoutes, useLineTheme, useMapStyle } from '@/composables'
@@ -27,25 +26,70 @@ export const LineMarkerBuses = () => {
   const images: Record<string, ImageEntry> = {}
   images[iconImage] = Lucide.getImageSourceSync('bus-front', 20, text?.color).uri
 
-  const features: Feature[] = buses.filter(bus => bus.route_code === routeCode)
-    .map(bus => ({
-      type: 'Feature',
-      properties: {
-        doorNo: bus.bus_id,
-      },
-      geometry: {
-        type: 'Point',
-        coordinates: [bus.lng, bus.lat],
-      },
-    }))
-
+  const busesFiltered = buses.filter(bus => bus.route_code === routeCode)
   const minZoom = lines.length < 2 ? undefined : 8
 
   return (
     <>
       <Images images={images} />
 
-      <GeoJSONSource
+      {busesFiltered.map(bus => (
+        <LayerAnnotation
+          key={bus.bus_id}
+          animated
+          lngLat={[bus.lng, bus.lat]}
+          animationEasingFunction={x => 1 - Math.pow(1 - x, 4)}
+          animationDuration={500}
+          onPress={(event) => {
+            const doorNo = event.nativeEvent.features[0]?.properties?.doorNo
+            if (!doorNo)
+              return
+            router.navigate(`/bus-info/${doorNo}`)
+          }}
+        >
+          <Layer
+            // id={`bus-circle-${code}`}
+            type="circle"
+            paint={{
+              'circle-radius': [
+                'interpolate',
+                ['linear'], ['zoom'],
+                10, 14,
+                16, 16,
+              ],
+              'circle-color': background?.backgroundColor as string,
+              'circle-pitch-alignment': 'map',
+            }}
+            layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
+            minzoom={minZoom}
+            // afterId="buses-layer"
+          />
+
+          <Layer
+            type="symbol"
+            layout={{
+              'icon-image': iconImage,
+              'icon-size': [
+                'interpolate',
+                ['linear'], ['zoom'],
+                10, 0.25,
+                16, 0.3,
+              ],
+              'visibility': isLineHidden ? 'none' : 'visible',
+              'icon-pitch-alignment': 'map',
+              'icon-allow-overlap': true,
+            }}
+            paint={{
+              'icon-opacity-transition': { duration: 0 },
+              'icon-color-transition': { duration: 0 },
+            }}
+            // afterId={`bus-circle-${code}`}
+            minzoom={minZoom}
+          />
+        </LayerAnnotation>
+      ))}
+
+      {/* <GeoJSONSource
         data={{
           type: 'FeatureCollection',
           features,
@@ -96,7 +140,7 @@ export const LineMarkerBuses = () => {
           afterId={`bus-circle-${code}`}
           minzoom={minZoom}
         />
-      </GeoJSONSource>
+      </GeoJSONSource> */}
     </>
 
   )

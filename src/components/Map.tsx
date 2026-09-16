@@ -50,6 +50,7 @@ export const Map = ({ children, cameraProps, style, onDidFinishLoadingMap, ...pr
           onDidFinishLoadingMap?.(event)
         }}
         style={{ flex: 1 }}
+        preferredFramesPerSecond={60}
         {...props}
         mapStyle={mapStyle}
       >
