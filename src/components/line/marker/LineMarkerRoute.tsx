@@ -74,11 +74,11 @@ export const LineMarkerRoute = () => {
               'symbol-placement': 'line',
               'icon-image': iconImage,
               'icon-size': 0.2,
-              'symbol-spacing': 34,
+              'symbol-spacing': 16,
               'visibility': isLineHidden ? 'none' : 'visible',
             }}
             paint={{
-              'icon-opacity': 0.6,
+              'icon-opacity': 0.8,
             }}
             afterId={`route-path-${code}`}
           />
@@ -88,12 +88,13 @@ export const LineMarkerRoute = () => {
             type="symbol"
             layout={{
               'symbol-placement': 'line',
-              'symbol-spacing': 10,
+              'symbol-spacing': 100,
               // 'text-ignore-placement': true,
               'text-field': code,
               'text-size': 10,
               'text-font': ['Roboto Bold'],
               'text-offset': [0, 0],
+              'visibility': isLineHidden ? 'none' : 'visible',
             }}
             paint={{
               'text-color': bgWithColor?.backgroundColor ?? defaultText as string,

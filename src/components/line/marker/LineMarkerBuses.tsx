@@ -1,6 +1,7 @@
-import { type ImageEntry, Images, Layer, LayerAnnotation } from '@maplibre/maplibre-react-native'
+import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibre-react-native'
 import Lucide from '@react-native-vector-icons/lucide'
 import { router } from 'expo-router'
+import type { Feature } from 'geojson'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLine, useLines, useLineBuses, useLineRoutes, useLineTheme, useMapStyle } from '@/composables'
@@ -26,14 +27,27 @@ export const LineMarkerBuses = () => {
   const images: Record<string, ImageEntry> = {}
   images[iconImage] = Lucide.getImageSourceSync('bus-front', 20, text?.color).uri
 
-  const busesFiltered = buses.filter(bus => bus.route_code === routeCode)
+  // const busesFiltered = buses.filter(bus => bus.route_code === routeCode)
+
+  const features: Feature[] = buses.filter(bus => bus.route_code === routeCode)
+    .map(bus => ({
+      type: 'Feature',
+      properties: {
+        doorNo: bus.bus_id,
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [bus.lng, bus.lat],
+      },
+    }))
+
   const minZoom = lines.length < 2 ? undefined : 8
 
   return (
     <>
       <Images images={images} />
 
-      {busesFiltered.map(bus => (
+      {/* {busesFiltered.map(bus => (
         <LayerAnnotation
           key={bus.bus_id}
           animated
@@ -87,9 +101,9 @@ export const LineMarkerBuses = () => {
             minzoom={minZoom}
           />
         </LayerAnnotation>
-      ))}
+      ))} */}
 
-      {/* <GeoJSONSource
+      <GeoJSONSource
         data={{
           type: 'FeatureCollection',
           features,
@@ -140,7 +154,7 @@ export const LineMarkerBuses = () => {
           afterId={`bus-circle-${code}`}
           minzoom={minZoom}
         />
-      </GeoJSONSource> */}
+      </GeoJSONSource>
     </>
 
   )
