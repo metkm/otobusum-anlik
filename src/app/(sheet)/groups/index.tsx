@@ -38,93 +38,81 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
   }
 
   return (
-    <GestureHandlerRootView style={{ flexDirection: 'row', gap: 8 }}>
-      {!addToGroup && (
-        <Animated.View
-          exiting={ExitScaleOut}
-          entering={EnterScaleIn}
-          className="justify-center items-center m-auto bg-elevated size-8 rounded-md overflow-hidden"
-          style={backgroundWithColor}
-        >
+    <GestureHandlerRootView style={{ flexDirection: 'row', gap: 4 }}>
+      <UButton
+        variant="ghost"
+        className="flex-1 gap-2"
+        onPress={handlePress}
+      >
+        <View className={`${selected ? 'bg-primary' : 'bg-muted'} size-8 p-2 rounded-md flex items-center justify-center`}>
           {selected && (
             <UIcon
               name="check"
-              color={backgroundWithColor?.color}
-              colorClassName="text-inverted"
               sizeClassName="size-4"
-              className="bg-primary p-2"
+              colorClassName="text-inverted"
+              color={backgroundWithColor?.color}
+            />
+          )}
+        </View>
+
+        <View className="flex-1 shrink">
+          <UText
+            className="shrink truncate font-inter-medium"
+            numberOfLines={1}
+          >
+            {group.name}
+          </UText>
+
+          <View className="flex-row flex-wrap gap-1">
+            {group.codes.length < 1
+              ? (
+                  <UText className="font-inter-medium text-xs text-muted">{t('emptyGroup')}</UText>
+                )
+              : (
+                  group.codes.map(code => (
+                    <UText
+                      key={code}
+                      className="font-inter-medium text-xs rounded-md bg-default/50 h-6 w-12 text-center align-middle border border-muted/50"
+                    >
+                      {code}
+                    </UText>
+                  ))
+                )}
+          </View>
+        </View>
+      </UButton>
+
+      <Animated.View
+        layout={LinearTransition}
+        className="gap-1 flex-row items-center"
+      >
+        <Animated.View
+          exiting={ExitScaleOut}
+          entering={EnterScaleIn}
+          className="flex-row items-stretch"
+        >
+          {canDelete && (
+            <UButton
+              icon="trash-2"
+              onPress={() => useLineStore.getState().deleteGroup(group.id)}
+              variant="ghost"
+              color="neutral"
             />
           )}
         </Animated.View>
-      )}
 
-      <View className="flex-row items-stretch rounded-md gap-1 h-16 grow">
         <UButton
-          key={group.id}
-          onPress={handlePress}
-          className="flex-1"
+          icon="edit-3"
+          variant="ghost"
           color="neutral"
-          variant="soft"
-        >
-          <View className="justify-center gap-1 grow">
-            <UText
-              className="shrink truncate font-inter-medium"
-              numberOfLines={1}
-            >
-              {group.name}
-            </UText>
-
-            <View className="flex-row flex-wrap gap-1">
-              {group.codes.length < 1
-                ? (
-                    <UText className="font-inter-medium text-xs text-muted">{t('emptyGroup')}</UText>
-                  )
-                : (
-                    group.codes.map(code => (
-                      <UText
-                        key={code}
-                        className="font-inter-medium text-xs rounded-md bg-default/50 h-6 w-12 text-center align-middle border border-muted/50"
-                      >
-                        {code}
-                      </UText>
-                    ))
-                  )}
-            </View>
-          </View>
-        </UButton>
-
-        <Animated.View
-          layout={LinearTransition}
-          className="gap-1 flex-row items-stretch"
-        >
-          <Animated.View
-            exiting={ExitScaleOut}
-            entering={EnterScaleIn}
-            className="flex-row items-stretch"
-          >
-            {canDelete && (
-              <UButton
-                icon="trash-2"
-                onPress={() => useLineStore.getState().deleteGroup(group.id)}
-                variant="ghost"
-                color="neutral"
-              />
-            )}
-          </Animated.View>
-
-          <UButton
-            icon="edit-3"
-            variant="ghost"
-            color="neutral"
-            to={{
-              pathname: '/groups/[groupId]',
-              params: {
-                groupId: group.id,
-              },
-            }}
-          />
-        </Animated.View>
-      </View>
+          to={{
+            pathname: '/groups/[groupId]',
+            params: {
+              groupId: group.id,
+            },
+          }}
+        />
+      </Animated.View>
     </GestureHandlerRootView>
   )
 }
@@ -179,7 +167,7 @@ export const GroupsScreen = () => {
   const groupsWithCode = addToGroup ? groups.filter(gr => gr.codes.includes(addToGroup)) : []
 
   return (
-    <ScrollView contentContainerClassName="pt-2 gap-2">
+    <ScrollView contentContainerClassName="gap-2 p-2">
       {groupsWithCode.length > 0 && (
         <>
           <Animated.View
@@ -228,9 +216,9 @@ export const GroupsScreen = () => {
 
       <Animated.View
         layout={LinearTransition}
-        className="gap-2 px-2 pb-15"
+        className="pb-15 gap-2"
       >
-        {defaultGroups.map(group => (
+        {defaultGroups.map((group, index) => (
           <Animated.View
             key={group.id}
             exiting={ExitScaleOut}
@@ -242,6 +230,12 @@ export const GroupsScreen = () => {
               canDelete={groups.length > 1}
               selected={group.id === groupId}
             />
+
+            {/* {index !== defaultGroups.length - 1
+              ? (
+                  <View className="h-0.5 bg-muted" />
+                )
+              : undefined} */}
           </Animated.View>
         ))}
       </Animated.View>
