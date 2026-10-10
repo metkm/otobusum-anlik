@@ -37,8 +37,6 @@ export const useLineBuses = () => {
       const elapsedSinceUpdate = query.state.dataUpdatedAt - fetchedAt
       const remainingInterval = LINE_UPDATE_DELAY - elapsedSinceUpdate
 
-      console.log(elapsedSinceUpdate, remainingInterval)
-
       return remainingInterval > 0 ? remainingInterval : 1000
     },
   })
