@@ -5,7 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useLine } from './useLine'
 import { useLineRoutes } from './useLineRoutes'
 
-import { LINE_UPDATE_DELAY, LINE_UPDATE_INTERVAL } from '@/constants/app'
+import { LINE_UPDATE_INTERVAL, LINE_UPDATE_INTERVAL_BUFFER } from '@/constants/app'
 import { useFilterStore } from '@/stores'
 import { BusLocationResponse } from '@/types/bus'
 
@@ -17,27 +17,22 @@ export const useLineBuses = () => {
 
   const query = useQuery({
     queryKey: ['line', code, 'buses'],
-    queryFn: () =>
-      ky.get<BusLocationResponse>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/bus-locations/${code}`, {
+    queryFn: async () => {
+      return await ky.get<BusLocationResponse>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/bus-locations/${code}`, {
         searchParams: {
           city,
         },
-      }).json(),
-    // staleTime: LINE_UPDATE_INTERVAL,
+      }).json()
+    },
     refetchInterval: (query) => {
       const data = query.state.data
-
       if (!data)
         return LINE_UPDATE_INTERVAL
 
       const fetchedAt = new Date(data.fetched_at).getTime()
-      // Target: 62 seconds after the backend's fetched_at timestamp
+      const elapsed = query.state.dataUpdatedAt - fetchedAt
 
-      // Use dataUpdatedAt as our anchor point since it doesn't change on every evaluation tick
-      const elapsedSinceUpdate = query.state.dataUpdatedAt - fetchedAt
-      const remainingInterval = LINE_UPDATE_DELAY - elapsedSinceUpdate
-
-      return remainingInterval > 0 ? remainingInterval : 1000
+      return LINE_UPDATE_INTERVAL + LINE_UPDATE_INTERVAL_BUFFER - elapsed
     },
   })
 

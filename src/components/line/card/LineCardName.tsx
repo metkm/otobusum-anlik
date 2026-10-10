@@ -6,12 +6,13 @@ import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
 import { useCountdown, useLine, useLineBuses, useLineTheme } from '@/composables'
+import { LINE_UPDATE_INTERVAL, LINE_UPDATE_INTERVAL_BUFFER } from '@/constants/app'
 
 export const LineCardName = () => {
   const { code } = useLine()
   const { query: lineBusesQuery } = useLineBuses()
 
-  const { remaining } = useCountdown(lineBusesQuery.data?.fetched_at ? new Date(lineBusesQuery.data.fetched_at).getTime() : 0)
+  const { remaining } = useCountdown(lineBusesQuery.data?.fetched_at ? new Date(lineBusesQuery.data.fetched_at).getTime() : 0, LINE_UPDATE_INTERVAL + LINE_UPDATE_INTERVAL_BUFFER)
   const { t } = useTranslation()
   const theme = useLineTheme()
 

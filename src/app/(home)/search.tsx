@@ -1,5 +1,6 @@
 import { LegendList } from '@legendapp/list/react-native'
 import { router } from 'expo-router'
+import ky from 'ky'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
@@ -24,6 +25,7 @@ import { getLatLngBounds } from '@/utils/bounds'
 
 const RenderItemLine = ({ item }: { item: BusLine }) => {
   const addLine = useLineStore(useShallow(state => state.addLine))
+  const city = useFilterStore(useShallow(state => state.city))
 
   const { fitBounds } = useMap()
   const theme = useLineTheme()
@@ -33,11 +35,21 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
   const addLineAndZoom = async () => {
     addLine(item.code)
 
-    const data = await queryClient.query<LineRoute[]>({ queryKey: ['line', item.code, 'routes'], staleTime: 'static' })
-    const path = data.find(x => x.code === `${item.code}_G_D0`)?.path
+    const data = await queryClient.query<LineRoute[]>({
+      queryKey: ['line', item.code, 'routes'],
+      queryFn: () =>
+        ky
+          .get<LineRoute[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${item.code}`, {
+            searchParams: {
+              city,
+            },
+          })
+          .json(),
+      staleTime: 'static',
+    })
 
-    if (!path)
-      return
+    const path = data.find(x => x.code === `${item.code}_G_D0`)?.path
+    if (!path) return
 
     fitBounds(getLatLngBounds(path))
   }
@@ -92,10 +104,7 @@ export const SearchScreen = () => {
   const [debouncedQuery] = useDebounce(query, 500)
   const { query: searchQuery } = useSearch(debouncedQuery)
 
-  const results = [
-    ...(searchQuery.data?.lines || []),
-    ...(searchQuery.data?.stops || []),
-  ]
+  const results = [...(searchQuery.data?.lines || []), ...(searchQuery.data?.stops || [])]
 
   const neededCharacterCount = MIN_CHARACTER_LIMIT - query.length + 1
 
@@ -121,18 +130,15 @@ export const SearchScreen = () => {
         >
           {query.length > MIN_CHARACTER_LIMIT && (
             <GestureHandlerRootView style={{ position: 'absolute', right: 4 }}>
-              <UButton
-                icon="x"
-                variant="ghost"
-                color="neutral"
-                onPress={() => setQuery('')}
-              />
+              <UButton icon="x" variant="ghost" color="neutral" onPress={() => setQuery('')} />
             </GestureHandlerRootView>
           )}
         </UInput>
       </View>
 
-      <UText className="text-center text-muted font-inter-medium text-xs">{t('selectedCity', { city })}</UText>
+      <UText className="text-center text-muted font-inter-medium text-xs">
+        {t('selectedCity', { city })}
+      </UText>
 
       {neededCharacterCount > 0 && (
         <UText className="text-center text-muted font-inter-medium text-xs">
@@ -141,7 +147,7 @@ export const SearchScreen = () => {
       )}
 
       <UQueryState query={searchQuery}>
-        {(results.length < 1 && searchQuery.isSuccess)
+        {results.length < 1 && searchQuery.isSuccess
           ? (
               <UEmpty
                 title={t('emptySearch')}
