@@ -67,7 +67,7 @@ export const LineCardRoutes = () => {
   const { query: routesQuery, route, routeCode, otherDirectionRoute } = useLineRoutes()
   const { buses, query: busesQuery } = useLineBuses()
 
-  const busCounts = (busesQuery.data ?? [])
+  const busCounts = (busesQuery.data?.data ?? [])
     .reduce<Record<string, number>>(
       (acc, bus) => {
         acc[bus.route_code] = (acc[bus.route_code] ?? 0) + 1

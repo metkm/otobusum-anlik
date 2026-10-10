@@ -1,4 +1,4 @@
-import { UseQueryResult, DefaultError } from '@tanstack/react-query'
+import type { UseQueryResult, DefaultError } from '@tanstack/react-query'
 import React from 'react'
 
 import { UActivityIndicator } from './UActivityIndicator'
