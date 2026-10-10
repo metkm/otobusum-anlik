@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { LINE_UPDATE_INTERVAL } from '@/constants/app'
+import { LINE_UPDATE_DELAY } from '@/constants/app'
 
-export const useCountdown = (from: number, duration: number = LINE_UPDATE_INTERVAL) => {
+export const useCountdown = (from: number, duration: number = LINE_UPDATE_DELAY) => {
   const [remaining, setCount] = useState(0)
   const _from = useRef(from)
 

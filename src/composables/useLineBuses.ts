@@ -5,24 +5,9 @@ import { useShallow } from 'zustand/react/shallow'
 import { useLine } from './useLine'
 import { useLineRoutes } from './useLineRoutes'
 
-import { LINE_UPDATE_INTERVAL } from '@/constants/app'
+import { LINE_UPDATE_DELAY, LINE_UPDATE_INTERVAL } from '@/constants/app'
 import { useFilterStore } from '@/stores'
 import { BusLocationResponse } from '@/types/bus'
-
-export const getRefetchIntervalFromDataUpdatedAt = (fetchedAt: number, dataUpdatedAt: number) => {
-  // Target: exactly 62 seconds after the backend fetched the data
-  const targetFetchTime = fetchedAt + LINE_UPDATE_INTERVAL + 1000
-
-  // Remaining time from when our last query finished (dataUpdatedAt) to the target time
-  const diff = targetFetchTime - dataUpdatedAt
-
-  // If the target time has already passed (e.g., slow network), retry in 1 second
-  if (diff <= 0) {
-    return 1000
-  }
-
-  return diff
-}
 
 export const useLineBuses = () => {
   const { code } = useLine()
@@ -46,8 +31,15 @@ export const useLineBuses = () => {
         return LINE_UPDATE_INTERVAL
 
       const fetchedAt = new Date(data.fetched_at).getTime()
+      // Target: 62 seconds after the backend's fetched_at timestamp
 
-      return getRefetchIntervalFromDataUpdatedAt(fetchedAt, query.state.dataUpdatedAt)
+      // Use dataUpdatedAt as our anchor point since it doesn't change on every evaluation tick
+      const elapsedSinceUpdate = query.state.dataUpdatedAt - fetchedAt
+      const remainingInterval = LINE_UPDATE_DELAY - elapsedSinceUpdate
+
+      console.log(elapsedSinceUpdate, remainingInterval)
+
+      return remainingInterval > 0 ? remainingInterval : 1000
     },
   })
 
