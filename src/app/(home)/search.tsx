@@ -16,7 +16,7 @@ import { UText } from '@/components/u/UText'
 import { queryClient } from '@/api/client'
 import { useLineTheme, useMap } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { LineRoute, useLineRoutes } from '@/composables/useLineRoutes'
+import { LineRoute } from '@/composables/useLineRoutes'
 import { isStop, MIN_CHARACTER_LIMIT, useSearch } from '@/composables/useSearch'
 import { useFilterStore, useLineStore } from '@/stores'
 import { BusLine, BusStop } from '@/types/bus'
@@ -26,7 +26,6 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
   const addLine = useLineStore(useShallow(state => state.addLine))
 
   const { fitBounds } = useMap()
-  const { route } = useLineRoutes()
   const theme = useLineTheme()
 
   const backgroundWithColor = theme?.backgroundWithColor({ variant: 'solid' })
@@ -34,14 +33,13 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
   const addLineAndZoom = async () => {
     addLine(item.code)
 
-    await queryClient.ensureQueryData<LineRoute[]>({
-      queryKey: ['line', item.code, 'routes'],
-    })
+    const data = await queryClient.query<LineRoute[]>({ queryKey: ['line', item.code, 'routes'], staleTime: 'static' })
+    const path = data.find(x => x.code === `${item.code}_G_D0`)?.path
 
-    if (!route?.path)
+    if (!path)
       return
 
-    fitBounds(getLatLngBounds(route.path))
+    fitBounds(getLatLngBounds(path))
   }
 
   return (
