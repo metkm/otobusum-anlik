@@ -29,7 +29,7 @@ export const useLineBuses = () => {
       if (!data)
         return
 
-      return (data.next_poll * 1000) - query.state.dataUpdatedAt
+      return (data.next_poll - Math.ceil(query.state.dataUpdatedAt / 1000)) * 1000
     },
   })
 
