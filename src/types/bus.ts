@@ -29,8 +29,8 @@ export interface BusLocation {
 
 export interface BusLocationResponse {
   data: BusLocation[]
-  polled_at: string
-  next_poll?: string
+  polled_at: number
+  next_poll: number
 }
 
 export interface BusStopWithBuses {
