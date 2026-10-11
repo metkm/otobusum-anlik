@@ -27,8 +27,6 @@ export const LineMarkerBuses = () => {
   const images: Record<string, ImageEntry> = {}
   images[iconImage] = Lucide.getImageSourceSync('bus-front', 20, text?.color).uri
 
-  // const busesFiltered = buses.filter(bus => bus.route_code === routeCode)
-
   const features: Feature[] = buses.filter(bus => bus.route_code === routeCode)
     .map(bus => ({
       type: 'Feature',

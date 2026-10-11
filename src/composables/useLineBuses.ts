@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { useLine } from './useLine'
 import { useLineRoutes } from './useLineRoutes'
 
+// import { LINE_UPDATE_INTERVAL, LINE_UPDATE_INTERVAL_BUFFER } from '@/constants/app'
 import { LINE_UPDATE_INTERVAL, LINE_UPDATE_INTERVAL_BUFFER } from '@/constants/app'
 import { useFilterStore } from '@/stores'
 import { BusLocationResponse } from '@/types/bus'
@@ -17,13 +18,14 @@ export const useLineBuses = () => {
 
   const query = useQuery({
     queryKey: ['line', code, 'buses'],
-    queryFn: async () => {
-      return await ky.get<BusLocationResponse>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/bus-locations/${code}`, {
+    queryFn: () => {
+      return ky.get<BusLocationResponse>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/bus-locations/${code}`, {
         searchParams: {
           city,
         },
       }).json()
     },
+    staleTime: 'static',
     refetchInterval: (query) => {
       const data = query.state.data
       if (!data)
