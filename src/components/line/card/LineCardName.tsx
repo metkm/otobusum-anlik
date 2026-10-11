@@ -12,7 +12,7 @@ export const LineCardName = () => {
   const { code } = useLine()
   const { query: lineBusesQuery } = useLineBuses()
 
-  const { remaining } = useCountdown(lineBusesQuery.data?.fetched_at ? new Date(lineBusesQuery.data.fetched_at).getTime() : 0, LINE_UPDATE_INTERVAL + LINE_UPDATE_INTERVAL_BUFFER)
+  const { remaining } = useCountdown(lineBusesQuery.data?.polled_at ? new Date(lineBusesQuery.data.polled_at).getTime() : 0, LINE_UPDATE_INTERVAL + LINE_UPDATE_INTERVAL_BUFFER)
   const { t } = useTranslation()
   const theme = useLineTheme()
 

@@ -29,7 +29,13 @@ export const useLineBuses = () => {
       if (!data)
         return LINE_UPDATE_INTERVAL
 
-      const fetchedAt = new Date(data.fetched_at).getTime()
+      if (data.next_poll) {
+        const nextPoll = new Date(data.next_poll)
+        console.log(nextPoll.getTime() - query.state.dataUpdatedAt)
+        return nextPoll.getTime() - query.state.dataUpdatedAt
+      }
+
+      const fetchedAt = new Date(data.polled_at).getTime()
       const elapsed = query.state.dataUpdatedAt - fetchedAt
 
       return LINE_UPDATE_INTERVAL + LINE_UPDATE_INTERVAL_BUFFER - elapsed
