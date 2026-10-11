@@ -31,14 +31,13 @@ export const useLineBuses = () => {
 
       if (data.next_poll) {
         const nextPoll = new Date(data.next_poll)
-        console.log(nextPoll.getTime() - query.state.dataUpdatedAt)
-        return nextPoll.getTime() - query.state.dataUpdatedAt
+        return Math.max(1_000, nextPoll.getTime() - query.state.dataUpdatedAt) // math max is just to be safe, we don't want it to be negative
       }
 
       const fetchedAt = new Date(data.polled_at).getTime()
       const elapsed = query.state.dataUpdatedAt - fetchedAt
 
-      return LINE_UPDATE_INTERVAL + LINE_UPDATE_INTERVAL_BUFFER - elapsed
+      return Math.max(1_000, LINE_UPDATE_INTERVAL + LINE_UPDATE_INTERVAL_BUFFER - elapsed)
     },
   })
 
