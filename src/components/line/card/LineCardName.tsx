@@ -11,7 +11,6 @@ export const LineCardName = () => {
   const { code } = useLine()
   const { query: lineBusesQuery } = useLineBuses()
 
-  // console.log(lineBusesQuery.data ? lineBusesQuery.data.next_poll * 1000 - lineBusesQuery.dataUpdatedAt : undefined, 'test')
   const duration = lineBusesQuery.data ? lineBusesQuery.data.next_poll * 1000 - lineBusesQuery.dataUpdatedAt : undefined
 
   const { remaining } = useCountdown(lineBusesQuery.dataUpdatedAt, duration)
