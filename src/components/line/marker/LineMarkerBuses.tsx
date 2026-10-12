@@ -4,11 +4,11 @@ import { router } from 'expo-router'
 import type { Feature } from 'geojson'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine, useLines, useLineBuses, useLineRoutes, useLineTheme, useMapStyle } from '@/composables'
+import { useLine, useLineGroup, useLineBuses, useLineRoutes, useLineTheme, useMapStyle } from '@/composables'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerBuses = () => {
-  const lines = useLines()
+  const { codes } = useLineGroup()
   const { mapColorScheme } = useMapStyle()
   const { code } = useLine()
   const { routeCode } = useLineRoutes()
@@ -39,7 +39,7 @@ export const LineMarkerBuses = () => {
       },
     }))
 
-  const minZoom = lines.length < 2 ? undefined : 8
+  const minZoom = codes.length < 2 ? undefined : 8
 
   return (
     <>

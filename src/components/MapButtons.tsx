@@ -5,19 +5,16 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from './u/UButton'
 
-import { useMap, useLines } from '@/composables'
+import { useMap, useLineGroup } from '@/composables'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
-import { useFilterStore, useLineStore, useSettingsStore } from '@/stores'
+import { useLineStore, useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
 const AnimatedGestureHandlerRootView = createAnimatedComponent(GestureHandlerRootView)
 
 export const MapButtons = (props: ViewProps) => {
   const { map, camera } = useMap()
-
-  const lines = useLines()
-  const city = useFilterStore(useShallow(state => state.city))
-  const group = useLineStore(useShallow(state => state.lines[city].find(x => x.id === state.groupId[city])))
+  const { group, codes } = useLineGroup()
 
   const bearing = useSettingsStore(useShallow(state => state.bearing))
   const pitch = useSettingsStore(useShallow(state => state.pitch))
@@ -77,7 +74,7 @@ export const MapButtons = (props: ViewProps) => {
         />
       </AnimatedGestureHandlerRootView>
 
-      {lines.length > 1 && (
+      {codes.length > 1 && (
         <AnimatedGestureHandlerRootView
           layout={LinearTransition}
           style={{ width: 'auto' }}
@@ -88,7 +85,7 @@ export const MapButtons = (props: ViewProps) => {
             style={{ elevation: 2 }}
             size="lg"
             onPress={() => {
-              lines.forEach(code => changeRouteDirection(code))
+              codes.forEach(code => changeRouteDirection(code))
             }}
           />
         </AnimatedGestureHandlerRootView>

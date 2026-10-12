@@ -5,7 +5,7 @@ import { UCarousel } from '../u/UCarousel'
 
 import { LineCard } from './card/LineCard'
 
-import { useLineCardWidth, useLines } from '@/composables'
+import { useLineCardWidth, useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { ExitScaleOut } from '@/constants/animation'
 import { cn } from '@/utils/cn'
@@ -14,7 +14,7 @@ const { width } = Dimensions.get('window')
 
 export const LineCards = ({ className }: { className?: string, buttonsHeight?: SharedValue<number> }) => {
   const { cardWidth, snapInterval } = useLineCardWidth()
-  const lines = useLines()
+  const { codes } = useLineGroup()
 
   return (
     <UCarousel
@@ -22,11 +22,11 @@ export const LineCards = ({ className }: { className?: string, buttonsHeight?: S
       style={{ width }}
       contentClassName={cn(
         'gap-2',
-        lines.length > 1 ? 'p-2 pt-0' : 'p-0',
+        codes.length > 1 ? 'p-2 pt-0' : 'p-0',
       )}
       className={className}
     >
-      {lines.map(code => (
+      {codes.map(code => (
         <Animated.View
           key={code}
           exiting={ExitScaleOut}
@@ -37,7 +37,7 @@ export const LineCards = ({ className }: { className?: string, buttonsHeight?: S
               style={{ width: cardWidth }}
               className={cn(
                 'grow',
-                lines.length < 2 && 'rounded-b-none',
+                codes.length < 2 && 'rounded-b-none',
               )}
             />
           </LineContext>

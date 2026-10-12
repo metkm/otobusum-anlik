@@ -8,15 +8,15 @@ import { UButton } from '@/components/u/UButton'
 import { CarouselContext, UCarousel } from '@/components/u/UCarousel'
 import { UText } from '@/components/u/UText'
 
-import { useLineCardWidth, useLines } from '@/composables'
+import { useLineCardWidth, useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 
 const LineTimetables = () => {
-  const lines = useLines()
+  const { codes } = useLineGroup()
   const { snapInterval } = useLineCardWidth()
   const { t } = useTranslation()
 
-  if (lines.length < 1) {
+  if (codes.length < 1) {
     return (
       <View className="flex items-center justify-center gap-2 p-2 grow">
         <UText className="text-muted font-inter-medium text-center max-w-xs">{t('timetableEmpty')}</UText>
@@ -35,12 +35,12 @@ const LineTimetables = () => {
   return (
     <UCarousel
       snapInterval={snapInterval}
-      contentClassName={`gap-2 pt-0 ${lines.length > 1 ? 'p-2 pt-0' : ''}`}
+      contentClassName={`gap-2 pt-0 ${codes.length > 1 ? 'p-2 pt-0' : ''}`}
       className="flex-1"
     >
-      {lines.map(item => (
+      {codes.map(item => (
         <LineContext key={item} value={item}>
-          <LineTimetable className={lines.length < 2 ? 'rounded-none' : ''} />
+          <LineTimetable className={codes.length < 2 ? 'rounded-none' : ''} />
         </LineContext>
       ))}
     </UCarousel>

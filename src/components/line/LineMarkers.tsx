@@ -3,10 +3,10 @@ import { Layer } from '@maplibre/maplibre-react-native'
 import { LineMarkerBuses, LineMarkerRoute, LineMarkerStops } from './marker'
 
 import { LineContext } from '@/composables/useLine'
-import { useLines } from '@/composables/useLines'
+import { useLineGroup } from '@/composables/useLineGroup'
 
 export const LineMarkers = () => {
-  const lines = useLines()
+  const { codes } = useLineGroup()
 
   return (
     <>
@@ -31,7 +31,7 @@ export const LineMarkers = () => {
         afterId="stop-layer"
       />
 
-      {lines.map(code => (
+      {codes.map(code => (
         <LineContext key={code} value={code}>
           <LineMarkerRoute />
           <LineMarkerStops />
