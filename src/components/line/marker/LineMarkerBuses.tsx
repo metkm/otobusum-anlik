@@ -14,7 +14,7 @@ export const LineMarkerBuses = () => {
   const { routeCode } = useLineRoutes()
   const { query: lineBusesQuery, buses } = useLineBuses()
 
-  const theme = useLineTheme(mapColorScheme)
+  const theme = useLineTheme({ colorScheme: mapColorScheme })
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
 
   if (!lineBusesQuery.data)

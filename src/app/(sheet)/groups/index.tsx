@@ -1,31 +1,36 @@
-import { TrueSheetNavigationOptions, useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation'
+import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { useLocalSearchParams } from 'expo-router'
-import { useEffect } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import Animated, { LinearTransition } from 'react-native-reanimated'
-import { useCSSVariable } from 'uniwind'
-import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
 import { USheetHeader } from '@/components/u/USheetHeader'
 import { UText } from '@/components/u/UText'
 
-import { useLineTheme } from '@/composables'
+import { useLineGroup, useLineTheme } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
-import { useFilterStore, useLineStore } from '@/stores'
+import { useLineStore } from '@/stores'
 import { LineGroup } from '@/types/line'
 
-const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?: boolean, canDelete?: boolean }) => {
+const GroupItem = ({
+  group,
+  selected,
+  canDelete,
+}: {
+  group: LineGroup
+  selected?: boolean
+  canDelete?: boolean
+}) => {
   const { t } = useTranslation()
   const theme = useLineTheme()
   const params = useLocalSearchParams()
 
   const addToGroup = params.addToGroup as string | undefined
-
   const backgroundWithColor = theme?.backgroundWithColor()
 
   const handlePress = () => {
@@ -44,8 +49,8 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
         className="flex-1 gap-2"
         onPress={handlePress}
       >
-        {!addToGroup && (
-          <View className={`${selected ? 'bg-primary' : 'bg-muted'} size-10 p-2 rounded-md flex items-center justify-center`}>
+        <View className="h-full flex-col">
+          <View className={`${selected ? 'bg-primary' : 'bg-muted'} flex-1 aspect-square p-2 rounded-md flex items-center justify-center`}>
             {selected && (
               <UIcon
                 name="check"
@@ -55,26 +60,31 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
               />
             )}
           </View>
-        )}
+        </View>
 
         <View className="flex-1 shrink gap-1">
-          <UText
-            className="shrink truncate font-inter-medium"
-            numberOfLines={1}
-          >
+          <UText className="shrink truncate font-inter-medium" numberOfLines={1}>
             {group.name}
           </UText>
 
           <View className="flex-row flex-wrap gap-2">
             {group.codes.length < 1
               ? (
-                  <UText className="font-inter-medium text-xs text-muted">{t('emptyGroup')}</UText>
+                  <UText className="font-inter-medium text-xs text-muted h-6">{t('emptyGroup')}</UText>
                 )
               : (
                   group.codes.map(code => (
                     <UText
                       key={code}
                       className="font-inter-medium text-xs rounded-md bg-default/50 h-6 w-12 text-center align-middle border border-muted/50"
+                      style={
+                        code === addToGroup
+                          ? {
+                              backgroundColor: backgroundWithColor?.backgroundColor,
+                              color: backgroundWithColor?.color,
+                            }
+                          : undefined
+                      }
                     >
                       {code}
                     </UText>
@@ -84,10 +94,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
         </View>
       </UButton>
 
-      <Animated.View
-        layout={LinearTransition}
-        className="flex-row items-center p-2"
-      >
+      <Animated.View layout={LinearTransition} className="flex-row items-center p-2">
         <Animated.View
           exiting={ExitScaleOut}
           entering={EnterScaleIn}
@@ -122,119 +129,69 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
 export const GroupsScreen = () => {
   const { t } = useTranslation()
   const params = useLocalSearchParams()
-  const theme = useLineTheme()
-  const backgroundDefault = useCSSVariable('--background-color-default')
+  const { groupId, groups } = useLineGroup()
+  const scrollableRef = useRef<ScrollView>(null)
 
   const navigation = useTrueSheetNavigation()
   const addToGroup = params.addToGroup as string | undefined
 
-  const city = useFilterStore(useShallow(state => state.city))
-  const groupId = useLineStore(useShallow(state => state.groupId[city]))
-  const groups = useLineStore(useShallow(state => state.lines[city]))
-
-  const text = theme?.text({ variant: 'soft' })
-  const background = theme?.background({ variant: 'ghost' })
+  const theme = useLineTheme({ code: addToGroup })
+  const backgroundColor = theme?.background({ variant: 'ghost' })?.backgroundColor
 
   useEffect(() => {
-    const options: Partial<TrueSheetNavigationOptions> = {
-      backgroundColor: background?.backgroundColor ?? backgroundDefault as string | undefined,
-      footer: (
-        <GestureHandlerRootView style={{ alignItems: 'flex-end' }}>
-          <LineContext value={addToGroup}>
-            <UButton
-              label={t('newGroup')}
-              icon="plus-circle"
-              size="lg"
-              onPress={() => {
-                useLineStore.getState().createGroup()
-              }}
-              className="w-max"
-            />
-          </LineContext>
-        </GestureHandlerRootView>
-      ),
+    const options = {
+      scrollableRef,
       header: (
         <USheetHeader
           icon="component"
           title={t('groups')}
-          description={addToGroup ? t('addLineToGroup', { code: addToGroup }) : t('chooseActiveGroup')}
-        />
+          description={
+            addToGroup ? t('addLineToGroup', { code: addToGroup }) : t('chooseActiveGroup')
+          }
+        >
+          <LineContext value={addToGroup}>
+            <GestureHandlerRootView style={{ flexShrink: 0 }}>
+              <UButton
+                label={t('newGroup')}
+                icon="plus-circle"
+                variant="soft"
+                onPress={() => {
+                  useLineStore.getState().createGroup()
+                }}
+              />
+            </GestureHandlerRootView>
+          </LineContext>
+        </USheetHeader>
       ),
     }
 
-    navigation.getParent()?.setOptions(options)
-  }, [addToGroup, background?.backgroundColor, backgroundDefault, navigation, t])
-
-  const defaultGroups = addToGroup ? groups.filter(gr => !gr.codes.includes(addToGroup)) : groups
-  const groupsWithCode = addToGroup ? groups.filter(gr => gr.codes.includes(addToGroup)) : []
+    navigation.setOptions({
+      ...options,
+      ...(backgroundColor ? { backgroundColor } : {}),
+    })
+  }, [addToGroup, backgroundColor, navigation, t])
 
   return (
-    <ScrollView contentContainerClassName="gap-2">
-      {groupsWithCode.length > 0 && (
-        <>
-          <Animated.View
-            layout={LinearTransition}
-          >
-            <UText className="text-muted text-xs mt-2 ml-2">
-              <Trans
-                i18nKey="lineInGroups"
-                values={{ code: addToGroup }}
-                components={{
-                  code: (
-                    <UText
-                      className="font-inter-semibold leading-tight"
-                      style={text}
-                    />
-                  ),
-                }}
-              />
-            </UText>
-
-            {groupsWithCode.map(group => (
-              <Animated.View
-                key={group.id}
-                exiting={ExitScaleOut}
-                entering={EnterScaleIn}
-                layout={LinearTransition}
-              >
-                <GroupItem
-                  group={group}
-                  canDelete={groups.length > 1}
-                  selected={group.id === groupId}
-                />
-              </Animated.View>
-            ))}
-          </Animated.View>
-
-          {defaultGroups.length > 0 && (
+    <LineContext value={addToGroup}>
+      <ScrollView ref={scrollableRef} contentContainerClassName="gap-2">
+        <Animated.View layout={LinearTransition}>
+          {groups.map(group => (
             <Animated.View
+              key={group.id}
+              exiting={ExitScaleOut}
+              entering={EnterScaleIn}
               layout={LinearTransition}
-              className="h-px bg-(--ui-border-muted)"
-            />
-          )}
-        </>
-      )}
-
-      <Animated.View
-        layout={LinearTransition}
-        className="pb-15"
-      >
-        {defaultGroups.map((group, index) => (
-          <Animated.View
-            key={group.id}
-            exiting={ExitScaleOut}
-            entering={EnterScaleIn}
-            layout={LinearTransition}
-          >
-            <GroupItem
-              group={group}
-              canDelete={groups.length > 1}
-              selected={group.id === groupId}
-            />
-          </Animated.View>
-        ))}
-      </Animated.View>
-    </ScrollView>
+            >
+              <GroupItem
+                group={group}
+                canDelete={groups.length > 1}
+                selected={group.id === groupId}
+              />
+            </Animated.View>
+          ))}
+        </Animated.View>
+      </ScrollView>
+    </LineContext>
   )
 }
 

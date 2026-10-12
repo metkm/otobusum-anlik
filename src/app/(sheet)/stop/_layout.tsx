@@ -1,6 +1,5 @@
+import { Sheet } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { useLocalSearchParams } from 'expo-router'
-
-import { Sheet } from '../../_layout'
 
 import { LineContext } from '@/composables/useLine'
 

@@ -46,17 +46,19 @@ export const useColorScheme = (): ColorScheme => {
   return colorScheme === 'unspecified' ? 'dark' : colorScheme
 }
 
-export const useLineTheme = (colorScheme?: ColorScheme) => {
-  const code = use(LineContext)
+export const useLineTheme = ({ colorScheme, code }: { colorScheme?: ColorScheme, code?: string } = {}) => {
+// export const useLineTheme = ({ colorScheme, code }: { colorScheme?: ColorScheme, code?: string }) => {
+// export const useLineTheme = (colorScheme?: ColorScheme) => {
+  const _code = use(LineContext) ?? code
 
   const themes = useThemeStore(useShallow(state => state.getThemes()))
   const currentColorScheme = useColorScheme()
-  const resolvedColorScheme = colorScheme ?? currentColorScheme ?? 'dark'
+  const resolvedColorScheme = colorScheme ?? currentColorScheme
 
-  if (!code)
+  if (!_code)
     return
 
-  const theme = themes[code]?.[resolvedColorScheme]
+  const theme = themes[_code]?.[resolvedColorScheme]
   if (!theme)
     return
 

@@ -1,50 +1,28 @@
 import { LegendList } from '@legendapp/list/react-native'
-import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation'
+import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { router } from 'expo-router'
 import { useLocalSearchParams } from 'expo-router/build/hooks'
 import { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { GestureHandlerRootView, TextInput } from 'react-native-gesture-handler'
-import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
-import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useCSSVariable } from 'uniwind'
-import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
 import { UInput } from '@/components/u/UInput'
 import { UText } from '@/components/u/UText'
 
-import { useLineTheme } from '@/composables'
+import { useLineGroup } from '@/composables'
 import { GROUP_LINE_LIMIT } from '@/constants/app'
-import { useFilterStore, useLineStore } from '@/stores'
-
-const AnimatedGestureHandlerRootView = Animated.createAnimatedComponent(GestureHandlerRootView)
+import { useLineStore } from '@/stores'
 
 export const GroupIdScreen = () => {
-  const backgroundDefault = useCSSVariable('--background-color-default')
   const navigation = useTrueSheetNavigation()
   const params = useLocalSearchParams()
-  const insets = useSafeAreaInsets()
-  const theme = useLineTheme()
-  const { progress } = useReanimatedKeyboardAnimation()
+  const { group, groups } = useLineGroup(params.groupId?.toString())
   const { t } = useTranslation()
 
   const name = useRef('')
   const inputRef = useRef<TextInput>(null)
-
-  const city = useFilterStore(useShallow(state => state.city))
-  const groups = useLineStore(useShallow(state => state.lines[city]))
-
-  const background = theme?.background({ variant: 'ghost' })
-
-  const style = useAnimatedStyle(() => ({
-    gap: 8,
-    paddingBottom: interpolate(progress.value, [0, 1], [insets.bottom + 8, 8], 'clamp'),
-  }))
-
-  const group = groups.find(gr => gr.id === params.groupId)
 
   const handleSave = useCallback(() => {
     if (!group)
@@ -56,44 +34,44 @@ export const GroupIdScreen = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      backgroundColor: background?.backgroundColor ?? backgroundDefault as string | undefined,
-      detents: [0.5],
       footer: (
-        <AnimatedGestureHandlerRootView style={style}>
-          <UButton
-            label={t('save')}
-            size="lg"
-            block
-            icon="save"
-            onPress={handleSave}
-            variant="soft"
-          />
-
-          {groups.length > 1 && (
+        <GestureHandlerRootView style={{ flexShrink: 0 }}>
+          <View className="gap-2 px-2">
             <UButton
-              label={t('deleteGroup')}
-              icon="trash-2"
-              onPress={() => {
-                if (!group)
-                  return
-
-                useLineStore.getState().deleteGroup(group.id)
-                router.back()
-              }}
+              label={t('save')}
               size="lg"
               block
+              icon="save"
+              onPress={handleSave}
               variant="soft"
             />
-          )}
-        </AnimatedGestureHandlerRootView>
+
+            {groups.length > 1 && (
+              <UButton
+                label={t('deleteGroup')}
+                icon="trash-2"
+                onPress={() => {
+                  if (!group)
+                    return
+
+                  useLineStore.getState().deleteGroup(group.id)
+                  router.back()
+                }}
+                size="lg"
+                block
+                variant="soft"
+              />
+            )}
+          </View>
+        </GestureHandlerRootView>
       ),
     })
-  }, [background?.backgroundColor, backgroundDefault, group, groups.length, handleSave, navigation, style, t])
+  }, [group, groups.length, handleSave, navigation, t])
 
   return (
-    <View className={`px-2 pt-5 gap-2 ${groups.length > 1 ? 'pb-28' : 'pb-15'}`}>
+    <View className="gap-2 pt-8 px-2">
       <View className="gap-2">
-        <UText className="ml-2 font-inter-medium">{group?.name}</UText>
+        <UText className="ml-1 font-inter-medium">{group?.name}</UText>
         <UInput
           ref={inputRef}
           placeholder={t('newGroupTitlePlaceholder')}
@@ -105,7 +83,7 @@ export const GroupIdScreen = () => {
 
       <View className="gap-2">
         <View className="flex-row gap-2 items-center">
-          <UText className="ml-2 font-inter-medium">{t('addedLines')}</UText>
+          <UText className="ml-1 font-inter-medium">{t('addedLines')}</UText>
           <UText className="text-xs font-inter-medium">{`(${group?.codes.length} / ${GROUP_LINE_LIMIT})`}</UText>
         </View>
 
@@ -113,7 +91,7 @@ export const GroupIdScreen = () => {
           <LegendList
             data={group?.codes}
             renderItem={({ item }) => (
-              <GestureHandlerRootView>
+              <GestureHandlerRootView style={{ flexShrink: 0 }}>
                 <View className="flex-row items-stretch gap-1">
                   <UButton
                     icon="trash-2"

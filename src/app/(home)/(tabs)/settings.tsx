@@ -225,6 +225,7 @@ export const SettingsScreen = () => {
               appStyleSheet.current?.dismiss()
             }}
             block
+            size="lg"
           />
         ))}
       </USheet>
@@ -257,6 +258,7 @@ export const SettingsScreen = () => {
               })
             }}
             block
+            size="lg"
           />
         ))}
       </USheet>

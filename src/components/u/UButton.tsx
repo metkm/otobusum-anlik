@@ -1,6 +1,6 @@
 import Lucide from '@react-native-vector-icons/lucide'
-import { Href, router } from 'expo-router'
-import React, { ComponentProps } from 'react'
+import { Href, useRouter } from 'expo-router'
+import { ComponentProps } from 'react'
 import { BaseButton } from 'react-native-gesture-handler'
 import { tv } from 'tailwind-variants'
 import { withUniwind } from 'uniwind'
@@ -129,11 +129,12 @@ export const UButton = ({
   labelClassName?: string
 } & BaseButtonProps) => {
   const theme = useLineTheme()
+  const router = useRouter()
   const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, variant, size, block, disabled })
 
   const handlePress: BaseButtonProps['onPress'] = () => {
     if (!to) return
-    router.navigate(to)
+    router.push(to)
   }
 
   const themeBackground = color !== 'neutral' ? theme?.background({ variant }) : undefined

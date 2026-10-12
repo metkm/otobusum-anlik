@@ -82,7 +82,6 @@ export const LineCardMenu = () => {
       {news.length > 0 && (
         <USheet
           ref={announcementsSheet}
-          scrollable
           header={<USheetHeader title="News" icon="newspaper" />}
         >
           <LegendList
