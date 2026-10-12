@@ -26,8 +26,7 @@ const RouteItem = ({ isSelected, item, busCount }: { isSelected: boolean, item: 
   return (
     <UButton
       label={item.name}
-      variant={isSelected ? 'solid' : 'ghost'}
-      color="neutral"
+      variant={isSelected ? 'soft' : 'ghost'}
       onPress={() => setRoute(code, item.code)}
       className="flex-col justify-start items-start h-15.5"
     >
