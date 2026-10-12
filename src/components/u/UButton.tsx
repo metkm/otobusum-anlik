@@ -29,7 +29,7 @@ const ui = tv({
     },
     size: {
       md: {
-        base: 'p-2',
+        base: 'p-2.5',
         icon: 'size-4',
       },
       lg: {
