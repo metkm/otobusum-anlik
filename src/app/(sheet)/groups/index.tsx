@@ -38,24 +38,26 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
   }
 
   return (
-    <GestureHandlerRootView style={{ flexDirection: 'row', gap: 4 }}>
+    <GestureHandlerRootView style={{ flexDirection: 'row' }}>
       <UButton
         variant="ghost"
         className="flex-1 gap-2"
         onPress={handlePress}
       >
-        <View className={`${selected ? 'bg-primary' : 'bg-muted'} size-8 p-2 rounded-md flex items-center justify-center`}>
-          {selected && (
-            <UIcon
-              name="check"
-              sizeClassName="size-4"
-              colorClassName="text-inverted"
-              color={backgroundWithColor?.color}
-            />
-          )}
-        </View>
+        {!addToGroup && (
+          <View className={`${selected ? 'bg-primary' : 'bg-muted'} size-10 p-2 rounded-md flex items-center justify-center`}>
+            {selected && (
+              <UIcon
+                name="check"
+                sizeClassName="size-5"
+                colorClassName="text-inverted"
+                color={backgroundWithColor?.color}
+              />
+            )}
+          </View>
+        )}
 
-        <View className="flex-1 shrink">
+        <View className="flex-1 shrink gap-1">
           <UText
             className="shrink truncate font-inter-medium"
             numberOfLines={1}
@@ -63,7 +65,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
             {group.name}
           </UText>
 
-          <View className="flex-row flex-wrap gap-1">
+          <View className="flex-row flex-wrap gap-2">
             {group.codes.length < 1
               ? (
                   <UText className="font-inter-medium text-xs text-muted">{t('emptyGroup')}</UText>
@@ -84,7 +86,7 @@ const GroupItem = ({ group, selected, canDelete }: { group: LineGroup, selected?
 
       <Animated.View
         layout={LinearTransition}
-        className="gap-1 flex-row items-center"
+        className="flex-row items-center p-2"
       >
         <Animated.View
           exiting={ExitScaleOut}
@@ -167,14 +169,13 @@ export const GroupsScreen = () => {
   const groupsWithCode = addToGroup ? groups.filter(gr => gr.codes.includes(addToGroup)) : []
 
   return (
-    <ScrollView contentContainerClassName="gap-2 p-2">
+    <ScrollView contentContainerClassName="gap-2">
       {groupsWithCode.length > 0 && (
         <>
           <Animated.View
             layout={LinearTransition}
-            className="gap-2 px-2"
           >
-            <UText className="text-muted text-xs">
+            <UText className="text-muted text-xs mt-2 ml-2">
               <Trans
                 i18nKey="lineInGroups"
                 values={{ code: addToGroup }}
@@ -216,7 +217,7 @@ export const GroupsScreen = () => {
 
       <Animated.View
         layout={LinearTransition}
-        className="pb-15 gap-2"
+        className="pb-15"
       >
         {defaultGroups.map((group, index) => (
           <Animated.View
@@ -230,12 +231,6 @@ export const GroupsScreen = () => {
               canDelete={groups.length > 1}
               selected={group.id === groupId}
             />
-
-            {/* {index !== defaultGroups.length - 1
-              ? (
-                  <View className="h-0.5 bg-muted" />
-                )
-              : undefined} */}
           </Animated.View>
         ))}
       </Animated.View>
