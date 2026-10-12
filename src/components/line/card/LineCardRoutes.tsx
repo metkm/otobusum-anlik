@@ -117,7 +117,6 @@ export const LineCardRoutes = () => {
       <UButton
         label={route?.name || routeCode}
         variant="soft"
-        color="neutral"
         icon="route"
         onPress={() => {
           routeSheet.current?.present()

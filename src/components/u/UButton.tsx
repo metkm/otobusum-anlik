@@ -136,8 +136,8 @@ export const UButton = ({
     router.navigate(to)
   }
 
-  const themeBackground = theme?.background({ variant })
-  const themeText = theme?.text({ variant })
+  const themeBackground = color !== 'neutral' ? theme?.background({ variant }) : undefined
+  const themeText = color !== 'neutral' ? theme?.text({ variant }) : undefined
 
   return (
     <StyledBaseButton

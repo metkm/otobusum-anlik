@@ -51,6 +51,12 @@ export const LineCardMenu = () => {
   return (
     <>
       <UButton
+        icon="zoom-in"
+        variant="ghost"
+        onPress={zoomToLine}
+      />
+
+      <UButton
         icon={isLineHidden ? 'eye-closed' : 'eye'}
         onPress={() => toggleLineHidden(code)}
         variant="ghost"
@@ -140,15 +146,6 @@ export const LineCardMenu = () => {
               state.lineCardExpanded = !state.lineCardExpanded
             })
           }}
-        />
-
-        <UButton
-          label={t('zoom')}
-          icon="zoom-in"
-          block
-          variant="soft"
-          size="lg"
-          onPress={zoomToLine}
         />
 
         <UButton

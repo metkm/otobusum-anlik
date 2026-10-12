@@ -38,7 +38,7 @@ export const LineCardName = () => {
           query={lineBusesQuery}
           errorMessage={t('errorGettingBusLocations')}
         >
-          <UText className="text-xs text-muted font-inter-medium">
+          <UText className="text-xs text-muted font-inter-medium" numberOfLines={1}>
             {t('updateCount', { count: remaining })}
           </UText>
         </UQueryState>
