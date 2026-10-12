@@ -14,17 +14,13 @@ export const useCountdown = (from: number, duration: number = LINE_UPDATE_INTERV
   }, [duration])
 
   useEffect(() => {
+    _from.current = from
+
     update()
 
     const interval = setInterval(update, 1_000)
     return () => clearInterval(interval)
-  }, [update])
-
-  useEffect(() => {
-    if (from !== _from.current) {
-      _from.current = from
-    }
-  }, [from])
+  }, [update, from, duration])
 
   return {
     remaining,
