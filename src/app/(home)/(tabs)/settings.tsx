@@ -1,7 +1,7 @@
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import Constants from 'expo-constants'
 import { Image } from 'expo-image'
-import { useRef } from 'react'
+import { ComponentProps, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -15,19 +15,109 @@ import { USwitch } from '@/components/u/USwitch'
 import { UText } from '@/components/u/UText'
 
 import { queryCache } from '@/api/client'
-import { MapStyle, MapStyleValue, mapStyles } from '@/constants/mapStyles'
+import { MapStyle } from '@/constants/mapStyles'
 import { useFilterStore, useSettingsStore } from '@/stores'
 import { City } from '@/types/city'
 
 const StyledImage = withUniwind(Image)
 
+const ToggleSetting = ({ label, value = false, onPress }: { label: string, value: boolean, onPress: () => void }) => {
+  return (
+    <UButton
+      label={label}
+      color="neutral"
+      variant="ghost"
+      size="lg"
+      onPress={onPress}
+      className="flex-row-reverse justify-between"
+    >
+      <USwitch value={value} />
+    </UButton>
+  )
+}
+
+type Option<T> = { label: string, value: T }
+
+export const OptionPicker = <T,>({
+  label,
+  description,
+  options,
+  value,
+  onSelect,
+}: {
+  label: string
+  description?: string
+  options: Option<T>[]
+  value: Option<T>
+  onSelect: (option: Option<T>) => void
+}) => {
+  const sheetRef = useRef<TrueSheet>(null)
+
+  const handleSelect = (option: Option<T>) => {
+    sheetRef.current?.dismiss()
+    onSelect(option)
+  }
+
+  return (
+    <>
+      <UButton
+        color="neutral"
+        variant="ghost"
+        size="lg"
+        onPress={() => {
+          sheetRef.current?.present()
+        }}
+      >
+        <View className="flex-1 flex-row justify-between items-center gap-2">
+          <View className="flex-1">
+            <UText className="font-inter-medium text-xs">{label}</UText>
+
+            {description && (
+              <UText
+                className="flex-1 font-inter-medium text-xs text-muted"
+                numberOfLines={1}
+              >
+                {description}
+              </UText>
+            )}
+          </View>
+
+          <UText className="text-xs font-inter-medium">{value.label}</UText>
+        </View>
+      </UButton>
+
+      <USheet
+        ref={sheetRef}
+        contentContainerClassName="px-2 gap-2"
+        detents={['auto']}
+      >
+        {options.map(option => (
+          <UButton
+            key={option.label}
+            label={option.label}
+            onPress={() => handleSelect(option)}
+            color={option.value === value.value ? 'primary' : 'neutral'}
+            variant="soft"
+            size="lg"
+            block
+          />
+        ))}
+      </USheet>
+    </>
+  )
+}
+
+const SettingsSectionTitle = ({ icon, title }: { icon: ComponentProps<typeof UIcon>['name'], title: string }) => {
+  return (
+    <View className="p-2 px-5 bg-muted flex-row items-center gap-2 -mx-2">
+      <UIcon name={icon} />
+      <UText className="font-inter-semibold">{title}</UText>
+    </View>
+  )
+}
+
 export const SettingsScreen = () => {
   const { t } = useTranslation()
-
-  const mapStyleSheet = useRef<TrueSheet>(null)
-  const appStyleSheet = useRef<TrueSheet>(null)
-  const citySheet = useRef<TrueSheet>(null)
-  const mapButtonsSheet = useRef<TrueSheet>(null)
 
   const mapButtonsPlacement = useSettingsStore(useShallow(state => state.mapButtonsPlacement))
   const expandStopsWhenScrolled = useSettingsStore(useShallow(state => state.expandStopsWhenScrolled))
@@ -57,23 +147,42 @@ export const SettingsScreen = () => {
     },
   ]
 
-  const mapThemeOptions: { label: string, key: MapStyle | undefined, value: MapStyleValue | undefined, preview?: string }[] = [
+  const mapThemeOptions: { label: string, value: MapStyle | undefined, preview?: string }[] = [
     {
       label: t('dark'),
-      key: 'dark',
-      value: mapStyles['dark'],
+      value: 'dark',
       preview: require('@/assets/maps/dark.png'),
     },
     {
       label: t('liberty'),
-      key: 'liberty',
-      value: mapStyles['liberty'],
+      value: 'liberty',
       preview: require('@/assets/maps/liberty.png'),
     },
     {
       label: t('system'),
-      key: undefined,
       value: undefined,
+    },
+  ]
+
+  const mapButtonsPlacementOptions: Option<'left' | 'right'>[] = [
+    {
+      label: t('left'),
+      value: 'left',
+    },
+    {
+      label: t('right'),
+      value: 'right',
+    },
+  ]
+
+  const cityOptions: Option<City>[] = [
+    {
+      label: t('istanbul'),
+      value: 'istanbul',
+    },
+    {
+      label: t('izmir'),
+      value: 'izmir',
     },
   ]
 
@@ -96,221 +205,87 @@ export const SettingsScreen = () => {
   return (
     <ScrollView
       className="m-safe"
-      contentContainerClassName="p-2 gap-2"
+      contentContainerClassName="gap-2 p-2"
     >
-      <View className="p-2 bg-muted flex-row items-center justify-center gap-2 rounded-full">
-        <UIcon name="map" />
-        <UText className="font-inter-semibold">{t('map')}</UText>
-      </View>
+      <SettingsSectionTitle
+        title={t('map')}
+        icon="map"
+      />
 
-      <UButton
+      <ToggleSetting
         label={t('showMyLocation')}
-        color="neutral"
-        variant="ghost"
-        size="lg"
         onPress={toggleMyLocation}
-        className="flex-row-reverse justify-between"
-      >
-        <USwitch value={showMyLocation} />
-      </UButton>
+        value={showMyLocation}
+      />
 
-      <UButton
+      <ToggleSetting
         label={t('hideMap')}
-        color="neutral"
-        variant="ghost"
-        size="lg"
         onPress={toggleMap}
-        className="flex-row-reverse justify-between"
-      >
-        <USwitch value={hideMap} />
-      </UButton>
+        value={hideMap}
+      />
 
-      <UButton
-        label={t(mapStyleStore ?? 'system')}
-        color="neutral"
-        size="lg"
-        block
-        variant="ghost"
-        onPress={() => mapStyleSheet.current?.present()}
-        className="justify-between gap-4"
-        labelClassName="shrink-0"
-      >
-        <View className="flex-1">
-          <UText className="font-inter-medium text-xs">{t('mapTheme')}</UText>
-          <UText
-            className="flex-1 font-inter-medium text-xs text-muted"
-            ellipsizeMode="tail"
-          >
-            {t('settingsWillChangeOnRestart')}
-          </UText>
-        </View>
-      </UButton>
-
-      <USheet
-        ref={mapStyleSheet}
-        detents={['auto']}
-        contentContainerClassName="px-2 gap-2"
-      >
-        {mapThemeOptions.map(option => (
-          <UButton
-            key={option.label}
-            label={option.label}
-            variant={option.key === mapStyleStore ? 'solid' : 'ghost'}
-            color={option.key === mapStyleStore ? 'primary' : 'neutral'}
-            block
-            onPress={() => {
-              useSettingsStore.setState((state) => {
-                state.mapStyle = option.key
-              })
-
-              mapStyleSheet.current?.dismiss()
-            }}
-            labelClassName="min-w-14"
-          >
-            <View className="mr-2">
-              {option.preview && (
-                <StyledImage
-                  source={option.preview}
-                  className="rounded-md h-16 w-28"
-                />
-              )}
-            </View>
-          </UButton>
-        ))}
-      </USheet>
-
-      <UButton
-        label={t(mapButtonsPlacement)}
-        size="lg"
-        variant="ghost"
-        color="neutral"
-        className="justify-between gap-4"
-        onPress={() => {
-          mapButtonsSheet.current?.present()
+      <OptionPicker
+        label={t('mapTheme')}
+        description={t('settingsWillChangeOnRestart')}
+        options={mapThemeOptions}
+        value={{ label: t(mapStyleStore ?? 'system'), value: mapStyleStore }}
+        onSelect={({ value }) => {
+          useSettingsStore.setState((state) => {
+            state.mapStyle = value
+          })
         }}
-      >
-        <View className="flex-1">
-          <UText className="font-inter-medium text-xs">{t('mapButtonsPlacements')}</UText>
-          <UText
-            className="flex-1 font-inter-medium text-xs text-muted"
-            ellipsizeMode="tail"
-          >
-            {t('mapButtonsPlacementsDescription')}
-          </UText>
-        </View>
-      </UButton>
+      />
 
-      <USheet
-        ref={mapButtonsSheet}
-        detents={['auto']}
-        contentContainerClassName="px-2 gap-2"
-      >
-        {(['right', 'left'] as const).map(side => (
-          <UButton
-            key={side}
-            label={t(side)}
-            variant={side === mapButtonsPlacement ? 'solid' : 'ghost'}
-            color={side === mapButtonsPlacement ? 'primary' : 'neutral'}
-            size="lg"
-            block
-            onPress={() => {
-              useSettingsStore.setState((state) => {
-                state.mapButtonsPlacement = side
-              })
-            }}
-          />
-        ))}
-      </USheet>
+      <OptionPicker
+        label={t('mapButtonsPlacements')}
+        description={t('mapButtonsPlacementsDescription')}
+        options={mapButtonsPlacementOptions}
+        value={{ label: t(mapButtonsPlacement), value: mapButtonsPlacement }}
+        onSelect={({ value }) => {
+          useSettingsStore.setState((state) => {
+            state.mapButtonsPlacement = value
+          })
+        }}
+      />
 
-      <View className="p-2 bg-muted flex-row items-center justify-center gap-2 rounded-full">
-        <UIcon name="settings" />
-        <UText className="font-inter-semibold">{t('settings')}</UText>
-      </View>
+      <SettingsSectionTitle
+        title={t('settings')}
+        icon="settings"
+      />
 
-      <UButton
+      <ToggleSetting
         label={t('expandStopsWhenScrolled')}
-        color="neutral"
-        variant="ghost"
-        size="lg"
+        value={expandStopsWhenScrolled}
         onPress={toggleExpandStopsWhenScrolled}
-        className="flex-row-reverse justify-between"
-      >
-        <USwitch value={expandStopsWhenScrolled} />
-      </UButton>
+      />
 
-      <UButton
-        label={t(colorSchemeStore ?? 'system')}
-        color="neutral"
-        variant="ghost"
-        size="lg"
-        onPress={() => appStyleSheet.current?.present()}
-        className="justify-between"
-      >
-        <UText className="font-inter-medium text-xs">{t('appTheme')}</UText>
-      </UButton>
+      <OptionPicker
+        label={t('appTheme')}
+        options={appThemeOptions}
+        value={{ label: t(colorSchemeStore ?? 'system'), value: colorSchemeStore }}
+        onSelect={({ value }) => {
+          useSettingsStore.setState((state) => {
+            state.colorScheme = value
+            Uniwind.setTheme(value ?? 'system')
+          })
+        }}
+      />
 
-      <USheet
-        ref={appStyleSheet}
-        detents={['auto']}
-        contentContainerClassName="px-2 gap-2"
-      >
-        {appThemeOptions.map(sc => (
-          <UButton
-            key={sc.label}
-            label={sc.label}
-            color={colorSchemeStore === sc.value ? 'primary' : 'neutral'}
-            variant={colorSchemeStore === sc.value ? 'solid' : 'ghost'}
-            onPress={() => {
-              useSettingsStore.setState((state) => {
-                state.colorScheme = sc.value
-                Uniwind.setTheme(sc.value ?? 'system')
-              })
+      <OptionPicker
+        label={t('city')}
+        options={cityOptions}
+        value={{ label: t(city), value: city }}
+        onSelect={({ value }) => {
+          useFilterStore.setState((state) => {
+            state.city = value
+          })
+        }}
+      />
 
-              appStyleSheet.current?.dismiss()
-            }}
-            block
-            size="lg"
-          />
-        ))}
-      </USheet>
-
-      <UButton
-        label={city}
-        variant="ghost"
-        color="neutral"
-        size="lg"
-        className="justify-between"
-        onPress={() => citySheet.current?.present()}
-      >
-        <UText className="font-inter-medium text-xs">{t('city')}</UText>
-      </UButton>
-
-      <USheet
-        ref={citySheet}
-        detents={['auto']}
-        contentContainerClassName="px-2 gap-2"
-      >
-        {(['izmir', 'istanbul'] as City[]).map(c => (
-          <UButton
-            key={c}
-            label={c}
-            variant={c === city ? 'solid' : 'ghost'}
-            color={c === city ? 'primary' : 'neutral'}
-            onPress={() => {
-              useFilterStore.setState((state) => {
-                state.city = c
-              })
-            }}
-            block
-            size="lg"
-          />
-        ))}
-      </USheet>
-
-      <View className="p-2 bg-muted flex-row items-center justify-center gap-2 rounded-full">
-        <UIcon name="settings-2" />
-        <UText className="font-inter-semibold">{t('other')}</UText>
-      </View>
+      <SettingsSectionTitle
+        title={t('other')}
+        icon="settings-2"
+      />
 
       <UButton
         label={t('clearCache')}
