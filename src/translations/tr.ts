@@ -81,4 +81,8 @@ export default {
   addedLines: 'Ekli hatlar',
   news: 'Haberler',
   settingsWillChangeOnRestart: 'Bu ayar uygulamayı bir sonraki açışınızda değişecek',
+  mapButtonsPlacements: 'Harita düğmelerinin konumları',
+  mapButtonsPlacementsDescription: 'Grup, Arama düğmeleri vb.',
+  right: 'Sağ',
+  left: 'Sol',
 }

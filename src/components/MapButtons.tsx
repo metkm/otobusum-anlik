@@ -21,12 +21,14 @@ export const MapButtons = (props: ViewProps) => {
   const lineCardExpanded = useSettingsStore(useShallow(state => state.lineCardExpanded))
   const hideMap = useSettingsStore(useShallow(state => state.hideMap))
   const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
+  const mapButtonsPlacement = useSettingsStore(useShallow(state => state.mapButtonsPlacement))
 
   return (
     <View
       className={cn(
         'p-2 gap-2',
-        (lineCardExpanded || hideMap) ? 'flex-row' : 'items-end',
+        (lineCardExpanded || hideMap) ? 'flex-row' : undefined,
+        mapButtonsPlacement === 'left' ? 'items-start' : 'items-end',
       )}
       pointerEvents="box-none"
       {...props}
@@ -88,7 +90,7 @@ export const MapButtons = (props: ViewProps) => {
         </AnimatedGestureHandlerRootView>
       )}
 
-      <AnimatedGestureHandlerRootView layout={LinearTransition}>
+      <AnimatedGestureHandlerRootView layout={LinearTransition} style={{ maxWidth: '75%' }}>
         <UButton
           icon="component"
           color="neutral"

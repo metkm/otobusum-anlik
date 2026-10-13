@@ -20,6 +20,7 @@ export interface SettingsStoreV4 {
   showOnBoarding: boolean
   hideMap: boolean
   lineCardExpanded?: boolean
+  mapButtonsPlacement: 'left' | 'right'
   toggleMyLocation: () => void
 }
 
@@ -37,6 +38,7 @@ export const useSettingsStore = create(
         showOnBoarding: true,
         hideMap: false,
         lineCardExpanded: false,
+        mapButtonsPlacement: 'right',
         toggleMyLocation: async () => {
           let showLocation = get().showMyLocation
 

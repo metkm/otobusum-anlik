@@ -81,4 +81,8 @@ export default {
   addedLines: 'Added lines',
   news: 'News',
   settingsWillChangeOnRestart: 'This change will take effect after restarting the app',
+  mapButtonsPlacements: 'Placements of map buttons',
+  mapButtonsPlacementsDescription: 'Group, Search buttons etc.',
+  right: 'Right',
+  left: 'Left',
 }

@@ -27,11 +27,12 @@ export const SettingsScreen = () => {
   const mapStyleSheet = useRef<TrueSheet>(null)
   const appStyleSheet = useRef<TrueSheet>(null)
   const citySheet = useRef<TrueSheet>(null)
+  const mapButtonsSheet = useRef<TrueSheet>(null)
 
+  const mapButtonsPlacement = useSettingsStore(useShallow(state => state.mapButtonsPlacement))
   const expandStopsWhenScrolled = useSettingsStore(useShallow(state => state.expandStopsWhenScrolled))
   const toggleMyLocation = useSettingsStore(useShallow(state => state.toggleMyLocation))
   const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
-  // const showTraffic = useSettingsStore(useShallow(state => state.showTraffic))
   const hideMap = useSettingsStore(useShallow(state => state.hideMap))
   const city = useFilterStore(useShallow(state => state.city))
 
@@ -175,6 +176,49 @@ export const SettingsScreen = () => {
               )}
             </View>
           </UButton>
+        ))}
+      </USheet>
+
+      <UButton
+        label={t(mapButtonsPlacement)}
+        size="lg"
+        variant="ghost"
+        color="neutral"
+        className="justify-between gap-4"
+        onPress={() => {
+          mapButtonsSheet.current?.present()
+        }}
+      >
+        <View className="flex-1">
+          <UText className="font-inter-medium text-xs">{t('mapButtonsPlacements')}</UText>
+          <UText
+            className="flex-1 font-inter-medium text-xs text-muted"
+            ellipsizeMode="tail"
+          >
+            {t('mapButtonsPlacementsDescription')}
+          </UText>
+        </View>
+      </UButton>
+
+      <USheet
+        ref={mapButtonsSheet}
+        detents={['auto']}
+        contentContainerClassName="px-2 gap-2"
+      >
+        {(['right', 'left'] as const).map(side => (
+          <UButton
+            key={side}
+            label={t(side)}
+            variant={side === mapButtonsPlacement ? 'solid' : 'ghost'}
+            color={side === mapButtonsPlacement ? 'primary' : 'neutral'}
+            size="lg"
+            block
+            onPress={() => {
+              useSettingsStore.setState((state) => {
+                state.mapButtonsPlacement = side
+              })
+            }}
+          />
         ))}
       </USheet>
 
