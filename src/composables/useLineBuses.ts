@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { type Query, useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -7,6 +7,16 @@ import { useLineRoutes } from './useLineRoutes'
 
 import { useFilterStore } from '@/stores'
 import { BusLocationResponse } from '@/types/bus'
+
+const getRefetchAndStaleTime = (query: Query<BusLocationResponse>) => {
+  const data = query.state.data
+  if (!data)
+    return 0
+
+  const left = (data.next_poll - Math.ceil(query.state.dataUpdatedAt / 1000)) * 1000
+
+  return Math.max(1_000, left)
+}
 
 export const useLineBuses = () => {
   const { code } = useLine()
@@ -23,16 +33,8 @@ export const useLineBuses = () => {
         },
       }).json()
     },
-    staleTime: 'static',
-    refetchInterval: (query) => {
-      const data = query.state.data
-      if (!data)
-        return
-
-      const left = (data.next_poll - Math.ceil(query.state.dataUpdatedAt / 1000)) * 1000
-
-      return Math.max(1_000, left)
-    },
+    staleTime: getRefetchAndStaleTime,
+    refetchInterval: getRefetchAndStaleTime,
   })
 
   const buses = query.data?.data.filter(bus => bus.route_code === routeCode) || []
