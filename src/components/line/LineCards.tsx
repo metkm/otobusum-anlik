@@ -16,6 +16,10 @@ export const LineCards = ({ className }: { className?: string, buttonsHeight?: S
   const { cardWidth, snapInterval } = useLineCardWidth()
   const { codes } = useLineGroup()
 
+  if (codes.length < 1) {
+    return
+  }
+
   return (
     <UCarousel
       snapInterval={snapInterval}

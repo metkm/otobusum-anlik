@@ -13,7 +13,7 @@ export const MapOverlay = ({ className, ...props }: ViewProps) => {
     <Animated.View
       layout={LinearTransition}
       className={cn(
-        'absolute bottom-0',
+        'absolute bottom-0 inset-x-0',
         hideMap
           ? 'h-full pt-safe-offset-2'
           : lineCardExpanded

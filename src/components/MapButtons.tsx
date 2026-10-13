@@ -25,8 +25,8 @@ export const MapButtons = (props: ViewProps) => {
   return (
     <View
       className={cn(
-        'pl-2 gap-2',
-        (lineCardExpanded || hideMap) ? 'flex-row' : 'items-start',
+        'p-2 gap-2',
+        (lineCardExpanded || hideMap) ? 'flex-row' : 'items-end',
       )}
       pointerEvents="box-none"
       {...props}
@@ -44,7 +44,7 @@ export const MapButtons = (props: ViewProps) => {
               icon="compass"
               size="lg"
               color="neutral"
-              style={{ elevation: 2 }}
+              style={{ elevation: 1 }}
               onPress={async () => {
                 const center = await map.current?.getCenter()
                 if (!center)
@@ -61,16 +61,13 @@ export const MapButtons = (props: ViewProps) => {
         </Animated.View>
       )}
 
-      <AnimatedGestureHandlerRootView
-        layout={LinearTransition}
-        style={{ width: 'auto' }}
-      >
+      <AnimatedGestureHandlerRootView layout={LinearTransition}>
         <UButton
           icon="search"
           to="/search"
           size="lg"
           color="neutral"
-          style={{ elevation: 2 }}
+          style={{ elevation: 1 }}
         />
       </AnimatedGestureHandlerRootView>
 
@@ -91,14 +88,11 @@ export const MapButtons = (props: ViewProps) => {
         </AnimatedGestureHandlerRootView>
       )}
 
-      <AnimatedGestureHandlerRootView
-        layout={LinearTransition}
-        style={{ width: 'auto' }}
-      >
+      <AnimatedGestureHandlerRootView layout={LinearTransition}>
         <UButton
           icon="component"
           color="neutral"
-          style={{ elevation: 2 }}
+          style={{ elevation: 1 }}
           size="lg"
           to="/groups"
           label={group?.name}

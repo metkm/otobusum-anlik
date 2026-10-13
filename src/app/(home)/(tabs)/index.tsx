@@ -36,7 +36,7 @@ export const HomeScreen = () => {
         )
       }
 
-      <MapOverlay className="gap-2">
+      <MapOverlay>
         <MapButtons />
         <LineCards className="flex-1" />
       </MapOverlay>
