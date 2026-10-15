@@ -5,10 +5,6 @@ export interface BusStop {
   lng: number
   lat: number
   province?: string
-  smart?: string
-  stop_type?: string
-  disabled_can_use?: string
-  physical?: string
   city: string
 }
 
