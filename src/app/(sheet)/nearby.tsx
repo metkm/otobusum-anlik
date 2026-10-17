@@ -21,6 +21,8 @@ export const NearbyScreen = () => {
   const addMarkers = useTemporaryMarkerStore(useShallow(state => state.addCollection))
   const removeMarkers = useTemporaryMarkerStore(useShallow(state => state.removeCollection))
 
+  const colors = query.data?.routes.map(() => hexFromHsl(...createRandomHslColor()))
+
   useEffect(() => {
     if (!query.data) {
       return
@@ -35,10 +37,10 @@ export const NearbyScreen = () => {
       },
     }))
 
-    const routeFeatures: Feature[] = query.data.routes.map(route => ({
+    const routeFeatures: Feature[] = query.data.routes.map((route, index) => ({
       type: 'Feature',
       properties: {
-        color: hexFromHsl(...createRandomHslColor()),
+        color: colors?.[index],
         line_code: route.line_code,
       },
       geometry: {
@@ -61,7 +63,7 @@ export const NearbyScreen = () => {
       removeMarkers('stops')
       removeMarkers('routes')
     }
-  }, [addMarkers, query.data, removeMarkers])
+  }, [addMarkers, colors, query.data, removeMarkers])
 
   useEffect(() => {
     navigation.setOptions({
@@ -77,7 +79,7 @@ export const NearbyScreen = () => {
       <GestureHandlerRootView style={{ gap: 4 }}>
         <UQueryState query={query}>
           <View className="gap-2">
-            <UText className="font-inter-medium ml-2">Stops</UText>
+            <UText className="font-inter-medium text-lg text-center">Stops</UText>
 
             {query.data?.stops.map(stop => (
               <UButton
@@ -92,9 +94,9 @@ export const NearbyScreen = () => {
           </View>
 
           <View className="gap-2">
-            <UText className="font-inter-medium ml-2">Routes</UText>
+            <UText className="font-inter-medium text-lg text-center">Routes</UText>
 
-            {query.data?.routes.map(route => (
+            {query.data?.routes.map((route, index) => (
               <UButton
                 key={route.id}
                 to={{
@@ -105,7 +107,10 @@ export const NearbyScreen = () => {
                 color="neutral"
               >
                 <View className="flex-row items-center gap-2 shrink">
-                  <UText className="bg-muted rounded-md px-2.5 py-1 font-inter-medium text-xs">
+                  <UText
+                    className="bg-muted rounded-md px-2.5 py-1 font-inter-medium text-xs"
+                    style={{ backgroundColor: colors?.[index] }}
+                  >
                     {route.code}
                   </UText>
 
