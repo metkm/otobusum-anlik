@@ -1,31 +1,105 @@
 import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibre-react-native'
 import Lucide from '@react-native-vector-icons/lucide'
+import type { Feature } from 'geojson'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLine, useLineRoutes, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores'
 
-export const LineMarkerRoute = () => {
-  const defaultBg = useCSSVariable('--ui-bg')
+export const LineMarkerRouteLayer = ({ isHidden = false, code }: { isHidden?: boolean, code?: string }) => {
+  const defaultBg = useCSSVariable('--ui-primary')
   const defaultText = useCSSVariable('--ui-primary')
-
-  const { code } = useLine()
-  const { query: lineRoutesQuery, route, direction } = useLineRoutes()
-  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
   const theme = useLineTheme()
 
-  if (!lineRoutesQuery.data)
+  const background = theme?.background({ variant: 'solid' })
+  const bgWithColor = theme?.backgroundWithColor({ variant: 'soft' })
+
+  return (
+    <>
+      <Layer
+        id={`route-path-${code}`}
+        type="line"
+        paint={{
+          'line-color': background?.backgroundColor ?? defaultBg as string,
+          'line-width': [
+            'interpolate',
+            ['linear'], ['zoom'],
+            12, 8,
+            17, 12,
+          ],
+        }}
+        layout={{
+          'line-join': 'round',
+          'line-cap': 'round',
+          'visibility': isHidden ? 'none' : 'visible',
+        }}
+        afterId="route-layer"
+      />
+
+      <Layer
+        id={`route-path-arrows-${code}`}
+        type="symbol"
+        layout={{
+          'symbol-placement': 'line',
+          'icon-image': `route-arrow-${code}`,
+          'icon-size': 0.2,
+          'symbol-spacing': 16,
+          'visibility': isHidden ? 'none' : 'visible',
+        }}
+        paint={{
+          'icon-opacity': 0.8,
+        }}
+        afterId={`route-path-${code}`}
+      />
+
+      <Layer
+        id={`route-label-${code}`}
+        type="symbol"
+        layout={{
+          'symbol-placement': 'line',
+          'symbol-spacing': 100,
+          'text-field': code,
+          'text-size': 10,
+          'text-font': ['Roboto Bold'],
+          'text-offset': [0, 0],
+          'visibility': isHidden ? 'none' : 'visible',
+        }}
+        paint={{
+          'text-color': bgWithColor?.backgroundColor ?? defaultText as string,
+          'text-opacity': 0.6,
+        }}
+        afterId={`route-path-arrows-${code}`}
+      />
+    </>
+  )
+}
+
+export const LineMarkerRoute = () => {
+  const { code } = useLine()
+  const { route, direction } = useLineRoutes()
+  const isHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
+
+  const theme = useLineTheme()
+  const text = theme?.text()
+
+  if (!route?.path) {
     return
+  }
 
   const coordinates = route?.path?.map(p => [p.lng, p.lat]) || []
 
+  const feature: Feature = {
+    type: 'Feature',
+    properties: {},
+    geometry: {
+      type: 'LineString',
+      coordinates,
+    },
+  }
+
   const images: Record<string, ImageEntry> = {}
   const iconImage = `route-arrow-${code}`
-
-  const background = theme?.background({ variant: 'solid' })
-  const text = theme?.text()
-  const bgWithColor = theme?.backgroundWithColor({ variant: 'soft' })
 
   images[iconImage] = Lucide.getImageSourceSync(direction === 'G' ? 'arrow-right' : 'arrow-left', 20, text?.color).uri
 
@@ -37,74 +111,15 @@ export const LineMarkerRoute = () => {
         <GeoJSONSource
           data={{
             type: 'FeatureCollection',
-            features: [{
-              type: 'Feature',
-              properties: {},
-              geometry: {
-                type: 'LineString',
-                coordinates,
-              },
-            }],
+            features: [feature],
           }}
         >
-          <Layer
-            id={`route-path-${code}`}
-            type="line"
-            paint={{
-              'line-color': background?.backgroundColor ?? defaultBg as string,
-              'line-width': [
-                'interpolate',
-                ['linear'], ['zoom'],
-                12, 8,
-                17, 12,
-              ],
-            }}
-            layout={{
-              'line-join': 'round',
-              'line-cap': 'round',
-              'visibility': isLineHidden ? 'none' : 'visible',
-            }}
-            afterId="route-layer"
-          />
-
-          <Layer
-            id={`route-path-arrows-${code}`}
-            type="symbol"
-            layout={{
-              'symbol-placement': 'line',
-              'icon-image': iconImage,
-              'icon-size': 0.2,
-              'symbol-spacing': 16,
-              'visibility': isLineHidden ? 'none' : 'visible',
-            }}
-            paint={{
-              'icon-opacity': 0.8,
-            }}
-            afterId={`route-path-${code}`}
-          />
-
-          <Layer
-            id={`route-label-${code}`}
-            type="symbol"
-            layout={{
-              'symbol-placement': 'line',
-              'symbol-spacing': 100,
-              // 'text-ignore-placement': true,
-              'text-field': code,
-              'text-size': 10,
-              'text-font': ['Roboto Bold'],
-              'text-offset': [0, 0],
-              'visibility': isLineHidden ? 'none' : 'visible',
-            }}
-            paint={{
-              'text-color': bgWithColor?.backgroundColor ?? defaultText as string,
-              'text-opacity': 0.6,
-            }}
-            afterId={`route-path-arrows-${code}`}
+          <LineMarkerRouteLayer
+            isHidden={isHidden}
+            code={code}
           />
         </GeoJSONSource>
       )}
-
     </>
   )
 }

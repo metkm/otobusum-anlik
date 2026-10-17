@@ -17,10 +17,10 @@ import { UText } from '@/components/u/UText'
 import { queryClient } from '@/api/client'
 import { useLineTheme, useMap } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { LineRoute } from '@/composables/useLineRoutes'
 import { isStop, MIN_CHARACTER_LIMIT, useSearch } from '@/composables/useSearch'
 import { useFilterStore, useLineStore } from '@/stores'
 import { BusLine, BusStop } from '@/types/bus'
+import { Route } from '@/types/route'
 import { getLatLngBounds } from '@/utils/bounds'
 
 const RenderItemLine = ({ item }: { item: BusLine }) => {
@@ -35,11 +35,11 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
   const addLineAndZoom = async () => {
     addLine(item.code)
 
-    const data = await queryClient.query<LineRoute[]>({
+    const data = await queryClient.query<Route[]>({
       queryKey: ['line', item.code, 'routes'],
       queryFn: () =>
         ky
-          .get<LineRoute[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${item.code}`, {
+          .get<Route[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${item.code}`, {
             searchParams: {
               city,
             },

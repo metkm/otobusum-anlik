@@ -9,6 +9,7 @@ import { LineMarkers } from '@/components/line/LineMarkers'
 import { Map } from '@/components/Map'
 import { MapButtons } from '@/components/MapButtons'
 import { MapOverlay } from '@/components/MapOverlay'
+import { MapTemporaryMarkers } from '@/components/MapTemporaryMarkers'
 
 import { useMapStyle } from '@/composables/useMapStyle'
 import { useSettingsStore } from '@/stores'
@@ -30,6 +31,7 @@ export const HomeScreen = () => {
         !hideMap && (
           <Map>
             <LineMarkers />
+            <MapTemporaryMarkers />
 
             {showMyLocation && <UserLocation heading />}
           </Map>

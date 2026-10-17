@@ -14,10 +14,11 @@ import { USheetHeader } from '@/components/u/USheetHeader'
 import { UText } from '@/components/u/UText'
 
 import { useLine, useLineBuses, useLineTheme } from '@/composables'
-import { LineRoute, useLineRoutes } from '@/composables/useLineRoutes'
+import { useLineRoutes } from '@/composables/useLineRoutes'
 import { useLineStore } from '@/stores'
+import { Route } from '@/types/route'
 
-const RouteItem = ({ isSelected, item, busCount }: { isSelected: boolean, item: LineRoute, busCount: number }) => {
+const RouteItem = ({ isSelected, item, busCount }: { isSelected: boolean, item: Route, busCount: number }) => {
   const setRoute = useLineStore(useShallow(state => state.setRoute))
   const { code } = useLine()
 

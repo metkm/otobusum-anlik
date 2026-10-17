@@ -7,17 +7,7 @@ import { useLine } from './useLine'
 import { CACHE_MS_3_DAYS } from '@/constants/app'
 import { useFilterStore, useLineStore } from '@/stores'
 import { RouteCode, RouteDirection } from '@/types/line'
-
-export interface LineRoute {
-  id: number
-  agency_id: string
-  line_code: string
-  name: string
-  type: string
-  desc: string
-  code: RouteCode
-  path?: { lat: number, lng: number }[]
-}
+import { Route } from '@/types/route'
 
 export const useLineRoutes = () => {
   const { code } = useLine()
@@ -26,7 +16,7 @@ export const useLineRoutes = () => {
 
   const query = useQuery({
     queryKey: ['line', code, 'routes'],
-    queryFn: () => ky.get<LineRoute[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${code}`, {
+    queryFn: () => ky.get<Route[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${code}`, {
       searchParams: {
         city,
       },
