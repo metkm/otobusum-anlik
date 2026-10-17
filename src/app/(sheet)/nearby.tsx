@@ -1,11 +1,11 @@
+import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import type { Feature } from 'geojson'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { View } from 'react-native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
-import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
@@ -15,6 +15,9 @@ import { createRandomHslColor, hexFromHsl } from '@/utils/color'
 
 export const NearbyScreen = () => {
   const { query } = useTransitNearby()
+  const navigation = useTrueSheetNavigation()
+  const scrollableRef = useRef<ScrollView>(null)
+
   const addMarkers = useTemporaryMarkerStore(useShallow(state => state.addCollection))
   const removeMarkers = useTemporaryMarkerStore(useShallow(state => state.removeCollection))
 
@@ -60,9 +63,18 @@ export const NearbyScreen = () => {
     }
   }, [addMarkers, query.data, removeMarkers])
 
+  useEffect(() => {
+    navigation.setOptions({
+      scrollableRef,
+    })
+  })
+
   return (
-    <GestureHandlerRootView className="flex-1 pt-8 p-2">
-      <View className="flex-1 pt-8 p-2 gap-2">
+    <ScrollView
+      ref={scrollableRef}
+      contentContainerClassName="pt-8 p-2"
+    >
+      <GestureHandlerRootView style={{ gap: 4 }}>
         <UQueryState query={query}>
           <View className="gap-2">
             <UText className="font-inter-medium ml-2">Stops</UText>
@@ -70,15 +82,12 @@ export const NearbyScreen = () => {
             {query.data?.stops.map(stop => (
               <UButton
                 key={stop.id}
+                label={stop.name}
+                icon="bus-front"
                 to={`/(sheet)/stop/${stop.code}`}
                 variant="ghost"
                 color="neutral"
-              >
-                <View className="flex-row items-center gap-2">
-                  <UIcon name="bus-front" />
-                  <UText>{stop.name}</UText>
-                </View>
-              </UButton>
+              />
             ))}
           </View>
 
@@ -90,18 +99,18 @@ export const NearbyScreen = () => {
                 key={route.id}
                 to={{
                   pathname: '/groups',
-                  params: { addToGroup: route.line_code },
+                  params: { addToGroup: route.code },
                 }}
                 variant="ghost"
                 color="neutral"
               >
                 <View className="flex-row items-center gap-2 shrink">
-                  <UText className="bg-muted rounded-md px-2.5 py-1 font-inter-medium">
+                  <UText className="bg-muted rounded-md px-2.5 py-1 font-inter-medium text-xs">
                     {route.code}
                   </UText>
 
                   <UText
-                    className="shrink"
+                    className="shrink text-xs font-inter-medium"
                     numberOfLines={1}
                   >
                     {route.name}
@@ -111,8 +120,8 @@ export const NearbyScreen = () => {
             ))}
           </View>
         </UQueryState>
-      </View>
-    </GestureHandlerRootView>
+      </GestureHandlerRootView>
+    </ScrollView>
   )
 }
 
