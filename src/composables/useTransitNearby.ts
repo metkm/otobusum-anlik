@@ -24,7 +24,7 @@ export const useTransitNearby = (options?: Omit<UseQueryOptions<TransitNearby>, 
         },
       }).json()
     },
-    // staleTime: 'static',
+    staleTime: 'static',
     ...options,
   })
 

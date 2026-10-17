@@ -33,9 +33,9 @@ const RootContent = () => {
         <Sheet.Screen name="(sheet)/groups" options={{ detents: [0.5, 0.8] }} />
         <Sheet.Screen name="(sheet)/groups/[groupId]" options={{ detents: [0.5, 0.8] }} />
 
-        <Sheet.Screen name="(sheet)/stop" />
+        <Sheet.Screen name="(sheet)/stop/[stopCode]" />
         <Sheet.Screen name="(sheet)/bus-info" />
-        <Sheet.Screen name="(sheet)/nearby" options={{ dimmed: false, detents: [0.2] }} />
+        <Sheet.Screen name="(sheet)/nearby" options={{ dimmed: false, detents: ['peek', 'auto'] }} />
       </Sheet>
     </MapProvider>
   )

@@ -19,7 +19,7 @@ export const MapTemporaryMarkers = () => {
       )}
 
       {data.type === 'routes' && (
-        <LineMarkerRouteLayer code="tst" />
+        <LineMarkerRouteLayer />
       )}
     </GeoJSONSource>
   ))

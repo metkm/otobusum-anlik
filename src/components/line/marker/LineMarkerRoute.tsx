@@ -1,15 +1,14 @@
 import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibre-react-native'
 import Lucide from '@react-native-vector-icons/lucide'
 import type { Feature } from 'geojson'
-import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLine, useLineRoutes, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerRouteLayer = ({ isHidden = false, code }: { isHidden?: boolean, code?: string }) => {
-  const defaultBg = useCSSVariable('--ui-primary')
-  const defaultText = useCSSVariable('--ui-primary')
+  // const defaultBg = useCSSVariable('--ui-primary')
+  // const defaultText = useCSSVariable('--ui-primary')
   const theme = useLineTheme()
 
   const background = theme?.background({ variant: 'solid' })
@@ -21,7 +20,7 @@ export const LineMarkerRouteLayer = ({ isHidden = false, code }: { isHidden?: bo
         id={`route-path-${code}`}
         type="line"
         paint={{
-          'line-color': background?.backgroundColor ?? defaultBg as string,
+          'line-color': background?.backgroundColor ?? ['get', 'color'],
           'line-width': [
             'interpolate',
             ['linear'], ['zoom'],
@@ -59,14 +58,14 @@ export const LineMarkerRouteLayer = ({ isHidden = false, code }: { isHidden?: bo
         layout={{
           'symbol-placement': 'line',
           'symbol-spacing': 100,
-          'text-field': code,
+          'text-field': code ?? ['get', 'line_code'],
           'text-size': 10,
           'text-font': ['Roboto Bold'],
           'text-offset': [0, 0],
           'visibility': isHidden ? 'none' : 'visible',
         }}
         paint={{
-          'text-color': bgWithColor?.backgroundColor ?? defaultText as string,
+          'text-color': bgWithColor?.backgroundColor ?? ['get', 'color'],
           'text-opacity': 0.6,
         }}
         afterId={`route-path-arrows-${code}`}

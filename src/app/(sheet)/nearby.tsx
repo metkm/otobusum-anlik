@@ -1,12 +1,17 @@
 import type { Feature } from 'geojson'
 import { useEffect } from 'react'
 import { View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
+import { UButton } from '@/components/u/UButton'
+import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
+import { UText } from '@/components/u/UText'
 
 import { useTransitNearby } from '@/composables/useTransitNearby'
 import { useTemporaryMarkerStore } from '@/stores/temporaryMarker'
+import { createRandomHslColor, hexFromHsl } from '@/utils/color'
 
 export const NearbyScreen = () => {
   const { query } = useTransitNearby()
@@ -29,7 +34,10 @@ export const NearbyScreen = () => {
 
     const routeFeatures: Feature[] = query.data.routes.map(route => ({
       type: 'Feature',
-      properties: {},
+      properties: {
+        color: hexFromHsl(...createRandomHslColor()),
+        line_code: route.line_code,
+      },
       geometry: {
         type: 'LineString',
         coordinates: route.path?.map(p => [p.lng, p.lat]) ?? [],
@@ -53,9 +61,58 @@ export const NearbyScreen = () => {
   }, [addMarkers, query.data, removeMarkers])
 
   return (
-    <View>
-      <UQueryState query={query} />
-    </View>
+    <GestureHandlerRootView className="flex-1 pt-8 p-2">
+      <View className="flex-1 pt-8 p-2 gap-2">
+        <UQueryState query={query}>
+          <View className="gap-2">
+            <UText className="font-inter-medium ml-2">Stops</UText>
+
+            {query.data?.stops.map(stop => (
+              <UButton
+                key={stop.id}
+                to={`/(sheet)/stop/${stop.code}`}
+                variant="ghost"
+                color="neutral"
+              >
+                <View className="flex-row items-center gap-2">
+                  <UIcon name="bus-front" />
+                  <UText>{stop.name}</UText>
+                </View>
+              </UButton>
+            ))}
+          </View>
+
+          <View className="gap-2">
+            <UText className="font-inter-medium ml-2">Routes</UText>
+
+            {query.data?.routes.map(route => (
+              <UButton
+                key={route.id}
+                to={{
+                  pathname: '/groups',
+                  params: { addToGroup: route.line_code },
+                }}
+                variant="ghost"
+                color="neutral"
+              >
+                <View className="flex-row items-center gap-2 shrink">
+                  <UText className="bg-muted rounded-md px-2.5 py-1 font-inter-medium">
+                    {route.code}
+                  </UText>
+
+                  <UText
+                    className="shrink"
+                    numberOfLines={1}
+                  >
+                    {route.name}
+                  </UText>
+                </View>
+              </UButton>
+            ))}
+          </View>
+        </UQueryState>
+      </View>
+    </GestureHandlerRootView>
   )
 }
 
