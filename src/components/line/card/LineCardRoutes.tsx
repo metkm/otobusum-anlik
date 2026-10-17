@@ -10,7 +10,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
 import { USheet } from '@/components/u/USheet'
-import { USheetHeader } from '@/components/u/USheetHeader'
+import { USheetHeader } from '@/components/u/UHeader'
 import { UText } from '@/components/u/UText'
 
 import { useLine, useLineBuses, useLineTheme } from '@/composables'

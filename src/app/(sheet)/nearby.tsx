@@ -1,18 +1,22 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
+import { hexFromArgb } from '@material/material-color-utilities'
 import type { Feature } from 'geojson'
+import { t } from 'i18next'
 import { useEffect, useRef } from 'react'
 import { View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
+import { UBadge } from '@/components/u/UBadge'
 import { UButton } from '@/components/u/UButton'
+import { UHeader } from '@/components/u/UHeader'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
 import { useMap } from '@/composables'
 import { useTransitNearby } from '@/composables/useTransitNearby'
 import { useTemporaryMarkerStore } from '@/stores/temporaryMarker'
-import { createRandomHslColor, hexFromHsl } from '@/utils/color'
+import { createRandomTheme } from '@/utils/color'
 
 export const NearbyScreen = () => {
   const { query } = useTransitNearby()
@@ -23,7 +27,7 @@ export const NearbyScreen = () => {
   const addMarkers = useTemporaryMarkerStore(useShallow(state => state.addCollection))
   const removeMarkers = useTemporaryMarkerStore(useShallow(state => state.removeCollection))
 
-  const colors = query.data?.routes.map(() => hexFromHsl(...createRandomHslColor()))
+  const colors = query.data?.routes.map(() => createRandomTheme())
 
   useEffect(() => {
     if (!query.data) {
@@ -42,7 +46,7 @@ export const NearbyScreen = () => {
     const routeFeatures: Feature[] = query.data.routes.map((route, index) => ({
       type: 'Feature',
       properties: {
-        color: colors?.[index],
+        color: colors?.[index] ? hexFromArgb(colors[index].schemes.dark.primary) : undefined,
         line_code: route.line_code,
       },
       geometry: {
@@ -107,47 +111,53 @@ export const NearbyScreen = () => {
   })
 
   return (
-    <ScrollView
-      ref={scrollableRef}
-      contentContainerClassName="pt-8 p-2"
-    >
-      <GestureHandlerRootView style={{ gap: 4 }}>
+    <ScrollView ref={scrollableRef}>
+      <GestureHandlerRootView style={{ gap: 8 }}>
         <UQueryState query={query}>
-          <View className="gap-2">
-            <UText className="font-inter-medium text-lg text-center">Stops</UText>
+          <View className="gap-2 pt-9">
+            <UHeader
+              icon="bus-front"
+              title={t('stops')}
+              description={t('nearbyStops')}
+            />
 
             {query.data?.stops.map(stop => (
               <UButton
                 key={stop.id}
                 label={stop.name}
-                icon="bus-front"
                 to={`/(sheet)/stop/${stop.code}`}
                 variant="ghost"
                 color="neutral"
-              />
+                trailingIcon="arrow-right"
+              >
+                <UBadge icon="bus-front" />
+              </UButton>
             ))}
           </View>
 
           <View className="gap-2">
-            <UText className="font-inter-medium text-lg text-center">Routes</UText>
+            <UHeader
+              icon="route"
+              title={t('stops')}
+              description={t('routesPassingThisPoint')}
+            />
 
             {query.data?.routes.map((route, index) => (
               <UButton
                 key={route.id}
                 to={{
                   pathname: '/groups',
-                  params: { addToGroup: route.code },
+                  params: { addToGroup: route.line_code },
                 }}
                 variant="ghost"
                 color="neutral"
+                trailingIcon="arrow-right"
               >
                 <View className="flex-row items-center gap-2 shrink">
-                  <UText
-                    className="bg-muted rounded-md px-2.5 py-1 font-inter-medium text-xs"
-                    style={{ backgroundColor: colors?.[index] }}
-                  >
-                    {route.code}
-                  </UText>
+                  <UBadge
+                    label={route.line_code}
+                    theme={colors?.[index]}
+                  />
 
                   <UText
                     className="shrink text-xs font-inter-medium"

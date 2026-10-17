@@ -63,9 +63,7 @@
   --font-inter: 'Inter-Regular';
   --font-inter-medium: 'Inter-Medium';
   --font-inter-semibold: 'Inter-SemiBold';
-}
 
-@theme inline {
   --background-color-default: var(--ui-bg);
   --background-color-muted: var(--ui-bg-muted);
   --background-color-elevated: var(--ui-bg-elevated);
@@ -93,6 +91,35 @@
   --color-error: var(--ui-error);
   --color-bg: var(--ui-bg);
 }
+
+/* @theme inline {
+  --background-color-default: var(--ui-bg);
+  --background-color-muted: var(--ui-bg-muted);
+  --background-color-elevated: var(--ui-bg-elevated);
+  --background-color-accented: var(--ui-bg-accented);
+
+  --text-color-muted: var(--ui-text-muted);
+  --text-color-default: var(--ui-text);
+  --text-color-inverted: var(--ui-text-inverted);
+
+  --radius-xs: calc(var(--ui-radius) * 0.5);
+  --radius-sm: var(--ui-radius);
+  --radius-md: calc(var(--ui-radius) * 1.5);
+  --radius-lg: calc(var(--ui-radius) * 2);
+  --radius-xl: calc(var(--ui-radius) * 3);
+  --radius-2xl: calc(var(--ui-radius) * 4);
+  --radius-3xl: calc(var(--ui-radius) * 6);
+
+  --border-color-default: var(--ui-border);
+  --border-color-muted: var(--ui-border-muted);
+
+  --ring-color-default: var(--ui-border);
+  --ring-color-muted: var(--ui-border-muted);
+
+  --color-primary: var(--ui-primary);
+  --color-error: var(--ui-error);
+  --color-bg: var(--ui-bg);
+} */
 
 @utility h-hairline {
   height: hairlineWidth();

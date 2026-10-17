@@ -39,7 +39,7 @@ export const StopScreen = () => {
   }
 
   return (
-    <View className="pb-2">
+    <View>
       {data && (
         <View className="h-48 rounded-md overflow-hidden">
           <MapProvider>

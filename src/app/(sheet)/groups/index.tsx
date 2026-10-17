@@ -8,7 +8,7 @@ import Animated, { LinearTransition } from 'react-native-reanimated'
 
 import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
-import { USheetHeader } from '@/components/u/USheetHeader'
+import { USheetHeader } from '@/components/u/UHeader'
 import { UText } from '@/components/u/UText'
 
 import { useLineGroup, useLineTheme } from '@/composables'
@@ -46,20 +46,18 @@ const GroupItem = ({
     <GestureHandlerRootView style={{ flexDirection: 'row' }}>
       <UButton
         variant="ghost"
-        className="flex-1 gap-2"
+        className="flex-1 items-center gap-2"
         onPress={handlePress}
       >
-        <View className="h-full flex-col">
-          <View className={`${selected ? 'bg-primary' : 'bg-muted'} flex-1 aspect-square p-2 rounded-md flex items-center justify-center`}>
-            {selected && (
-              <UIcon
-                name="check"
-                sizeClassName="size-5"
-                colorClassName="text-inverted"
-                color={backgroundWithColor?.color}
-              />
-            )}
-          </View>
+        <View className={`${selected ? 'bg-primary' : 'bg-muted'} size-8 rounded-md items-center justify-center`}>
+          {selected && (
+            <UIcon
+              name="check"
+              sizeClassName="size-5"
+              colorClassName="text-inverted"
+              color={backgroundWithColor?.color}
+            />
+          )}
         </View>
 
         <View className="flex-1 shrink gap-1">

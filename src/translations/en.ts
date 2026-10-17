@@ -85,4 +85,7 @@ export default {
   mapButtonsPlacementsDescription: 'Group, Search buttons etc.',
   right: 'Right',
   left: 'Left',
+  nearbyStops: 'Nearby stops',
+  routesPassingThisPoint: 'Routes passing from this point',
+  stops: 'Stops',
 }

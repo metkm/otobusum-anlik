@@ -85,4 +85,7 @@ export default {
   mapButtonsPlacementsDescription: 'Grup, Arama düğmeleri vb.',
   right: 'Sağ',
   left: 'Sol',
+  nearbyStops: 'Yakın duraklar',
+  routesPassingThisPoint: 'Buradan geçen hatlar',
+  stops: 'Duraklar',
 }
