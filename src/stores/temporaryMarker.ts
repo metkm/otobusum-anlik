@@ -6,10 +6,10 @@ import { immer } from 'zustand/middleware/immer'
 interface TemporaryMarkerStore {
   data: {
     id: string
-    type: 'stops' | 'routes'
+    type: 'stops' | 'routes' | 'polygon'
     data: string | GeoJSON<Geometry, GeoJsonProperties>
   }[]
-  addCollection: (id: string, type: 'stops' | 'routes', data: string | GeoJSON<Geometry, GeoJsonProperties>) => void
+  addCollection: (id: string, type: 'stops' | 'routes' | 'polygon', data: string | GeoJSON<Geometry, GeoJsonProperties>) => void
   removeCollection: (id: string) => void
 }
 
@@ -27,7 +27,6 @@ export const useTemporaryMarkerStore = create(
             state.data.push({ id, type, data })
           }
         }),
-
       removeCollection: id =>
         set((state) => {
           state.data = state.data?.filter(item => item.id !== id)

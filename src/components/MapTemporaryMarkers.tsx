@@ -1,4 +1,4 @@
-import { GeoJSONSource } from '@maplibre/maplibre-react-native'
+import { GeoJSONSource, Layer } from '@maplibre/maplibre-react-native'
 
 import { LineMarkerRouteLayer } from './line/marker/LineMarkerRoute'
 import { LineMarkerStopLayer } from './line/marker/LineMarkerStops'
@@ -20,6 +20,16 @@ export const MapTemporaryMarkers = () => {
 
       {data.type === 'routes' && (
         <LineMarkerRouteLayer />
+      )}
+
+      {data.type === 'polygon' && (
+        <Layer
+          type="fill"
+          paint={{
+            'fill-color': 'white',
+            'fill-opacity': 0.2,
+          }}
+        />
       )}
     </GeoJSONSource>
   ))

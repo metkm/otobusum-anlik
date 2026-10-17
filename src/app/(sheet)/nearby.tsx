@@ -9,6 +9,7 @@ import { UButton } from '@/components/u/UButton'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
+import { useMap } from '@/composables'
 import { useTransitNearby } from '@/composables/useTransitNearby'
 import { useTemporaryMarkerStore } from '@/stores/temporaryMarker'
 import { createRandomHslColor, hexFromHsl } from '@/utils/color'
@@ -17,6 +18,7 @@ export const NearbyScreen = () => {
   const { query } = useTransitNearby()
   const navigation = useTrueSheetNavigation()
   const scrollableRef = useRef<ScrollView>(null)
+  const { map } = useMap()
 
   const addMarkers = useTemporaryMarkerStore(useShallow(state => state.addCollection))
   const removeMarkers = useTemporaryMarkerStore(useShallow(state => state.removeCollection))
@@ -59,11 +61,44 @@ export const NearbyScreen = () => {
       features: routeFeatures,
     })
 
+    map.current?.getCenter().then((center) => {
+      const km = query.data.stops_radius / 1000
+      const points = 64
+
+      let ret: number[][] = []
+      let distanceX = km / (111.320 * Math.cos(center[1] * Math.PI / 180))
+      let distanceY = km / 110.574
+
+      let theta, x, y
+      for (let i = 0; i < points; i++) {
+        theta = (i / points) * (2 * Math.PI)
+        x = distanceX * Math.cos(theta)
+        y = distanceY * Math.sin(theta)
+
+        ret.push([center[0] + x, center[1] + y])
+      }
+
+      ret.push(ret[0]!)
+
+      addMarkers('query-radius', 'polygon', {
+        type: 'FeatureCollection',
+        features: [{
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'Polygon',
+            coordinates: [ret],
+          },
+        }],
+      })
+    })
+
     return () => {
       removeMarkers('stops')
       removeMarkers('routes')
+      removeMarkers('query-radius')
     }
-  }, [addMarkers, colors, query.data, removeMarkers])
+  }, [addMarkers, colors, map, query.data, removeMarkers])
 
   useEffect(() => {
     navigation.setOptions({
