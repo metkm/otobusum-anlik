@@ -126,7 +126,7 @@ export const NearbyScreen = () => {
         </GestureHandlerRootView>
       ),
     })
-  })
+  }, [navigation, router])
 
   if (query.data && (query.data.routes.length < 1) && (query.data.stops.length < 1)) {
     return (
@@ -139,15 +139,16 @@ export const NearbyScreen = () => {
   }
 
   return (
-    <UQueryState
-      query={query}
-      loading={() => (
-        <TrueSheetPeek>
-          <UActivityIndicator />
-        </TrueSheetPeek>
-      )}
-    >
-      <ScrollView ref={scrollableRef}>
+
+    <ScrollView ref={scrollableRef} className="flex-1">
+      <UQueryState
+        query={query}
+        loading={() => (
+          <TrueSheetPeek style={{ padding: 12 }}>
+            <UActivityIndicator />
+          </TrueSheetPeek>
+        )}
+      >
         <GestureHandlerRootView style={{ gap: 8, flexGrow: 1 }}>
           {
             query.data && query.data.stops.length > 0 && (
@@ -181,13 +182,29 @@ export const NearbyScreen = () => {
           {
             query.data && query.data.routes.length > 0 && (
               <View className="gap-2">
-                <UHeader
-                  icon="route"
-                  title={t('stops')}
-                  description={t('routesPassingThisPoint')}
-                >
-                  <UText>{query.data?.routes.length}</UText>
-                </UHeader>
+                {
+                  query.data.stops.length === 0
+                    ? (
+                        <TrueSheetPeek>
+                          <UHeader
+                            icon="route"
+                            title={t('routes')}
+                            description={t('routesPassingThisPoint')}
+                          >
+                            <UText>{query.data?.routes.length}</UText>
+                          </UHeader>
+                        </TrueSheetPeek>
+                      )
+                    : (
+                        <UHeader
+                          icon="route"
+                          title={t('routes')}
+                          description={t('routesPassingThisPoint')}
+                        >
+                          <UText>{query.data?.routes.length}</UText>
+                        </UHeader>
+                      )
+                }
 
                 {query.data?.routes.map((route, index) => (
                   <UButton
@@ -219,8 +236,8 @@ export const NearbyScreen = () => {
             )
           }
         </GestureHandlerRootView>
-      </ScrollView>
-    </UQueryState>
+      </UQueryState>
+    </ScrollView>
   )
 }
 

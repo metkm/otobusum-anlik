@@ -9,7 +9,7 @@ export const useTransitNearby = (lat?: number, lng?: number) => {
   const city = useFilterStore(useShallow(state => state.city))
 
   const query = useQuery({
-    queryKey: ['transit', 'nearby'],
+    queryKey: ['transit', 'nearby', lat, lng],
     queryFn: async () => {
       return ky.get<TransitNearby>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/transit/nearby`, {
         searchParams: {
@@ -20,8 +20,6 @@ export const useTransitNearby = (lat?: number, lng?: number) => {
       }).json()
     },
     enabled: () => lat !== undefined && lng !== undefined,
-    refetchOnMount: 'always',
-    staleTime: 0,
   })
 
   return {
