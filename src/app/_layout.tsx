@@ -30,8 +30,8 @@ const RootContent = () => {
       <Sheet screenOptions={{ backgroundColor, style: { flex: 1 } }}>
         <Sheet.Screen name="(home)" />
 
-        <Sheet.Screen name="(sheet)/groups" options={{ detents: [0.5, 0.8] }} />
-        <Sheet.Screen name="(sheet)/groups/[groupId]" options={{ detents: [0.5, 0.8] }} />
+        <Sheet.Screen name="(sheet)/groups" options={{ detents: ['auto'] }} />
+        <Sheet.Screen name="(sheet)/groups/[groupId]" options={{ detents: ['auto'] }} />
 
         <Sheet.Screen name="(sheet)/stop/[stopCode]" />
         <Sheet.Screen name="(sheet)/bus-info" />

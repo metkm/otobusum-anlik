@@ -150,8 +150,8 @@ export const SearchScreen = () => {
         {results.length < 1 && searchQuery.isSuccess
           ? (
               <UEmpty
-                title={t('emptySearch')}
-                description={t('emptySearchDescription')}
+                title={t('noResults')}
+                description={t('noResultsDescription')}
                 icon="search"
                 className="mt-2 grow"
               />

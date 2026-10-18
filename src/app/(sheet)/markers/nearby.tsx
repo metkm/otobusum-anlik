@@ -1,6 +1,8 @@
+import { TrueSheetPeek } from '@lodev09/react-native-true-sheet'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import type { LngLatBounds } from '@maplibre/maplibre-react-native'
 import { hexFromArgb } from '@material/material-color-utilities'
+import { useRouter } from 'expo-router'
 import type { Feature } from 'geojson'
 import { t } from 'i18next'
 import { useEffect, useRef } from 'react'
@@ -24,6 +26,7 @@ export const NearbyScreen = () => {
   const { query } = useTransitNearby()
   const navigation = useTrueSheetNavigation()
   const scrollableRef = useRef<ScrollView>(null)
+  const router = useRouter()
   const { map, fitBounds, camera } = useMap()
   const mapBounds = useRef<LngLatBounds>(null)
 
@@ -120,71 +123,104 @@ export const NearbyScreen = () => {
   useEffect(() => {
     navigation.setOptions({
       scrollableRef,
+      header: (
+        <GestureHandlerRootView style={{ flexShrink: 0 }}>
+          <UButton
+            icon="x"
+            variant="soft"
+            color="neutral"
+            className="m-2 ml-auto"
+            onPress={() => router.back()}
+          />
+        </GestureHandlerRootView>
+      ),
     })
   })
 
+  if (query.data && (query.data.routes.length < 1) && (query.data.stops.length < 1)) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <UText className="font-inter-medium">{t('noResults')}</UText>
+      </View>
+    )
+  }
+
   return (
-    <ScrollView ref={scrollableRef}>
-      <GestureHandlerRootView style={{ gap: 8 }}>
-        <UQueryState query={query}>
-          <View className="gap-2 pt-9">
-            <UHeader
-              icon="bus-front"
-              title={t('stops')}
-              description={t('nearbyStops')}
-            />
-
-            {query.data?.stops.map(stop => (
-              <UButton
-                key={stop.id}
-                label={stop.name}
-                to={`/(sheet)/stop/${stop.code}`}
-                variant="ghost"
-                color="neutral"
-                trailingIcon="arrow-right"
-              >
-                <UBadge icon="bus-front" />
-              </UButton>
-            ))}
-          </View>
-
-          <View className="gap-2">
-            <UHeader
-              icon="route"
-              title={t('stops')}
-              description={t('routesPassingThisPoint')}
-            />
-
-            {query.data?.routes.map((route, index) => (
-              <UButton
-                key={route.id}
-                to={{
-                  pathname: '/groups',
-                  params: { addToGroup: route.line_code },
-                }}
-                variant="ghost"
-                color="neutral"
-                trailingIcon="arrow-right"
-              >
-                <View className="flex-row items-center gap-2 shrink">
-                  <UBadge
-                    label={route.line_code}
-                    theme={colors?.[index]}
-                  />
-
-                  <UText
-                    className="shrink text-xs font-inter-medium"
-                    numberOfLines={1}
+    <UQueryState query={query}>
+      <ScrollView ref={scrollableRef}>
+        <GestureHandlerRootView style={{ gap: 8, flexGrow: 1 }}>
+          {
+            query.data && query.data.stops.length > 0 && (
+              <View className="gap-2">
+                <TrueSheetPeek>
+                  <UHeader
+                    icon="bus-front"
+                    title={t('stops')}
+                    description={t('nearbyStops')}
                   >
-                    {route.name}
-                  </UText>
-                </View>
-              </UButton>
-            ))}
-          </View>
-        </UQueryState>
-      </GestureHandlerRootView>
-    </ScrollView>
+                    <UText>{query.data?.stops.length}</UText>
+                  </UHeader>
+                </TrueSheetPeek>
+
+                {query.data?.stops.map(stop => (
+                  <UButton
+                    key={stop.id}
+                    label={stop.name}
+                    to={`/(sheet)/stop/${stop.code}`}
+                    variant="ghost"
+                    color="neutral"
+                    trailingIcon="arrow-right"
+                  >
+                    <UBadge icon="bus-front" />
+                  </UButton>
+                ))}
+              </View>
+            )
+          }
+
+          {
+            query.data && query.data.routes.length > 0 && (
+              <View className="gap-2">
+                <UHeader
+                  icon="route"
+                  title={t('stops')}
+                  description={t('routesPassingThisPoint')}
+                >
+                  <UText>{query.data?.routes.length}</UText>
+                </UHeader>
+
+                {query.data?.routes.map((route, index) => (
+                  <UButton
+                    key={route.id}
+                    to={{
+                      pathname: '/groups',
+                      params: { addToGroup: route.line_code },
+                    }}
+                    variant="ghost"
+                    color="neutral"
+                    trailingIcon="arrow-right"
+                  >
+                    <View className="flex-row items-center gap-2 shrink">
+                      <UBadge
+                        label={route.line_code}
+                        theme={colors?.[index]}
+                      />
+
+                      <UText
+                        className="shrink text-xs font-inter-medium"
+                        numberOfLines={1}
+                      >
+                        {route.name}
+                      </UText>
+                    </View>
+                  </UButton>
+                ))}
+              </View>
+            )
+          }
+        </GestureHandlerRootView>
+      </ScrollView>
+    </UQueryState>
   )
 }
 

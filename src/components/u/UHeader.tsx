@@ -16,7 +16,7 @@ interface UHeaderProps {
 
 export const UHeader = ({ icon, title, description, children, className }: UHeaderProps) => {
   return (
-    <View className={cn('flex-row justify-between gap-2 bg-muted/50 border-y border-muted p-2', className)}>
+    <View className={cn('flex-row items-center justify-between gap-2 bg-muted/50 border-y border-muted p-2', className)}>
       <View className="flex-row gap-2 items-center">
         {icon && (
           <UIcon
