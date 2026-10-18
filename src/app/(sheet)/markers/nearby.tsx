@@ -5,11 +5,12 @@ import { hexFromArgb } from '@material/material-color-utilities'
 import { useRouter } from 'expo-router'
 import type { Feature } from 'geojson'
 import { t } from 'i18next'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
+import { UActivityIndicator } from '@/components/u/UActivityIndicator'
 import { UBadge } from '@/components/u/UBadge'
 import { UButton } from '@/components/u/UButton'
 import { UHeader } from '@/components/u/UHeader'
@@ -21,28 +22,28 @@ import { useTransitNearby } from '@/composables/useTransitNearby'
 import { useTemporaryMarkerStore } from '@/stores/temporaryMarker'
 import { getLatLngBounds } from '@/utils/bounds'
 import { createRandomTheme } from '@/utils/color'
+import { getPolygonCoordinatesFromPoint } from '@/utils/getPolygonFromCenter'
 
 export const NearbyScreen = () => {
   const { query } = useTransitNearby()
   const navigation = useTrueSheetNavigation()
-  const scrollableRef = useRef<ScrollView>(null)
   const router = useRouter()
   const { map, fitBounds, camera } = useMap()
+
+  const scrollableRef = useRef<ScrollView>(null)
   const mapBounds = useRef<LngLatBounds>(null)
 
   const addMarkers = useTemporaryMarkerStore(useShallow(state => state.addCollection))
   const removeMarkers = useTemporaryMarkerStore(useShallow(state => state.removeCollection))
 
-  const colors = query.data?.routes.map(() => createRandomTheme())
+  const colors = useMemo(() => query.data?.routes.map(() => createRandomTheme()), [query.data])
 
-  useEffect(() => {
-    map.current?.getBounds().then((bounds) => {
-      mapBounds.current = bounds
-    })
-
-    if (!query.data) {
+  const renderMarkers = useCallback(async () => {
+    if (!query.data)
       return
-    }
+
+    console.log(1)
+    mapBounds.current = await map.current?.getBounds() ?? null
 
     const stopFeatures: Feature[] = query.data.stops.map(stop => ({
       type: 'Feature',
@@ -65,6 +66,26 @@ export const NearbyScreen = () => {
       },
     }))
 
+    const center = await map.current?.getCenter()
+
+    if (center) {
+      const coordinates = getPolygonCoordinatesFromPoint(center, query.data.stops_radius)
+
+      addMarkers('query-radius', 'polygon', {
+        type: 'FeatureCollection',
+        features: [{
+          type: 'Feature',
+          properties: {},
+          geometry: {
+            type: 'Polygon',
+            coordinates: [coordinates],
+          },
+        }],
+      })
+
+      fitBounds(getLatLngBounds(coordinates.map(r => ({ lng: r[0]!, lat: r[1]! }))))
+    }
+
     addMarkers('stops', 'stops', {
       type: 'FeatureCollection',
       features: stopFeatures,
@@ -74,51 +95,22 @@ export const NearbyScreen = () => {
       type: 'FeatureCollection',
       features: routeFeatures,
     })
+  }, [addMarkers, colors, fitBounds, map, query.data])
 
-    map.current?.getCenter().then((center) => {
-      const km = query.data.stops_radius / 1000
-      const points = 64
-
-      let ret: number[][] = []
-      let distanceX = km / (111.320 * Math.cos(center[1] * Math.PI / 180))
-      let distanceY = km / 110.574
-
-      let theta, x, y
-      for (let i = 0; i < points; i++) {
-        theta = (i / points) * (2 * Math.PI)
-        x = distanceX * Math.cos(theta)
-        y = distanceY * Math.sin(theta)
-
-        ret.push([center[0] + x, center[1] + y])
-      }
-
-      ret.push(ret[0]!)
-
-      addMarkers('query-radius', 'polygon', {
-        type: 'FeatureCollection',
-        features: [{
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'Polygon',
-            coordinates: [ret],
-          },
-        }],
-      })
-
-      fitBounds(getLatLngBounds(ret.map(r => ({ lng: r[0]!, lat: r[1]! }))))
-    })
+  useEffect(() => {
+    renderMarkers()
+    const cam = camera.current
 
     return () => {
       removeMarkers('stops')
       removeMarkers('routes')
       removeMarkers('query-radius')
 
-      if (mapBounds.current) {
-        fitBounds(mapBounds.current)
+      if (mapBounds.current && cam) {
+        cam?.fitBounds(mapBounds.current, { duration: 750 })
       }
     }
-  }, [addMarkers, camera, colors, fitBounds, map, query.data, removeMarkers])
+  }, [camera, fitBounds, removeMarkers, renderMarkers])
 
   useEffect(() => {
     navigation.setOptions({
@@ -139,14 +131,23 @@ export const NearbyScreen = () => {
 
   if (query.data && (query.data.routes.length < 1) && (query.data.stops.length < 1)) {
     return (
-      <View className="flex-1 items-center justify-center">
-        <UText className="font-inter-medium">{t('noResults')}</UText>
-      </View>
+      <TrueSheetPeek>
+        <View className="flex-1 items-center justify-center">
+          <UText className="font-inter-medium">{t('noResults')}</UText>
+        </View>
+      </TrueSheetPeek>
     )
   }
 
   return (
-    <UQueryState query={query}>
+    <UQueryState
+      query={query}
+      loading={(
+        <TrueSheetPeek>
+          <UActivityIndicator />
+        </TrueSheetPeek>
+      )}
+    >
       <ScrollView ref={scrollableRef}>
         <GestureHandlerRootView style={{ gap: 8, flexGrow: 1 }}>
           {

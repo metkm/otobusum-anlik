@@ -29,7 +29,7 @@ export const useTemporaryMarkerStore = create(
         }),
       removeCollection: id =>
         set((state) => {
-          state.data = state.data?.filter(item => item.id !== id)
+          state.data = state.data.filter(item => item.id !== id)
         }),
     })),
   ),

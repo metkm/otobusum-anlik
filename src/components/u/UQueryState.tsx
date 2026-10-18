@@ -1,6 +1,5 @@
 import type { UseQueryResult, DefaultError } from '@tanstack/react-query'
 import React from 'react'
-import { View } from 'react-native'
 
 import { UActivityIndicator } from './UActivityIndicator'
 import { UText } from './UText'
@@ -13,16 +12,14 @@ export const UQueryState = <T,>({
   children,
 }: {
   query: UseQueryResult<T>
-  loading?: () => React.ReactNode
+  loading?: React.ReactNode
   error?: (error: DefaultError) => React.ReactNode
   errorMessage?: string
   children?: React.ReactNode
 }) => {
   if (query.isFetching)
-    return loading?.() ?? (
-      <View className="flex-1 items-center justify-center">
-        <UActivityIndicator />
-      </View>
+    return loading ?? (
+      <UActivityIndicator />
     )
 
   if (query.isError)

@@ -9,12 +9,12 @@ import { TransitNearby } from '@/types/transit'
 
 export const useTransitNearby = (options?: Omit<UseQueryOptions<TransitNearby>, 'queryKey' | 'queryFn'>) => {
   const city = useFilterStore(useShallow(state => state.city))
-  const map = useMap()
+  const { map } = useMap()
 
   const query = useQuery({
     queryKey: ['transit', 'nearby'],
     queryFn: async () => {
-      const center = await map.map.current?.getCenter()
+      const center = await map.current?.getCenter()
 
       return ky.get<TransitNearby>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/transit/nearby`, {
         searchParams: {
@@ -24,6 +24,8 @@ export const useTransitNearby = (options?: Omit<UseQueryOptions<TransitNearby>, 
         },
       }).json()
     },
+    refetchOnMount: 'always',
+    staleTime: 0,
     ...options,
   })
 
