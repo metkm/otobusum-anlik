@@ -2,7 +2,7 @@ import { TrueSheetPeek } from '@lodev09/react-native-true-sheet'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import type { LngLatBounds } from '@maplibre/maplibre-react-native'
 import { hexFromArgb } from '@material/material-color-utilities'
-import { useRouter } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import type { Feature } from 'geojson'
 import { t } from 'i18next'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
@@ -25,10 +25,14 @@ import { createRandomTheme } from '@/utils/color'
 import { getPolygonCoordinatesFromPoint } from '@/utils/getPolygonFromCenter'
 
 export const NearbyScreen = () => {
-  const { query } = useTransitNearby()
+  const params = useLocalSearchParams()
+  const lat = params.lat ? Number(params.lat) : undefined
+  const lng = params.lng ? Number(params.lng) : undefined
+
+  const { query } = useTransitNearby(lat, lng)
+  const { map, fitBounds, camera } = useMap()
   const navigation = useTrueSheetNavigation()
   const router = useRouter()
-  const { map, fitBounds, camera } = useMap()
 
   const scrollableRef = useRef<ScrollView>(null)
   const mapBounds = useRef<LngLatBounds>(null)
@@ -39,10 +43,9 @@ export const NearbyScreen = () => {
   const colors = useMemo(() => query.data?.routes.map(() => createRandomTheme()), [query.data])
 
   const renderMarkers = useCallback(async () => {
-    if (!query.data)
+    if (!query.data || !lat || !lng)
       return
 
-    console.log(1)
     mapBounds.current = await map.current?.getBounds() ?? null
 
     const stopFeatures: Feature[] = query.data.stops.map(stop => ({
@@ -66,25 +69,21 @@ export const NearbyScreen = () => {
       },
     }))
 
-    const center = await map.current?.getCenter()
+    const coordinates = getPolygonCoordinatesFromPoint([lng, lat], query.data.stops_radius)
 
-    if (center) {
-      const coordinates = getPolygonCoordinatesFromPoint(center, query.data.stops_radius)
+    addMarkers('query-radius', 'polygon', {
+      type: 'FeatureCollection',
+      features: [{
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Polygon',
+          coordinates: [coordinates],
+        },
+      }],
+    })
 
-      addMarkers('query-radius', 'polygon', {
-        type: 'FeatureCollection',
-        features: [{
-          type: 'Feature',
-          properties: {},
-          geometry: {
-            type: 'Polygon',
-            coordinates: [coordinates],
-          },
-        }],
-      })
-
-      fitBounds(getLatLngBounds(coordinates.map(r => ({ lng: r[0]!, lat: r[1]! }))))
-    }
+    fitBounds(getLatLngBounds(coordinates.map(r => ({ lng: r[0]!, lat: r[1]! }))))
 
     addMarkers('stops', 'stops', {
       type: 'FeatureCollection',
@@ -95,7 +94,7 @@ export const NearbyScreen = () => {
       type: 'FeatureCollection',
       features: routeFeatures,
     })
-  }, [addMarkers, colors, fitBounds, map, query.data])
+  }, [addMarkers, colors, fitBounds, lat, lng, map, query.data])
 
   useEffect(() => {
     renderMarkers()

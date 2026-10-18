@@ -1,3 +1,4 @@
+import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { Map as _Map, type MapRef, type LngLatBounds, type CameraProps, type MapProps, type ViewStateChangeEvent, Camera } from '@maplibre/maplibre-react-native'
 import React, { RefObject } from 'react'
 import { NativeSyntheticEvent } from 'react-native'
@@ -22,6 +23,7 @@ const getInitialMapBounds = () => {
 export const Map = ({ children, cameraProps, style, onDidFinishLoadingMap, ...props }: { initialMapBounds?: LngLatBounds, cameraProps?: CameraProps } & Omit<MapProps, 'mapStyle'>) => {
   const { camera, map } = useMap()
   const { style: mapStyle } = useMapStyle()
+  const navigation = useTrueSheetNavigation()
   const opacity = useSharedValue(0)
 
   const onMapRegionChange = (event: NativeSyntheticEvent<ViewStateChangeEvent>) => {
@@ -48,6 +50,12 @@ export const Map = ({ children, cameraProps, style, onDidFinishLoadingMap, ...pr
         onDidFinishLoadingMap={(event) => {
           opacity.set(withTiming(1, { duration: 250 }))
           onDidFinishLoadingMap?.(event)
+        }}
+        onLongPress={({ nativeEvent }) => {
+          navigation.navigate('(sheet)/markers/nearby', {
+            lng: nativeEvent.lngLat[0],
+            lat: nativeEvent.lngLat[1],
+          })
         }}
         style={{ flex: 1 }}
         preferredFramesPerSecond={60}
