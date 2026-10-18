@@ -1,3 +1,4 @@
+import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef } from 'react'
@@ -7,8 +8,8 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import Animated, { LinearTransition } from 'react-native-reanimated'
 
 import { UButton } from '@/components/u/UButton'
-import { UIcon } from '@/components/u/UIcon'
 import { USheetHeader } from '@/components/u/UHeader'
+import { UIcon } from '@/components/u/UIcon'
 import { UText } from '@/components/u/UText'
 
 import { useLineGroup, useLineTheme } from '@/composables'
@@ -36,10 +37,12 @@ const GroupItem = ({
   const handlePress = () => {
     if (addToGroup) {
       useLineStore.getState().addLine(addToGroup as string, group.id)
+      TrueSheet.dismissAll()
       return
     }
 
     useLineStore.getState().setGroupId(group.id)
+    TrueSheet.dismissAll()
   }
 
   return (

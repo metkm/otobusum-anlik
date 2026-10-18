@@ -8,9 +8,9 @@ import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
+import { USheetHeader } from '@/components/u/UHeader'
 import { UIcon } from '@/components/u/UIcon'
 import { USheet } from '@/components/u/USheet'
-import { USheetHeader } from '@/components/u/UHeader'
 import { UText } from '@/components/u/UText'
 
 import { useLine, useLineBuses, useLineTheme } from '@/composables'
@@ -25,11 +25,16 @@ const RouteItem = ({ isSelected, item, busCount }: { isSelected: boolean, item: 
   const theme = useLineTheme()
   const backgroundWithColor = theme?.backgroundWithColor({ variant: isSelected ? 'solid' : 'soft' })
 
+  const handlePress = () => {
+    setRoute(code, item.code)
+    TrueSheet.dismissAll()
+  }
+
   return (
     <UButton
       label={item.name}
       variant={isSelected ? 'soft' : 'ghost'}
-      onPress={() => setRoute(code, item.code)}
+      onPress={handlePress}
       className="flex-col justify-start items-start h-15.5"
     >
       <View className="flex-row justify-center gap-1">
