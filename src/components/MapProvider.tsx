@@ -12,7 +12,7 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
     camera,
     fitBounds: (bounds: LngLatBounds) => {
       camera.current?.fitBounds(bounds, {
-        duration: 1000,
+        duration: 750,
         pitch: 0,
         padding: {
           bottom: 250,

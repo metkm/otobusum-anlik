@@ -1,5 +1,5 @@
 import { ViewProps } from 'react-native'
-import Animated, { LinearTransition } from 'react-native-reanimated'
+import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useSettingsStore } from '@/stores'
@@ -12,6 +12,8 @@ export const MapOverlay = ({ className, ...props }: ViewProps) => {
   return (
     <Animated.View
       layout={LinearTransition}
+      entering={FadeIn}
+      exiting={FadeOut}
       className={cn(
         'absolute bottom-0 inset-x-0',
         hideMap

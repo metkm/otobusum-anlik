@@ -1,4 +1,5 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
+import type { LngLatBounds } from '@maplibre/maplibre-react-native'
 import { hexFromArgb } from '@material/material-color-utilities'
 import type { Feature } from 'geojson'
 import { t } from 'i18next'
@@ -16,13 +17,15 @@ import { UText } from '@/components/u/UText'
 import { useMap } from '@/composables'
 import { useTransitNearby } from '@/composables/useTransitNearby'
 import { useTemporaryMarkerStore } from '@/stores/temporaryMarker'
+import { getLatLngBounds } from '@/utils/bounds'
 import { createRandomTheme } from '@/utils/color'
 
 export const NearbyScreen = () => {
   const { query } = useTransitNearby()
   const navigation = useTrueSheetNavigation()
   const scrollableRef = useRef<ScrollView>(null)
-  const { map } = useMap()
+  const { map, fitBounds, camera } = useMap()
+  const mapBounds = useRef<LngLatBounds>(null)
 
   const addMarkers = useTemporaryMarkerStore(useShallow(state => state.addCollection))
   const removeMarkers = useTemporaryMarkerStore(useShallow(state => state.removeCollection))
@@ -30,6 +33,10 @@ export const NearbyScreen = () => {
   const colors = query.data?.routes.map(() => createRandomTheme())
 
   useEffect(() => {
+    map.current?.getBounds().then((bounds) => {
+      mapBounds.current = bounds
+    })
+
     if (!query.data) {
       return
     }
@@ -95,14 +102,20 @@ export const NearbyScreen = () => {
           },
         }],
       })
+
+      fitBounds(getLatLngBounds(ret.map(r => ({ lng: r[0]!, lat: r[1]! }))))
     })
 
     return () => {
       removeMarkers('stops')
       removeMarkers('routes')
       removeMarkers('query-radius')
+
+      if (mapBounds.current) {
+        fitBounds(mapBounds.current)
+      }
     }
-  }, [addMarkers, colors, map, query.data, removeMarkers])
+  }, [addMarkers, camera, colors, fitBounds, map, query.data, removeMarkers])
 
   useEffect(() => {
     navigation.setOptions({

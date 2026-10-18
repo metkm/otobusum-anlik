@@ -35,7 +35,7 @@ const RootContent = () => {
 
         <Sheet.Screen name="(sheet)/stop/[stopCode]" />
         <Sheet.Screen name="(sheet)/bus-info" />
-        <Sheet.Screen name="(sheet)/nearby" options={{ dimmed: false, detents: ['peek', 'auto'] }} />
+        <Sheet.Screen name="(sheet)/markers/nearby" options={{ dimmed: false, detents: ['peek', 'auto'] }} />
       </Sheet>
     </MapProvider>
   )
