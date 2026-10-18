@@ -12,13 +12,13 @@ export const UQueryState = <T,>({
   children,
 }: {
   query: UseQueryResult<T>
-  loading?: React.ReactNode
+  loading?: () => React.ReactNode
   error?: (error: DefaultError) => React.ReactNode
   errorMessage?: string
   children?: React.ReactNode
 }) => {
   if (query.isFetching)
-    return loading ?? (
+    return loading?.() ?? (
       <UActivityIndicator />
     )
 

@@ -142,7 +142,7 @@ export const NearbyScreen = () => {
   return (
     <UQueryState
       query={query}
-      loading={(
+      loading={() => (
         <TrueSheetPeek>
           <UActivityIndicator />
         </TrueSheetPeek>
