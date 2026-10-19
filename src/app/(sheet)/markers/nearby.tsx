@@ -1,5 +1,6 @@
 import { TrueSheetPeek } from '@lodev09/react-native-true-sheet'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
+import type { LngLatBounds } from '@maplibre/maplibre-react-native'
 import { hexFromArgb } from '@material/material-color-utilities'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import type { FeatureCollection } from 'geojson'
@@ -15,8 +16,10 @@ import { UHeader } from '@/components/u/UHeader'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
+import { useMap } from '@/composables'
 import { useMapCollection } from '@/composables/useMapCollection'
 import { useTransitNearby } from '@/composables/useTransitNearby'
+import { getLatLngBounds } from '@/utils/bounds'
 import { createRandomTheme } from '@/utils/color'
 import { getPolygonCoordinatesFromPoint } from '@/utils/getPolygonFromCenter'
 
@@ -28,9 +31,11 @@ export const NearbyScreen = () => {
   const lng = params.lng ? Number(params.lng) : undefined
 
   const { query } = useTransitNearby(lat, lng)
+  const { map, camera, fitBounds } = useMap()
   const navigation = useTrueSheetNavigation()
 
   const scrollableRef = useRef<ScrollView>(null)
+  const bounds = useRef<LngLatBounds>(null)
 
   const colors = useMemo(() => query.data?.routes.map(() => createRandomTheme()), [query.data])
 
@@ -105,6 +110,34 @@ export const NearbyScreen = () => {
       },
     },
   })
+
+  useEffect(() => {
+    const geo = polygonCollection?.features[0]?.geometry
+
+    if (!geo || geo.type !== 'Polygon') {
+      return
+    }
+
+    const fit = async () => {
+      bounds.current = await map.current?.getBounds() || null
+
+      const result = geo.coordinates[0]?.map(coord => ({ lng: coord[0]!, lat: coord[1]! }))
+      if (!result) {
+        return
+      }
+
+      fitBounds(getLatLngBounds(result))
+    }
+
+    fit()
+
+    const cam = camera.current
+    return () => {
+      if (bounds.current && cam) {
+        cam.fitBounds(bounds.current)
+      }
+    }
+  }, [camera, fitBounds, map, polygonCollection?.features])
 
   useEffect(() => {
     navigation.setOptions({
