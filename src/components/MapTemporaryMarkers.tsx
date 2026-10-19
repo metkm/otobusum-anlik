@@ -12,24 +12,21 @@ export const MapTemporaryMarkers = () => {
     return
   }
 
-  return temporaryMarkerStore.data.map(data => (
-    <GeoJSONSource
-      key={data.id}
-      data={data.data}
-    >
-      {
-        data.renderer === 'layer'
-          ? (<Layer {...data.layerProps} />)
-          : data.renderer === 'route'
-            ? <LineMarkerRouteLayer />
-            : <LineMarkerStopLayer />
-
-        // data.renderer === 'stops'
-        //   ? (<LineMarkerStopLayer />)
-        //   : data.renderer === 'route'
-        //     ? (<LineMarkerRouteLayer />)
-        //     : (<Layer {...data.layerProps} />)
-      }
-    </GeoJSONSource>
-  ))
+  return temporaryMarkerStore.data.map(data => data.data
+    ? (
+        <GeoJSONSource
+          key={data.id}
+          data={data.data}
+        >
+          {
+            data.renderer === 'layer'
+              ? (<Layer {...data.layerProps} />)
+              : data.renderer === 'route'
+                ? <LineMarkerRouteLayer />
+                : <LineMarkerStopLayer />
+          }
+        </GeoJSONSource>
+      )
+    : undefined,
+  )
 }

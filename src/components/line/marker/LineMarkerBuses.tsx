@@ -45,62 +45,6 @@ export const LineMarkerBuses = () => {
     <>
       <Images images={images} />
 
-      {/* {busesFiltered.map(bus => (
-        <LayerAnnotation
-          key={bus.bus_id}
-          animated
-          lngLat={[bus.lng, bus.lat]}
-          animationEasingFunction={x => 1 - Math.pow(1 - x, 4)}
-          animationDuration={500}
-          onPress={(event) => {
-            const doorNo = event.nativeEvent.features[0]?.properties?.doorNo
-            if (!doorNo)
-              return
-            router.navigate(`/bus-info/${doorNo}`)
-          }}
-        >
-          <Layer
-            // id={`bus-circle-${code}`}
-            type="circle"
-            paint={{
-              'circle-radius': [
-                'interpolate',
-                ['linear'], ['zoom'],
-                10, 14,
-                16, 16,
-              ],
-              'circle-color': background?.backgroundColor as string,
-              'circle-pitch-alignment': 'map',
-            }}
-            layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
-            minzoom={minZoom}
-            // afterId="buses-layer"
-          />
-
-          <Layer
-            type="symbol"
-            layout={{
-              'icon-image': iconImage,
-              'icon-size': [
-                'interpolate',
-                ['linear'], ['zoom'],
-                10, 0.25,
-                16, 0.3,
-              ],
-              'visibility': isLineHidden ? 'none' : 'visible',
-              'icon-pitch-alignment': 'map',
-              'icon-allow-overlap': true,
-            }}
-            paint={{
-              'icon-opacity-transition': { duration: 0 },
-              'icon-color-transition': { duration: 0 },
-            }}
-            // afterId={`bus-circle-${code}`}
-            minzoom={minZoom}
-          />
-        </LayerAnnotation>
-      ))} */}
-
       <GeoJSONSource
         data={{
           type: 'FeatureCollection',

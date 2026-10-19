@@ -14,7 +14,6 @@ const dampen = (value: number) => {
 
 const roundToStep = (x: number, step: number) => {
   'worklet'
-  // if (x < step) return 0
   return Math.round(x / step) * step
 }
 
