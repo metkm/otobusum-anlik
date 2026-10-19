@@ -12,7 +12,7 @@ export const createRandomHslColor = () => {
   ] as const
 }
 
-const hexFromHsl = (h: number, s: number, l: number) => {
+export const hexFromHsl = (h: number, s: number, l: number) => {
   l /= 100
   const a = (s * Math.min(l, 1 - l)) / 100
 

@@ -45,8 +45,8 @@ export default {
   system: 'System',
   other: 'Other',
   city: 'City',
-  emptySearch: 'No results found',
-  emptySearchDescription: 'Maybe try for searching something else?',
+  noResults: 'No results found',
+  noResultsDescription: 'Maybe try for searching something else?',
   directionToStop: 'Directions to this stop',
   refreshColors: 'Refresh colors',
   neededCharacterCountToSearch: '{{count}} more characters are needed to search',
@@ -85,4 +85,7 @@ export default {
   mapButtonsPlacementsDescription: 'Group, Search buttons etc.',
   right: 'Right',
   left: 'Left',
+  nearbyStops: 'Nearby stops',
+  routesPassingThisPoint: 'Routes passing from this point',
+  stops: 'Stops',
 }

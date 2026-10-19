@@ -65,6 +65,16 @@ export const MapButtons = (props: ViewProps) => {
 
       <AnimatedGestureHandlerRootView layout={LinearTransition}>
         <UButton
+          icon="radar"
+          to="/markers/nearby"
+          size="lg"
+          color="neutral"
+          style={{ elevation: 1 }}
+        />
+      </AnimatedGestureHandlerRootView>
+
+      <AnimatedGestureHandlerRootView layout={LinearTransition}>
+        <UButton
           icon="search"
           to="/search"
           size="lg"

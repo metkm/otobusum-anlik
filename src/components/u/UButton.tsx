@@ -105,6 +105,7 @@ export const UButton = ({
   label,
   className,
   icon,
+  trailingIcon,
   to,
   color = 'primary',
   variant = 'solid',
@@ -119,6 +120,7 @@ export const UButton = ({
 }: {
   label?: string
   icon?: ComponentProps<typeof Lucide>['name']
+  trailingIcon?: ComponentProps<typeof Lucide>['name']
   to?: Href
   color?: 'primary' | 'neutral'
   variant?: 'solid' | 'ghost' | 'soft'
@@ -185,6 +187,16 @@ export const UButton = ({
         >
           {label}
         </UText>
+      )}
+
+      {trailingIcon && (
+        <UIcon
+          name={trailingIcon}
+          sizeClassName={uiIcon()}
+          colorClassName={uiLabel()}
+          color={themeText?.color}
+          className="ml-auto"
+        />
       )}
     </StyledBaseButton>
   )

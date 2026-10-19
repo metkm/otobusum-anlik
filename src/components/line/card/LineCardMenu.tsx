@@ -7,7 +7,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
 import { USheet } from '@/components/u/USheet'
-import { USheetHeader } from '@/components/u/USheetHeader'
+import { USheetHeader } from '@/components/u/UHeader'
 import { UText } from '@/components/u/UText'
 
 import { LineModalsColorPicker } from '../modals/ColorPicker'

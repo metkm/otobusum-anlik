@@ -8,27 +8,33 @@ import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
+import { USheetHeader } from '@/components/u/UHeader'
 import { UIcon } from '@/components/u/UIcon'
 import { USheet } from '@/components/u/USheet'
-import { USheetHeader } from '@/components/u/USheetHeader'
 import { UText } from '@/components/u/UText'
 
 import { useLine, useLineBuses, useLineTheme } from '@/composables'
-import { LineRoute, useLineRoutes } from '@/composables/useLineRoutes'
+import { useLineRoutes } from '@/composables/useLineRoutes'
 import { useLineStore } from '@/stores'
+import { Route } from '@/types/route'
 
-const RouteItem = ({ isSelected, item, busCount }: { isSelected: boolean, item: LineRoute, busCount: number }) => {
+const RouteItem = ({ isSelected, item, busCount }: { isSelected: boolean, item: Route, busCount: number }) => {
   const setRoute = useLineStore(useShallow(state => state.setRoute))
   const { code } = useLine()
 
   const theme = useLineTheme()
   const backgroundWithColor = theme?.backgroundWithColor({ variant: isSelected ? 'solid' : 'soft' })
 
+  const handlePress = () => {
+    setRoute(code, item.code)
+    TrueSheet.dismissAll()
+  }
+
   return (
     <UButton
       label={item.name}
       variant={isSelected ? 'soft' : 'ghost'}
-      onPress={() => setRoute(code, item.code)}
+      onPress={handlePress}
       className="flex-col justify-start items-start h-15.5"
     >
       <View className="flex-row justify-center gap-1">

@@ -1,5 +1,4 @@
 import { TrueSheet, type TrueSheetProps } from '@lodev09/react-native-true-sheet'
-import { ReanimatedTrueSheet } from '@lodev09/react-native-true-sheet/reanimated'
 import { RefObject } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useCSSVariable, withUniwind } from 'uniwind'
@@ -16,7 +15,7 @@ export const USheet = ({ ref, contentContainerClassName, children, ...props }: {
   const background = theme?.background({ variant: 'ghost' })
 
   return (
-    <ReanimatedTrueSheet
+    <TrueSheet
       ref={ref}
       backgroundColor={background?.backgroundColor || backgroundColor}
       detents={[0.5, 0.8]}
@@ -30,6 +29,6 @@ export const USheet = ({ ref, contentContainerClassName, children, ...props }: {
       >
         {children}
       </StyledGestureHandlerRootView>
-    </ReanimatedTrueSheet>
+    </TrueSheet>
   )
 }

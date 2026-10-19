@@ -47,8 +47,6 @@ export const useColorScheme = (): ColorScheme => {
 }
 
 export const useLineTheme = ({ colorScheme, code }: { colorScheme?: ColorScheme, code?: string } = {}) => {
-// export const useLineTheme = ({ colorScheme, code }: { colorScheme?: ColorScheme, code?: string }) => {
-// export const useLineTheme = (colorScheme?: ColorScheme) => {
   const _code = use(LineContext) ?? code
 
   const themes = useThemeStore(useShallow(state => state.getThemes()))

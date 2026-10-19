@@ -1,5 +1,5 @@
 import { UserLocation } from '@maplibre/maplibre-react-native'
-import { useIsFocused } from 'expo-router'
+import { useIsFocused, usePathname } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
@@ -9,6 +9,7 @@ import { LineMarkers } from '@/components/line/LineMarkers'
 import { Map } from '@/components/Map'
 import { MapButtons } from '@/components/MapButtons'
 import { MapOverlay } from '@/components/MapOverlay'
+import { MapTemporaryMarkers } from '@/components/MapTemporaryMarkers'
 
 import { useMapStyle } from '@/composables/useMapStyle'
 import { useSettingsStore } from '@/stores'
@@ -19,6 +20,7 @@ export const HomeScreen = () => {
 
   const { scheme: mapScheme } = useMapStyle()
   const isFocused = useIsFocused()
+  const pathname = usePathname()
 
   return (
     <View className="flex-1">
@@ -30,16 +32,19 @@ export const HomeScreen = () => {
         !hideMap && (
           <Map>
             <LineMarkers />
+            <MapTemporaryMarkers />
 
             {showMyLocation && <UserLocation heading />}
           </Map>
         )
       }
 
-      <MapOverlay>
-        <MapButtons />
-        <LineCards className="flex-1" />
-      </MapOverlay>
+      {pathname !== '/markers/nearby' && (
+        <MapOverlay>
+          <MapButtons />
+          <LineCards className="flex-1" />
+        </MapOverlay>
+      )}
     </View>
   )
 }

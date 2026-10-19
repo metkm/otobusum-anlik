@@ -1,3 +1,4 @@
+import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef } from 'react'
@@ -7,8 +8,8 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import Animated, { LinearTransition } from 'react-native-reanimated'
 
 import { UButton } from '@/components/u/UButton'
+import { USheetHeader } from '@/components/u/UHeader'
 import { UIcon } from '@/components/u/UIcon'
-import { USheetHeader } from '@/components/u/USheetHeader'
 import { UText } from '@/components/u/UText'
 
 import { useLineGroup, useLineTheme } from '@/composables'
@@ -36,30 +37,30 @@ const GroupItem = ({
   const handlePress = () => {
     if (addToGroup) {
       useLineStore.getState().addLine(addToGroup as string, group.id)
+      TrueSheet.dismissAll()
       return
     }
 
     useLineStore.getState().setGroupId(group.id)
+    TrueSheet.dismissAll()
   }
 
   return (
     <GestureHandlerRootView style={{ flexDirection: 'row' }}>
       <UButton
         variant="ghost"
-        className="flex-1 gap-2"
+        className="flex-1 items-center gap-2"
         onPress={handlePress}
       >
-        <View className="h-full flex-col">
-          <View className={`${selected ? 'bg-primary' : 'bg-muted'} flex-1 aspect-square p-2 rounded-md flex items-center justify-center`}>
-            {selected && (
-              <UIcon
-                name="check"
-                sizeClassName="size-5"
-                colorClassName="text-inverted"
-                color={backgroundWithColor?.color}
-              />
-            )}
-          </View>
+        <View className={`${selected ? 'bg-primary' : 'bg-muted'} size-8 rounded-md items-center justify-center`}>
+          {selected && (
+            <UIcon
+              name="check"
+              sizeClassName="size-5"
+              colorClassName="text-inverted"
+              color={backgroundWithColor?.color}
+            />
+          )}
         </View>
 
         <View className="flex-1 shrink gap-1">

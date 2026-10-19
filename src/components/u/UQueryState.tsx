@@ -18,7 +18,9 @@ export const UQueryState = <T,>({
   children?: React.ReactNode
 }) => {
   if (query.isFetching)
-    return loading?.() ?? <UActivityIndicator />
+    return loading?.() ?? (
+      <UActivityIndicator />
+    )
 
   if (query.isError)
     return error?.(query.error) ?? (

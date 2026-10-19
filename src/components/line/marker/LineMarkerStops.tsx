@@ -8,7 +8,7 @@ import { useLine, useLineStops, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerStopLayer = ({ isHidden, ...props }: { isHidden?: boolean } & Omit<Extract<LayerProps, { type: 'circle' }>, 'style' | 'type'>) => {
-  const [defaultBg, defaultBorder] = useCSSVariable(['--ui-bg', '--ui-border'])
+  const [defaultBg, defaultBorder] = useCSSVariable(['--ui-primary', '--ui-border'])
   const theme = useLineTheme()
 
   const backgroundSoft = theme?.background({ variant: 'soft' })?.backgroundColor.slice(0, -2)

@@ -77,7 +77,6 @@ export const useThemeStore = create(
             }
           })
         },
-        // addTheme: code => set
         deleteTheme: code => set((state) => {
           const city = useFilterStore.getState().city
           delete state.themesByCity[city][code]

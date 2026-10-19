@@ -1,7 +1,6 @@
 import '@/global.css'
 
 import { Sheet } from '@lodev09/react-native-true-sheet/navigation/expo-router'
-import { ReanimatedTrueSheetProvider } from '@lodev09/react-native-true-sheet/reanimated'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router'
 import { type Theme } from 'expo-router/react-navigation'
@@ -31,11 +30,12 @@ const RootContent = () => {
       <Sheet screenOptions={{ backgroundColor, style: { flex: 1 } }}>
         <Sheet.Screen name="(home)" />
 
-        <Sheet.Screen name="(sheet)/groups" options={{ detents: [0.5, 0.8] }} />
-        <Sheet.Screen name="(sheet)/groups/[groupId]" options={{ detents: [0.5, 0.8] }} />
+        <Sheet.Screen name="(sheet)/groups" options={{ detents: ['auto'] }} />
+        <Sheet.Screen name="(sheet)/groups/[groupId]" options={{ detents: ['auto'] }} />
 
-        <Sheet.Screen name="(sheet)/stop" />
+        <Sheet.Screen name="(sheet)/stop/[stopCode]" />
         <Sheet.Screen name="(sheet)/bus-info" />
+        <Sheet.Screen name="(sheet)/markers/nearby" options={{ dimmed: false, detents: ['peek', 'auto'] }} />
       </Sheet>
     </MapProvider>
   )
@@ -43,7 +43,6 @@ const RootContent = () => {
 
 export const RootLayout = () => {
   const background = useCSSVariable('--background-color-default')
-
   const colorScheme = useColorScheme()
 
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
@@ -79,9 +78,7 @@ export const RootLayout = () => {
             }}
           >
             <ThemeProvider value={theme}>
-              <ReanimatedTrueSheetProvider>
-                <RootContent />
-              </ReanimatedTrueSheetProvider>
+              <RootContent />
             </ThemeProvider>
           </SafeAreaListener>
         </GestureHandlerRootView>
