@@ -28,7 +28,6 @@ export interface Schemes {
 
 interface ThemeStore {
   themesByCity: Record<City, Record<string, Schemes>>
-  getThemes: () => Record<string, Schemes>
   createTheme: (code: string, overwrite?: boolean, hslColor?: [number, number, number]) => void
   deleteTheme: (code: string) => void
   deleteUnusedThemes: (codes: string[]) => void
@@ -42,12 +41,11 @@ export const useThemeStore = create(
           istanbul: {},
           izmir: {},
         },
-        getThemes: () => get().themesByCity[useFilterStore.getState().city],
         createTheme: (code, overwrite, hslColor) => {
           const { schemes, palettes } = createRandomTheme(hslColor)
           const city = useFilterStore.getState().city
 
-          if (get().getThemes()[code] && !overwrite)
+          if (get().themesByCity[city][code] && !overwrite)
             return
 
           set((state) => {
@@ -83,7 +81,7 @@ export const useThemeStore = create(
         }),
         deleteUnusedThemes: codes => set((state) => {
           const city = useFilterStore.getState().city
-          const themeCodes = Object.keys(state.getThemes())
+          const themeCodes = Object.keys(state.themesByCity[city])
 
           for (let index = 0; index < themeCodes.length; index++) {
             const code = themeCodes[index]

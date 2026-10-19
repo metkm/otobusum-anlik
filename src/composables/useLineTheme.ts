@@ -49,7 +49,8 @@ export const useColorScheme = (): ColorScheme => {
 export const useLineTheme = ({ colorScheme, code }: { colorScheme?: ColorScheme, code?: string } = {}) => {
   const _code = use(LineContext) ?? code
 
-  const themes = useThemeStore(useShallow(state => state.getThemes()))
+  const themes = useThemeStore(useShallow(state => state.themesByCity['istanbul']))
+
   const currentColorScheme = useColorScheme()
   const resolvedColorScheme = colorScheme ?? currentColorScheme
 
