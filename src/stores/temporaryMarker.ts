@@ -1,15 +1,30 @@
+import type { LayerProps } from '@maplibre/maplibre-react-native'
 import type { Geometry, GeoJSON, GeoJsonProperties } from 'geojson'
+import { castDraft } from 'immer'
 import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
+type MarkerCollectionBaseProps = {
+  id: string
+  data?: string | GeoJSON<Geometry, GeoJsonProperties>
+}
+
+export type MarkerCollection = (
+  | {
+    layerProps: LayerProps
+    renderer: 'layer'
+  }
+  | {
+    renderer: 'stops' | 'route'
+    layerProps?: LayerProps
+  }
+)
+& MarkerCollectionBaseProps
+
 interface TemporaryMarkerStore {
-  data: {
-    id: string
-    type: 'stops' | 'routes' | 'polygon'
-    data: string | GeoJSON<Geometry, GeoJsonProperties>
-  }[]
-  addCollection: (id: string, type: 'stops' | 'routes' | 'polygon', data: string | GeoJSON<Geometry, GeoJsonProperties>) => void
+  data: MarkerCollection[]
+  addCollection: (data: MarkerCollection) => void
   removeCollection: (id: string) => void
 }
 
@@ -17,14 +32,14 @@ export const useTemporaryMarkerStore = create(
   subscribeWithSelector(
     immer<TemporaryMarkerStore>(set => ({
       data: [],
-      addCollection: (id, type, data) =>
+      addCollection: collection =>
         set((state) => {
-          const index = state.data.findIndex(item => item.id === id)
+          const index = state.data.findIndex(item => item.id === collection.id)
 
           if (index !== -1) {
-            state.data[index]!.data = data
+            state.data[index] = castDraft(collection)
           } else {
-            state.data.push({ id, type, data })
+            state.data.push(castDraft(collection))
           }
         }),
       removeCollection: id =>

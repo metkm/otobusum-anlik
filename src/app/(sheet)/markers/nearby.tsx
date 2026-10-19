@@ -1,14 +1,12 @@
 import { TrueSheetPeek } from '@lodev09/react-native-true-sheet'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
-import type { LngLatBounds } from '@maplibre/maplibre-react-native'
 import { hexFromArgb } from '@material/material-color-utilities'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import type { Feature } from 'geojson'
+import type { FeatureCollection } from 'geojson'
 import { t } from 'i18next'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
-import { useShallow } from 'zustand/react/shallow'
 
 import { UActivityIndicator } from '@/components/u/UActivityIndicator'
 import { UBadge } from '@/components/u/UBadge'
@@ -17,47 +15,28 @@ import { UHeader } from '@/components/u/UHeader'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
-import { useMap } from '@/composables'
+import { useMapCollection } from '@/composables/useMapCollection'
 import { useTransitNearby } from '@/composables/useTransitNearby'
-import { useTemporaryMarkerStore } from '@/stores/temporaryMarker'
-import { getLatLngBounds } from '@/utils/bounds'
 import { createRandomTheme } from '@/utils/color'
 import { getPolygonCoordinatesFromPoint } from '@/utils/getPolygonFromCenter'
 
 export const NearbyScreen = () => {
   const params = useLocalSearchParams()
+  const router = useRouter()
+
   const lat = params.lat ? Number(params.lat) : undefined
   const lng = params.lng ? Number(params.lng) : undefined
 
   const { query } = useTransitNearby(lat, lng)
-  const { map, fitBounds, camera } = useMap()
   const navigation = useTrueSheetNavigation()
-  const router = useRouter()
 
   const scrollableRef = useRef<ScrollView>(null)
-  const mapBounds = useRef<LngLatBounds>(null)
-
-  const addMarkers = useTemporaryMarkerStore(useShallow(state => state.addCollection))
-  const removeMarkers = useTemporaryMarkerStore(useShallow(state => state.removeCollection))
 
   const colors = useMemo(() => query.data?.routes.map(() => createRandomTheme()), [query.data])
 
-  const renderMarkers = useCallback(async () => {
-    if (!query.data || !lat || !lng)
-      return
-
-    mapBounds.current = await map.current?.getBounds() ?? null
-
-    const stopFeatures: Feature[] = query.data.stops.map(stop => ({
-      type: 'Feature',
-      properties: {},
-      geometry: {
-        type: 'Point',
-        coordinates: [stop.lng, stop.lat],
-      },
-    }))
-
-    const routeFeatures: Feature[] = query.data.routes.map((route, index) => ({
+  const routeCollection = useMemo<FeatureCollection>(() => ({
+    type: 'FeatureCollection',
+    features: query.data?.routes.map((route, index) => ({
       type: 'Feature',
       properties: {
         color: colors?.[index] ? hexFromArgb(colors[index].schemes.dark.primary) : undefined,
@@ -65,51 +44,67 @@ export const NearbyScreen = () => {
       },
       geometry: {
         type: 'LineString',
-        coordinates: route.path?.map(p => [p.lng, p.lat]) ?? [],
+        coordinates: route.path?.map(
+          point => [point.lng, point.lat],
+        ) ?? [],
       },
-    }))
+    })) || [],
+  }), [colors, query.data?.routes])
 
-    const coordinates = getPolygonCoordinatesFromPoint([lng, lat], query.data.stops_radius)
+  const stopCollection = useMemo<FeatureCollection>(() => ({
+    type: 'FeatureCollection',
+    features: query.data?.stops.map(stop => ({
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Point',
+        coordinates: [stop.lng, stop.lat],
+      },
+    })) || [],
+  }), [query.data?.stops])
 
-    addMarkers('query-radius', 'polygon', {
+  const polygonCollection = useMemo<FeatureCollection | undefined>(() => {
+    if (!query.data) {
+      return
+    }
+
+    return {
       type: 'FeatureCollection',
       features: [{
         type: 'Feature',
         properties: {},
         geometry: {
           type: 'Polygon',
-          coordinates: [coordinates],
+          coordinates: [getPolygonCoordinatesFromPoint([lng!, lat!], query.data.stops_radius)],
         },
       }],
-    })
-
-    fitBounds(getLatLngBounds(coordinates.map(r => ({ lng: r[0]!, lat: r[1]! }))))
-
-    addMarkers('stops', 'stops', {
-      type: 'FeatureCollection',
-      features: stopFeatures,
-    })
-
-    addMarkers('routes', 'routes', {
-      type: 'FeatureCollection',
-      features: routeFeatures,
-    })
-  }, [addMarkers, colors, fitBounds, lat, lng, map, query.data])
-
-  useEffect(() => {
-    renderMarkers()
-    const cam = camera.current
-
-    return () => {
-      removeMarkers('stops')
-      removeMarkers('routes')
-      removeMarkers('query-radius')
-
-      if (mapBounds.current && cam) {
-        cam?.fitBounds(mapBounds.current, { duration: 750 })
-      }
     }
-  }, [camera, fitBounds, removeMarkers, renderMarkers])
+  }, [lat, lng, query.data])
+
+  useMapCollection({
+    id: 'route-collection',
+    renderer: 'route',
+    data: routeCollection,
+  })
+
+  useMapCollection({
+    id: 'stop-collection',
+    renderer: 'stops',
+    data: stopCollection,
+  })
+
+  useMapCollection({
+    id: 'area-polygon',
+    renderer: 'layer',
+    data: polygonCollection,
+    layerProps: {
+      type: 'fill',
+      paint: {
+        'fill-color': 'white',
+        'fill-opacity': 0.2,
+      },
+    },
+  })
 
   useEffect(() => {
     navigation.setOptions({

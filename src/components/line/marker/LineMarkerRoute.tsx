@@ -7,8 +7,6 @@ import { useLine, useLineRoutes, useLineTheme } from '@/composables'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerRouteLayer = ({ isHidden = false, code }: { isHidden?: boolean, code?: string }) => {
-  // const defaultBg = useCSSVariable('--ui-primary')
-  // const defaultText = useCSSVariable('--ui-primary')
   const theme = useLineTheme()
 
   const background = theme?.background({ variant: 'solid' })
