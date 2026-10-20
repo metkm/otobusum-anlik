@@ -8,6 +8,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useDebounce } from 'use-debounce'
 import { useShallow } from 'zustand/react/shallow'
 
+import { ThemeProvider } from '@/components/ThemeProvider'
+import { UBadge } from '@/components/u/UBadge'
 import { UButton } from '@/components/u/UButton'
 import { UEmpty } from '@/components/u/UEmpty'
 import { UInput } from '@/components/u/UInput'
@@ -15,7 +17,7 @@ import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
 import { queryClient } from '@/api/client'
-import { useLineTheme, useMap } from '@/composables'
+import { useMap } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { isStop, MIN_CHARACTER_LIMIT, useSearch } from '@/composables/useSearch'
 import { useFilterStore, useLineStore } from '@/stores'
@@ -26,11 +28,7 @@ import { getLatLngBounds } from '@/utils/bounds'
 const RenderItemLine = ({ item }: { item: BusLine }) => {
   const addLine = useLineStore(useShallow(state => state.addLine))
   const city = useFilterStore(useShallow(state => state.city))
-
   const { fitBounds } = useMap()
-  const theme = useLineTheme()
-
-  const backgroundWithColor = theme?.backgroundWithColor({ variant: 'solid' })
 
   const addLineAndZoom = async () => {
     addLine(item.code)
@@ -63,12 +61,7 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
         onPress={addLineAndZoom}
         className="flex-1"
       >
-        <UText
-          className="bg-muted rounded-md px-2.5 py-1 font-inter-medium"
-          style={backgroundWithColor}
-        >
-          {item.code}
-        </UText>
+        <UBadge label={item.code} />
       </UButton>
 
       <UButton
@@ -166,7 +159,9 @@ export const SearchScreen = () => {
 
                   return (
                     <LineContext value={item.code}>
-                      <RenderItemLine item={item} />
+                      <ThemeProvider>
+                        <RenderItemLine item={item} />
+                      </ThemeProvider>
                     </LineContext>
                   )
                 }}

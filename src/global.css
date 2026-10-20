@@ -41,6 +41,18 @@
       --ui-text-inverted: var(--color-neutral-900);
       --ui-primary: var(--color-bright-sun-400);
       --ui-error: var(--color-red-400);
+
+      --ui-neutral-bg: var(--color-neutral-900);
+      --ui-neutral-bg-muted: var(--color-neutral-800);
+      --ui-neutral-bg-elevated: var(--color-neutral-800);
+      --ui-neutral-bg-accented: var(--color-neutral-700);
+      --ui-neutral-border: var(--color-neutral-800);
+      --ui-neutral-border-muted: var(--color-neutral-700);
+      --ui-neutral-text-muted: var(--color-neutral-400);
+      --ui-neutral-text: var(--color-neutral-200);
+      --ui-neutral-text-inverted: var(--color-neutral-900);
+      --ui-neutral-primary: var(--color-bright-sun-400);
+      --ui-neutral-error: var(--color-red-400);
     }
 
     @variant light {
@@ -55,25 +67,42 @@
       --ui-text-inverted: white;
       --ui-primary: var(--color-bright-sun-500);
       --ui-error: var(--color-red-500);
+
+      --ui-neutral-bg: var(--color-neutral-50);
+      --ui-neutral-bg-muted: var(--color-neutral-50);
+      --ui-neutral-bg-elevated: var(--color-neutral-100);
+      --ui-neutral-bg-accented: var(--color-neutral-200);
+      --ui-neutral-border: var(--color-neutral-200);
+      --ui-neutral-border-muted: var(--color-neutral-200);
+      --ui-neutral-text-muted: var(--color-neutral-500);
+      --ui-neutral-text: var(--color-neutral-700);
+      --ui-neutral-text-inverted: white;
+      --ui-neutral-primary: var(--color-bright-sun-500);
+      --ui-neutral-error: var(--color-red-500);
     }
   }
 }
 
-@theme inline static {
+@theme {
   --font-inter: 'Inter-Regular';
   --font-inter-medium: 'Inter-Medium';
   --font-inter-semibold: 'Inter-SemiBold';
 
   --background-color-default: var(--ui-bg);
-
-  /* --background-color-default: var(--background-color-default);
   --background-color-muted: var(--ui-bg-muted);
   --background-color-elevated: var(--ui-bg-elevated);
-  --background-color-accented: var(--ui-bg-accented);
+
+  --background-color-neutral-default: var(--ui-neutral-bg);
+  --background-color-neutral-muted: var(--ui-neutral-bg-muted);
+  --background-color-neutral-elevated: var(--ui-neutral-bg-elevated);
 
   --text-color-muted: var(--ui-text-muted);
   --text-color-default: var(--ui-text);
   --text-color-inverted: var(--ui-text-inverted);
+
+  --text-color-neutral-muted: var(--ui-neutral-text-muted);
+  --text-color-neutral-default: var(--ui-neutral-text);
+  --text-color-neutral-inverted: var(--ui-neutral-text-inverted);
 
   --radius-xs: calc(var(--ui-radius) * 0.5);
   --radius-sm: var(--ui-radius);
@@ -89,5 +118,5 @@
   --ring-color-default: var(--ui-border);
   --ring-color-muted: var(--ui-border-muted);
 
-  --color-primary: var(--ui-primary); */
+  --color-primary: var(--ui-primary);
 }

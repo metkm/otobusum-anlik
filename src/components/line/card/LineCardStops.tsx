@@ -11,7 +11,7 @@ import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
-import { useLineStops, useLineBuses, useLineTheme, useMap } from '@/composables'
+import { useLineStops, useLineBuses, useMap } from '@/composables'
 import { useSettingsStore } from '@/stores'
 import { BusStop } from '@/types/bus'
 import { getClosestPoint } from '@/utils/getClosestPoint'
@@ -27,14 +27,9 @@ const ErrorState = ({ message }: { message?: string }) => {
 }
 
 const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
-  const theme = useLineTheme()
   const { buses } = useLineBuses()
   const { camera } = useMap()
   const { query: lineStopsQuery } = useLineStops()
-
-  const border = theme?.border({ variant: 'solid' })
-  const color = theme?.text({ variant: 'ghost' })
-  const background = theme?.backgroundWithColor({ variant: 'ghost' })
 
   const closestBus = buses.find((bus) => {
     if (!lineStopsQuery.data)
@@ -61,12 +56,10 @@ const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
 
       <View
         className="items-center justify-center size-8 rounded-full border-2 border-muted"
-        style={border}
       >
         {closestBus && (
           <UIcon
             name="bus-front"
-            color={background?.color}
             size={16}
           />
         )}
@@ -75,7 +68,6 @@ const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
       <UText
         className="text-xs truncate shrink"
         numberOfLines={2}
-        style={color}
       >
         {item.name}
       </UText>

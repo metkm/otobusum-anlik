@@ -6,8 +6,8 @@ import { View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton } from '@/components/u/UButton'
-import { USheet } from '@/components/u/USheet'
 import { USheetHeader } from '@/components/u/UHeader'
+import { USheet } from '@/components/u/USheet'
 import { UText } from '@/components/u/UText'
 
 import { LineModalsColorPicker } from '../modals/ColorPicker'
@@ -53,6 +53,7 @@ export const LineCardMenu = () => {
       <UButton
         icon="zoom-in"
         variant="ghost"
+        color="neutral"
         onPress={zoomToLine}
       />
 

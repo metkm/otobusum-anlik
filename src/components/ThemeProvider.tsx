@@ -2,8 +2,8 @@ import { ReactNode, use } from 'react'
 import { ScopedVariables } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
+import { useColorScheme } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { useColorScheme } from '@/composables/useLineTheme'
 import { useFilterStore, useThemeStore } from '@/stores'
 
 export const ThemeProvider = ({
@@ -29,13 +29,16 @@ export const ThemeProvider = ({
     return children
   }
 
-  console.log(theme['ui-bg'])
   return (
     <ScopedVariables
       variables={{
         '--ui-bg': theme['ui-bg'],
-        // '--color-bg-muted': theme['ui-bg-muted'],
-        // '--color-primary': theme['ui-primary'],
+        '--ui-bg-muted': theme['ui-bg-muted'],
+        '--ui-border': theme['ui-border'],
+        '--ui-border-muted': theme['ui-border-muted'],
+        '--ui-text': theme['ui-text'],
+        '--ui-text-inverted': theme['ui-text-inverted'],
+        '--color-primary': theme['ui-primary'],
       }}
     >
       {children}

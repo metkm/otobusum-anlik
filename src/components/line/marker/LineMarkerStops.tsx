@@ -4,16 +4,10 @@ import type { Feature } from 'geojson'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine, useLineStops, useLineTheme } from '@/composables'
+import { useLine, useLineStops } from '@/composables'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerStopLayer = ({ isHidden, ...props }: { isHidden?: boolean } & Omit<Extract<LayerProps, { type: 'circle' }>, 'style' | 'type'>) => {
-  const [defaultBg, defaultBorder] = useCSSVariable(['--ui-primary', '--ui-border'])
-  const theme = useLineTheme()
-
-  const backgroundSoft = theme?.background({ variant: 'soft' })?.backgroundColor.slice(0, -2)
-  const borderSoft = theme?.border({ variant: 'soft' })
-
   return (
     <Layer
       type="circle"
@@ -25,9 +19,9 @@ export const LineMarkerStopLayer = ({ isHidden, ...props }: { isHidden?: boolean
           11, 4,
           16, 7,
         ],
-        'circle-color': backgroundSoft ?? defaultBg as string,
+        'circle-color': ['get', 'color'],
         'circle-stroke-width': 2,
-        'circle-stroke-color': borderSoft?.borderColor ?? defaultBorder as string,
+        'circle-stroke-color': ['get', 'borderColor'],
         'circle-pitch-alignment': 'map',
       }}
       layout={{
@@ -42,6 +36,10 @@ export const LineMarkerStopLayer = ({ isHidden, ...props }: { isHidden?: boolean
 export const LineMarkerStops = () => {
   const { code } = useLine()
   const { query: lineStopsQuery } = useLineStops()
+
+  const primaryColor = useCSSVariable('--color-primary')?.toString()
+  const borderColor = useCSSVariable('--border-color-muted')?.toString()
+
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
 
   if (!lineStopsQuery.data)
@@ -51,6 +49,8 @@ export const LineMarkerStops = () => {
     type: 'Feature',
     properties: {
       code: bus.code,
+      color: primaryColor,
+      borderColor: borderColor,
     },
     geometry: {
       type: 'Point',

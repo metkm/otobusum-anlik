@@ -7,13 +7,14 @@ import { ScrollView } from 'react-native-gesture-handler'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
+import { UBadge } from '@/components/u/UBadge'
 import { UButton } from '@/components/u/UButton'
 import { USheetHeader } from '@/components/u/UHeader'
 import { UIcon } from '@/components/u/UIcon'
 import { USheet } from '@/components/u/USheet'
 import { UText } from '@/components/u/UText'
 
-import { useLine, useLineBuses, useLineTheme } from '@/composables'
+import { useLine, useLineBuses } from '@/composables'
 import { useLineRoutes } from '@/composables/useLineRoutes'
 import { useLineStore } from '@/stores'
 import { Route } from '@/types/route'
@@ -22,43 +23,33 @@ const RouteItem = ({ isSelected, item, busCount }: { isSelected: boolean, item: 
   const setRoute = useLineStore(useShallow(state => state.setRoute))
   const { code } = useLine()
 
-  const theme = useLineTheme()
-  const backgroundWithColor = theme?.backgroundWithColor({ variant: isSelected ? 'solid' : 'soft' })
-
   const handlePress = () => {
     setRoute(code, item.code)
     TrueSheet.dismissAll()
   }
 
+  const variant = isSelected ? 'soft' : 'ghost'
+  const color = isSelected ? 'primary' : 'neutral'
+
   return (
     <UButton
       label={item.name}
-      variant={isSelected ? 'soft' : 'ghost'}
       onPress={handlePress}
-      className="flex-col justify-start items-start h-15.5"
+      className="flex-col justify-start items-start"
+      variant={variant}
+      color={color}
     >
       <View className="flex-row justify-center gap-1">
-        <View className="px-2 py-1 gap-1 rounded-md flex-row items-center" style={backgroundWithColor}>
-          <UIcon
-            name="bus-front"
-            sizeClassName="size-4"
-            color={backgroundWithColor?.color}
-          />
+        <UBadge
+          icon="bus-front"
+          label={busCount.toString()}
+          color={color}
+        />
 
-          <UText
-            className="font-inter-medium text-xs"
-            style={backgroundWithColor}
-          >
-            {busCount}
-          </UText>
-        </View>
-
-        <UText
-          className="px-2 py-1 font-inter-medium rounded-md text-xs align-middle"
-          style={backgroundWithColor}
-        >
-          {item.code.split('_').slice(1).join('_')}
-        </UText>
+        <UBadge
+          label={item.code.split('_').slice(1).join('_')}
+          color={color}
+        />
       </View>
     </UButton>
   )

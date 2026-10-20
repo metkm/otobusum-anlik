@@ -3,11 +3,11 @@ import { useState } from 'react'
 import { Modal, View } from 'react-native'
 import { GestureHandlerRootView, Pressable } from 'react-native-gesture-handler'
 import ColorPicker, { type ColorFormatsObject, Panel3, Preview } from 'reanimated-color-picker'
-import { withUniwind } from 'uniwind'
+import { useCSSVariable, withUniwind } from 'uniwind'
 
 import { UButton } from '@/components/u/UButton'
 
-import { useLine, useLineTheme } from '@/composables'
+import { useLine } from '@/composables'
 import { useThemeStore } from '@/stores'
 
 const StyledColorPicker = withUniwind(ColorPicker)
@@ -16,9 +16,7 @@ const StyledPressable = withUniwind(Pressable)
 export const LineModalsColorPicker = () => {
   const [isVisible, setIsVisible] = useState(false)
   const { code } = useLine()
-
-  const theme = useLineTheme()
-  const primary = theme?.background()?.backgroundColor
+  const primaryColor = useCSSVariable('--color-primary')?.toString()
 
   const onSelectColor = ({ hsl }: ColorFormatsObject) => {
     const [_h, _s, _l] = hsl.match(/\d+/g) as [string, string, string]
@@ -39,10 +37,7 @@ export const LineModalsColorPicker = () => {
         size="lg"
         variant="soft"
       >
-        <View
-          style={{ backgroundColor: primary }}
-          className="size-4 rounded-md"
-        />
+        <View className="size-4 rounded-md bg-primary" />
       </UButton>
 
       <Modal
@@ -59,7 +54,7 @@ export const LineModalsColorPicker = () => {
               <StyledColorPicker
                 className="gap-2"
                 onCompleteJS={onSelectColor}
-                value={primary}
+                value={primaryColor}
               >
                 <Preview
                   hideInitialColor

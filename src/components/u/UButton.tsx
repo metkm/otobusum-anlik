@@ -9,7 +9,6 @@ import { UActivityIndicator } from './UActivityIndicator'
 import { UIcon } from './UIcon'
 import { UText } from './UText'
 
-import { useLineTheme } from '@/composables/useLineTheme'
 import { cn } from '@/utils/cn'
 
 const StyledBaseButton = withUniwind(BaseButton)
@@ -73,16 +72,16 @@ const ui = tv({
       color: 'neutral',
       variant: 'soft',
       className: {
-        base: 'bg-elevated',
-        label: 'text-default',
+        base: 'bg-neutral-elevated',
+        label: 'text-neutral-default',
       },
     },
     {
       color: 'neutral',
       variant: 'solid',
       className: {
-        base: 'bg-muted',
-        label: 'text-default',
+        base: 'bg-neutral-muted',
+        label: 'text-neutral-default',
       },
     },
     {
@@ -90,12 +89,12 @@ const ui = tv({
       variant: 'ghost',
       className: {
         base: 'bg-transparent',
-        label: 'text-default',
+        label: 'text-neutral-default',
       },
     },
   ],
   slots: {
-    base: 'bg-muted flex flex-row items-center gap-1.5 rounded-md',
+    base: 'flex flex-row items-center gap-1.5 rounded-md',
     label: 'shrink font-inter-medium text-xs',
     icon: '',
   },
@@ -130,17 +129,14 @@ export const UButton = ({
   loading?: boolean
   labelClassName?: string
 } & BaseButtonProps) => {
-  const theme = useLineTheme()
   const router = useRouter()
+
   const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, variant, size, block, disabled })
 
   const handlePress: BaseButtonProps['onPress'] = () => {
     if (!to) return
     router.push(to)
   }
-
-  const themeBackground = color !== 'neutral' ? theme?.background({ variant }) : undefined
-  const themeText = color !== 'neutral' ? theme?.text({ variant }) : undefined
 
   return (
     <StyledBaseButton
@@ -149,7 +145,7 @@ export const UButton = ({
         className,
       )}
       onPress={handlePress}
-      style={[themeBackground, style]}
+      style={style}
       enabled={!disabled}
       {...props}
     >
@@ -159,7 +155,6 @@ export const UButton = ({
               <UActivityIndicator
                 sizeClassName={uiIcon()}
                 className={uiLabel()}
-                color={themeText?.color}
               />
             )
           : icon
@@ -168,7 +163,6 @@ export const UButton = ({
                   name={icon}
                   sizeClassName={uiIcon()}
                   colorClassName={uiLabel()}
-                  color={themeText?.color}
                 />
               )
             : undefined
@@ -183,7 +177,6 @@ export const UButton = ({
             labelClassName,
           )}
           numberOfLines={1}
-          style={themeText}
         >
           {label}
         </UText>
@@ -194,7 +187,6 @@ export const UButton = ({
           name={trailingIcon}
           sizeClassName={uiIcon()}
           colorClassName={uiLabel()}
-          color={themeText?.color}
           className="ml-auto"
         />
       )}

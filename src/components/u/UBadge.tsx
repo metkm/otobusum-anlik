@@ -1,40 +1,83 @@
-import { hexFromArgb, type Theme } from '@material/material-color-utilities'
-import Lucide from '@react-native-vector-icons/lucide'
-import { ComponentProps } from 'react'
 import { View } from 'react-native'
+import { tv, type VariantProps } from 'tailwind-variants'
 
-import { UIcon } from './UIcon'
+import { IconName, UIcon } from './UIcon'
 import { UText } from './UText'
+
+import { cn } from '@/utils/cn'
+
+const ui = tv({
+  variants: {
+    color: {
+      primary: '',
+      neutral: '',
+    },
+    variant: {
+      solid: '',
+      soft: '',
+    },
+  },
+  compoundVariants: [
+    {
+      color: 'primary',
+      variant: 'solid',
+      className: {
+        base: 'bg-primary',
+        label: 'text-inverted',
+      },
+    },
+    {
+      color: 'primary',
+      variant: 'soft',
+      className: {
+        base: 'bg-primary/15',
+        label: 'text-primary',
+      },
+    },
+    {
+      color: 'neutral',
+      variant: 'soft',
+      className: {
+        base: 'bg-neutral-muted',
+        label: 'text-neutral-default',
+      },
+    },
+  ],
+  slots: {
+    base: 'px-2.5 py-1.5 flex-row gap-1 rounded-full',
+    label: 'font-inter-semibold text-xs',
+  },
+  defaultVariants: {
+    color: 'primary',
+    variant: 'solid',
+  },
+})
 
 export const UBadge = ({
   label,
-  theme,
   icon,
+  color,
+  variant,
+  className,
 }: {
   label?: string
-  theme?: Theme
-  icon?: ComponentProps<typeof Lucide>['name']
-}) => {
-  const backgroundColor = theme ? hexFromArgb(theme.schemes.dark.primary) : undefined
-  const color = theme ? hexFromArgb(theme.schemes.dark.onPrimary) : undefined
+  icon?: IconName
+  className?: string
+} & VariantProps<typeof ui>) => {
+  const { base: uiBase, label: uiLabel } = ui({ color, variant })
 
   return (
-    <View
-      className="px-2 py-1 flex-row bg-muted rounded-full"
-      style={color ? { backgroundColor } : undefined}
-    >
+    <View className={cn(uiBase(), className)}>
       {icon && (
         <UIcon
           name={icon}
           sizeClassName="size-4"
+          colorClassName={uiLabel()}
         />
       )}
 
       {label && (
-        <UText
-          className="font-inter-semibold text-xs"
-          style={color ? { color } : undefined}
-        >
+        <UText className={uiLabel()}>
           {label}
         </UText>
       )}

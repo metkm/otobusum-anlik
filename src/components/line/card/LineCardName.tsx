@@ -5,7 +5,7 @@ import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 
-import { useCountdown, useLine, useLineBuses, useLineTheme } from '@/composables'
+import { useCountdown, useLine, useLineBuses } from '@/composables'
 
 export const LineCardName = () => {
   const { code } = useLine()
@@ -15,16 +15,10 @@ export const LineCardName = () => {
 
   const { remaining } = useCountdown(lineBusesQuery.dataUpdatedAt, duration)
   const { t } = useTranslation()
-  const theme = useLineTheme()
-
-  const color = theme?.text({ variant: 'ghost' })
 
   return (
     <View className="flex-row items-center gap-2 shrink grow overflow-hidden">
-      <UText
-        className="font-inter-semibold text-lg"
-        style={color}
-      >
+      <UText className="font-inter-semibold text-lg">
         {code}
       </UText>
 
