@@ -89,4 +89,6 @@ export default {
   routesPassingThisPoint: 'Buradan geçen hatlar',
   stops: 'Duraklar',
   routeCount: '{{count}} Güzergah',
+  arrivingIn: 'kaldı',
+  arrivingMinutes: '{{min}} dk',
 }

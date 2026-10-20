@@ -89,4 +89,6 @@ export default {
   routesPassingThisPoint: 'Routes passing from this point',
   stops: 'Stops',
   routeCount: '{{count}} routes',
+  arrivingIn: 'arriving in',
+  arrivingMinutes: '{{min}} min',
 }
