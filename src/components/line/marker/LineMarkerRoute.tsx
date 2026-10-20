@@ -1,24 +1,20 @@
 import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibre-react-native'
 import Lucide from '@react-native-vector-icons/lucide'
 import type { Feature } from 'geojson'
+import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine, useLineRoutes, useLineTheme } from '@/composables'
+import { useLine, useLineRoutes } from '@/composables'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerRouteLayer = ({ isHidden = false, code }: { isHidden?: boolean, code?: string }) => {
-  const theme = useLineTheme()
-
-  const background = theme?.background({ variant: 'solid' })
-  const bgWithColor = theme?.backgroundWithColor({ variant: 'soft' })
-
   return (
     <>
       <Layer
         id={`route-path-${code}`}
         type="line"
         paint={{
-          'line-color': background?.backgroundColor ?? ['get', 'color'],
+          'line-color': ['get', 'color'],
           'line-width': [
             'interpolate',
             ['linear'], ['zoom'],
@@ -63,7 +59,7 @@ export const LineMarkerRouteLayer = ({ isHidden = false, code }: { isHidden?: bo
           'visibility': isHidden ? 'none' : 'visible',
         }}
         paint={{
-          'text-color': bgWithColor?.backgroundColor ?? ['get', 'color'],
+          'text-color': ['get', 'textColor'],
           'text-opacity': 0.6,
         }}
         afterId={`route-path-arrows-${code}`}
@@ -75,10 +71,11 @@ export const LineMarkerRouteLayer = ({ isHidden = false, code }: { isHidden?: bo
 export const LineMarkerRoute = () => {
   const { code } = useLine()
   const { route, direction } = useLineRoutes()
-  const isHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
 
-  const theme = useLineTheme()
-  const text = theme?.text()
+  const textColor = useCSSVariable('--text-color-inverted')?.toString()
+  const primaryColor = useCSSVariable('--color-primary')?.toString()
+
+  const isHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
 
   if (!route?.path) {
     return
@@ -88,7 +85,10 @@ export const LineMarkerRoute = () => {
 
   const feature: Feature = {
     type: 'Feature',
-    properties: {},
+    properties: {
+      color: primaryColor,
+      textColor: textColor,
+    },
     geometry: {
       type: 'LineString',
       coordinates,
@@ -98,7 +98,7 @@ export const LineMarkerRoute = () => {
   const images: Record<string, ImageEntry> = {}
   const iconImage = `route-arrow-${code}`
 
-  images[iconImage] = Lucide.getImageSourceSync(direction === 'G' ? 'arrow-right' : 'arrow-left', 20, text?.color).uri
+  images[iconImage] = Lucide.getImageSourceSync(direction === 'G' ? 'arrow-right' : 'arrow-left', 20, textColor).uri
 
   return (
     <>

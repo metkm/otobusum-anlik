@@ -2,36 +2,36 @@ import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibr
 import Lucide from '@react-native-vector-icons/lucide'
 import { router } from 'expo-router'
 import type { Feature } from 'geojson'
+import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine, useLineGroup, useLineBuses, useLineRoutes, useLineTheme, useMapStyle } from '@/composables'
+import { useLine, useLineGroup, useLineBuses, useLineRoutes } from '@/composables'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerBuses = () => {
   const { codes } = useLineGroup()
-  const { mapColorScheme } = useMapStyle()
   const { code } = useLine()
   const { routeCode } = useLineRoutes()
   const { query: lineBusesQuery, buses } = useLineBuses()
 
-  const theme = useLineTheme({ colorScheme: mapColorScheme })
+  const textColor = useCSSVariable('--text-color-inverted')?.toString()
+  const primaryColor = useCSSVariable('--color-primary')?.toString()
+
   const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
 
   if (!lineBusesQuery.data)
     return
 
-  const background = theme?.background({ variant: 'solid' })
-  const text = theme?.text({ variant: 'solid' })
-
   const iconImage = `bus-${code}`
   const images: Record<string, ImageEntry> = {}
-  images[iconImage] = Lucide.getImageSourceSync('bus-front', 20, text?.color).uri
+  images[iconImage] = Lucide.getImageSourceSync('bus-front', 20, textColor).uri
 
   const features: Feature[] = buses.filter(bus => bus.route_code === routeCode)
     .map(bus => ({
       type: 'Feature',
       properties: {
         doorNo: bus.bus_id,
+        color: primaryColor,
       },
       geometry: {
         type: 'Point',
@@ -67,7 +67,7 @@ export const LineMarkerBuses = () => {
               10, 14,
               16, 16,
             ],
-            'circle-color': background?.backgroundColor as string,
+            'circle-color': ['get', 'color'],
             'circle-pitch-alignment': 'map',
           }}
           layout={{ visibility: isLineHidden ? 'none' : 'visible' }}

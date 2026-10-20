@@ -10,7 +10,7 @@ import { UEmpty } from '../u/UEmpty'
 import { UQueryState } from '../u/UQueryState'
 import { UText } from '../u/UText'
 
-import { useLineCardWidth, useLineNews, useLineRoutes, useLineTheme, useLineTimetable } from '@/composables'
+import { useLineCardWidth, useLineNews, useLineRoutes, useLineTimetable } from '@/composables'
 import { Time } from '@/composables/useLineTimetable'
 import { useFilterStore } from '@/stores'
 import { City } from '@/types/city'
@@ -39,9 +39,6 @@ export const LineTimetable = ({ className }: ViewProps) => {
   const { route, routeCode } = useLineRoutes()
   const { query: lineTimetableQuery } = useLineTimetable()
   const { query: lineNewsQuery } = useLineNews()
-
-  const theme = useLineTheme()
-  const background = theme?.background({ variant: 'ghost' })
 
   const filteredData = useMemo(() => {
     if (!lineTimetableQuery.data) return []
@@ -98,9 +95,6 @@ export const LineTimetable = ({ className }: ViewProps) => {
     return time
   })
 
-  const backgroundWithColor = theme?.backgroundWithColor()
-  const backgroundMuted = theme?.background({ variant: 'soft' })
-
   const options: Record<City, { label: string, value: number }[]> = {
     istanbul: [
       {
@@ -150,8 +144,8 @@ export const LineTimetable = ({ className }: ViewProps) => {
 
   return (
     <View
-      style={[{ width: cardWidth, elevation: 2 }, background]}
-      className={cn('bg-muted rounded-md', className)}
+      style={{ width: cardWidth, elevation: 2 }}
+      className={cn('bg-muted rounded-md border-2 border-muted', className)}
     >
       <View className="m-2 mb-0">
         <UText className="text-muted">{routeCode}</UText>
@@ -183,13 +177,12 @@ export const LineTimetable = ({ className }: ViewProps) => {
                   {hourEntries.map(([hour, minutes], index) => (
                     <View
                       key={hour}
-                      className="flex-row items-center shrink p-2 gap-2"
-                      style={(index % 2 !== 0) && backgroundMuted}
+                      className={cn(
+                        'flex-row items-center shrink p-2 gap-2',
+                        index % 2 !== 0 ? 'bg-default' : false,
+                      )}
                     >
-                      <UText
-                        className="font-inter-medium w-7 h-full min-h-7 text-center align-middle rounded-md"
-                        style={backgroundWithColor}
-                      >
+                      <UText className="font-inter-medium w-7 h-full min-h-7 text-center align-middle rounded-md bg-primary text-inverted">
                         {hour}
                       </UText>
 

@@ -3,7 +3,6 @@ import { RefObject } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useCSSVariable, withUniwind } from 'uniwind'
 
-import { useLineTheme } from '@/composables/useLineTheme'
 import { cn } from '@/utils/cn'
 
 const StyledGestureHandlerRootView = withUniwind(GestureHandlerRootView)
@@ -11,13 +10,10 @@ const StyledGestureHandlerRootView = withUniwind(GestureHandlerRootView)
 export const USheet = ({ ref, contentContainerClassName, children, ...props }: { ref: RefObject<TrueSheet | null>, contentContainerClassName?: string } & TrueSheetProps) => {
   const backgroundColor = useCSSVariable(['--background-color-default'])?.toString()
 
-  const theme = useLineTheme()
-  const background = theme?.background({ variant: 'ghost' })
-
   return (
     <TrueSheet
       ref={ref}
-      backgroundColor={background?.backgroundColor || backgroundColor}
+      backgroundColor={backgroundColor}
       detents={[0.5, 0.8]}
       {...props}
     >

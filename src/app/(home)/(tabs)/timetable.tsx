@@ -4,6 +4,7 @@ import { useSharedValue } from 'react-native-reanimated'
 
 import { LineCards } from '@/components/line/LineCards'
 import { LineTimetable } from '@/components/line/LineTimetable'
+import { ThemeProvider } from '@/components/ThemeProvider'
 import { UButton } from '@/components/u/UButton'
 import { CarouselContext, UCarousel } from '@/components/u/UCarousel'
 import { UText } from '@/components/u/UText'
@@ -40,7 +41,9 @@ const LineTimetables = () => {
     >
       {codes.map(item => (
         <LineContext key={item} value={item}>
-          <LineTimetable className={codes.length < 2 ? 'rounded-none' : ''} />
+          <ThemeProvider>
+            <LineTimetable className={codes.length < 2 ? 'rounded-none' : ''} />
+          </ThemeProvider>
         </LineContext>
       ))}
     </UCarousel>

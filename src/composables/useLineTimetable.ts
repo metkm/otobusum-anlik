@@ -27,7 +27,7 @@ export const useLineTimetable = () => {
 
   const query = useQuery({
     queryKey: ['timetable', code, direction],
-    queryFn: () => ky.get<Timetable>(`${process.env.EXPO_PUBLIC_BASE_URL}/timetable/${code}`, {
+    queryFn: () => ky.get<Timetable>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/timetable/${code}`, {
       searchParams: {
         direction,
         city,

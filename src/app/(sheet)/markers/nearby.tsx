@@ -8,6 +8,7 @@ import { t } from 'i18next'
 import { useEffect, useMemo, useRef } from 'react'
 import { View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
+import { ScopedVariables, useCSSVariable } from 'uniwind'
 
 import { UActivityIndicator } from '@/components/u/UActivityIndicator'
 import { UBadge } from '@/components/u/UBadge'
@@ -24,6 +25,7 @@ import { createRandomTheme } from '@/utils/color'
 import { getPolygonCoordinatesFromPoint } from '@/utils/getPolygonFromCenter'
 
 export const NearbyScreen = () => {
+  const primaryColor = useCSSVariable('--color-primary')?.toString()
   const params = useLocalSearchParams()
   const router = useRouter()
 
@@ -60,13 +62,15 @@ export const NearbyScreen = () => {
     type: 'FeatureCollection',
     features: query.data?.stops.map(stop => ({
       type: 'Feature',
-      properties: {},
+      properties: {
+        color: primaryColor,
+      },
       geometry: {
         type: 'Point',
         coordinates: [stop.lng, stop.lat],
       },
     })) || [],
-  }), [query.data?.stops])
+  }), [primaryColor, query.data?.stops])
 
   const polygonCollection = useMemo<FeatureCollection | undefined>(() => {
     if (!query.data) {
@@ -246,10 +250,12 @@ export const NearbyScreen = () => {
                     trailingIcon="arrow-right"
                   >
                     <View className="flex-row items-center gap-2 shrink">
-                      <UBadge
-                        label={route.line_code}
-                        theme={colors?.[index]}
-                      />
+                      <ScopedVariables variables={{
+                        '--color-primary': colors ? hexFromArgb(colors[index]!.schemes.dark.primary) : '',
+                      }}
+                      >
+                        <UBadge label={route.line_code} />
+                      </ScopedVariables>
 
                       <UText
                         className="shrink text-xs font-inter-medium"

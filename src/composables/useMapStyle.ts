@@ -1,7 +1,4 @@
-// import { useShallow } from 'zustand/react/shallow'
-
-import { useColorScheme } from './useLineTheme'
-
+import { useColorScheme } from '@/composables/useColorScheme'
 import { mapStyles } from '@/constants/mapStyles'
 import { ColorScheme, useSettingsStore } from '@/stores'
 

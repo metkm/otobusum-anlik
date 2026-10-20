@@ -1,6 +1,7 @@
 import { Dimensions } from 'react-native'
 import Animated, { LinearTransition, SharedValue } from 'react-native-reanimated'
 
+import { ThemeProvider } from '../ThemeProvider'
 import { UCarousel } from '../u/UCarousel'
 
 import { LineCard } from './card/LineCard'
@@ -36,7 +37,7 @@ export const LineCards = ({ className }: { className?: string, buttonsHeight?: S
           exiting={ExitScaleOut}
           layout={LinearTransition}
         >
-          <LineContext value={code}>
+          {/* <LineContext value={code}>
             <LineCard
               style={{ width: cardWidth }}
               className={cn(
@@ -44,6 +45,17 @@ export const LineCards = ({ className }: { className?: string, buttonsHeight?: S
                 codes.length < 2 && 'rounded-b-none',
               )}
             />
+          </LineContext> */}
+          <LineContext value={code}>
+            <ThemeProvider>
+              <LineCard
+                style={{ width: cardWidth }}
+                className={cn(
+                  'grow',
+                  codes.length < 2 && 'rounded-b-none',
+                )}
+              />
+            </ThemeProvider>
           </LineContext>
         </Animated.View>
       ))}
