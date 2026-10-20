@@ -54,9 +54,7 @@ const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
     <View className="flex-row items-center gap-2">
       <UText className="w-6.5 text-center font-inter-medium">{index + 1}</UText>
 
-      <View
-        className="items-center justify-center size-8 rounded-full border-2 border-muted"
-      >
+      <View className="items-center justify-center size-8 rounded-full border-2 border-muted">
         {closestBus && (
           <UIcon
             name="bus-front"
@@ -72,27 +70,35 @@ const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
         {item.name}
       </UText>
 
-      {closestBus && (
-        <>
-          <UButton
-            icon="locate"
-            className="ml-auto"
-            variant="soft"
-            onPress={goToBus}
-          />
+      <View className="flex-row ml-auto gap-1">
+        {closestBus && (
+          <>
+            <UButton
+              icon="locate"
+              className="ml-auto"
+              variant="soft"
+              onPress={goToBus}
+            />
 
-          <UButton
-            icon="info"
-            to={{
-              pathname: '/bus-info/[doorNo]',
-              params: {
-                doorNo: closestBus?.bus_id,
-              },
-            }}
-            variant="soft"
-          />
-        </>
-      )}
+            <UButton
+              icon="info"
+              to={{
+                pathname: '/bus-info/[doorNo]',
+                params: {
+                  doorNo: closestBus?.bus_id,
+                },
+              }}
+              variant="soft"
+            />
+          </>
+        )}
+
+        <UButton
+          icon="chevron-right"
+          variant="soft"
+          to={`/stop/${item.code}`}
+        />
+      </View>
     </View>
   )
 }
