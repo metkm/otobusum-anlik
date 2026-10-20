@@ -99,6 +99,7 @@
   --text-color-muted: var(--ui-text-muted);
   --text-color-default: var(--ui-text);
   --text-color-inverted: var(--ui-text-inverted);
+  --text-color-error: var(--ui-error);
 
   --text-color-neutral-muted: var(--ui-neutral-text-muted);
   --text-color-neutral-default: var(--ui-neutral-text);

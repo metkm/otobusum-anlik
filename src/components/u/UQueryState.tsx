@@ -22,15 +22,16 @@ export const UQueryState = <T,>({
       <UActivityIndicator />
     )
 
-  if (query.isError)
+  if (query.isError) {
     return error?.(query.error) ?? (
       <UText
-        className="text-error grow text-center align-middle text-xs truncate shrink"
+        className="text-error grow text-center align-middle text-xs truncate shrink p-4"
         numberOfLines={1}
       >
         {errorMessage ?? query.error.message}
       </UText>
     )
+  }
 
   return children
 }
