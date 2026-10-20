@@ -15,6 +15,7 @@ export const USheet = ({ ref, contentContainerClassName, children, ...props }: {
       ref={ref}
       backgroundColor={backgroundColor}
       detents={[0.5, 0.8]}
+      style={{ flex: 1 }}
       {...props}
     >
       <StyledGestureHandlerRootView className={cn(

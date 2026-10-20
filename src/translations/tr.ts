@@ -88,4 +88,5 @@ export default {
   nearbyStops: 'Yakın duraklar',
   routesPassingThisPoint: 'Buradan geçen hatlar',
   stops: 'Duraklar',
+  routeCount: '{{count}} Güzergah',
 }

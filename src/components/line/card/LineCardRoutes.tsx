@@ -133,6 +133,7 @@ export const LineCardRoutes = () => {
               <USheetHeader
                 icon="route"
                 title={t('routes')}
+                description={t('routeCount', { count: sortedRoutes.length })}
               />
             )}
           >

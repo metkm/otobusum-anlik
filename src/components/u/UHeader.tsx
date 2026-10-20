@@ -7,7 +7,7 @@ import { UText } from './UText'
 import { cn } from '@/utils/cn'
 
 interface UHeaderProps {
-  title: string
+  title?: string
   description?: string
   icon?: IconName
   children?: ReactNode
@@ -16,7 +16,7 @@ interface UHeaderProps {
 
 export const UHeader = ({ icon, title, description, children, className }: UHeaderProps) => {
   return (
-    <View className={cn('flex-row items-center justify-between gap-2 bg-muted/50 border-y border-muted p-2', className)}>
+    <View className={cn('flex-row items-center justify-between gap-2 bg-default border-b border-muted p-2', className)}>
       <View className="flex-row gap-2 items-center">
         {icon && (
           <UIcon
@@ -25,13 +25,17 @@ export const UHeader = ({ icon, title, description, children, className }: UHead
           />
         )}
 
-        <View className="shrink w-auto">
-          <UText className="font-inter-medium">{title}</UText>
+        {(title || description) && (
+          <View className="shrink w-auto">
+            {title && (
+              <UText className="font-inter-medium">{title}</UText>
+            )}
 
-          {description && (
-            <UText className="font-inter-medium text-xs text-muted">{description}</UText>
-          )}
-        </View>
+            {description && (
+              <UText className="font-inter-medium text-xs text-muted">{description}</UText>
+            )}
+          </View>
+        )}
       </View>
 
       {children}
@@ -45,7 +49,7 @@ export const USheetHeader = ({ icon, title, description, children }: UHeaderProp
       icon={icon}
       title={title}
       description={description}
-      className="mt-8"
+      className="pt-8"
     >
       {children}
     </UHeader>

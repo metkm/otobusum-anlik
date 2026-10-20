@@ -88,4 +88,5 @@ export default {
   nearbyStops: 'Nearby stops',
   routesPassingThisPoint: 'Routes passing from this point',
   stops: 'Stops',
+  routeCount: '{{count}} routes',
 }
