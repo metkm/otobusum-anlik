@@ -9,7 +9,7 @@ import { useFilterStore } from './filter'
 import { City } from '@/types/city'
 import { createRandomTheme } from '@/utils/color'
 
-export interface Scheme {
+interface Scheme {
   'ui-bg': string
   'ui-bg-muted': string
   'ui-text-muted': string
@@ -21,7 +21,7 @@ export interface Scheme {
   'ui-border-muted': string
 }
 
-export interface Schemes {
+interface Schemes {
   dark: Scheme
   light: Scheme
 }

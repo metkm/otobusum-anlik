@@ -7767,5 +7767,4 @@ export const mapStyles = {
   } as StyleSpecification,
 }
 
-export type MapStyleValue = typeof mapStyles[keyof typeof mapStyles]
 export type MapStyle = keyof typeof mapStyles

@@ -171,7 +171,11 @@ export const NearbyScreen = () => {
   }
 
   return (
-    <ScrollView ref={scrollableRef} className="flex-1">
+    <ScrollView
+      ref={scrollableRef}
+      className="flex-1"
+      contentContainerClassName="p-2 pt-0"
+    >
       <UQueryState
         query={query}
         loading={() => (

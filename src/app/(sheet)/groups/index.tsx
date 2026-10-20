@@ -165,8 +165,14 @@ export const GroupsScreen = () => {
   return (
     <LineContext value={addToGroup}>
       <ThemeProvider>
-        <ScrollView ref={scrollableRef} contentContainerClassName="gap-2">
-          <Animated.View layout={LinearTransition}>
+        <ScrollView
+          ref={scrollableRef}
+          contentContainerClassName="p-2"
+        >
+          <Animated.View
+            layout={LinearTransition}
+            className="gap-2"
+          >
             {groups.map(group => (
               <Animated.View
                 key={group.id}

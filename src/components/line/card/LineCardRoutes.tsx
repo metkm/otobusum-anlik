@@ -149,7 +149,7 @@ export const LineCardRoutes = () => {
               )}
               extraData={routeCode}
               keyExtractor={item => item.id.toString()}
-              contentContainerStyle={{ paddingHorizontal: 8, paddingTop: 8, gap: 8 }}
+              contentContainerStyle={{ padding: 8, gap: 8 }}
               getFixedItemSize={() => 62 + 8}
               recycleItems
             />

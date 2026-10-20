@@ -1,6 +1,5 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
-import { Map as _Map, type MapRef, type LngLatBounds, type CameraProps, type MapProps, type ViewStateChangeEvent, Camera } from '@maplibre/maplibre-react-native'
-import React, { RefObject } from 'react'
+import { Map as _Map, type LngLatBounds, type CameraProps, type MapProps, type ViewStateChangeEvent, Camera } from '@maplibre/maplibre-react-native'
 import { NativeSyntheticEvent } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
@@ -8,12 +7,6 @@ import { useSettingsStore } from '../stores/settings'
 
 import { useMap } from '@/composables/useMap'
 import { useMapStyle } from '@/composables/useMapStyle'
-
-export interface TheMapProps {
-  children?: React.ReactNode
-  onMapReady?: () => void
-  ref?: RefObject<MapRef | null>
-}
 
 // so compiler is not upset
 const getInitialMapBounds = () => {

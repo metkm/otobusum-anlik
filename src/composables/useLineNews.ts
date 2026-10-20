@@ -13,7 +13,7 @@ interface Announcement {
   MESAJ: string
 }
 
-export const extractInnerContentXml = (key: string, content: string) => {
+const extractInnerContentXml = (key: string, content: string) => {
   return content.split(`${key}>`).at(1)?.split(`</`).at(0)
 }
 

@@ -13,7 +13,7 @@ import { GROUP_LINE_LIMIT } from '@/constants/app'
 import { City } from '@/types/city'
 import { LineGroup, RouteCode, RouteDirection } from '@/types/line'
 
-export interface LineStoreV3 {
+interface LineStoreV3 {
   lines: Record<City, string[]>
   lineGroups: Record<City, Record<string, { id: string, lineCodes: string[], title: string }>>
 }

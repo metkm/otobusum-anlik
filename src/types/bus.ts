@@ -15,7 +15,7 @@ export interface BusLine {
   city: string
 }
 
-export interface BusLocation {
+interface BusLocation {
   bus_id: string
   lng: number
   lat: number
