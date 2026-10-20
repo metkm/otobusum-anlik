@@ -67,7 +67,6 @@ export const LineMarkerBuses = () => {
               10, 14,
               16, 16,
             ],
-            // 'circle-color': background?.backgroundColor as string,
             'circle-color': ['get', 'color'],
             'circle-pitch-alignment': 'map',
           }}
