@@ -69,7 +69,7 @@ export const MapButtons = (props: ViewProps) => {
       >
         <UButton
           icon="radar"
-          to="/markers/nearby"
+          to={{ pathname: '(sheet)/markers/nearby' }}
           size="lg"
           color="neutral"
           style={{ elevation: 1 }}
@@ -84,7 +84,7 @@ export const MapButtons = (props: ViewProps) => {
       >
         <UButton
           icon="search"
-          to="/search"
+          to={{ pathname: 'search' }}
           size="lg"
           color="neutral"
           style={{ elevation: 1 }}
@@ -121,7 +121,7 @@ export const MapButtons = (props: ViewProps) => {
           color="neutral"
           style={{ elevation: 1 }}
           size="lg"
-          to="/groups"
+          to={{ pathname: '(sheet)/groups' }}
           label={group?.name}
         />
       </AnimatedGestureHandlerRootView>

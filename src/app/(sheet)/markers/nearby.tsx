@@ -208,7 +208,7 @@ export const NearbyScreen = () => {
                 <UButton
                   key={stop.id}
                   label={stop.name}
-                  to={`/(sheet)/stop/${stop.code}`}
+                  to={{ params: { stopCode: stop.code }, pathname: `(sheet)/stop/[stopCode]` }}
                   variant="ghost"
                   color="neutral"
                   trailingIcon="arrow-right"
@@ -246,7 +246,7 @@ export const NearbyScreen = () => {
                   key={route.id}
                   to={{
                     params: { addToGroup: route.line_code },
-                    pathname: '/groups',
+                    pathname: '(sheet)/groups',
                   }}
                   variant="ghost"
                   color="neutral"

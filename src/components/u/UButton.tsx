@@ -1,5 +1,5 @@
+import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import type Lucide from '@react-native-vector-icons/lucide'
-import { useRouter, type Href } from 'expo-router'
 import type { ComponentProps } from 'react'
 import { Touchable } from 'react-native-gesture-handler'
 import { tv, type VariantProps } from 'tailwind-variants'
@@ -145,7 +145,7 @@ export const UButton = ({
   label?: string
   icon?: ComponentProps<typeof Lucide>['name']
   trailingIcon?: ComponentProps<typeof Lucide>['name']
-  to?: Href
+  to?: { pathname: string; params?: object }
   color?: VariantProps<typeof ui>['color']
   variant?: VariantProps<typeof ui>['variant']
   size?: 'md' | 'lg'
@@ -154,14 +154,21 @@ export const UButton = ({
   loading?: boolean
   labelClassName?: string
 }) => {
-  const router = useRouter(),
-    { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ block, color, disabled, size, variant }),
-    handlePress: TouchableProps['onPress'] = () => {
-      if (!to) {
-        return
-      }
-      router.push(to)
+  const navigation = useTrueSheetNavigation()
+
+  const {
+    base: uiBase,
+    label: uiLabel,
+    icon: uiIcon,
+  } = ui({ block, color, disabled, size, variant })
+
+  const handlePress: TouchableProps['onPress'] = () => {
+    if (!to) {
+      return
     }
+
+    navigation.navigate(to.pathname, to.params)
+  }
 
   const Icon = () => {
     if (loading) {

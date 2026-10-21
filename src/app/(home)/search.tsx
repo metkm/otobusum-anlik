@@ -69,7 +69,7 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
         icon="circle-plus"
         to={{
           params: { addToGroup: item.code },
-          pathname: '/groups',
+          pathname: '(sheet)/groups',
         }}
         variant="soft"
         size="lg"
@@ -83,7 +83,7 @@ const RenderItemStop = ({ item }: { item: BusStop }) => (
     variant="ghost"
     color="neutral"
     label={item.name}
-    to={`/(sheet)/stop/${item.code}`}
+    to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
     icon="bus-front"
   />
 )

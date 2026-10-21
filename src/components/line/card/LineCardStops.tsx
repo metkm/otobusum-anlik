@@ -84,7 +84,7 @@ const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
                 params: {
                   doorNo: closestBus.bus_id,
                 },
-                pathname: '/bus-info/[doorNo]',
+                pathname: '(sheet)/bus-info/[doorNo]',
               }}
               variant="soft"
             />
@@ -94,7 +94,7 @@ const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
         <UButton
           icon="chevron-right"
           variant="soft"
-          to={`/stop/${item.code}`}
+          to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
         />
       </View>
     </View>
