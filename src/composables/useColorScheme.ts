@@ -11,5 +11,5 @@ export const useColorScheme = (): ColorScheme => {
   if (colorSchemeStore)
     return colorSchemeStore
 
-  return colorScheme === 'unspecified' ? 'dark' : colorScheme
+  return colorScheme ?? 'dark'
 }

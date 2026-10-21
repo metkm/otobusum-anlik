@@ -3,7 +3,7 @@ import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigat
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { ScrollViewInstance, View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 
@@ -122,7 +122,7 @@ export const GroupsScreen = () => {
   const { t } = useTranslation()
   const params = useLocalSearchParams()
   const { groupId, groups } = useLineGroup()
-  const scrollableRef = useRef<ScrollView>(null)
+  const scrollableRef = useRef<ScrollViewInstance>(null)
 
   const navigation = useTrueSheetNavigation()
   const addToGroup = params.addToGroup as string | undefined

@@ -6,7 +6,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import type { FeatureCollection } from 'geojson'
 import { t } from 'i18next'
 import { useEffect, useMemo, useRef } from 'react'
-import { View } from 'react-native'
+import { ScrollViewInstance, View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import { ScopedVariables, useCSSVariable } from 'uniwind'
 
@@ -36,7 +36,7 @@ export const NearbyScreen = () => {
   const { map, camera, fitBounds } = useMap()
   const navigation = useTrueSheetNavigation()
 
-  const scrollableRef = useRef<ScrollView>(null)
+  const scrollableRef = useRef<ScrollViewInstance>(null)
   const bounds = useRef<LngLatBounds>(null)
 
   const colors = useMemo(() => query.data?.routes.map(() => createRandomTheme()), [query.data])

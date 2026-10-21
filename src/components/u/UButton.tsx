@@ -1,7 +1,7 @@
 import Lucide from '@react-native-vector-icons/lucide'
 import { Href, useRouter } from 'expo-router'
 import { ComponentProps } from 'react'
-import { BaseButton } from 'react-native-gesture-handler'
+import { Touchable } from 'react-native-gesture-handler'
 import { tv } from 'tailwind-variants'
 import { withUniwind } from 'uniwind'
 
@@ -11,9 +11,9 @@ import { UText } from './UText'
 
 import { cn } from '@/utils/cn'
 
-const StyledBaseButton = withUniwind(BaseButton)
+const StyledTouchable = withUniwind(Touchable)
 
-type BaseButtonProps = ComponentProps<typeof StyledBaseButton>
+type TouchableProps = ComponentProps<typeof StyledTouchable>
 
 const ui = tv({
   variants: {
@@ -116,7 +116,7 @@ export const UButton = ({
   loading,
   labelClassName,
   ...props
-}: {
+}: TouchableProps & {
   label?: string
   icon?: ComponentProps<typeof Lucide>['name']
   trailingIcon?: ComponentProps<typeof Lucide>['name']
@@ -128,25 +128,28 @@ export const UButton = ({
   disabled?: boolean
   loading?: boolean
   labelClassName?: string
-} & BaseButtonProps) => {
+}) => {
   const router = useRouter()
 
   const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, variant, size, block, disabled })
 
-  const handlePress: BaseButtonProps['onPress'] = () => {
+  const handlePress: TouchableProps['onPress'] = () => {
     if (!to) return
     router.push(to)
   }
 
   return (
-    <StyledBaseButton
+    <StyledTouchable
       className={cn(
         uiBase(),
         className,
       )}
       onPress={handlePress}
       style={style}
-      enabled={!disabled}
+      underlayColor='black'
+      animationDuration={0}
+      androidRipple={{}}
+      disabled={disabled}
       {...props}
     >
       {
@@ -190,6 +193,6 @@ export const UButton = ({
           className="ml-auto"
         />
       )}
-    </StyledBaseButton>
+    </StyledTouchable>
   )
 }

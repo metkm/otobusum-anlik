@@ -1,11 +1,10 @@
 import { LegendList } from '@legendapp/list/react-native'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
-import { router } from 'expo-router'
-import { useLocalSearchParams } from 'expo-router/build/hooks'
+import { router, useLocalSearchParams } from 'expo-router'
 import { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
-import { GestureHandlerRootView, TextInput } from 'react-native-gesture-handler'
+import { TextInputInstance, View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import { UButton } from '@/components/u/UButton'
 import { UInput } from '@/components/u/UInput'
@@ -22,7 +21,7 @@ export const GroupIdScreen = () => {
   const { t } = useTranslation()
 
   const name = useRef('')
-  const inputRef = useRef<TextInput>(null)
+  const inputRef = useRef<TextInputInstance>(null)
 
   const handleSave = useCallback(() => {
     if (!group)
@@ -40,10 +39,10 @@ export const GroupIdScreen = () => {
             <UButton
               label={t('save')}
               size="lg"
-              block
               icon="save"
               onPress={handleSave}
               variant="soft"
+              block
             />
 
             {groups.length > 1 && (
@@ -58,8 +57,8 @@ export const GroupIdScreen = () => {
                   router.back()
                 }}
                 size="lg"
-                block
                 variant="soft"
+                block
               />
             )}
           </View>

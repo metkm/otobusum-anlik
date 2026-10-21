@@ -2,8 +2,7 @@ import { LegendList } from '@legendapp/list/react-native'
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import { ScrollViewInstance, View } from 'react-native'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -57,7 +56,7 @@ const RouteItem = ({ isSelected, item, busCount }: { isSelected: boolean, item: 
 
 export const LineCardRoutes = () => {
   const routeSheet = useRef<TrueSheet>(null)
-  const scrollableRef = useRef<ScrollView>(null)
+  const scrollableRef = useRef<ScrollViewInstance>(null)
 
   const changeRouteDirection = useLineStore(useShallow(state => state.changeRouteDirection))
   const { t } = useTranslation()
@@ -138,7 +137,7 @@ export const LineCardRoutes = () => {
             )}
           >
             <LegendList
-              refScrollView={scrollableRef}
+              scrollViewRef={scrollableRef}
               data={sortedRoutes}
               renderItem={({ item }) => (
                 <RouteItem

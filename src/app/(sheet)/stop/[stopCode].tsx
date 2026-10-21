@@ -4,7 +4,7 @@ import { Camera, GeoJSONSource } from '@maplibre/maplibre-react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Linking, View } from 'react-native'
+import { Linking, ScrollViewInstance, View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import { Easing, LinearTransition } from 'react-native-reanimated'
 import { useCSSVariable } from 'uniwind'
@@ -25,7 +25,7 @@ import { useStopArrivals } from '@/composables/useStopArrivals'
 
 export const StopScreen = () => {
   const { t } = useTranslation()
-  const scrollableRef = useRef<ScrollView>(null)
+  const scrollableRef = useRef<ScrollViewInstance>(null)
   const navigation = useTrueSheetNavigation()
   const colorPrimary = useCSSVariable('--color-primary')?.toString()
 
