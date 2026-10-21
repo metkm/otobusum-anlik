@@ -6,7 +6,6 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking, ScrollViewInstance, View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
-import { Easing, LinearTransition } from 'react-native-reanimated'
 import { useCSSVariable } from 'uniwind'
 
 import { LineMarkerStopLayer } from '@/components/line/marker/LineMarkerStops'

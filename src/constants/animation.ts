@@ -22,4 +22,6 @@ export const EnterScaleIn = new Keyframe({
   },
 }).duration(150)
 
-export const ItemLayoutAnimation = LinearTransition.easing(Easing.bezier(0.4, 0, 0.2, 1)).duration(150)
+export const ItemLayoutAnimation = LinearTransition.easing(Easing.bezier(0.4, 0, 0.2, 1)).duration(
+  150,
+)
