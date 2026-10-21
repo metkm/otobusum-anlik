@@ -79,7 +79,7 @@ const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
               to={{
                 pathname: '/bus-info/[doorNo]',
                 params: {
-                  doorNo: closestBus?.bus_id,
+                  doorNo: closestBus.bus_id,
                 },
               }}
               variant="soft"

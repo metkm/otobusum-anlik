@@ -44,11 +44,7 @@ export const StopScreen = () => {
     if (!stopQuery.data) return
 
     const scheme = `geo:0,0?q=${stopQuery.data.stop.lat},${stopQuery.data.stop.lng}&label=${stopQuery.data.stop.name}`
-    try {
-      await Linking.openURL(scheme)
-    } catch (error) {
-      console.log(error)
-    }
+    void Linking.openURL(scheme)
   }
 
   return (
@@ -111,7 +107,7 @@ export const StopScreen = () => {
           <UText className="text-muted text-xs">{stopQuery.data?.stop.code}</UText>
           <UText className="font-inter-medium text-lg">{stopQuery.data?.stop.name}</UText>
           {stopQuery.data?.stop.province && (
-            <UText className="text-muted text-xs">{stopQuery.data?.stop.province}</UText>
+            <UText className="text-muted text-xs">{stopQuery.data.stop.province}</UText>
           )}
         </View>
 
@@ -120,7 +116,7 @@ export const StopScreen = () => {
             <UText className="text-muted text-xs">{t('linesThatUseStop')}</UText>
 
             <View className="mt-1 flex-row flex-wrap gap-2">
-              {stopQuery.data?.buses.map((bus) => (
+              {stopQuery.data.buses.map((bus) => (
                 <UButton
                   key={bus}
                   label={bus}

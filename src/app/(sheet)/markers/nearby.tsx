@@ -125,7 +125,7 @@ export const NearbyScreen = () => {
   useEffect(() => {
     const geo = polygonCollection?.features[0]?.geometry
 
-    if (!geo || geo.type !== 'Polygon') {
+    if (geo?.type !== 'Polygon') {
       return
     }
 
@@ -200,11 +200,11 @@ export const NearbyScreen = () => {
                   title={t('stops')}
                   description={t('nearbyStops')}
                 >
-                  <UText>{query.data?.stops.length}</UText>
+                  <UText>{query.data.stops.length}</UText>
                 </UHeader>
               </TrueSheetPeek>
 
-              {query.data?.stops.map((stop) => (
+              {query.data.stops.map((stop) => (
                 <UButton
                   key={stop.id}
                   label={stop.name}
@@ -228,7 +228,7 @@ export const NearbyScreen = () => {
                     title={t('routes')}
                     description={t('routesPassingThisPoint')}
                   >
-                    <UText>{query.data?.routes.length}</UText>
+                    <UText>{query.data.routes.length}</UText>
                   </UHeader>
                 </TrueSheetPeek>
               ) : (
@@ -237,11 +237,11 @@ export const NearbyScreen = () => {
                   title={t('routes')}
                   description={t('routesPassingThisPoint')}
                 >
-                  <UText>{query.data?.routes.length}</UText>
+                  <UText>{query.data.routes.length}</UText>
                 </UHeader>
               )}
 
-              {query.data?.routes.map((route, index) => (
+              {query.data.routes.map((route, index) => (
                 <UButton
                   key={route.id}
                   to={{

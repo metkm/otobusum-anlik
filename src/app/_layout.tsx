@@ -53,7 +53,7 @@ const RootContent = () => {
 }
 
 export const RootLayout = () => {
-  const background = useCSSVariable('--background-color-default')
+  const background = useCSSVariable('--background-color-default')?.toString()
   const colorScheme = useColorScheme()
 
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
@@ -62,8 +62,8 @@ export const RootLayout = () => {
     ...baseTheme,
     colors: {
       ...baseTheme.colors,
-      background: (background as string) ?? baseTheme.colors.background,
-      card: (background as string) ?? baseTheme.colors.background,
+      background: background ?? baseTheme.colors.background,
+      card: background ?? baseTheme.colors.background,
     },
   }
 

@@ -82,7 +82,7 @@ export const LineMarkerRoute = () => {
     return
   }
 
-  const coordinates = route?.path?.map((p) => [p.lng, p.lat]) || []
+  const coordinates = route.path.map((p) => [p.lng, p.lat])
 
   const feature: Feature = {
     type: 'Feature',

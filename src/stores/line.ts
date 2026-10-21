@@ -82,9 +82,9 @@ const createLineCodeSlice = immer<LineCodeSlice>((set) => ({
       if (groups.length < 2) return
 
       const i = groups.findIndex((gr) => gr.id === id)
-      if (i === -1 || i === undefined) return
+      if (i === -1) return
 
-      state.lines[city]?.splice(i, 1)
+      state.lines[city].splice(i, 1)
 
       if (state.groupId[city] === id) {
         state.groupId[city] = groups.at(0)!.id
@@ -121,7 +121,7 @@ const createLineCodeSlice = immer<LineCodeSlice>((set) => ({
         return
       }
 
-      codes?.push(code)
+      codes.push(code)
       useThemeStore.getState().createTheme(code)
 
       ToastAndroid.show(t('added', { code }), ToastAndroid.SHORT)
@@ -131,7 +131,7 @@ const createLineCodeSlice = immer<LineCodeSlice>((set) => ({
       const city = useFilterStore.getState().city
       const grId = groupId ?? state.groupId[city]
 
-      const codes = state.lines[city]?.find((c) => c.id === (groupId || grId))?.codes
+      const codes = state.lines[city].find((c) => c.id === (groupId || grId))?.codes
 
       const i = codes?.findIndex((c) => c === code)
       if (i === -1 || i === undefined) return
@@ -164,7 +164,7 @@ const createLineRouteSlice = immer<LineRouteSlice>((set) => ({
   changeRouteDirection: (code) =>
     set((state) => {
       const city = useFilterStore.getState().city
-      const routeCode = state.routes[city]?.[code] || `${code}_G_D0`
+      const routeCode = state.routes[city][code] || `${code}_G_D0`
 
       const direction = routeCode.split('_')[1] as RouteDirection
       const otherDirectionCode = routeCode.replace(

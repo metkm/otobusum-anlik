@@ -73,7 +73,7 @@ const BusInfo = () => {
         {query.data?.garage && (
           <BusInfoItem
             label={t('garage')}
-            value={query.data?.garage}
+            value={query.data.garage}
             icon="van"
           />
         )}

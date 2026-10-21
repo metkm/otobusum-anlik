@@ -10,7 +10,7 @@ void i18n.use(initReactI18next).init({
     en: { translation: en },
     tr: { translation: tr },
   },
-  lng: getLocales()[0]?.languageCode ?? 'en',
+  lng: getLocales()[0].languageCode ?? 'en',
   fallbackLng: 'en',
 })
 

@@ -8,10 +8,6 @@ import { LineMarkerStopLayer } from './line/marker/LineMarkerStops'
 export const MapTemporaryMarkers = () => {
   const temporaryMarkerStore = useTemporaryMarkerStore()
 
-  if (!temporaryMarkerStore.data) {
-    return
-  }
-
   return temporaryMarkerStore.data.map((data) =>
     data.data ? (
       <GeoJSONSource

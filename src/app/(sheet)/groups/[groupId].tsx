@@ -85,14 +85,13 @@ export const GroupIdScreen = () => {
 
         {group && group.codes.length > 0 && (
           <LegendList
-            data={group?.codes}
+            data={group.codes}
             renderItem={({ item }) => (
               <GestureHandlerRootView style={{ flexShrink: 0 }}>
                 <View className="flex-row items-stretch gap-1">
                   <UButton
                     icon="trash-2"
                     onPress={() => {
-                      if (!group) return
                       useLineStore.getState().deleteLine(item, group.id)
                     }}
                     color="neutral"

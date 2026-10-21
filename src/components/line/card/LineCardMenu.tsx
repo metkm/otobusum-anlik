@@ -42,7 +42,7 @@ export const LineCardMenu = () => {
   }
 
   const zoomToLine = () => {
-    if (!route || !route.path) return
+    if (!route?.path) return
 
     fitBounds(getLatLngBounds(route.path))
   }
