@@ -1,10 +1,10 @@
 import { ViewProps, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import Animated, { createAnimatedComponent, LinearTransition } from 'react-native-reanimated'
+import { createAnimatedComponent } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useMap, useLineGroup } from '@/composables'
-import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
+import { EnterScaleIn, ExitScaleOut, ItemLayoutAnimation } from '@/constants/animation'
 import { useLineStore, useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
@@ -28,41 +28,43 @@ export const MapButtons = (props: ViewProps) => {
       className={cn(
         'p-2 gap-2',
         lineCardExpanded || hideMap ? 'flex-row' : undefined,
-        mapButtonsPlacement === 'left' ? 'items-start' : 'items-end',
+        mapButtonsPlacement === 'left' ? 'items-start justify-start' : 'items-end justify-end',
       )}
       pointerEvents="box-none"
       {...props}
     >
       {(bearing !== 0 || pitch !== 0) && (
-        <Animated.View
+        <AnimatedGestureHandlerRootView
+          layout={ItemLayoutAnimation}
           entering={EnterScaleIn}
           exiting={ExitScaleOut}
+          style={{ width: 'auto' }}
         >
-          <AnimatedGestureHandlerRootView
-            layout={LinearTransition}
-            style={{ width: 'auto' }}
-          >
-            <UButton
-              icon="compass"
-              size="lg"
-              color="neutral"
-              style={{ elevation: 1 }}
-              onPress={async () => {
-                const center = await map.current?.getCenter()
-                if (!center) return
+          <UButton
+            icon="compass"
+            size="lg"
+            color="neutral"
+            style={{ elevation: 1 }}
+            onPress={async () => {
+              const center = await map.current?.getCenter()
+              if (!center) return
 
-                camera.current?.easeTo({
-                  center,
-                  bearing: 0,
-                  pitch: 0,
-                })
-              }}
-            />
-          </AnimatedGestureHandlerRootView>
-        </Animated.View>
+              camera.current?.easeTo({
+                center,
+                bearing: 0,
+                pitch: 0,
+              })
+            }}
+          />
+        </AnimatedGestureHandlerRootView>
       )}
 
-      <AnimatedGestureHandlerRootView layout={LinearTransition}>
+      <AnimatedGestureHandlerRootView
+        layout={ItemLayoutAnimation}
+        entering={EnterScaleIn}
+        exiting={ExitScaleOut}
+        style={{ width: 'auto' }}
+      >
         <UButton
           icon="radar"
           to="/markers/nearby"
@@ -72,7 +74,12 @@ export const MapButtons = (props: ViewProps) => {
         />
       </AnimatedGestureHandlerRootView>
 
-      <AnimatedGestureHandlerRootView layout={LinearTransition}>
+      <AnimatedGestureHandlerRootView
+        layout={ItemLayoutAnimation}
+        entering={EnterScaleIn}
+        exiting={ExitScaleOut}
+        style={{ width: 'auto' }}
+      >
         <UButton
           icon="search"
           to="/search"
@@ -84,7 +91,9 @@ export const MapButtons = (props: ViewProps) => {
 
       {codes.length > 1 && (
         <AnimatedGestureHandlerRootView
-          layout={LinearTransition}
+          layout={ItemLayoutAnimation}
+          entering={EnterScaleIn}
+          exiting={ExitScaleOut}
           style={{ width: 'auto' }}
         >
           <UButton
@@ -100,7 +109,9 @@ export const MapButtons = (props: ViewProps) => {
       )}
 
       <AnimatedGestureHandlerRootView
-        layout={LinearTransition}
+        layout={ItemLayoutAnimation}
+        entering={EnterScaleIn}
+        exiting={ExitScaleOut}
         style={{ maxWidth: '75%' }}
       >
         <UButton

@@ -145,7 +145,7 @@ export const NearbyScreen = () => {
     const cam = camera.current
     return () => {
       if (bounds.current && cam) {
-        cam.fitBounds(bounds.current)
+        cam.fitBounds(bounds.current, { duration: 750 })
       }
     }
   }, [camera, fitBounds, map, polygonCollection?.features])

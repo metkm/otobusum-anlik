@@ -7,11 +7,12 @@ import { LineCardMenu } from './LineCardMenu'
 import { LineCardName } from './LineCardName'
 import { LineCardRoutes } from './LineCardRoutes'
 import { LineCardStops } from './LineCardStops'
+import { ItemLayoutAnimation } from '@/constants/animation'
 
 export const LineCard = ({ className, style, ...props }: ViewProps) => {
   return (
     <Animated.View
-      layout={LinearTransition}
+      layout={ItemLayoutAnimation}
       className={cn('p-2 bg-default gap-2 rounded-md border-2 border-muted', className)}
       style={style}
       {...props}

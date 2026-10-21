@@ -1,4 +1,4 @@
-import { Keyframe } from 'react-native-reanimated'
+import { Easing, Keyframe, LinearTransition } from 'react-native-reanimated'
 
 export const ExitScaleOut = new Keyframe({
   0: {
@@ -21,3 +21,5 @@ export const EnterScaleIn = new Keyframe({
     opacity: 1,
   },
 }).duration(150)
+
+export const ItemLayoutAnimation = LinearTransition.easing(Easing.bezier(0.4, 0, 0.2, 1)).duration(150)

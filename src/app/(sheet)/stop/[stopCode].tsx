@@ -21,6 +21,7 @@ import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 import { useStop } from '@/composables'
 import { useStopArrivals } from '@/composables/useStopArrivals'
+import { ItemLayoutAnimation } from '@/constants/animation'
 
 export const StopScreen = () => {
   const { t } = useTranslation()
@@ -141,7 +142,7 @@ export const StopScreen = () => {
       <UQueryState query={arrivalQuery}>
         <AnimatedLegendList
           data={arrivalQuery.data}
-          itemLayoutAnimation={LinearTransition.duration(150).easing(Easing.bezier(0.4, 0, 0.2, 1))}
+          itemLayoutAnimation={ItemLayoutAnimation}
           keyExtractor={(item) => item.door_no}
           getFixedItemSize={() => 64.33}
           recycleItems
