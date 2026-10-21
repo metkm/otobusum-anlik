@@ -17,7 +17,7 @@ export const UEmpty = ({
   description?: string
   className?: string
 }) => (
-  <View className={cn('gap-2 items-center justify-center p-2 rounded-md', className)}>
+  <View className={cn('gap-2 items-center justify-center p-2 rounded-md bg-muted/15', className)}>
     {icon && (
       <UIcon
         name={icon}

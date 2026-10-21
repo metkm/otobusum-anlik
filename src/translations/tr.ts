@@ -59,6 +59,7 @@ export default {
   news: 'Haberler',
   next: 'Sıradaki',
   noResults: 'Herhangi bir sonuç bulunamadı',
+  noResultsAreaQuerySearch: 'Bu bölgede durak veya hat bulunamadı',
   noResultsDescription: 'Belki başka bir şey aramayı deneyebilirsin?',
   operator: 'Operatör',
   other: 'Diğer',

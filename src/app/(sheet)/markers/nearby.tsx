@@ -13,6 +13,7 @@ import { ScopedVariables, useCSSVariable } from 'uniwind'
 import { UActivityIndicator } from '@/components/u/UActivityIndicator'
 import { UBadge } from '@/components/u/UBadge'
 import { UButton } from '@/components/u/UButton'
+import { UEmpty } from '@/components/u/UEmpty'
 import { UHeader } from '@/components/u/UHeader'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
@@ -170,9 +171,11 @@ export const NearbyScreen = () => {
   if (query.data && query.data.routes.length < 1 && query.data.stops.length < 1) {
     return (
       <TrueSheetPeek>
-        <View className="flex-1 items-center justify-center">
-          <UText className="font-inter-medium">{t('noResults')}</UText>
-        </View>
+        <UEmpty
+          icon="land-plot"
+          title={t('noResultsAreaQuerySearch')}
+          className="m-2"
+        />
       </TrueSheetPeek>
     )
   }

@@ -60,6 +60,7 @@ export default {
   news: 'News',
   next: 'Next',
   noResults: 'No results found',
+  noResultsAreaQuerySearch: 'No stops or lines found in this area',
   noResultsDescription: 'Maybe try for searching something else?',
   operator: 'Operator',
   other: 'Other',
