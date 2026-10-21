@@ -22,14 +22,6 @@ import { useSettingsStore } from '@/stores'
 import { BusStop } from '@/types/bus'
 import { getClosestPoint } from '@/utils/getClosestPoint'
 
-const ErrorState = ({ message }: { message?: string }) => {
-  return (
-    <View className="h-22 items-center justify-center">
-      <UText className="text-error font-inter-medium text-xs">{message}</UText>
-    </View>
-  )
-}
-
 const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
   const { buses } = useLineBuses()
   const { camera } = useMap()

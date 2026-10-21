@@ -6,4 +6,5 @@ export default defineConfig({
   sortImports: true,
   sortTailwindcss: true,
   singleAttributePerLine: true,
+  ignorePatterns: ['*.d.ts'],
 })
