@@ -69,7 +69,7 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
         icon="circle-plus"
         to={{
           params: { addToGroup: item.code },
-          pathname: '(sheet)/groups',
+          pathname: '(sheet)/groups/index',
         }}
         variant="soft"
         size="lg"

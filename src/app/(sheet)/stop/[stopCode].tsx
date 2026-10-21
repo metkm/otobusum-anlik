@@ -127,7 +127,7 @@ export const StopScreen = () => {
                     params: {
                       addToGroup: bus,
                     },
-                    pathname: '(sheet)/groups',
+                    pathname: '(sheet)/groups/index',
                   }}
                 />
               ))}

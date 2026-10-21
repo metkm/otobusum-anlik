@@ -249,7 +249,7 @@ export const NearbyScreen = () => {
                   key={route.id}
                   to={{
                     params: { addToGroup: route.line_code },
-                    pathname: '(sheet)/groups',
+                    pathname: '(sheet)/groups/index',
                   }}
                   variant="ghost"
                   color="neutral"

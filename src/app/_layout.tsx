@@ -33,7 +33,7 @@ const RootContent = () => {
         <Sheet.Screen name="(home)" />
 
         <Sheet.Screen
-          name="(sheet)/groups"
+          name="(sheet)/groups/index"
           options={{ detents: ['auto'] }}
         />
         <Sheet.Screen

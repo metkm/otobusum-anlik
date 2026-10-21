@@ -136,7 +136,7 @@ export const MapButtons = (props: ViewProps) => {
           color="neutral"
           style={{ elevation: 1 }}
           size="lg"
-          to={{ pathname: '(sheet)/groups' }}
+          to={{ pathname: '(sheet)/groups/index' }}
           label={group?.name}
         />
       </AnimatedGestureHandlerRootView>
