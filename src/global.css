@@ -120,4 +120,5 @@
   --ring-color-muted: var(--ui-border-muted);
 
   --color-primary: var(--ui-primary);
+  --color-error: var(--ui-error);
 }

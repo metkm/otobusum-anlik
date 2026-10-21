@@ -144,6 +144,7 @@ export const StopScreen = () => {
           itemLayoutAnimation={ItemLayoutAnimation}
           keyExtractor={(item) => item.door_no}
           getFixedItemSize={() => 64.33}
+          style={{ flex: 1 }}
           recycleItems
           renderItem={({ item: arrival }) => (
             <View

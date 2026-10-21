@@ -2,7 +2,7 @@ import Lucide from '@react-native-vector-icons/lucide'
 import { Href, useRouter } from 'expo-router'
 import { ComponentProps } from 'react'
 import { Touchable } from 'react-native-gesture-handler'
-import { tv } from 'tailwind-variants'
+import { tv, VariantProps } from 'tailwind-variants'
 import { withUniwind } from 'uniwind'
 
 import { cn } from '@/utils/cn'
@@ -20,6 +20,7 @@ const ui = tv({
     color: {
       primary: '',
       neutral: '',
+      error: '',
     },
     variant: {
       solid: '',
@@ -92,6 +93,30 @@ const ui = tv({
         label: 'text-neutral-default',
       },
     },
+    {
+      color: 'error',
+      variant: 'solid',
+      className: {
+        base: 'bg-error',
+        label: 'text-inverted',
+      },
+    },
+    {
+      color: 'error',
+      variant: 'soft',
+      className: {
+        base: 'bg-error/15',
+        label: 'text-error',
+      },
+    },
+    {
+      color: 'error',
+      variant: 'ghost',
+      className: {
+        base: 'bg-transparent',
+        label: 'text-error',
+      },
+    },
   ],
   slots: {
     base: 'flex flex-row items-center gap-1.5 rounded-md',
@@ -121,8 +146,8 @@ export const UButton = ({
   icon?: ComponentProps<typeof Lucide>['name']
   trailingIcon?: ComponentProps<typeof Lucide>['name']
   to?: Href
-  color?: 'primary' | 'neutral'
-  variant?: 'solid' | 'ghost' | 'soft'
+  color?: VariantProps<typeof ui>['color']
+  variant?: VariantProps<typeof ui>['variant']
   size?: 'md' | 'lg'
   block?: boolean
   disabled?: boolean

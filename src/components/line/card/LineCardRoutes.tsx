@@ -121,9 +121,11 @@ export const LineCardRoutes = () => {
         variant="soft"
         icon="route"
         onPress={() => void routeSheet.current?.present()}
+        disabled={routesQuery.isError}
         block
         className="shrink grow"
-        loading={routesQuery.isFetching}
+        loading={true}
+        // loading={routesQuery.isFetching}
       />
 
       {routesQuery.data && (
