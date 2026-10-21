@@ -1,3 +1,4 @@
+import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { View, type ViewProps } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { createAnimatedComponent } from 'react-native-reanimated'
@@ -15,6 +16,7 @@ const AnimatedGestureHandlerRootView = createAnimatedComponent(GestureHandlerRoo
 export const MapButtons = (props: ViewProps) => {
   const { map, camera } = useMap()
   const { group, codes } = useLineGroup()
+  const navigation = useTrueSheetNavigation()
 
   const bearing = useSettingsStore(useShallow((state) => state.bearing))
   const pitch = useSettingsStore(useShallow((state) => state.pitch))
@@ -22,6 +24,19 @@ export const MapButtons = (props: ViewProps) => {
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
   const changeRouteDirection = useLineStore(useShallow((state) => state.changeRouteDirection))
   const mapButtonsPlacement = useSettingsStore(useShallow((state) => state.mapButtonsPlacement))
+
+  const queryArea = async () => {
+    if (!map.current) {
+      return
+    }
+
+    const center = await map.current?.getCenter()
+
+    navigation.navigate('(sheet)/markers/nearby', {
+      lat: center[1],
+      lng: center[0],
+    })
+  }
 
   return (
     <View
@@ -69,7 +84,7 @@ export const MapButtons = (props: ViewProps) => {
       >
         <UButton
           icon="radar"
-          to={{ pathname: '(sheet)/markers/nearby' }}
+          onPress={queryArea}
           size="lg"
           color="neutral"
           style={{ elevation: 1 }}
