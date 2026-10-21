@@ -21,15 +21,13 @@ export const USwitch = ({ value }: { value: boolean }) => {
     progress.value = withTiming(value ? 1 : 0, { duration: 100 })
   }, [value, progress])
 
-  const thumbStyle = useAnimatedStyle(
-    () => ({
-      transform: [
-        {
-          translateX: interpolate(progress.value, [0, 1], [0, 16]),
-        },
-      ],
-    }),
-  )
+  const thumbStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateX: interpolate(progress.value, [0, 1], [0, 16]),
+      },
+    ],
+  }))
 
   const containerStyle = useAnimatedStyle(() => ({
     backgroundColor: interpolateColor(progress.value, [0, 1], [background, primary]),
