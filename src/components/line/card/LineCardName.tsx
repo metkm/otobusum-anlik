@@ -30,7 +30,9 @@ export const LineCardName = () => {
         <UQueryState
           query={lineBusesQuery}
           error={() => (
-            <UText className='text-error text-xs font-inter-medium'>{t('errorGettingBusLocations')}</UText>
+            <UText className="text-error font-inter-medium text-xs">
+              {t('errorGettingBusLocations')}
+            </UText>
           )}
         >
           <UText

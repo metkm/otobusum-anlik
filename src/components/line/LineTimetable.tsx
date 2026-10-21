@@ -149,7 +149,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
     >
       <View className="m-2 mb-0">
         <UText className="text-muted">{routeCode}</UText>
-        
+
         {route?.name && (
           <UText className="font-inter-medium text-lg leading-tight">{route.name}</UText>
         )}
@@ -172,7 +172,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
       <UQueryState
         query={lineTimetableQuery}
         loading={() => <SkeletonTimetable />}
-        className='m-2'
+        className="m-2"
       >
         {hourEntries.length > 1 ? (
           <ScrollView fadingEdgeLength={10}>
