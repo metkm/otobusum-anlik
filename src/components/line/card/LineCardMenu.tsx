@@ -1,4 +1,4 @@
-import { LegendList } from '@legendapp/list/react-native'
+import { LegendList, LegendListRef } from '@legendapp/list/react-native'
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -31,6 +31,7 @@ export const LineCardMenu = () => {
 
   const menuSheet = useRef<TrueSheet>(null)
   const announcementsSheet = useRef<TrueSheet>(null)
+  const scrollableRef = useRef<LegendListRef>(null)
 
   const presentMenu = () => {
     void menuSheet.current?.present()
@@ -48,7 +49,12 @@ export const LineCardMenu = () => {
 
   return (
     <>
-      <UButton icon="zoom-in" variant="ghost" color="neutral" onPress={zoomToLine} />
+      <UButton
+        icon="zoom-in"
+        variant="ghost"
+        color="neutral"
+        onPress={zoomToLine}
+      />
 
       <UButton
         icon={isLineHidden ? 'eye-closed' : 'eye'}
@@ -58,14 +64,36 @@ export const LineCardMenu = () => {
       />
 
       {news.length > 0 && (
-        <UButton icon="newspaper" onPress={presentAnnouncements} variant="ghost" color="neutral" />
+        <UButton
+          icon="newspaper"
+          onPress={presentAnnouncements}
+          variant="ghost"
+          color="neutral"
+        />
       )}
 
-      <UButton icon="menu" onPress={presentMenu} variant="ghost" color="neutral" />
+      <UButton
+        icon="menu"
+        onPress={presentMenu}
+        variant="ghost"
+        color="neutral"
+      />
 
       {news.length > 0 && (
-        <USheet ref={announcementsSheet} header={<USheetHeader title="News" icon="newspaper" />}>
+        <USheet
+          ref={announcementsSheet}
+          scrollableRef={scrollableRef}
+          style={{ flex: 1 }}
+          detents={['auto', 1]}
+          header={
+            <USheetHeader
+              title="News"
+              icon="newspaper"
+            />
+          }
+        >
           <LegendList
+            ref={scrollableRef}
             data={news}
             renderItem={({ item }) => {
               return (
@@ -79,12 +107,17 @@ export const LineCardMenu = () => {
               )
             }}
             keyExtractor={(item) => `${item.HATKODU}-${item.GUNCELLEME_SAATI}-${item.MESAJ}`}
+            className="flex-1"
             recycleItems
           />
         </USheet>
       )}
 
-      <USheet ref={menuSheet} detents={['auto']} contentContainerClassName="px-2 gap-2">
+      <USheet
+        ref={menuSheet}
+        detents={['auto']}
+        contentContainerClassName="px-2 gap-2"
+      >
         <UButton
           label={t('addToGroup')}
           icon="circle-plus"

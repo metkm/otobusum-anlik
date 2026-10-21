@@ -154,15 +154,25 @@ export const UButton = ({
       {...props}
     >
       {loading ? (
-        <UActivityIndicator sizeClassName={uiIcon()} className={uiLabel()} />
+        <UActivityIndicator
+          sizeClassName={uiIcon()}
+          className={uiLabel()}
+        />
       ) : icon ? (
-        <UIcon name={icon} sizeClassName={uiIcon()} colorClassName={uiLabel()} />
+        <UIcon
+          name={icon}
+          sizeClassName={uiIcon()}
+          colorClassName={uiLabel()}
+        />
       ) : undefined}
 
       {children}
 
       {label && (
-        <UText className={cn(uiLabel(), labelClassName)} numberOfLines={1}>
+        <UText
+          className={cn(uiLabel(), labelClassName)}
+          numberOfLines={1}
+        >
           {label}
         </UText>
       )}

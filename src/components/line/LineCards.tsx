@@ -33,7 +33,11 @@ export const LineCards = ({
       className={className}
     >
       {codes.map((code) => (
-        <Animated.View key={code} exiting={ExitScaleOut} layout={LinearTransition}>
+        <Animated.View
+          key={code}
+          exiting={ExitScaleOut}
+          layout={LinearTransition}
+        >
           {/* <LineContext value={code}>
             <LineCard
               style={{ width: cardWidth }}

@@ -14,7 +14,10 @@ export const MapTemporaryMarkers = () => {
 
   return temporaryMarkerStore.data.map((data) =>
     data.data ? (
-      <GeoJSONSource key={data.id} data={data.data}>
+      <GeoJSONSource
+        key={data.id}
+        data={data.data}
+      >
         {data.renderer === 'layer' ? (
           <Layer {...data.layerProps} />
         ) : data.renderer === 'route' ? (

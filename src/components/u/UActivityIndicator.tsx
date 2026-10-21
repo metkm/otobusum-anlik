@@ -12,7 +12,10 @@ const StyledActivityIndicator = withUniwind(ActivityIndicator, {
 export const UActivityIndicator = (props: ComponentProps<typeof StyledActivityIndicator>) => {
   return (
     <View className="grow items-center justify-center">
-      <StyledActivityIndicator colorClassName="accent-(--ui-text)" {...props} />
+      <StyledActivityIndicator
+        colorClassName="accent-(--ui-text)"
+        {...props}
+      />
     </View>
   )
 }

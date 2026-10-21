@@ -46,15 +46,28 @@ const GroupItem = ({
 
   return (
     <GestureHandlerRootView style={{ flexDirection: 'row' }}>
-      <UButton variant="ghost" className="flex-1 items-center gap-2" onPress={handlePress}>
+      <UButton
+        variant="ghost"
+        className="flex-1 items-center gap-2"
+        onPress={handlePress}
+      >
         <View
           className={`${selected ? 'bg-primary' : 'bg-muted'} size-8 items-center justify-center rounded-md`}
         >
-          {selected && <UIcon name="check" sizeClassName="size-5" colorClassName="text-inverted" />}
+          {selected && (
+            <UIcon
+              name="check"
+              sizeClassName="size-5"
+              colorClassName="text-inverted"
+            />
+          )}
         </View>
 
         <View className="flex-1 shrink gap-1">
-          <UText className="font-inter-medium shrink truncate" numberOfLines={1}>
+          <UText
+            className="font-inter-medium shrink truncate"
+            numberOfLines={1}
+          >
             {group.name}
           </UText>
 
@@ -75,7 +88,10 @@ const GroupItem = ({
         </View>
       </UButton>
 
-      <Animated.View layout={LinearTransition} className="flex-row items-center p-2">
+      <Animated.View
+        layout={LinearTransition}
+        className="flex-row items-center p-2"
+      >
         <Animated.View
           exiting={ExitScaleOut}
           entering={EnterScaleIn}
@@ -154,8 +170,15 @@ export const GroupsScreen = () => {
   return (
     <LineContext value={addToGroup}>
       <ThemeProvider>
-        <ScrollView ref={scrollableRef} contentContainerClassName="p-2">
-          <Animated.View layout={LinearTransition} className="gap-2">
+        <ScrollView
+          ref={scrollableRef}
+          className="flex-1"
+          contentContainerClassName="p-2"
+        >
+          <Animated.View
+            layout={LinearTransition}
+            className="gap-2"
+          >
             {groups.map((group) => (
               <Animated.View
                 key={group.id}

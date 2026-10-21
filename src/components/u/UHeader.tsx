@@ -23,7 +23,12 @@ export const UHeader = ({ icon, title, description, children, className }: UHead
       )}
     >
       <View className="flex-row items-center gap-2">
-        {icon && <UIcon name={icon} sizeClassName="size-6" />}
+        {icon && (
+          <UIcon
+            name={icon}
+            sizeClassName="size-6"
+          />
+        )}
 
         {(title || description) && (
           <View className="w-auto shrink">
@@ -43,7 +48,12 @@ export const UHeader = ({ icon, title, description, children, className }: UHead
 
 export const USheetHeader = ({ icon, title, description, children }: UHeaderProps) => {
   return (
-    <UHeader icon={icon} title={title} description={description} className="pt-8">
+    <UHeader
+      icon={icon}
+      title={title}
+      description={description}
+      className="pt-8"
+    >
       {children}
     </UHeader>
   )

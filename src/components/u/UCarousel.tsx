@@ -113,7 +113,11 @@ export const UCarousel = ({
   )
 
   return (
-    <Animated.View layout={LinearTransition} className={cn('flex-row', className)} {...props}>
+    <Animated.View
+      layout={LinearTransition}
+      className={cn('flex-row', className)}
+      {...props}
+    >
       <GestureDetector gesture={gesture}>
         <Animated.View
           style={[containerStyle]}

@@ -34,8 +34,14 @@ export const MapButtons = (props: ViewProps) => {
       {...props}
     >
       {(bearing !== 0 || pitch !== 0) && (
-        <Animated.View entering={EnterScaleIn} exiting={ExitScaleOut}>
-          <AnimatedGestureHandlerRootView layout={LinearTransition} style={{ width: 'auto' }}>
+        <Animated.View
+          entering={EnterScaleIn}
+          exiting={ExitScaleOut}
+        >
+          <AnimatedGestureHandlerRootView
+            layout={LinearTransition}
+            style={{ width: 'auto' }}
+          >
             <UButton
               icon="compass"
               size="lg"
@@ -67,11 +73,20 @@ export const MapButtons = (props: ViewProps) => {
       </AnimatedGestureHandlerRootView>
 
       <AnimatedGestureHandlerRootView layout={LinearTransition}>
-        <UButton icon="search" to="/search" size="lg" color="neutral" style={{ elevation: 1 }} />
+        <UButton
+          icon="search"
+          to="/search"
+          size="lg"
+          color="neutral"
+          style={{ elevation: 1 }}
+        />
       </AnimatedGestureHandlerRootView>
 
       {codes.length > 1 && (
-        <AnimatedGestureHandlerRootView layout={LinearTransition} style={{ width: 'auto' }}>
+        <AnimatedGestureHandlerRootView
+          layout={LinearTransition}
+          style={{ width: 'auto' }}
+        >
           <UButton
             icon="repeat"
             color="neutral"
@@ -84,7 +99,10 @@ export const MapButtons = (props: ViewProps) => {
         </AnimatedGestureHandlerRootView>
       )}
 
-      <AnimatedGestureHandlerRootView layout={LinearTransition} style={{ maxWidth: '75%' }}>
+      <AnimatedGestureHandlerRootView
+        layout={LinearTransition}
+        style={{ maxWidth: '75%' }}
+      >
         <UButton
           icon="component"
           color="neutral"

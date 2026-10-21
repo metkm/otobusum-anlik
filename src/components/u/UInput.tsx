@@ -40,12 +40,18 @@ export const UInput = ({
   const _icon = loading ? (
     <UActivityIndicator />
   ) : icon ? (
-    <UIcon name={icon} colorClassName={uiIcon()} />
+    <UIcon
+      name={icon}
+      colorClassName={uiIcon()}
+    />
   ) : undefined
 
   return (
     <View className={cn('relative flex-row items-center', containerClassName)}>
-      <TextInput className={cn(uiBase(), _icon ? 'pl-8' : undefined, className)} {...props} />
+      <TextInput
+        className={cn(uiBase(), _icon ? 'pl-8' : undefined, className)}
+        {...props}
+      />
 
       {_icon && <View className="absolute left-2.5">{_icon}</View>}
 

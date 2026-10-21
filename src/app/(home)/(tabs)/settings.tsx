@@ -78,7 +78,10 @@ export const OptionPicker = <T,>({
             <UText className="font-inter-medium text-xs">{label}</UText>
 
             {description && (
-              <UText className="font-inter-medium text-muted flex-1 text-xs" numberOfLines={1}>
+              <UText
+                className="font-inter-medium text-muted flex-1 text-xs"
+                numberOfLines={1}
+              >
                 {description}
               </UText>
             )}
@@ -88,7 +91,11 @@ export const OptionPicker = <T,>({
         </View>
       </UButton>
 
-      <USheet ref={sheetRef} contentContainerClassName="px-2 gap-2" detents={['auto']}>
+      <USheet
+        ref={sheetRef}
+        contentContainerClassName="px-2 gap-2"
+        detents={['auto']}
+      >
         {options.map((option) => (
           <UButton
             key={option.label}
@@ -210,7 +217,10 @@ export const SettingsScreen = () => {
 
   return (
     <ScrollView contentContainerClassName="gap-2 p-2 pt-safe">
-      <SettingsSectionTitle title={t('map')} icon="map" />
+      <SettingsSectionTitle
+        title={t('map')}
+        icon="map"
+      />
 
       <ToggleSetting
         label={t('showMyLocation')}
@@ -218,7 +228,11 @@ export const SettingsScreen = () => {
         value={showMyLocation}
       />
 
-      <ToggleSetting label={t('hideMap')} onPress={toggleMap} value={hideMap} />
+      <ToggleSetting
+        label={t('hideMap')}
+        onPress={toggleMap}
+        value={hideMap}
+      />
 
       <OptionPicker
         label={t('mapTheme')}
@@ -244,7 +258,10 @@ export const SettingsScreen = () => {
         }}
       />
 
-      <SettingsSectionTitle title={t('settings')} icon="settings" />
+      <SettingsSectionTitle
+        title={t('settings')}
+        icon="settings"
+      />
 
       <ToggleSetting
         label={t('expandStopsWhenScrolled')}
@@ -275,7 +292,10 @@ export const SettingsScreen = () => {
         }}
       />
 
-      <SettingsSectionTitle title={t('other')} icon="settings-2" />
+      <SettingsSectionTitle
+        title={t('other')}
+        icon="settings-2"
+      />
 
       <UButton
         label={t('clearCache')}

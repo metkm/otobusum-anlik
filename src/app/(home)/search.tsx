@@ -122,7 +122,12 @@ export const SearchScreen = () => {
         >
           {query.length > MIN_CHARACTER_LIMIT && (
             <GestureHandlerRootView style={{ position: 'absolute', right: 4 }}>
-              <UButton icon="x" variant="ghost" color="neutral" onPress={() => setQuery('')} />
+              <UButton
+                icon="x"
+                variant="ghost"
+                color="neutral"
+                onPress={() => setQuery('')}
+              />
             </GestureHandlerRootView>
           )}
         </UInput>

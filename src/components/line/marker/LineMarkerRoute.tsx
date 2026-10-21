@@ -116,7 +116,10 @@ export const LineMarkerRoute = () => {
             features: [feature],
           }}
         >
-          <LineMarkerRouteLayer isHidden={isHidden} code={code} />
+          <LineMarkerRouteLayer
+            isHidden={isHidden}
+            code={code}
+          />
         </GeoJSONSource>
       )}
     </>

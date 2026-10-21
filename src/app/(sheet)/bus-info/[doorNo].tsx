@@ -21,7 +21,10 @@ const BusInfoItem = ({
   return (
     <View className="gap-1">
       <View className="flex-row gap-1">
-        <UIcon name={icon} colorClassName="text-default" />
+        <UIcon
+          name={icon}
+          colorClassName="text-default"
+        />
 
         <UText className="font-inter-medium text-muted text-xs">{label}</UText>
       </View>
@@ -39,17 +42,40 @@ const BusInfo = () => {
 
   return (
     <View className="gap-2 px-2 pt-5 pb-2">
-      <BusInfoItem label={t('doorNo')} value={doorNo} icon="door-closed" />
+      <BusInfoItem
+        label={t('doorNo')}
+        value={doorNo}
+        icon="door-closed"
+      />
 
-      <UQueryState query={query} loading={() => <UActivityIndicator />}>
-        <BusInfoItem label={t('operator')} value={query.data?.operator} icon="circle-user" />
+      <UQueryState
+        query={query}
+        loading={() => <UActivityIndicator />}
+      >
+        <BusInfoItem
+          label={t('operator')}
+          value={query.data?.operator}
+          icon="circle-user"
+        />
 
-        <BusInfoItem label={t('plate')} value={query.data?.plate} icon="bandage" />
+        <BusInfoItem
+          label={t('plate')}
+          value={query.data?.plate}
+          icon="bandage"
+        />
 
-        <BusInfoItem label={t('speed')} value={`${query.data?.speed} km/h`} icon="gauge" />
+        <BusInfoItem
+          label={t('speed')}
+          value={`${query.data?.speed} km/h`}
+          icon="gauge"
+        />
 
         {query.data?.garage && (
-          <BusInfoItem label={t('garage')} value={query.data?.garage} icon="van" />
+          <BusInfoItem
+            label={t('garage')}
+            value={query.data?.garage}
+            icon="van"
+          />
         )}
       </UQueryState>
     </View>

@@ -66,7 +66,10 @@ export const Map = ({
         {...props}
         mapStyle={mapStyle}
       >
-        <Camera ref={camera} initialViewState={{ bounds: getInitialMapBounds() }} />
+        <Camera
+          ref={camera}
+          initialViewState={{ bounds: getInitialMapBounds() }}
+        />
 
         {children}
       </_Map>

@@ -52,13 +52,27 @@ export const StopScreen = () => {
   }
 
   return (
-    <ScrollView ref={scrollableRef} className="flex-1" contentContainerClassName="p-2 gap-2">
-      <UQueryState query={stopQuery} loading={SkeletonStop}>
+    <ScrollView
+      ref={scrollableRef}
+      className="flex-1"
+      contentContainerClassName="p-2 gap-2"
+    >
+      <UQueryState
+        query={stopQuery}
+        loading={SkeletonStop}
+      >
         {stopQuery.data && (
           <View className="h-48 overflow-hidden rounded-md">
             <MapProvider>
-              <Map dragPan={false} touchZoom={false} doubleTapZoom={false}>
-                <Camera center={[stopQuery.data.stop.lng, stopQuery.data.stop.lat]} zoom={15} />
+              <Map
+                dragPan={false}
+                touchZoom={false}
+                doubleTapZoom={false}
+              >
+                <Camera
+                  center={[stopQuery.data.stop.lng, stopQuery.data.stop.lat]}
+                  zoom={15}
+                />
 
                 <GeoJSONSource
                   data={{
@@ -72,7 +86,10 @@ export const StopScreen = () => {
                     },
                   }}
                 >
-                  <LineMarkerStopLayer isHidden={false} afterId={undefined} />
+                  <LineMarkerStopLayer
+                    isHidden={false}
+                    afterId={undefined}
+                  />
                 </GeoJSONSource>
               </Map>
             </MapProvider>
@@ -129,8 +146,14 @@ export const StopScreen = () => {
           getFixedItemSize={() => 64.33}
           recycleItems
           renderItem={({ item: arrival }) => (
-            <View key={arrival.stop_order} className="flex-row items-center gap-2 p-2">
-              <UIcon name="bus-front" sizeClassName="size-6" />
+            <View
+              key={arrival.stop_order}
+              className="flex-row items-center gap-2 p-2"
+            >
+              <UIcon
+                name="bus-front"
+                sizeClassName="size-6"
+              />
 
               <View className="flex-1">
                 <ThemeProvider code={arrival.line_code}>
@@ -169,7 +192,10 @@ export const StopScreen = () => {
                   </View>
                 </ThemeProvider>
 
-                <UText className="truncate" numberOfLines={1}>
+                <UText
+                  className="truncate"
+                  numberOfLines={1}
+                >
                   {arrival.line_name}
                 </UText>
               </View>

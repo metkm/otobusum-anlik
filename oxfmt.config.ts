@@ -5,4 +5,5 @@ export default defineConfig({
   singleQuote: true,
   sortImports: true,
   sortTailwindcss: true,
+  singleAttributePerLine: true,
 })

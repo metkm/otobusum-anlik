@@ -41,7 +41,10 @@ const LineTimetables = () => {
       className="flex-1"
     >
       {codes.map((item) => (
-        <LineContext key={item} value={item}>
+        <LineContext
+          key={item}
+          value={item}
+        >
           <ThemeProvider>
             <LineTimetable className={codes.length < 2 ? 'rounded-none' : ''} />
           </ThemeProvider>

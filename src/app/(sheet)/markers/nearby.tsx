@@ -178,7 +178,11 @@ export const NearbyScreen = () => {
   }
 
   return (
-    <ScrollView ref={scrollableRef} className="flex-1" contentContainerClassName="p-2 pt-0">
+    <ScrollView
+      ref={scrollableRef}
+      className="flex-1"
+      contentContainerClassName="p-2 pt-0"
+    >
       <UQueryState
         query={query}
         loading={() => (
@@ -191,7 +195,11 @@ export const NearbyScreen = () => {
           {query.data && query.data.stops.length > 0 && (
             <View className="gap-2">
               <TrueSheetPeek>
-                <UHeader icon="bus-front" title={t('stops')} description={t('nearbyStops')}>
+                <UHeader
+                  icon="bus-front"
+                  title={t('stops')}
+                  description={t('nearbyStops')}
+                >
                   <UText>{query.data?.stops.length}</UText>
                 </UHeader>
               </TrueSheetPeek>
@@ -224,7 +232,11 @@ export const NearbyScreen = () => {
                   </UHeader>
                 </TrueSheetPeek>
               ) : (
-                <UHeader icon="route" title={t('routes')} description={t('routesPassingThisPoint')}>
+                <UHeader
+                  icon="route"
+                  title={t('routes')}
+                  description={t('routesPassingThisPoint')}
+                >
                   <UText>{query.data?.routes.length}</UText>
                 </UHeader>
               )}
@@ -251,7 +263,10 @@ export const NearbyScreen = () => {
                       <UBadge label={route.line_code} />
                     </ScopedVariables>
 
-                    <UText className="font-inter-medium shrink text-xs" numberOfLines={1}>
+                    <UText
+                      className="font-inter-medium shrink text-xs"
+                      numberOfLines={1}
+                    >
                       {route.name}
                     </UText>
                   </View>

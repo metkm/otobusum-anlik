@@ -33,7 +33,10 @@ export const LineMarkers = () => {
       />
 
       {codes.map((code) => (
-        <LineContext key={code} value={code}>
+        <LineContext
+          key={code}
+          value={code}
+        >
           <ThemeProvider>
             <LineMarkerRoute />
             <LineMarkerStops />

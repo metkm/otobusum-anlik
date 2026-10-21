@@ -1,8 +1,8 @@
-import { LegendList } from '@legendapp/list/react-native'
+import { LegendList, LegendListRef } from '@legendapp/list/react-native'
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ScrollViewInstance, View } from 'react-native'
+import { View } from 'react-native'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -46,9 +46,16 @@ const RouteItem = ({
       color={color}
     >
       <View className="flex-row justify-center gap-1">
-        <UBadge icon="bus-front" label={busCount.toString()} color={color} />
+        <UBadge
+          icon="bus-front"
+          label={busCount.toString()}
+          color={color}
+        />
 
-        <UBadge label={item.code.split('_').slice(1).join('_')} color={color} />
+        <UBadge
+          label={item.code.split('_').slice(1).join('_')}
+          color={color}
+        />
       </View>
     </UButton>
   )
@@ -56,7 +63,7 @@ const RouteItem = ({
 
 export const LineCardRoutes = () => {
   const routeSheet = useRef<TrueSheet>(null)
-  const scrollableRef = useRef<ScrollViewInstance>(null)
+  const scrollableRef = useRef<LegendListRef>(null)
 
   const changeRouteDirection = useLineStore(useShallow((state) => state.changeRouteDirection))
   const { t } = useTranslation()
@@ -88,9 +95,15 @@ export const LineCardRoutes = () => {
   })
 
   return (
-    <Animated.View layout={LinearTransition} className="flex-row items-center gap-2">
+    <Animated.View
+      layout={LinearTransition}
+      className="flex-row items-center gap-2"
+    >
       <View className="flex-row items-center gap-1.5 p-2">
-        <UIcon name="bus-front" sizeClassName="size-4.5" />
+        <UIcon
+          name="bus-front"
+          sizeClassName="size-4.5"
+        />
         <UText className="font-inter-semibold text-xs">{buses.length}</UText>
       </View>
 
@@ -126,7 +139,7 @@ export const LineCardRoutes = () => {
           }
         >
           <LegendList
-            scrollViewRef={scrollableRef}
+            ref={scrollableRef}
             data={sortedRoutes}
             renderItem={({ item }) => (
               <RouteItem

@@ -66,7 +66,11 @@ export const LineMarkerStops = () => {
         router.navigate(`/stop/${stopCode}`)
       }}
     >
-      <LineMarkerStopLayer isHidden={isLineHidden} id={`stops-${code}`} afterId="stop-layer" />
+      <LineMarkerStopLayer
+        isHidden={isLineHidden}
+        id={`stops-${code}`}
+        afterId="stop-layer"
+      />
     </GeoJSONSource>
   )
 }

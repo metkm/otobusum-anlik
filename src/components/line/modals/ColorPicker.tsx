@@ -30,11 +30,20 @@ export const LineModalsColorPicker = () => {
 
   return (
     <>
-      <UButton label={t('colorPicker')} onPress={() => setIsVisible(true)} size="lg" variant="soft">
+      <UButton
+        label={t('colorPicker')}
+        onPress={() => setIsVisible(true)}
+        size="lg"
+        variant="soft"
+      >
         <View className="bg-primary size-4 rounded-md" />
       </UButton>
 
-      <Modal visible={isVisible} onRequestClose={close} transparent>
+      <Modal
+        visible={isVisible}
+        onRequestClose={close}
+        transparent
+      >
         <GestureHandlerRootView>
           <StyledPressable
             onPress={close}

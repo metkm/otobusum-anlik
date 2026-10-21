@@ -32,8 +32,14 @@ const RootContent = () => {
       <Sheet screenOptions={{ backgroundColor, style: { flex: 1 } }}>
         <Sheet.Screen name="(home)" />
 
-        <Sheet.Screen name="(sheet)/groups" options={{ detents: ['auto'] }} />
-        <Sheet.Screen name="(sheet)/groups/[groupId]" options={{ detents: ['auto'] }} />
+        <Sheet.Screen
+          name="(sheet)/groups"
+          options={{ detents: ['auto'] }}
+        />
+        <Sheet.Screen
+          name="(sheet)/groups/[groupId]"
+          options={{ detents: ['auto'] }}
+        />
 
         <Sheet.Screen name="(sheet)/bus-info/[doorNo]" />
         <Sheet.Screen name="(sheet)/stop/[stopCode]" />
@@ -62,7 +68,10 @@ export const RootLayout = () => {
   }
 
   return (
-    <I18nextProvider i18n={i18n} defaultNS="translation">
+    <I18nextProvider
+      i18n={i18n}
+      defaultNS="translation"
+    >
       <PersistQueryClientProvider
         client={queryClient}
         persistOptions={{

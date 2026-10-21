@@ -68,7 +68,13 @@ export const UBadge = ({
 
   return (
     <View className={cn(uiBase(), className)}>
-      {icon && <UIcon name={icon} sizeClassName="size-4" colorClassName={uiLabel()} />}
+      {icon && (
+        <UIcon
+          name={icon}
+          sizeClassName="size-4"
+          colorClassName={uiLabel()}
+        />
+      )}
 
       {label && <UText className={uiLabel()}>{label}</UText>}
     </View>

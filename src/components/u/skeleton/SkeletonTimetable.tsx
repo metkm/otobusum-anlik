@@ -6,7 +6,12 @@ export const SkeletonTimetable = () => {
   const rows = []
 
   for (let index = 0; index < 10; index++) {
-    rows.push(<SkeletonPulse key={index} className="h-8 w-full" />)
+    rows.push(
+      <SkeletonPulse
+        key={index}
+        className="h-8 w-full"
+      />,
+    )
   }
 
   return (

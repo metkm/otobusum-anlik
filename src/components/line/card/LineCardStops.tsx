@@ -57,17 +57,30 @@ const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
       <UText className="font-inter-medium w-6.5 text-center">{index + 1}</UText>
 
       <View className="border-muted size-8 items-center justify-center rounded-full border-2">
-        {closestBus && <UIcon name="bus-front" size={16} />}
+        {closestBus && (
+          <UIcon
+            name="bus-front"
+            size={16}
+          />
+        )}
       </View>
 
-      <UText className="shrink truncate text-xs" numberOfLines={2}>
+      <UText
+        className="shrink truncate text-xs"
+        numberOfLines={2}
+      >
         {item.name}
       </UText>
 
       <View className="ml-auto flex-row gap-1">
         {closestBus && (
           <>
-            <UButton icon="locate" className="ml-auto" variant="soft" onPress={goToBus} />
+            <UButton
+              icon="locate"
+              className="ml-auto"
+              variant="soft"
+              onPress={goToBus}
+            />
 
             <UButton
               icon="info"
@@ -82,7 +95,11 @@ const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
           </>
         )}
 
-        <UButton icon="chevron-right" variant="soft" to={`/stop/${item.code}`} />
+        <UButton
+          icon="chevron-right"
+          variant="soft"
+          to={`/stop/${item.code}`}
+        />
       </View>
     </View>
   )
@@ -114,7 +131,13 @@ export const LineCardStops = () => {
   })
 
   if (lineStopsQuery.data && lineStopsQuery.data.length < 1) {
-    return <UEmpty title={t('emptyStops')} icon="bus" className="grow" />
+    return (
+      <UEmpty
+        title={t('emptyStops')}
+        icon="bus"
+        className="grow"
+      />
+    )
   }
 
   return (
@@ -126,7 +149,12 @@ export const LineCardStops = () => {
       <AnimatedLegendList
         layout={LinearTransition}
         data={lineStopsQuery.data || []}
-        renderItem={({ item, index }) => <StopItem item={item} index={index} />}
+        renderItem={({ item, index }) => (
+          <StopItem
+            item={item}
+            index={index}
+          />
+        )}
         fadingEdgeLength={10}
         contentContainerStyle={{ gap: 4, paddingHorizontal: 8 }}
         // @ts-expect-error

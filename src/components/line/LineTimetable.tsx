@@ -166,7 +166,10 @@ export const LineTimetable = ({ className }: ViewProps) => {
         ))}
       </View>
 
-      <UQueryState query={lineTimetableQuery} loading={() => <SkeletonTimetable />}>
+      <UQueryState
+        query={lineTimetableQuery}
+        loading={() => <SkeletonTimetable />}
+      >
         {hourEntries.length > 1 ? (
           <ScrollView fadingEdgeLength={10}>
             {hourEntries.map(([hour, minutes], index) => (
@@ -201,7 +204,11 @@ export const LineTimetable = ({ className }: ViewProps) => {
             ))}
           </ScrollView>
         ) : (
-          <UEmpty title={t('timetableEmptyRange')} icon="clock-fading" className="grow" />
+          <UEmpty
+            title={t('timetableEmptyRange')}
+            icon="clock-fading"
+            className="grow"
+          />
         )}
       </UQueryState>
     </View>
