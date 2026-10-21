@@ -17,6 +17,10 @@ import { persister, queryClient } from '@/api/client'
 import { useSettingsStore } from '@/stores'
 import i18n from '@/translations/i18n'
 
+export const unstable_settings = {
+  anchor: '(home)'
+}
+
 const RootContent = () => {
   const backgroundColor = useCSSVariable('--ui-bg')?.toString()
 
@@ -33,8 +37,8 @@ const RootContent = () => {
         <Sheet.Screen name="(sheet)/groups" options={{ detents: ['auto'] }} />
         <Sheet.Screen name="(sheet)/groups/[groupId]" options={{ detents: ['auto'] }} />
 
+        <Sheet.Screen name="(sheet)/bus-info/[doorNo]" />
         <Sheet.Screen name="(sheet)/stop/[stopCode]" />
-        <Sheet.Screen name="(sheet)/bus-info" />
         <Sheet.Screen name="(sheet)/markers/nearby" options={{ dimmed: false, detents: ['peek', 'auto'] }} />
       </Sheet>
     </MapProvider>

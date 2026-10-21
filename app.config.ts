@@ -47,6 +47,7 @@ export default ({ config }: ConfigContext) => ({
         usePrecompiledHeaders: true,
         enableMinifyInReleaseBuilds: true,
         enableShrinkResourcesInReleaseBuilds: true,
+        cmakeVersion: '3.31.6',
       },
     }),
     splashScreen({

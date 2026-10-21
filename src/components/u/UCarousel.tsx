@@ -1,6 +1,6 @@
 import React, { createContext, use } from 'react'
 import { Dimensions, ViewProps } from 'react-native'
-import { Gesture, GestureDetector } from 'react-native-gesture-handler'
+import { Gesture, GestureDetector, usePanGesture } from 'react-native-gesture-handler'
 import Animated, { clamp, LinearTransition, SharedValue, useAnimatedReaction, useAnimatedStyle, useDerivedValue, useSharedValue, withDecay, withSpring } from 'react-native-reanimated'
 
 import { cn } from '@/utils/cn'
@@ -38,14 +38,14 @@ export const UCarousel = ({
   const offsetStart = useSharedValue(0)
   const contentWidth = useSharedValue(0)
 
-  const offsetLimit = useDerivedValue(() => -(contentWidth.value - width), [])
+  const offsetLimit = useDerivedValue(() => -(contentWidth.value - width))
 
-  const pan = Gesture.Pan()
-    .activeOffsetX([-25, 25])
-    .onStart(() => {
+  const gesture = usePanGesture({
+    activeOffsetX: [-25, 25],
+    onActivate: () => {
       offsetStart.value = offset.value
-    })
-    .onChange(({ translationX }) => {
+    },
+    onUpdate: ({ translationX }) => {
       let newOffset = offsetStart.value + translationX
       let offsetModifier = translationX > 0 ? 1 : -1
 
@@ -54,9 +54,11 @@ export const UCarousel = ({
       }
 
       offset.value = newOffset
-    })
-    .onFinalize(({ velocityX }, success) => {
-      if (!success) return
+    },
+    onDeactivate: ({ canceled, velocityX }) => {
+      if (canceled) {
+        return
+      }
 
       if (offset.value < offsetLimit.value) {
         offset.value = withSpring(offsetLimit.value)
@@ -80,8 +82,9 @@ export const UCarousel = ({
 
         offset.value = withSpring(clamp(rounded, offsetLimit.value, 0)) // clamped twice to remove padding on last element
       })
-    })
-
+    },
+  })
+    
   const containerStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: offset.value }],
@@ -101,7 +104,7 @@ export const UCarousel = ({
       className={cn('flex-row', className)}
       {...props}
     >
-      <GestureDetector gesture={pan}>
+      <GestureDetector gesture={gesture}>
         <Animated.View
           style={[containerStyle]}
           className={cn('flex flex-row', contentClassName)}
