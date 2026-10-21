@@ -1,5 +1,5 @@
 import type { UseQueryResult, DefaultError } from '@tanstack/react-query'
-import React from 'react'
+import { View } from 'react-native'
 
 import { UActivityIndicator } from './UActivityIndicator'
 import { UText } from './UText'
@@ -17,19 +17,22 @@ export const UQueryState = <T,>({
   errorMessage?: string
   children?: React.ReactNode
 }) => {
-  if (query.isPending)
-    return loading?.() ?? (
-      <UActivityIndicator />
-    )
+  if (query.isPending) return loading?.() ?? <UActivityIndicator />
 
   if (query.isError) {
-    return error?.(query.error) ?? (
-      <UText
-        className="text-error grow text-center align-middle text-xs truncate shrink p-2"
-        numberOfLines={1}
-      >
-        {errorMessage ?? query.error.message}
-      </UText>
+    return (
+      error?.(query.error) ?? (
+        <View>
+          <UText
+            className="text-error shrink grow truncate p-2 text-center align-middle text-xs"
+            numberOfLines={1}
+          >
+            {errorMessage ?? query.error.message}
+          </UText>
+
+          <View></View>
+        </View>
+      )
     )
   }
 

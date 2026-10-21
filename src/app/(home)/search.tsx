@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useDebounce } from 'use-debounce'
 import { useShallow } from 'zustand/react/shallow'
 
+import { queryClient } from '@/api/client'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { UBadge } from '@/components/u/UBadge'
 import { UButton } from '@/components/u/UButton'
@@ -15,8 +16,6 @@ import { UEmpty } from '@/components/u/UEmpty'
 import { UInput } from '@/components/u/UInput'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
-
-import { queryClient } from '@/api/client'
 import { useMap } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { isStop, MIN_CHARACTER_LIMIT, useSearch } from '@/composables/useSearch'
@@ -26,8 +25,8 @@ import { Route } from '@/types/route'
 import { getLatLngBounds } from '@/utils/bounds'
 
 const RenderItemLine = ({ item }: { item: BusLine }) => {
-  const addLine = useLineStore(useShallow(state => state.addLine))
-  const city = useFilterStore(useShallow(state => state.city))
+  const addLine = useLineStore(useShallow((state) => state.addLine))
+  const city = useFilterStore(useShallow((state) => state.city))
   const { fitBounds } = useMap()
 
   const addLineAndZoom = async () => {
@@ -46,14 +45,14 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
       staleTime: 'static',
     })
 
-    const path = data.find(x => x.code === `${item.code}_G_D0`)?.path
+    const path = data.find((x) => x.code === `${item.code}_G_D0`)?.path
     if (!path) return
 
     fitBounds(getLatLngBounds(path))
   }
 
   return (
-    <View className="flex-row items-stretch gap-2 shrink">
+    <View className="shrink flex-row items-stretch gap-2">
       <UButton
         variant="ghost"
         color="neutral"
@@ -91,7 +90,7 @@ const RenderItemStop = ({ item }: { item: BusStop }) => {
 
 export const SearchScreen = () => {
   const [query, setQuery] = useState('')
-  const city = useFilterStore(useShallow(state => state.city))
+  const city = useFilterStore(useShallow((state) => state.city))
   const { t } = useTranslation()
 
   const [debouncedQuery] = useDebounce(query, 500)
@@ -102,8 +101,8 @@ export const SearchScreen = () => {
   const neededCharacterCount = MIN_CHARACTER_LIMIT - query.length + 1
 
   return (
-    <View className="grow m-safe gap-2">
-      <View className="flex-row gap-2 mt-2 mx-2">
+    <View className="m-safe grow gap-2">
+      <View className="mx-2 mt-2 flex-row gap-2">
         <UButton
           icon="arrow-left"
           block
@@ -116,7 +115,7 @@ export const SearchScreen = () => {
         <UInput
           autoFocus={true}
           placeholder={t('searchPlaceholder')}
-          onChangeText={q => setQuery(q)}
+          onChangeText={(q) => setQuery(q)}
           loading={searchQuery.isFetching}
           icon="search"
           containerClassName="grow"
@@ -129,49 +128,47 @@ export const SearchScreen = () => {
         </UInput>
       </View>
 
-      <UText className="text-center text-muted font-inter-medium text-xs">
+      <UText className="text-muted font-inter-medium text-center text-xs">
         {t('selectedCity', { city })}
       </UText>
 
       {neededCharacterCount > 0 && (
-        <UText className="text-center text-muted font-inter-medium text-xs">
+        <UText className="text-muted font-inter-medium text-center text-xs">
           {t('neededCharacterCountToSearch', { count: neededCharacterCount })}
         </UText>
       )}
 
       <UQueryState query={searchQuery}>
-        {results.length < 1 && searchQuery.isSuccess
-          ? (
-              <UEmpty
-                title={t('noResults')}
-                description={t('noResultsDescription')}
-                icon="search"
-                className="mt-2 grow"
-              />
-            )
-          : (
-              <LegendList
-                data={results}
-                renderItem={({ item }) => {
-                  if (isStop(item)) {
-                    return <RenderItemStop item={item} />
-                  }
+        {results.length < 1 && searchQuery.isSuccess ? (
+          <UEmpty
+            title={t('noResults')}
+            description={t('noResultsDescription')}
+            icon="search"
+            className="mt-2 grow"
+          />
+        ) : (
+          <LegendList
+            data={results}
+            renderItem={({ item }) => {
+              if (isStop(item)) {
+                return <RenderItemStop item={item} />
+              }
 
-                  return (
-                    <LineContext value={item.code}>
-                      <ThemeProvider>
-                        <RenderItemLine item={item} />
-                      </ThemeProvider>
-                    </LineContext>
-                  )
-                }}
-                keyExtractor={item => item.id.toString()}
-                className="flex-1"
-                contentContainerStyle={{ paddingHorizontal: 8, gap: 8 }}
-                fadingEdgeLength={10}
-                recycleItems
-              />
-            )}
+              return (
+                <LineContext value={item.code}>
+                  <ThemeProvider>
+                    <RenderItemLine item={item} />
+                  </ThemeProvider>
+                </LineContext>
+              )
+            }}
+            keyExtractor={(item) => item.id.toString()}
+            className="flex-1"
+            contentContainerStyle={{ paddingHorizontal: 8, gap: 8 }}
+            fadingEdgeLength={10}
+            recycleItems
+          />
+        )}
       </UQueryState>
     </View>
   )

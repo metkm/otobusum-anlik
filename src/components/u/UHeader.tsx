@@ -1,10 +1,10 @@
 import { ReactNode } from 'react'
 import { View } from 'react-native'
 
+import { cn } from '@/utils/cn'
+
 import { IconName, UIcon } from './UIcon'
 import { UText } from './UText'
-
-import { cn } from '@/utils/cn'
 
 interface UHeaderProps {
   title?: string
@@ -16,23 +16,21 @@ interface UHeaderProps {
 
 export const UHeader = ({ icon, title, description, children, className }: UHeaderProps) => {
   return (
-    <View className={cn('flex-row items-center justify-between gap-2 bg-default border-b border-muted p-2', className)}>
-      <View className="flex-row gap-2 items-center">
-        {icon && (
-          <UIcon
-            name={icon}
-            sizeClassName="size-6"
-          />
-        )}
+    <View
+      className={cn(
+        'flex-row items-center justify-between gap-2 bg-default border-b border-muted p-2',
+        className,
+      )}
+    >
+      <View className="flex-row items-center gap-2">
+        {icon && <UIcon name={icon} sizeClassName="size-6" />}
 
         {(title || description) && (
-          <View className="shrink w-auto">
-            {title && (
-              <UText className="font-inter-medium">{title}</UText>
-            )}
+          <View className="w-auto shrink">
+            {title && <UText className="font-inter-medium">{title}</UText>}
 
             {description && (
-              <UText className="font-inter-medium text-xs text-muted">{description}</UText>
+              <UText className="font-inter-medium text-muted text-xs">{description}</UText>
             )}
           </View>
         )}
@@ -45,12 +43,7 @@ export const UHeader = ({ icon, title, description, children, className }: UHead
 
 export const USheetHeader = ({ icon, title, description, children }: UHeaderProps) => {
   return (
-    <UHeader
-      icon={icon}
-      title={title}
-      description={description}
-      className="pt-8"
-    >
+    <UHeader icon={icon} title={title} description={description} className="pt-8">
       {children}
     </UHeader>
   )

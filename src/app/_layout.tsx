@@ -1,5 +1,4 @@
 import '@/global.css'
-
 import { Sheet } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router'
@@ -11,14 +10,13 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaListener } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
-import { MapProvider } from '@/components/MapProvider'
-
 import { persister, queryClient } from '@/api/client'
+import { MapProvider } from '@/components/MapProvider'
 import { useSettingsStore } from '@/stores'
 import i18n from '@/translations/i18n'
 
 export const unstable_settings = {
-  anchor: '(home)'
+  anchor: '(home)',
 }
 
 const RootContent = () => {
@@ -39,7 +37,10 @@ const RootContent = () => {
 
         <Sheet.Screen name="(sheet)/bus-info/[doorNo]" />
         <Sheet.Screen name="(sheet)/stop/[stopCode]" />
-        <Sheet.Screen name="(sheet)/markers/nearby" options={{ dimmed: false, detents: ['auto', 0.8] }} />
+        <Sheet.Screen
+          name="(sheet)/markers/nearby"
+          options={{ dimmed: false, detents: ['auto', 0.8] }}
+        />
       </Sheet>
     </MapProvider>
   )
@@ -55,8 +56,8 @@ export const RootLayout = () => {
     ...baseTheme,
     colors: {
       ...baseTheme.colors,
-      background: background as string ?? baseTheme.colors.background,
-      card: background as string ?? baseTheme.colors.background,
+      background: (background as string) ?? baseTheme.colors.background,
+      card: (background as string) ?? baseTheme.colors.background,
     },
   }
 

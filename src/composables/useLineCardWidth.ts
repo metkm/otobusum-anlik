@@ -16,7 +16,7 @@ export const useLineCardWidth = () => {
   const sidePeek = spacing * 4
   const cardWidth = codes.length > 1 ? width - sidePeek * 2 : width
 
-  const snapInterval = cardWidth - (spacing * 2) + (sidePeek / 2)
+  const snapInterval = cardWidth - spacing * 2 + sidePeek / 2
 
   return {
     cardWidth,

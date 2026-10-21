@@ -7,18 +7,15 @@ import { useShallow } from 'zustand/react/shallow'
 import { useLine, useLineStops } from '@/composables'
 import { useFilterStore } from '@/stores'
 
-export const LineMarkerStopLayer = ({ isHidden, ...props }: { isHidden?: boolean } & Omit<Extract<LayerProps, { type: 'circle' }>, 'style' | 'type'>) => {
+export const LineMarkerStopLayer = ({
+  isHidden,
+  ...props
+}: { isHidden?: boolean } & Omit<Extract<LayerProps, { type: 'circle' }>, 'style' | 'type'>) => {
   return (
     <Layer
       type="circle"
       paint={{
-        'circle-radius': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          11, 4,
-          16, 7,
-        ],
+        'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 4, 16, 7],
         'circle-color': ['get', 'color'],
         'circle-stroke-width': 2,
         'circle-stroke-color': ['get', 'borderColor'],
@@ -40,12 +37,11 @@ export const LineMarkerStops = () => {
   const primaryColor = useCSSVariable('--color-primary')?.toString()
   const borderColor = useCSSVariable('--border-color-muted')?.toString()
 
-  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
+  const isLineHidden = useFilterStore(useShallow((state) => state.hiddenLines.includes(code)))
 
-  if (!lineStopsQuery.data)
-    return
+  if (!lineStopsQuery.data) return
 
-  const features: Feature[] = lineStopsQuery.data.map(bus => ({
+  const features: Feature[] = lineStopsQuery.data.map((bus) => ({
     type: 'Feature',
     properties: {
       code: bus.code,
@@ -66,16 +62,11 @@ export const LineMarkerStops = () => {
       }}
       onPress={(event) => {
         const stopCode = event.nativeEvent.features[0]?.properties?.code
-        if (!stopCode)
-          return
+        if (!stopCode) return
         router.navigate(`/stop/${stopCode}`)
       }}
     >
-      <LineMarkerStopLayer
-        isHidden={isLineHidden}
-        id={`stops-${code}`}
-        afterId="stop-layer"
-      />
+      <LineMarkerStopLayer isHidden={isLineHidden} id={`stops-${code}`} afterId="stop-layer" />
     </GeoJSONSource>
   )
 }

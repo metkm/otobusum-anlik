@@ -28,7 +28,9 @@ export const useSettingsStore = create(
   persist(
     subscribeWithSelector(
       immer<SettingsStoreV4>((set, get) => ({
-        initialMapBounds: [26.218823938242565, 36.08430119633523, 30.10080291867854, 42.351104713710356],
+        initialMapBounds: [
+          26.218823938242565, 36.08430119633523, 30.10080291867854, 42.351104713710356,
+        ],
         bearing: 0,
         pitch: 0,
         showMyLocation: false,

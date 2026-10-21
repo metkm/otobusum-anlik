@@ -17,16 +17,19 @@ export const isStop = (item: BusStop | BusLine): item is BusStop => {
 export const MIN_CHARACTER_LIMIT = 1
 
 export const useSearch = (q: string) => {
-  const city = useFilterStore(useShallow(state => state.city))
+  const city = useFilterStore(useShallow((state) => state.city))
 
   const query = useQuery({
     queryKey: ['search', q],
-    queryFn: arg => ky.get<SearchResponse>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/search`, {
-      searchParams: {
-        q: arg.queryKey[1],
-        city,
-      },
-    }).json(),
+    queryFn: (arg) =>
+      ky
+        .get<SearchResponse>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/search`, {
+          searchParams: {
+            q: arg.queryKey[1],
+            city,
+          },
+        })
+        .json(),
     enabled: () => q.length > MIN_CHARACTER_LIMIT,
   })
 

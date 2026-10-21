@@ -1,10 +1,10 @@
 import { ComponentProps } from 'react'
 import { View } from 'react-native'
 
+import { cn } from '@/utils/cn'
+
 import { UIcon } from './UIcon'
 import { UText } from './UText'
-
-import { cn } from '@/utils/cn'
 
 export const UEmpty = ({
   title,
@@ -30,9 +30,7 @@ export const UEmpty = ({
 
       <UText className="font-inter-medium">{title}</UText>
 
-      {description && (
-        <UText className="text-xs text-muted">{description}</UText>
-      )}
+      {description && <UText className="text-muted text-xs">{description}</UText>}
     </View>
   )
 }

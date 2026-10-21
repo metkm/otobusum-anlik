@@ -5,11 +5,11 @@ import { Touchable } from 'react-native-gesture-handler'
 import { tv } from 'tailwind-variants'
 import { withUniwind } from 'uniwind'
 
+import { cn } from '@/utils/cn'
+
 import { UActivityIndicator } from './UActivityIndicator'
 import { UIcon } from './UIcon'
 import { UText } from './UText'
-
-import { cn } from '@/utils/cn'
 
 const StyledTouchable = withUniwind(Touchable)
 
@@ -131,7 +131,11 @@ export const UButton = ({
 }) => {
   const router = useRouter()
 
-  const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, variant, size, block, disabled })
+  const {
+    base: uiBase,
+    label: uiLabel,
+    icon: uiIcon,
+  } = ui({ color, variant, size, block, disabled })
 
   const handlePress: TouchableProps['onPress'] = () => {
     if (!to) return
@@ -140,47 +144,25 @@ export const UButton = ({
 
   return (
     <StyledTouchable
-      className={cn(
-        uiBase(),
-        className,
-      )}
+      className={cn(uiBase(), className)}
       onPress={handlePress}
       style={style}
-      underlayColor='black'
+      underlayColor="black"
       animationDuration={0}
       androidRipple={{}}
       disabled={disabled}
       {...props}
     >
-      {
-        loading
-          ? (
-              <UActivityIndicator
-                sizeClassName={uiIcon()}
-                className={uiLabel()}
-              />
-            )
-          : icon
-            ? (
-                <UIcon
-                  name={icon}
-                  sizeClassName={uiIcon()}
-                  colorClassName={uiLabel()}
-                />
-              )
-            : undefined
-      }
+      {loading ? (
+        <UActivityIndicator sizeClassName={uiIcon()} className={uiLabel()} />
+      ) : icon ? (
+        <UIcon name={icon} sizeClassName={uiIcon()} colorClassName={uiLabel()} />
+      ) : undefined}
 
       {children}
 
       {label && (
-        <UText
-          className={cn(
-            uiLabel(),
-            labelClassName,
-          )}
-          numberOfLines={1}
-        >
+        <UText className={cn(uiLabel(), labelClassName)} numberOfLines={1}>
           {label}
         </UText>
       )}

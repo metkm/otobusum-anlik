@@ -6,8 +6,8 @@ import { useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
 export const MapOverlay = ({ className, ...props }: ViewProps) => {
-  const hideMap = useSettingsStore(useShallow(state => state.hideMap))
-  const lineCardExpanded = useSettingsStore(useShallow(state => state.lineCardExpanded))
+  const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
+  const lineCardExpanded = useSettingsStore(useShallow((state) => state.lineCardExpanded))
 
   return (
     <Animated.View
@@ -16,11 +16,7 @@ export const MapOverlay = ({ className, ...props }: ViewProps) => {
       exiting={FadeOut}
       className={cn(
         'absolute bottom-0 inset-x-0',
-        hideMap
-          ? 'h-full pt-safe-offset-2'
-          : lineCardExpanded
-            ? 'h-3/4'
-            : '',
+        hideMap ? 'h-full pt-safe-offset-2' : lineCardExpanded ? 'h-3/4' : '',
         className,
       )}
       pointerEvents="box-none"

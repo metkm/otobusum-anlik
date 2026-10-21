@@ -7,7 +7,12 @@ import { cn } from '@/utils/cn'
 
 const StyledGestureHandlerRootView = withUniwind(GestureHandlerRootView)
 
-export const USheet = ({ ref, contentContainerClassName, children, ...props }: { ref: RefObject<TrueSheet | null>, contentContainerClassName?: string } & TrueSheetProps) => {
+export const USheet = ({
+  ref,
+  contentContainerClassName,
+  children,
+  ...props
+}: { ref: RefObject<TrueSheet | null>; contentContainerClassName?: string } & TrueSheetProps) => {
   const backgroundColor = useCSSVariable(['--background-color-default'])?.toString()
 
   return (
@@ -18,11 +23,8 @@ export const USheet = ({ ref, contentContainerClassName, children, ...props }: {
       style={{ flex: 1 }}
       {...props}
     >
-      <StyledGestureHandlerRootView className={cn(
-        'grow pb-2',
-        props.header ? 'p-0' : 'pt-9',
-        contentContainerClassName,
-      )}
+      <StyledGestureHandlerRootView
+        className={cn('grow pb-2', props.header ? 'p-0' : 'pt-9', contentContainerClassName)}
       >
         {children}
       </StyledGestureHandlerRootView>

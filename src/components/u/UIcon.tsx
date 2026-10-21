@@ -17,7 +17,11 @@ export const StyledLucide = withUniwind(Lucide, {
 
 export type IconName = ComponentProps<typeof StyledLucide>['name']
 
-export const UIcon = ({ sizeClassName, colorClassName, ...props }: ComponentProps<typeof StyledLucide>) => {
+export const UIcon = ({
+  sizeClassName,
+  colorClassName,
+  ...props
+}: ComponentProps<typeof StyledLucide>) => {
   return (
     <StyledLucide
       sizeClassName={cn('size-5', sizeClassName)}

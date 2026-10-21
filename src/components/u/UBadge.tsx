@@ -1,10 +1,10 @@
 import { View } from 'react-native'
 import { tv, type VariantProps } from 'tailwind-variants'
 
+import { cn } from '@/utils/cn'
+
 import { IconName, UIcon } from './UIcon'
 import { UText } from './UText'
-
-import { cn } from '@/utils/cn'
 
 const ui = tv({
   variants: {
@@ -68,19 +68,9 @@ export const UBadge = ({
 
   return (
     <View className={cn(uiBase(), className)}>
-      {icon && (
-        <UIcon
-          name={icon}
-          sizeClassName="size-4"
-          colorClassName={uiLabel()}
-        />
-      )}
+      {icon && <UIcon name={icon} sizeClassName="size-4" colorClassName={uiLabel()} />}
 
-      {label && (
-        <UText className={uiLabel()}>
-          {label}
-        </UText>
-      )}
+      {label && <UText className={uiLabel()}>{label}</UText>}
     </View>
   )
 }

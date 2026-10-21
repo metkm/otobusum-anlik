@@ -17,17 +17,17 @@ export const LineMarkerBuses = () => {
   const textColor = useCSSVariable('--text-color-inverted')?.toString()
   const primaryColor = useCSSVariable('--color-primary')?.toString()
 
-  const isLineHidden = useFilterStore(useShallow(state => state.hiddenLines.includes(code)))
+  const isLineHidden = useFilterStore(useShallow((state) => state.hiddenLines.includes(code)))
 
-  if (!lineBusesQuery.data)
-    return
+  if (!lineBusesQuery.data) return
 
   const iconImage = `bus-${code}`
   const images: Record<string, ImageEntry> = {}
   images[iconImage] = Lucide.getImageSourceSync('bus-front', 20, textColor).uri
 
-  const features: Feature[] = buses.filter(bus => bus.route_code === routeCode)
-    .map(bus => ({
+  const features: Feature[] = buses
+    .filter((bus) => bus.route_code === routeCode)
+    .map((bus) => ({
       type: 'Feature',
       properties: {
         doorNo: bus.bus_id,
@@ -52,8 +52,7 @@ export const LineMarkerBuses = () => {
         }}
         onPress={(event) => {
           const doorNo = event.nativeEvent.features[0]?.properties?.doorNo
-          if (!doorNo)
-            return
+          if (!doorNo) return
           router.navigate(`/bus-info/${doorNo}`)
         }}
       >
@@ -61,12 +60,7 @@ export const LineMarkerBuses = () => {
           id={`bus-circle-${code}`}
           type="circle"
           paint={{
-            'circle-radius': [
-              'interpolate',
-              ['linear'], ['zoom'],
-              10, 14,
-              16, 16,
-            ],
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 14, 16, 16],
             'circle-color': ['get', 'color'],
             'circle-pitch-alignment': 'map',
           }}
@@ -79,13 +73,8 @@ export const LineMarkerBuses = () => {
           type="symbol"
           layout={{
             'icon-image': iconImage,
-            'icon-size': [
-              'interpolate',
-              ['linear'], ['zoom'],
-              10, 0.25,
-              16, 0.3,
-            ],
-            'visibility': isLineHidden ? 'none' : 'visible',
+            'icon-size': ['interpolate', ['linear'], ['zoom'], 10, 0.25, 16, 0.3],
+            visibility: isLineHidden ? 'none' : 'visible',
             'icon-pitch-alignment': 'map',
             'icon-allow-overlap': true,
           }}
@@ -98,6 +87,5 @@ export const LineMarkerBuses = () => {
         />
       </GeoJSONSource>
     </>
-
   )
 }

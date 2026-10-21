@@ -22,8 +22,6 @@ const { withUniwindConfig } = require('uniwind/metro')
 module.exports = withBoostConfig(
   withUniwindConfig(getDefaultConfig(__dirname), {
     cssEntryFile: './src/global.css',
-    // (optional) path where we gonna auto-generate typings
-    // defaults to project's root
     dtsFile: './src/uniwind-types.d.ts',
   }),
   {

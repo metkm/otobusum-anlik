@@ -1,6 +1,6 @@
 import type { LngLatBounds } from '@maplibre/maplibre-react-native'
 
-export const getLatLngBounds = (path: { lat: number, lng: number }[]) => {
+export const getLatLngBounds = (path: { lat: number; lng: number }[]) => {
   if (path.length < 1) {
     throw new Error('Get line bounds is called with no elements!')
   }

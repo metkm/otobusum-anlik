@@ -4,12 +4,6 @@ import { View, ViewProps } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
-import { SkeletonTimetable } from '../u/skeleton/SkeletonTimetable'
-import { UButton } from '../u/UButton'
-import { UEmpty } from '../u/UEmpty'
-import { UQueryState } from '../u/UQueryState'
-import { UText } from '../u/UText'
-
 import { useLineCardWidth, useLineNews, useLineRoutes, useLineTimetable } from '@/composables'
 import { Time } from '@/composables/useLineTimetable'
 import { useFilterStore } from '@/stores'
@@ -17,6 +11,12 @@ import { City } from '@/types/city'
 import { cn } from '@/utils/cn'
 import { groupDeparturesByHour } from '@/utils/groupDepartures'
 import { toAscii } from '@/utils/toAscii'
+
+import { SkeletonTimetable } from '../u/skeleton/SkeletonTimetable'
+import { UButton } from '../u/UButton'
+import { UEmpty } from '../u/UEmpty'
+import { UQueryState } from '../u/UQueryState'
+import { UText } from '../u/UText'
 
 const sunday = 1 << 1
 const monday = 1 << 2
@@ -32,7 +32,7 @@ const nowDay = now.getDay()
 export const LineTimetable = ({ className }: ViewProps) => {
   const { t } = useTranslation()
 
-  const city = useFilterStore(useShallow(state => state.city))
+  const city = useFilterStore(useShallow((state) => state.city))
   const [day, setDay] = useState(() => 1 << (nowDay + 1))
 
   const { cardWidth } = useLineCardWidth()
@@ -77,7 +77,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
   }, [lineTimetableQuery.data, day])
 
   const groupedByHour = groupDeparturesByHour(filteredData)
-  const hourEntries = Object.entries(groupedByHour).sort()
+  const hourEntries = Object.entries(groupedByHour).sort((a, b) => Number(a[0]) - Number(b[0]))
 
   const cancelledTimes = lineNewsQuery.data?.map((ann) => {
     if (!ann.MESAJ.includes('dan Saat')) return
@@ -95,7 +95,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
     return time
   })
 
-  const options: Record<City, { label: string, value: number }[]> = {
+  const options: Record<City, { label: string; value: number }[]> = {
     istanbul: [
       {
         value: monday | tuesday | wednesday | thursday | friday,
@@ -149,11 +149,11 @@ export const LineTimetable = ({ className }: ViewProps) => {
     >
       <View className="m-2 mb-0">
         <UText className="text-muted">{routeCode}</UText>
-        <UText className="text-lg font-inter-medium leading-tight">{route?.name}</UText>
+        <UText className="font-inter-medium text-lg leading-tight">{route?.name}</UText>
       </View>
 
-      <View className="flex-row gap-2 m-2">
-        {options[city].map(option => (
+      <View className="m-2 flex-row gap-2">
+        {options[city].map((option) => (
           <UButton
             label={option.label}
             key={option.value}
@@ -166,55 +166,43 @@ export const LineTimetable = ({ className }: ViewProps) => {
         ))}
       </View>
 
-      <UQueryState
-        query={lineTimetableQuery}
-        loading={() => <SkeletonTimetable />}
-      >
-        {
-          hourEntries.length > 1
-            ? (
-                <ScrollView fadingEdgeLength={10}>
-                  {hourEntries.map(([hour, minutes], index) => (
-                    <View
-                      key={hour}
-                      className={cn(
-                        'flex-row items-center shrink p-2 gap-2',
-                        index % 2 !== 0 ? 'bg-default' : false,
-                      )}
+      <UQueryState query={lineTimetableQuery} loading={() => <SkeletonTimetable />}>
+        {hourEntries.length > 1 ? (
+          <ScrollView fadingEdgeLength={10}>
+            {hourEntries.map(([hour, minutes], index) => (
+              <View
+                key={hour}
+                className={cn(
+                  'flex-row items-center shrink p-2 gap-2',
+                  index % 2 !== 0 ? 'bg-default' : false,
+                )}
+              >
+                <UText className="font-inter-medium bg-primary text-inverted h-full min-h-7 w-7 rounded-md text-center align-middle">
+                  {hour}
+                </UText>
+
+                <View className="shrink flex-row flex-wrap items-center gap-2">
+                  {minutes.map((min) => (
+                    <UText
+                      key={min}
+                      className="leading-tight"
+                      style={[
+                        cancelledTimes?.includes(`${hour}:${min}`) && {
+                          textDecorationLine: 'line-through',
+                          opacity: 0.5,
+                        },
+                      ]}
                     >
-                      <UText className="font-inter-medium w-7 h-full min-h-7 text-center align-middle rounded-md bg-primary text-inverted">
-                        {hour}
-                      </UText>
-
-                      <View className="flex-row flex-wrap items-center gap-2 shrink">
-                        {minutes.map(min => (
-                          <UText
-                            key={min}
-                            className="leading-tight"
-                            style={[
-                              cancelledTimes?.includes(`${hour}:${min}`) && {
-                                textDecorationLine: 'line-through',
-                                opacity: 0.5,
-                              },
-                            ]}
-                          >
-                            {min}
-                          </UText>
-                        ))}
-                      </View>
-                    </View>
+                      {min}
+                    </UText>
                   ))}
-                </ScrollView>
-              )
-            : (
-                <UEmpty
-                  title={t('timetableEmptyRange')}
-                  icon="clock-fading"
-                  className="grow"
-                />
-              )
-        }
-
+                </View>
+              </View>
+            ))}
+          </ScrollView>
+        ) : (
+          <UEmpty title={t('timetableEmptyRange')} icon="clock-fading" className="grow" />
+        )}
       </UQueryState>
     </View>
   )

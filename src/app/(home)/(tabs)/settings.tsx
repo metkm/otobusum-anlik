@@ -8,20 +8,27 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { Uniwind, withUniwind } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
+import { queryCache } from '@/api/client'
 import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
 import { USheet } from '@/components/u/USheet'
 import { USwitch } from '@/components/u/USwitch'
 import { UText } from '@/components/u/UText'
-
-import { queryCache } from '@/api/client'
 import { MapStyle } from '@/constants/mapStyles'
 import { useFilterStore, useSettingsStore } from '@/stores'
 import { City } from '@/types/city'
 
 const StyledImage = withUniwind(Image)
 
-const ToggleSetting = ({ label, value = false, onPress }: { label: string, value: boolean, onPress: () => void }) => {
+const ToggleSetting = ({
+  label,
+  value,
+  onPress,
+}: {
+  label: string
+  value: boolean
+  onPress: () => void
+}) => {
   return (
     <UButton
       label={label}
@@ -36,7 +43,7 @@ const ToggleSetting = ({ label, value = false, onPress }: { label: string, value
   )
 }
 
-type Option<T> = { label: string, value: T }
+type Option<T> = { label: string; value: T }
 
 export const OptionPicker = <T,>({
   label,
@@ -54,8 +61,8 @@ export const OptionPicker = <T,>({
   const sheetRef = useRef<TrueSheet>(null)
 
   const handleSelect = (option: Option<T>) => {
-    sheetRef.current?.dismiss()
     onSelect(option)
+    void sheetRef.current?.dismiss()
   }
 
   return (
@@ -64,34 +71,25 @@ export const OptionPicker = <T,>({
         color="neutral"
         variant="ghost"
         size="lg"
-        onPress={() => {
-          sheetRef.current?.present()
-        }}
+        onPress={() => void sheetRef.current?.present()}
       >
-        <View className="flex-1 flex-row justify-between items-center gap-2">
+        <View className="flex-1 flex-row items-center justify-between gap-2">
           <View className="flex-1">
             <UText className="font-inter-medium text-xs">{label}</UText>
 
             {description && (
-              <UText
-                className="flex-1 font-inter-medium text-xs text-muted"
-                numberOfLines={1}
-              >
+              <UText className="font-inter-medium text-muted flex-1 text-xs" numberOfLines={1}>
                 {description}
               </UText>
             )}
           </View>
 
-          <UText className="text-xs font-inter-medium">{value.label}</UText>
+          <UText className="font-inter-medium text-xs">{value.label}</UText>
         </View>
       </UButton>
 
-      <USheet
-        ref={sheetRef}
-        contentContainerClassName="px-2 gap-2"
-        detents={['auto']}
-      >
-        {options.map(option => (
+      <USheet ref={sheetRef} contentContainerClassName="px-2 gap-2" detents={['auto']}>
+        {options.map((option) => (
           <UButton
             key={option.label}
             label={option.label}
@@ -107,9 +105,15 @@ export const OptionPicker = <T,>({
   )
 }
 
-const SettingsSectionTitle = ({ icon, title }: { icon: ComponentProps<typeof UIcon>['name'], title: string }) => {
+const SettingsSectionTitle = ({
+  icon,
+  title,
+}: {
+  icon: ComponentProps<typeof UIcon>['name']
+  title: string
+}) => {
   return (
-    <View className="p-2 px-5 bg-muted flex-row items-center gap-2 -mx-2">
+    <View className="bg-muted -mx-2 flex-row items-center gap-2 p-2 px-5">
       <UIcon name={icon} />
       <UText className="font-inter-semibold">{title}</UText>
     </View>
@@ -119,15 +123,17 @@ const SettingsSectionTitle = ({ icon, title }: { icon: ComponentProps<typeof UIc
 export const SettingsScreen = () => {
   const { t } = useTranslation()
 
-  const mapButtonsPlacement = useSettingsStore(useShallow(state => state.mapButtonsPlacement))
-  const expandStopsWhenScrolled = useSettingsStore(useShallow(state => state.expandStopsWhenScrolled))
-  const toggleMyLocation = useSettingsStore(useShallow(state => state.toggleMyLocation))
-  const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
-  const hideMap = useSettingsStore(useShallow(state => state.hideMap))
-  const city = useFilterStore(useShallow(state => state.city))
+  const mapButtonsPlacement = useSettingsStore(useShallow((state) => state.mapButtonsPlacement))
+  const expandStopsWhenScrolled = useSettingsStore(
+    useShallow((state) => state.expandStopsWhenScrolled),
+  )
+  const toggleMyLocation = useSettingsStore(useShallow((state) => state.toggleMyLocation))
+  const showMyLocation = useSettingsStore(useShallow((state) => state.showMyLocation))
+  const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
+  const city = useFilterStore(useShallow((state) => state.city))
 
-  const mapStyleStore = useSettingsStore(useShallow(state => state.mapStyle))
-  const colorSchemeStore = useSettingsStore(useShallow(state => state.colorScheme))
+  const mapStyleStore = useSettingsStore(useShallow((state) => state.mapStyle))
+  const colorSchemeStore = useSettingsStore(useShallow((state) => state.colorScheme))
 
   const appThemeOptions: {
     label: string
@@ -147,7 +153,7 @@ export const SettingsScreen = () => {
     },
   ]
 
-  const mapThemeOptions: { label: string, value: MapStyle | undefined, preview?: string }[] = [
+  const mapThemeOptions: { label: string; value: MapStyle | undefined; preview?: string }[] = [
     {
       label: t('dark'),
       value: 'dark',
@@ -203,14 +209,8 @@ export const SettingsScreen = () => {
   }
 
   return (
-    <ScrollView
-      className="m-safe"
-      contentContainerClassName="gap-2 p-2"
-    >
-      <SettingsSectionTitle
-        title={t('map')}
-        icon="map"
-      />
+    <ScrollView contentContainerClassName="gap-2 p-2 pt-safe">
+      <SettingsSectionTitle title={t('map')} icon="map" />
 
       <ToggleSetting
         label={t('showMyLocation')}
@@ -218,11 +218,7 @@ export const SettingsScreen = () => {
         value={showMyLocation}
       />
 
-      <ToggleSetting
-        label={t('hideMap')}
-        onPress={toggleMap}
-        value={hideMap}
-      />
+      <ToggleSetting label={t('hideMap')} onPress={toggleMap} value={hideMap} />
 
       <OptionPicker
         label={t('mapTheme')}
@@ -248,10 +244,7 @@ export const SettingsScreen = () => {
         }}
       />
 
-      <SettingsSectionTitle
-        title={t('settings')}
-        icon="settings"
-      />
+      <SettingsSectionTitle title={t('settings')} icon="settings" />
 
       <ToggleSetting
         label={t('expandStopsWhenScrolled')}
@@ -282,10 +275,7 @@ export const SettingsScreen = () => {
         }}
       />
 
-      <SettingsSectionTitle
-        title={t('other')}
-        icon="settings-2"
-      />
+      <SettingsSectionTitle title={t('other')} icon="settings-2" />
 
       <UButton
         label={t('clearCache')}
@@ -324,7 +314,7 @@ export const SettingsScreen = () => {
         />
       </UButton>
 
-      <UText className="text-muted font-inter-medium ml-auto mr-2 text-xs">
+      <UText className="text-muted font-inter-medium mr-2 ml-auto text-xs">
         {`${t('version')} ${Constants.expoConfig?.version}`}
       </UText>
     </ScrollView>

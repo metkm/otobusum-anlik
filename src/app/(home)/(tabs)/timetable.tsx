@@ -8,7 +8,6 @@ import { ThemeProvider } from '@/components/ThemeProvider'
 import { UButton } from '@/components/u/UButton'
 import { CarouselContext, UCarousel } from '@/components/u/UCarousel'
 import { UText } from '@/components/u/UText'
-
 import { useLineCardWidth, useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 
@@ -19,8 +18,10 @@ const LineTimetables = () => {
 
   if (codes.length < 1) {
     return (
-      <View className="flex items-center justify-center gap-2 p-2 grow">
-        <UText className="text-muted font-inter-medium text-center max-w-xs">{t('timetableEmpty')}</UText>
+      <View className="flex grow items-center justify-center gap-2 p-2">
+        <UText className="text-muted font-inter-medium max-w-xs text-center">
+          {t('timetableEmpty')}
+        </UText>
 
         <UButton
           label={t('goToSearch')}
@@ -39,7 +40,7 @@ const LineTimetables = () => {
       contentClassName={`gap-2 pt-0 ${codes.length > 1 ? 'p-2 pt-0' : ''}`}
       className="flex-1"
     >
-      {codes.map(item => (
+      {codes.map((item) => (
         <LineContext key={item} value={item}>
           <ThemeProvider>
             <LineTimetable className={codes.length < 2 ? 'rounded-none' : ''} />
@@ -54,7 +55,7 @@ export const TimetableScreen = () => {
   const offset = useSharedValue(0)
 
   return (
-    <View className="mt-safe mx-safe pt-2 flex-1">
+    <View className="mt-safe mx-safe flex-1 pt-2">
       <CarouselContext value={offset}>
         <LineCards />
         <LineTimetables />

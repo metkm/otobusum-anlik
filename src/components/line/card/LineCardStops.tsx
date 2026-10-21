@@ -1,7 +1,14 @@
 import { AnimatedLegendList } from '@legendapp/list/reanimated'
 import { t } from 'i18next'
 import { View } from 'react-native'
-import { LinearTransition, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
+import {
+  LinearTransition,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withTiming,
+} from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
@@ -10,7 +17,6 @@ import { UEmpty } from '@/components/u/UEmpty'
 import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
-
 import { useLineStops, useLineBuses, useMap } from '@/composables'
 import { useSettingsStore } from '@/stores'
 import { BusStop } from '@/types/bus'
@@ -19,29 +25,25 @@ import { getClosestPoint } from '@/utils/getClosestPoint'
 const ErrorState = ({ message }: { message?: string }) => {
   return (
     <View className="h-22 items-center justify-center">
-      <UText className="text-error font-inter-medium text-xs">
-        {message}
-      </UText>
+      <UText className="text-error font-inter-medium text-xs">{message}</UText>
     </View>
   )
 }
 
-const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
+const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
   const { buses } = useLineBuses()
   const { camera } = useMap()
   const { query: lineStopsQuery } = useLineStops()
 
   const closestBus = buses.find((bus) => {
-    if (!lineStopsQuery.data)
-      return false
+    if (!lineStopsQuery.data) return false
 
     const closestStop = getClosestPoint(bus, lineStopsQuery.data)
     return closestStop?.id && closestStop.id === item.id
   })
 
   const goToBus = () => {
-    if (!closestBus)
-      return
+    if (!closestBus) return
 
     camera.current?.flyTo({
       center: [closestBus.lng, closestBus.lat],
@@ -52,33 +54,20 @@ const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
 
   return (
     <View className="flex-row items-center gap-2">
-      <UText className="w-6.5 text-center font-inter-medium">{index + 1}</UText>
+      <UText className="font-inter-medium w-6.5 text-center">{index + 1}</UText>
 
-      <View className="items-center justify-center size-8 rounded-full border-2 border-muted">
-        {closestBus && (
-          <UIcon
-            name="bus-front"
-            size={16}
-          />
-        )}
+      <View className="border-muted size-8 items-center justify-center rounded-full border-2">
+        {closestBus && <UIcon name="bus-front" size={16} />}
       </View>
 
-      <UText
-        className="text-xs truncate shrink"
-        numberOfLines={2}
-      >
+      <UText className="shrink truncate text-xs" numberOfLines={2}>
         {item.name}
       </UText>
 
-      <View className="flex-row ml-auto gap-1">
+      <View className="ml-auto flex-row gap-1">
         {closestBus && (
           <>
-            <UButton
-              icon="locate"
-              className="ml-auto"
-              variant="soft"
-              onPress={goToBus}
-            />
+            <UButton icon="locate" className="ml-auto" variant="soft" onPress={goToBus} />
 
             <UButton
               icon="info"
@@ -93,11 +82,7 @@ const StopItem = ({ item, index }: { item: BusStop, index: number }) => {
           </>
         )}
 
-        <UButton
-          icon="chevron-right"
-          variant="soft"
-          to={`/stop/${item.code}`}
-        />
+        <UButton icon="chevron-right" variant="soft" to={`/stop/${item.code}`} />
       </View>
     </View>
   )
@@ -107,7 +92,9 @@ const COLLAPSED = 112
 const EXPANDED = 192
 
 export const LineCardStops = () => {
-  const expandStopsWhenScrolled = useSettingsStore(useShallow(state => state.expandStopsWhenScrolled))
+  const expandStopsWhenScrolled = useSettingsStore(
+    useShallow((state) => state.expandStopsWhenScrolled),
+  )
   const { query: lineStopsQuery } = useLineStops()
   const containerHeight = useSharedValue(COLLAPSED)
 
@@ -117,32 +104,24 @@ export const LineCardStops = () => {
 
   const onScroll = useAnimatedScrollHandler({
     onBeginDrag: () => {
-      if (!expandStopsWhenScrolled)
-        return
+      if (!expandStopsWhenScrolled) return
       containerHeight.set(EXPANDED)
     },
     onMomentumEnd: () => {
-      if (!expandStopsWhenScrolled && containerHeight.value !== EXPANDED)
-        return
+      if (!expandStopsWhenScrolled && containerHeight.value !== EXPANDED) return
       containerHeight.set(withDelay(1500, withTiming(COLLAPSED)))
     },
   })
 
   if (lineStopsQuery.data && lineStopsQuery.data.length < 1) {
-    return (
-      <UEmpty
-        title={t('emptyStops')}
-        icon="bus"
-        className="grow"
-      />
-    )
+    return <UEmpty title={t('emptyStops')} icon="bus" className="grow" />
   }
 
   return (
     <UQueryState
       query={lineStopsQuery}
       loading={() => <SkeletonLineStops />}
-      error={error => <ErrorState message={error.message} />}
+      error={(error) => <ErrorState message={error.message} />}
     >
       <AnimatedLegendList
         layout={LinearTransition}
@@ -153,7 +132,7 @@ export const LineCardStops = () => {
         // @ts-expect-error
         style={containerStyle}
         onScroll={onScroll}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={(item) => item.id.toString()}
         scrollEventThrottle={16}
         getFixedItemSize={() => 36}
         recycleItems

@@ -12,15 +12,15 @@ type MarkerCollectionBaseProps = {
 
 export type MarkerCollection = (
   | {
-    layerProps: LayerProps
-    renderer: 'layer'
-  }
+      layerProps: LayerProps
+      renderer: 'layer'
+    }
   | {
-    renderer: 'stops' | 'route'
-    layerProps?: LayerProps
-  }
-)
-& MarkerCollectionBaseProps
+      renderer: 'stops' | 'route'
+      layerProps?: LayerProps
+    }
+) &
+  MarkerCollectionBaseProps
 
 interface TemporaryMarkerStore {
   data: MarkerCollection[]
@@ -30,11 +30,11 @@ interface TemporaryMarkerStore {
 
 export const useTemporaryMarkerStore = create(
   subscribeWithSelector(
-    immer<TemporaryMarkerStore>(set => ({
+    immer<TemporaryMarkerStore>((set) => ({
       data: [],
-      addCollection: collection =>
+      addCollection: (collection) =>
         set((state) => {
-          const index = state.data.findIndex(item => item.id === collection.id)
+          const index = state.data.findIndex((item) => item.id === collection.id)
 
           if (index !== -1) {
             state.data[index] = castDraft(collection)
@@ -42,9 +42,9 @@ export const useTemporaryMarkerStore = create(
             state.data.push(castDraft(collection))
           }
         }),
-      removeCollection: id =>
+      removeCollection: (id) =>
         set((state) => {
-          state.data = state.data.filter(item => item.id !== id)
+          state.data = state.data.filter((item) => item.id !== id)
         }),
     })),
   ),

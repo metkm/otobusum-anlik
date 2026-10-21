@@ -6,7 +6,6 @@ import ColorPicker, { type ColorFormatsObject, Panel3, Preview } from 'reanimate
 import { useCSSVariable, withUniwind } from 'uniwind'
 
 import { UButton } from '@/components/u/UButton'
-
 import { useLine } from '@/composables'
 import { useThemeStore } from '@/stores'
 
@@ -31,26 +30,17 @@ export const LineModalsColorPicker = () => {
 
   return (
     <>
-      <UButton
-        label={t('colorPicker')}
-        onPress={() => setIsVisible(true)}
-        size="lg"
-        variant="soft"
-      >
-        <View className="size-4 rounded-md bg-primary" />
+      <UButton label={t('colorPicker')} onPress={() => setIsVisible(true)} size="lg" variant="soft">
+        <View className="bg-primary size-4 rounded-md" />
       </UButton>
 
-      <Modal
-        visible={isVisible}
-        onRequestClose={close}
-        transparent
-      >
+      <Modal visible={isVisible} onRequestClose={close} transparent>
         <GestureHandlerRootView>
           <StyledPressable
             onPress={close}
             className="flex-1 items-center justify-center bg-black/50"
           >
-            <View className="bg-default rounded-md w-full max-w-xs p-4">
+            <View className="bg-default w-full max-w-xs rounded-md p-4">
               <StyledColorPicker
                 className="gap-2"
                 onCompleteJS={onSelectColor}

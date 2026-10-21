@@ -17,16 +17,16 @@ export const useFilterStore = create(
       immer<FiltersStore>((set, _get) => ({
         city: 'istanbul',
         hiddenLines: [],
-        toggleLineHidden: (code: string) => set((state) => {
-          const i = state.hiddenLines.indexOf(code)
-          if (i === -1) {
-            state.hiddenLines.push(code)
-          } else {
-            state.hiddenLines.splice(i, 1)
-          }
-        }),
-      }),
-      ),
+        toggleLineHidden: (code: string) =>
+          set((state) => {
+            const i = state.hiddenLines.indexOf(code)
+            if (i === -1) {
+              state.hiddenLines.push(code)
+            } else {
+              state.hiddenLines.splice(i, 1)
+            }
+          }),
+      })),
     ),
     {
       name: 'filter-storage',

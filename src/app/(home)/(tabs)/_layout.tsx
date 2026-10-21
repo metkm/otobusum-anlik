@@ -33,7 +33,7 @@ export const TabsLayout = () => {
 
   return (
     <Tabs screenOptions={{ headerShown: false }}>
-      {screens.map(screen => (
+      {screens.map((screen) => (
         <Tabs.Screen
           key={screen.name}
           name={screen.name}
@@ -44,13 +44,18 @@ export const TabsLayout = () => {
             },
             tabBarIcon: ({ focused }) => {
               return (
-                <View className={cn(
-                  focused ? 'bg-muted' : undefined,
-                  'w-12 h-6 rounded-md items-center justify-center',
-                )}
+                <View
+                  className={cn(
+                    focused ? 'bg-muted' : undefined,
+                    'w-12 h-6 rounded-md items-center justify-center',
+                  )}
                 >
                   <IonIcons
-                    name={(focused ? screen.iconActive : screen.icon) as ComponentProps<typeof IonIcons>['name']}
+                    name={
+                      (focused ? screen.iconActive : screen.icon) as ComponentProps<
+                        typeof IonIcons
+                      >['name']
+                    }
                     color={color as string}
                     size={20}
                   />

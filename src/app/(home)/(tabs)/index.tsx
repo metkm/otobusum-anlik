@@ -10,13 +10,12 @@ import { Map } from '@/components/Map'
 import { MapButtons } from '@/components/MapButtons'
 import { MapOverlay } from '@/components/MapOverlay'
 import { MapTemporaryMarkers } from '@/components/MapTemporaryMarkers'
-
 import { useMapStyle } from '@/composables/useMapStyle'
 import { useSettingsStore } from '@/stores'
 
 export const HomeScreen = () => {
-  const showMyLocation = useSettingsStore(useShallow(state => state.showMyLocation))
-  const hideMap = useSettingsStore(useShallow(state => state.hideMap))
+  const showMyLocation = useSettingsStore(useShallow((state) => state.showMyLocation))
+  const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
 
   const { scheme: mapScheme } = useMapStyle()
   const isFocused = useIsFocused()
@@ -24,20 +23,16 @@ export const HomeScreen = () => {
 
   return (
     <View className="flex-1">
-      {isFocused && (
-        <StatusBar style={mapScheme === 'dark' ? 'light' : 'dark'} />
+      {isFocused && <StatusBar style={mapScheme === 'dark' ? 'light' : 'dark'} />}
+
+      {!hideMap && (
+        <Map>
+          <LineMarkers />
+          <MapTemporaryMarkers />
+
+          {showMyLocation && <UserLocation heading />}
+        </Map>
       )}
-
-      {
-        !hideMap && (
-          <Map>
-            <LineMarkers />
-            <MapTemporaryMarkers />
-
-            {showMyLocation && <UserLocation heading />}
-          </Map>
-        )
-      }
 
       {pathname !== '/markers/nearby' && (
         <MapOverlay>

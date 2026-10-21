@@ -8,5 +8,5 @@ export interface Route {
   type: string
   desc: string
   code: RouteCode
-  path?: { lat: number, lng: number }[]
+  path?: { lat: number; lng: number }[]
 }

@@ -6,15 +6,9 @@ import { useColorScheme } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { useFilterStore, useThemeStore } from '@/stores'
 
-export const ThemeProvider = ({
-  code,
-  children,
-}: {
-  code?: string
-  children?: ReactNode
-}) => {
-  const city = useFilterStore(useShallow(state => state.city))
-  const themeStore = useThemeStore(useShallow(state => state.themesByCity[city]))
+export const ThemeProvider = ({ code, children }: { code?: string; children?: ReactNode }) => {
+  const city = useFilterStore(useShallow((state) => state.city))
+  const themeStore = useThemeStore(useShallow((state) => state.themesByCity[city]))
 
   const lineCode = code ?? use(LineContext)
   const colorScheme = useColorScheme()

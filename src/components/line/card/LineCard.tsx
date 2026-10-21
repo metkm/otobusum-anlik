@@ -1,12 +1,12 @@
 import { View, ViewProps } from 'react-native'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 
+import { cn } from '@/utils/cn'
+
 import { LineCardMenu } from './LineCardMenu'
 import { LineCardName } from './LineCardName'
 import { LineCardRoutes } from './LineCardRoutes'
 import { LineCardStops } from './LineCardStops'
-
-import { cn } from '@/utils/cn'
 
 export const LineCard = ({ className, style, ...props }: ViewProps) => {
   return (

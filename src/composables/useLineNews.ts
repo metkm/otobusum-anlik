@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 
-import { useLine } from './useLine'
-
 import { CACHE_MS_30_MINUTES } from '@/constants/app'
+
+import { useLine } from './useLine'
 
 interface Announcement {
   HAT: string
@@ -23,19 +23,22 @@ export function useLineNews() {
   const query = useQuery({
     queryKey: ['announcements'],
     queryFn: async () => {
-      const response = await ky.post('https://api.ibb.gov.tr/iett/UlasimDinamikVeri/Duyurular.asmx?wsdl', {
-        headers: {
-          'Content-Type': 'text/xml; charset=UTF-8',
-          'SOAPAction': '"http://tempuri.org/GetDuyurular_json"',
-        },
-        body: `
+      const response = await ky.post(
+        'https://api.ibb.gov.tr/iett/UlasimDinamikVeri/Duyurular.asmx?wsdl',
+        {
+          headers: {
+            'Content-Type': 'text/xml; charset=UTF-8',
+            SOAPAction: '"http://tempuri.org/GetDuyurular_json"',
+          },
+          body: `
       <soap:Envelope
         xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>
         </soap:Body>
       </soap:Envelope>
     `,
-      })
+        },
+      )
 
       const key = 'GetDuyurular_jsonResult'
       const content = await response.text()
@@ -49,7 +52,7 @@ export function useLineNews() {
     staleTime: CACHE_MS_30_MINUTES,
   })
 
-  const news = query.data?.filter(a => a.HATKODU === code) || []
+  const news = query.data?.filter((a) => a.HATKODU === code) || []
 
   return {
     query,

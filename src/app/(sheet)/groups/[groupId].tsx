@@ -9,7 +9,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { UButton } from '@/components/u/UButton'
 import { UInput } from '@/components/u/UInput'
 import { UText } from '@/components/u/UText'
-
 import { useLineGroup } from '@/composables'
 import { GROUP_LINE_LIMIT } from '@/constants/app'
 import { useLineStore } from '@/stores'
@@ -24,8 +23,7 @@ export const GroupIdScreen = () => {
   const inputRef = useRef<TextInputInstance>(null)
 
   const handleSave = useCallback(() => {
-    if (!group)
-      return
+    if (!group) return
 
     useLineStore.getState().updateGroupName(group.id, name.current)
     inputRef.current?.clear()
@@ -50,8 +48,7 @@ export const GroupIdScreen = () => {
                 label={t('deleteGroup')}
                 icon="trash-2"
                 onPress={() => {
-                  if (!group)
-                    return
+                  if (!group) return
 
                   useLineStore.getState().deleteGroup(group.id)
                   router.back()
@@ -68,9 +65,9 @@ export const GroupIdScreen = () => {
   }, [group, groups.length, handleSave, navigation, t])
 
   return (
-    <View className="gap-2 pt-8 px-2">
+    <View className="gap-2 px-2 pt-8">
       <View className="gap-2">
-        <UText className="ml-1 font-inter-medium">{group?.name}</UText>
+        <UText className="font-inter-medium ml-1">{group?.name}</UText>
         <UInput
           ref={inputRef}
           placeholder={t('newGroupTitlePlaceholder')}
@@ -81,12 +78,12 @@ export const GroupIdScreen = () => {
       </View>
 
       <View className="gap-2">
-        <View className="flex-row gap-2 items-center">
-          <UText className="ml-1 font-inter-medium">{t('addedLines')}</UText>
-          <UText className="text-xs font-inter-medium">{`(${group?.codes.length} / ${GROUP_LINE_LIMIT})`}</UText>
+        <View className="flex-row items-center gap-2">
+          <UText className="font-inter-medium ml-1">{t('addedLines')}</UText>
+          <UText className="font-inter-medium text-xs">{`(${group?.codes.length} / ${GROUP_LINE_LIMIT})`}</UText>
         </View>
 
-        {(group && group.codes.length > 0) && (
+        {group && group.codes.length > 0 && (
           <LegendList
             data={group?.codes}
             renderItem={({ item }) => (
@@ -95,20 +92,21 @@ export const GroupIdScreen = () => {
                   <UButton
                     icon="trash-2"
                     onPress={() => {
-                      if (!group)
-                        return
+                      if (!group) return
                       useLineStore.getState().deleteLine(item, group.id)
                     }}
                     color="neutral"
                     variant="soft"
                   />
 
-                  <UText className="px-2 py-1 font-inter-medium rounded-md bg-muted align-middle">{item}</UText>
+                  <UText className="font-inter-medium bg-muted rounded-md px-2 py-1 align-middle">
+                    {item}
+                  </UText>
                 </View>
               </GestureHandlerRootView>
             )}
             contentContainerStyle={{ gap: 8 }}
-            keyExtractor={item => item}
+            keyExtractor={(item) => item}
             recycleItems
           />
         )}

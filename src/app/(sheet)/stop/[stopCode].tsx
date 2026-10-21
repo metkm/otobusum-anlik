@@ -19,7 +19,6 @@ import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
-
 import { useStop } from '@/composables'
 import { useStopArrivals } from '@/composables/useStopArrivals'
 
@@ -42,8 +41,7 @@ export const StopScreen = () => {
   }, [navigation])
 
   const openDirectionsToStop = async () => {
-    if (!stopQuery.data)
-      return
+    if (!stopQuery.data) return
 
     const scheme = `geo:0,0?q=${stopQuery.data.stop.lat},${stopQuery.data.stop.lng}&label=${stopQuery.data.stop.name}`
     try {
@@ -54,43 +52,27 @@ export const StopScreen = () => {
   }
 
   return (
-    <ScrollView
-      ref={scrollableRef}
-      className="flex-1"
-      contentContainerClassName="p-2 gap-2"
-    >
-      <UQueryState
-        query={stopQuery}
-        loading={SkeletonStop}
-      >
+    <ScrollView ref={scrollableRef} className="flex-1" contentContainerClassName="p-2 gap-2">
+      <UQueryState query={stopQuery} loading={SkeletonStop}>
         {stopQuery.data && (
-          <View className="h-48 rounded-md overflow-hidden">
+          <View className="h-48 overflow-hidden rounded-md">
             <MapProvider>
-              <Map
-                dragPan={false}
-                touchZoom={false}
-                doubleTapZoom={false}
-              >
-                <Camera
-                  center={[stopQuery.data.stop.lng, stopQuery.data.stop.lat]}
-                  zoom={15}
-                />
+              <Map dragPan={false} touchZoom={false} doubleTapZoom={false}>
+                <Camera center={[stopQuery.data.stop.lng, stopQuery.data.stop.lat]} zoom={15} />
 
-                <GeoJSONSource data={{
-                  type: 'Feature',
-                  properties: {
-                    color: colorPrimary,
-                  },
-                  geometry: {
-                    type: 'Point',
-                    coordinates: [stopQuery.data.stop.lng, stopQuery.data.stop.lat],
-                  },
-                }}
+                <GeoJSONSource
+                  data={{
+                    type: 'Feature',
+                    properties: {
+                      color: colorPrimary,
+                    },
+                    geometry: {
+                      type: 'Point',
+                      coordinates: [stopQuery.data.stop.lng, stopQuery.data.stop.lat],
+                    },
+                  }}
                 >
-                  <LineMarkerStopLayer
-                    isHidden={false}
-                    afterId={undefined}
-                  />
+                  <LineMarkerStopLayer isHidden={false} afterId={undefined} />
                 </GeoJSONSource>
               </Map>
             </MapProvider>
@@ -110,7 +92,7 @@ export const StopScreen = () => {
 
         <View>
           <UText className="text-muted text-xs">{stopQuery.data?.stop.code}</UText>
-          <UText className="text-lg font-inter-medium">{stopQuery.data?.stop.name}</UText>
+          <UText className="font-inter-medium text-lg">{stopQuery.data?.stop.name}</UText>
           {stopQuery.data?.stop.province && (
             <UText className="text-muted text-xs">{stopQuery.data?.stop.province}</UText>
           )}
@@ -120,8 +102,8 @@ export const StopScreen = () => {
           <GestureHandlerRootView style={{ flexShrink: 0 }}>
             <UText className="text-muted text-xs">{t('linesThatUseStop')}</UText>
 
-            <View className="flex-row flex-wrap gap-2 mt-1">
-              {stopQuery.data?.buses.map(bus => (
+            <View className="mt-1 flex-row flex-wrap gap-2">
+              {stopQuery.data?.buses.map((bus) => (
                 <UButton
                   key={bus}
                   label={bus}
@@ -143,18 +125,12 @@ export const StopScreen = () => {
         <AnimatedLegendList
           data={arrivalQuery.data}
           itemLayoutAnimation={LinearTransition.duration(150).easing(Easing.bezier(0.4, 0, 0.2, 1))}
-          keyExtractor={item => item.door_no}
+          keyExtractor={(item) => item.door_no}
           getFixedItemSize={() => 64.33}
           recycleItems
           renderItem={({ item: arrival }) => (
-            <View
-              key={arrival.stop_order}
-              className="flex-row items-center gap-2 p-2"
-            >
-              <UIcon
-                name="bus-front"
-                sizeClassName="size-6"
-              />
+            <View key={arrival.stop_order} className="flex-row items-center gap-2 p-2">
+              <UIcon name="bus-front" sizeClassName="size-6" />
 
               <View className="flex-1">
                 <ThemeProvider code={arrival.line_code}>
@@ -169,12 +145,16 @@ export const StopScreen = () => {
                     <UIcon
                       name="usb"
                       sizeClassName="size-4"
-                      colorClassName={arrival.features.usb_available ? 'text-primary' : 'text-muted'}
+                      colorClassName={
+                        arrival.features.usb_available ? 'text-primary' : 'text-muted'
+                      }
                     />
                     <UIcon
                       name="wifi"
                       sizeClassName="size-4"
-                      colorClassName={arrival.features.wifi_available ? 'text-primary' : 'text-muted'}
+                      colorClassName={
+                        arrival.features.wifi_available ? 'text-primary' : 'text-muted'
+                      }
                     />
                     <UIcon
                       name="air-vent"
@@ -189,16 +169,15 @@ export const StopScreen = () => {
                   </View>
                 </ThemeProvider>
 
-                <UText
-                  className="truncate"
-                  numberOfLines={1}
-                >
+                <UText className="truncate" numberOfLines={1}>
                   {arrival.line_name}
                 </UText>
               </View>
 
               <View className="ml-auto">
-                <UText className="text-right font-inter-medium">{t('arrivingMinutes', { min: arrival.minutes_left })}</UText>
+                <UText className="font-inter-medium text-right">
+                  {t('arrivingMinutes', { min: arrival.minutes_left })}
+                </UText>
                 <UText className="text-muted font-inter-medium text-xs">{t('arrivingIn')}</UText>
               </View>
             </View>

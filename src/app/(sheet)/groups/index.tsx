@@ -13,7 +13,6 @@ import { UButton } from '@/components/u/UButton'
 import { USheetHeader } from '@/components/u/UHeader'
 import { UIcon } from '@/components/u/UIcon'
 import { UText } from '@/components/u/UText'
-
 import { useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
@@ -37,51 +36,41 @@ const GroupItem = ({
   const handlePress = () => {
     if (addToGroup) {
       useLineStore.getState().addLine(addToGroup as string, group.id)
-      TrueSheet.dismissAll()
+      void TrueSheet.dismissAll()
       return
     }
 
     useLineStore.getState().setGroupId(group.id)
-    TrueSheet.dismissAll()
+    void TrueSheet.dismissAll()
   }
 
   return (
     <GestureHandlerRootView style={{ flexDirection: 'row' }}>
-      <UButton
-        variant="ghost"
-        className="flex-1 items-center gap-2"
-        onPress={handlePress}
-      >
-        <View className={`${selected ? 'bg-primary' : 'bg-muted'} size-8 rounded-md items-center justify-center`}>
-          {selected && (
-            <UIcon
-              name="check"
-              sizeClassName="size-5"
-              colorClassName="text-inverted"
-            />
-          )}
+      <UButton variant="ghost" className="flex-1 items-center gap-2" onPress={handlePress}>
+        <View
+          className={`${selected ? 'bg-primary' : 'bg-muted'} size-8 items-center justify-center rounded-md`}
+        >
+          {selected && <UIcon name="check" sizeClassName="size-5" colorClassName="text-inverted" />}
         </View>
 
         <View className="flex-1 shrink gap-1">
-          <UText className="shrink truncate font-inter-medium" numberOfLines={1}>
+          <UText className="font-inter-medium shrink truncate" numberOfLines={1}>
             {group.name}
           </UText>
 
           <View className="flex-row flex-wrap gap-2">
-            {group.codes.length < 1
-              ? (
-                  <UText className="font-inter-medium text-xs text-muted h-6">{t('emptyGroup')}</UText>
-                )
-              : (
-                  group.codes.map(code => (
-                    <UBadge
-                      key={code}
-                      label={code}
-                      variant="soft"
-                      color={code === addToGroup ? 'primary' : 'neutral'}
-                    />
-                  ))
-                )}
+            {group.codes.length < 1 ? (
+              <UText className="font-inter-medium text-muted h-6 text-xs">{t('emptyGroup')}</UText>
+            ) : (
+              group.codes.map((code) => (
+                <UBadge
+                  key={code}
+                  label={code}
+                  variant="soft"
+                  color={code === addToGroup ? 'primary' : 'neutral'}
+                />
+              ))
+            )}
           </View>
         </View>
       </UButton>
@@ -165,15 +154,9 @@ export const GroupsScreen = () => {
   return (
     <LineContext value={addToGroup}>
       <ThemeProvider>
-        <ScrollView
-          ref={scrollableRef}
-          contentContainerClassName="p-2"
-        >
-          <Animated.View
-            layout={LinearTransition}
-            className="gap-2"
-          >
-            {groups.map(group => (
+        <ScrollView ref={scrollableRef} contentContainerClassName="p-2">
+          <Animated.View layout={LinearTransition} className="gap-2">
+            {groups.map((group) => (
               <Animated.View
                 key={group.id}
                 exiting={ExitScaleOut}

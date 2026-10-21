@@ -5,11 +5,7 @@ const createRandomHslColor = () => {
     return Math.floor(Math.random() * (max - min + 1)) + min
   }
 
-  return [
-    randomInt(0, 360),
-    randomInt(42, 98),
-    randomInt(0, 100),
-  ] as const
+  return [randomInt(0, 360), randomInt(42, 98), randomInt(0, 100)] as const
 }
 
 const hexFromHsl = (h: number, s: number, l: number) => {

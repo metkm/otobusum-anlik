@@ -5,7 +5,7 @@ export const getPolygonCoordinatesFromPoint = (point: LngLat, radiusMeters: numb
   const points = 64
 
   let ret: number[][] = []
-  let distanceX = km / (111.320 * Math.cos(point[1] * Math.PI / 180))
+  let distanceX = km / (111.32 * Math.cos((point[1] * Math.PI) / 180))
   let distanceY = km / 110.574
 
   let theta, x, y

@@ -3,10 +3,10 @@ import { View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { tv } from 'tailwind-variants'
 
+import { cn } from '@/utils/cn'
+
 import { UActivityIndicator } from './UActivityIndicator'
 import { UIcon } from './UIcon'
-
-import { cn } from '@/utils/cn'
 
 const ui = tv({
   variants: {
@@ -37,33 +37,17 @@ export const UInput = ({
 } & ComponentProps<TextInput>) => {
   const { base: uiBase, icon: uiIcon } = ui({ variant })
 
-  const _icon = loading
-    ? <UActivityIndicator />
-    : icon
-      ? (
-          <UIcon
-            name={icon}
-            colorClassName={uiIcon()}
-          />
-        )
-      : undefined
+  const _icon = loading ? (
+    <UActivityIndicator />
+  ) : icon ? (
+    <UIcon name={icon} colorClassName={uiIcon()} />
+  ) : undefined
 
   return (
     <View className={cn('relative flex-row items-center', containerClassName)}>
-      <TextInput
-        className={cn(
-          uiBase(),
-          _icon ? 'pl-8' : undefined,
-          className,
-        )}
-        {...props}
-      />
+      <TextInput className={cn(uiBase(), _icon ? 'pl-8' : undefined, className)} {...props} />
 
-      {_icon && (
-        <View className="absolute left-2.5">
-          {_icon}
-        </View>
-      )}
+      {_icon && <View className="absolute left-2.5">{_icon}</View>}
 
       {children}
     </View>

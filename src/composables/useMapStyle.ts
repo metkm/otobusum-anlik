@@ -12,7 +12,7 @@ export const useMapStyle = () => {
   const colorScheme = useColorScheme()
 
   const scheme = prefferedMapStyle ?? (colorScheme === 'dark' ? 'dark' : 'liberty')
-  const mapColorScheme = scheme === 'dark' ? 'dark' : 'light' as ColorScheme
+  const mapColorScheme = scheme === 'dark' ? 'dark' : ('light' as ColorScheme)
 
   // we do this because scheme that comes from prefferedmapstyle might be a old value that is not supported anymore
   const style = mapStyles[scheme] ? mapStyles[scheme] : mapStyles['dark']

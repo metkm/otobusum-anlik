@@ -1,19 +1,30 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
-import { Map as _Map, type LngLatBounds, type CameraProps, type MapProps, type ViewStateChangeEvent, Camera } from '@maplibre/maplibre-react-native'
+import {
+  Map as _Map,
+  type LngLatBounds,
+  type CameraProps,
+  type MapProps,
+  type ViewStateChangeEvent,
+  Camera,
+} from '@maplibre/maplibre-react-native'
 import { NativeSyntheticEvent } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
-import { useSettingsStore } from '../stores/settings'
-
 import { useMap } from '@/composables/useMap'
 import { useMapStyle } from '@/composables/useMapStyle'
+
+import { useSettingsStore } from '../stores/settings'
 
 // so compiler is not upset
 const getInitialMapBounds = () => {
   return useSettingsStore.getState().initialMapBounds
 }
 
-export const Map = ({ children, cameraProps, style, onDidFinishLoadingMap, ...props }: { initialMapBounds?: LngLatBounds, cameraProps?: CameraProps } & Omit<MapProps, 'mapStyle'>) => {
+export const Map = ({
+  children,
+  onDidFinishLoadingMap,
+  ...props
+}: { initialMapBounds?: LngLatBounds; cameraProps?: CameraProps } & Omit<MapProps, 'mapStyle'>) => {
   const { camera, map } = useMap()
   const { style: mapStyle } = useMapStyle()
   const navigation = useTrueSheetNavigation()
@@ -55,10 +66,7 @@ export const Map = ({ children, cameraProps, style, onDidFinishLoadingMap, ...pr
         {...props}
         mapStyle={mapStyle}
       >
-        <Camera
-          ref={camera}
-          initialViewState={{ bounds: getInitialMapBounds() }}
-        />
+        <Camera ref={camera} initialViewState={{ bounds: getInitialMapBounds() }} />
 
         {children}
       </_Map>

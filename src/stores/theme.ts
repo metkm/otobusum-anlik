@@ -4,10 +4,10 @@ import { create } from 'zustand'
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
-import { useFilterStore } from './filter'
-
 import { City } from '@/types/city'
 import { createRandomTheme } from '@/utils/color'
+
+import { useFilterStore } from './filter'
 
 interface Scheme {
   'ui-bg': string
@@ -45,8 +45,7 @@ export const useThemeStore = create(
           const { schemes, palettes } = createRandomTheme(hslColor)
           const city = useFilterStore.getState().city
 
-          if (get().themesByCity[city][code] && !overwrite)
-            return
+          if (get().themesByCity[city][code] && !overwrite) return
 
           set((state) => {
             state.themesByCity[city][code] = {
@@ -75,25 +74,25 @@ export const useThemeStore = create(
             }
           })
         },
-        deleteTheme: code => set((state) => {
-          const city = useFilterStore.getState().city
-          delete state.themesByCity[city][code]
-        }),
-        deleteUnusedThemes: codes => set((state) => {
-          const city = useFilterStore.getState().city
-          const themeCodes = Object.keys(state.themesByCity[city])
-
-          for (let index = 0; index < themeCodes.length; index++) {
-            const code = themeCodes[index]
-            if (!code)
-              continue
-
-            if (codes.includes(code))
-              continue
-
+        deleteTheme: (code) =>
+          set((state) => {
+            const city = useFilterStore.getState().city
             delete state.themesByCity[city][code]
-          }
-        }),
+          }),
+        deleteUnusedThemes: (codes) =>
+          set((state) => {
+            const city = useFilterStore.getState().city
+            const themeCodes = Object.keys(state.themesByCity[city])
+
+            for (let index = 0; index < themeCodes.length; index++) {
+              const code = themeCodes[index]
+              if (!code) continue
+
+              if (codes.includes(code)) continue
+
+              delete state.themesByCity[city][code]
+            }
+          }),
       })),
     ),
     {

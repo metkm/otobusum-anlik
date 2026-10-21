@@ -1,7 +1,17 @@
 import React, { createContext, use } from 'react'
 import { Dimensions, ViewProps } from 'react-native'
-import { Gesture, GestureDetector, usePanGesture } from 'react-native-gesture-handler'
-import Animated, { clamp, LinearTransition, SharedValue, useAnimatedReaction, useAnimatedStyle, useDerivedValue, useSharedValue, withDecay, withSpring } from 'react-native-reanimated'
+import { GestureDetector, usePanGesture } from 'react-native-gesture-handler'
+import Animated, {
+  clamp,
+  LinearTransition,
+  SharedValue,
+  useAnimatedReaction,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withDecay,
+  withSpring,
+} from 'react-native-reanimated'
 
 import { cn } from '@/utils/cn'
 
@@ -22,7 +32,6 @@ export const CarouselContext = createContext<SharedValue<number> | null>(null)
 export const UCarousel = ({
   snapInterval,
   children,
-  style,
   className,
   contentClassName,
   ...props
@@ -49,7 +58,7 @@ export const UCarousel = ({
       let newOffset = offsetStart.value + translationX
       let offsetModifier = translationX > 0 ? 1 : -1
 
-      if ((newOffset > 0) || (newOffset < offsetLimit.value)) {
+      if (newOffset > 0 || newOffset < offsetLimit.value) {
         newOffset = offsetStart.value + dampen(Math.abs(translationX)) * offsetModifier
       }
 
@@ -70,40 +79,41 @@ export const UCarousel = ({
         return
       }
 
-      offset.value = withDecay({
-        velocity: velocityX,
-        clamp: [offsetLimit.value, 0],
-      }, () => {
-        if (!snapInterval)
-          return
+      offset.value = withDecay(
+        {
+          velocity: velocityX,
+          clamp: [offsetLimit.value, 0],
+        },
+        () => {
+          if (!snapInterval) return
 
-        const clamped = clamp(offset.value, offsetLimit.value, 0)
-        const rounded = roundToStep(clamped, snapInterval)
+          const clamped = clamp(offset.value, offsetLimit.value, 0)
+          const rounded = roundToStep(clamped, snapInterval)
 
-        offset.value = withSpring(clamp(rounded, offsetLimit.value, 0)) // clamped twice to remove padding on last element
-      })
+          offset.value = withSpring(clamp(rounded, offsetLimit.value, 0)) // clamped twice to remove padding on last element
+        },
+      )
     },
   })
-    
+
   const containerStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: offset.value }],
     }
   })
 
-  useAnimatedReaction(() => contentWidth.value, () => {
-    const limit = Math.min(0, -(contentWidth.value - width))
-    if (offset.value < limit) {
-      offset.value = withSpring(limit)
-    }
-  })
+  useAnimatedReaction(
+    () => contentWidth.value,
+    () => {
+      const limit = Math.min(0, -(contentWidth.value - width))
+      if (offset.value < limit) {
+        offset.value = withSpring(limit)
+      }
+    },
+  )
 
   return (
-    <Animated.View
-      layout={LinearTransition}
-      className={cn('flex-row', className)}
-      {...props}
-    >
+    <Animated.View layout={LinearTransition} className={cn('flex-row', className)} {...props}>
       <GestureDetector gesture={gesture}>
         <Animated.View
           style={[containerStyle]}
