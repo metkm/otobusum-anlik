@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
-import { City } from '@/types/city'
+import type { City } from '@/types/city'
 
 export interface FiltersStore {
   city: City
@@ -29,9 +29,9 @@ export const useFilterStore = create(
       })),
     ),
     {
+      migrate: () => {},
       name: 'filter-storage',
       storage: createJSONStorage(() => AsyncStorage),
-      migrate: () => {},
       version: 4,
     },
   ),

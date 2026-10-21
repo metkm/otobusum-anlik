@@ -13,61 +13,59 @@ export const LineMarkerRouteLayer = ({
 }: {
   isHidden?: boolean
   code?: string
-}) => {
-  return (
-    <>
-      <Layer
-        id={`route-path-${code}`}
-        type="line"
-        paint={{
-          'line-color': ['get', 'color'],
-          'line-width': ['interpolate', ['linear'], ['zoom'], 12, 8, 17, 12],
-        }}
-        layout={{
-          'line-join': 'round',
-          'line-cap': 'round',
-          visibility: isHidden ? 'none' : 'visible',
-        }}
-        afterId="route-layer"
-      />
+}) => (
+  <>
+    <Layer
+      id={`route-path-${code}`}
+      type="line"
+      paint={{
+        'line-color': ['get', 'color'],
+        'line-width': ['interpolate', ['linear'], ['zoom'], 12, 8, 17, 12],
+      }}
+      layout={{
+        'line-cap': 'round',
+        'line-join': 'round',
+        visibility: isHidden ? 'none' : 'visible',
+      }}
+      afterId="route-layer"
+    />
 
-      <Layer
-        id={`route-path-arrows-${code}`}
-        type="symbol"
-        layout={{
-          'symbol-placement': 'line',
-          'icon-image': `route-arrow-${code}`,
-          'icon-size': 0.2,
-          'symbol-spacing': 16,
-          visibility: isHidden ? 'none' : 'visible',
-        }}
-        paint={{
-          'icon-opacity': 0.8,
-        }}
-        afterId={`route-path-${code}`}
-      />
+    <Layer
+      id={`route-path-arrows-${code}`}
+      type="symbol"
+      layout={{
+        'icon-image': `route-arrow-${code}`,
+        'icon-size': 0.2,
+        'symbol-placement': 'line',
+        'symbol-spacing': 16,
+        visibility: isHidden ? 'none' : 'visible',
+      }}
+      paint={{
+        'icon-opacity': 0.8,
+      }}
+      afterId={`route-path-${code}`}
+    />
 
-      <Layer
-        id={`route-label-${code}`}
-        type="symbol"
-        layout={{
-          'symbol-placement': 'line',
-          'symbol-spacing': 100,
-          'text-field': code ?? ['get', 'line_code'],
-          'text-size': 10,
-          'text-font': ['Roboto Bold'],
-          'text-offset': [0, 0],
-          visibility: isHidden ? 'none' : 'visible',
-        }}
-        paint={{
-          'text-color': ['get', 'textColor'],
-          'text-opacity': 0.6,
-        }}
-        afterId={`route-path-arrows-${code}`}
-      />
-    </>
-  )
-}
+    <Layer
+      id={`route-label-${code}`}
+      type="symbol"
+      layout={{
+        'symbol-placement': 'line',
+        'symbol-spacing': 100,
+        'text-field': code ?? ['get', 'line_code'],
+        'text-font': ['Roboto Bold'],
+        'text-offset': [0, 0],
+        'text-size': 10,
+        visibility: isHidden ? 'none' : 'visible',
+      }}
+      paint={{
+        'text-color': ['get', 'textColor'],
+        'text-opacity': 0.6,
+      }}
+      afterId={`route-path-arrows-${code}`}
+    />
+  </>
+)
 
 export const LineMarkerRoute = () => {
   const { code } = useLine()
@@ -85,15 +83,15 @@ export const LineMarkerRoute = () => {
   const coordinates = route.path.map((p) => [p.lng, p.lat])
 
   const feature: Feature = {
-    type: 'Feature',
+    geometry: {
+      coordinates,
+      type: 'LineString',
+    },
     properties: {
       color: primaryColor,
-      textColor: textColor,
+      textColor,
     },
-    geometry: {
-      type: 'LineString',
-      coordinates,
-    },
+    type: 'Feature',
   }
 
   const images: Record<string, ImageEntry> = {}
@@ -112,8 +110,8 @@ export const LineMarkerRoute = () => {
       {coordinates.length > 1 && (
         <GeoJSONSource
           data={{
-            type: 'FeatureCollection',
             features: [feature],
+            type: 'FeatureCollection',
           }}
         >
           <LineMarkerRouteLayer

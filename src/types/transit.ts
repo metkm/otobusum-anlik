@@ -1,5 +1,5 @@
-import { BusStop } from './bus'
-import { Route } from './route'
+import type { BusStop } from './bus'
+import type { Route } from './route'
 
 export interface TransitNearby {
   routes_radius: number

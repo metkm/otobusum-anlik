@@ -1,4 +1,4 @@
-import type { CameraRef, MapRef, LngLatBounds } from '@maplibre/maplibre-react-native'
+import type { CameraRef, LngLatBounds, MapRef } from '@maplibre/maplibre-react-native'
 import { useMemo, useRef } from 'react'
 
 import { MapContext } from '@/composables/useMap'
@@ -9,20 +9,20 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
 
   const value = useMemo(
     () => ({
-      map,
       camera,
       fitBounds: (bounds: LngLatBounds) => {
         camera.current?.fitBounds(bounds, {
           duration: 750,
-          pitch: 0,
           padding: {
             bottom: 250,
-            top: 80,
             left: 25,
             right: 25,
+            top: 80,
           },
+          pitch: 0,
         })
       },
+      map,
     }),
     [map, camera],
   )

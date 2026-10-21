@@ -1,4 +1,4 @@
-import { RouteCode } from './line'
+import type { RouteCode } from './line'
 
 export interface Route {
   id: number

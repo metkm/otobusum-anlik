@@ -1,11 +1,11 @@
 import type { LayerProps } from '@maplibre/maplibre-react-native'
-import type { Geometry, GeoJSON, GeoJsonProperties } from 'geojson'
+import type { GeoJSON, GeoJsonProperties, Geometry } from 'geojson'
 import { castDraft } from 'immer'
 import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
-type MarkerCollectionBaseProps = {
+interface MarkerCollectionBaseProps {
   id: string
   data?: string | GeoJSON<Geometry, GeoJsonProperties>
 }
@@ -31,7 +31,6 @@ interface TemporaryMarkerStore {
 export const useTemporaryMarkerStore = create(
   subscribeWithSelector(
     immer<TemporaryMarkerStore>((set) => ({
-      data: [],
       addCollection: (collection) =>
         set((state) => {
           const index = state.data.findIndex((item) => item.id === collection.id)
@@ -42,6 +41,7 @@ export const useTemporaryMarkerStore = create(
             state.data.push(castDraft(collection))
           }
         }),
+      data: [],
       removeCollection: (id) =>
         set((state) => {
           state.data = state.data.filter((item) => item.id !== id)

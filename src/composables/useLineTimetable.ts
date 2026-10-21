@@ -26,18 +26,18 @@ export const useLineTimetable = () => {
   const city = useFilterStore(useShallow((state) => state.city))
 
   const query = useQuery({
-    queryKey: ['timetable', code, direction],
+    meta: { persist: true },
     queryFn: () =>
       ky
         .get<Timetable>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/timetable/${code}`, {
           searchParams: {
-            direction,
             city,
+            direction,
           },
         })
         .json(),
+    queryKey: ['timetable', code, direction],
     staleTime: CACHE_MS_3_DAYS,
-    meta: { persist: true },
   })
 
   return {

@@ -18,7 +18,7 @@ export const useCountdown = (from: number, duration: number = LINE_UPDATE_INTERV
 
     update()
 
-    const interval = setInterval(update, 1_000)
+    const interval = setInterval(update, 1000)
     return () => clearInterval(interval)
   }, [update, from, duration])
 

@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { View } from 'react-native'
 
 import { cn } from '@/utils/cn'
@@ -16,21 +16,19 @@ export const UEmpty = ({
   icon?: ComponentProps<typeof UIcon>['name']
   description?: string
   className?: string
-}) => {
-  return (
-    <View className={cn('gap-2 items-center justify-center p-2 rounded-md', className)}>
-      {icon && (
-        <UIcon
-          name={icon}
-          sizeClassName="size-6"
-          colorClassName="text-default"
-          className="bg-muted rounded-md p-2"
-        />
-      )}
+}) => (
+  <View className={cn('gap-2 items-center justify-center p-2 rounded-md', className)}>
+    {icon && (
+      <UIcon
+        name={icon}
+        sizeClassName="size-6"
+        colorClassName="text-default"
+        className="bg-muted rounded-md p-2"
+      />
+    )}
 
-      <UText className="font-inter-medium">{title}</UText>
+    <UText className="font-inter-medium">{title}</UText>
 
-      {description && <UText className="text-muted text-xs">{description}</UText>}
-    </View>
-  )
-}
+    {description && <UText className="text-muted text-xs">{description}</UText>}
+  </View>
+)

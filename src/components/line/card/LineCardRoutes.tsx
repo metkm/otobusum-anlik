@@ -1,4 +1,4 @@
-import { LegendList, LegendListRef } from '@legendapp/list/react-native'
+import { LegendList, type LegendListRef } from '@legendapp/list/react-native'
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -15,7 +15,7 @@ import { UText } from '@/components/u/UText'
 import { useLine, useLineBuses } from '@/composables'
 import { useLineRoutes } from '@/composables/useLineRoutes'
 import { useLineStore } from '@/stores'
-import { Route } from '@/types/route'
+import type { Route } from '@/types/route'
 
 const RouteItem = ({
   isSelected,
@@ -87,9 +87,15 @@ export const LineCardRoutes = () => {
     const ad = a.code.split('_')[2]?.slice(1)
     const bd = b.code.split('_')[2]?.slice(1)
 
-    if (!ad && !bd) return 0
-    if (!ad) return 1
-    if (!bd) return -1
+    if (!ad && !bd) {
+      return 0
+    }
+    if (!ad) {
+      return 1
+    }
+    if (!bd) {
+      return -1
+    }
 
     return Number(ad) - Number(bd)
   })
@@ -125,7 +131,7 @@ export const LineCardRoutes = () => {
         block
         className="shrink grow"
         loading={true}
-        // loading={routesQuery.isFetching}
+        // Loading={routesQuery.isFetching}
       />
 
       {routesQuery.data && (
@@ -152,7 +158,7 @@ export const LineCardRoutes = () => {
             )}
             extraData={routeCode}
             keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={{ padding: 8, gap: 8 }}
+            contentContainerStyle={{ gap: 8, padding: 8 }}
             getFixedItemSize={() => 62 + 8}
             recycleItems
           />

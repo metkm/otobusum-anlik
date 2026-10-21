@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import Animated, {
+  LinearTransition,
   interpolate,
   interpolateColor,
-  LinearTransition,
   useAnimatedStyle,
   useSharedValue,
   withTiming,

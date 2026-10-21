@@ -1,13 +1,13 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import {
-  Map as _Map,
-  type LngLatBounds,
+  Camera,
   type CameraProps,
+  type LngLatBounds,
   type MapProps,
   type ViewStateChangeEvent,
-  Camera,
+  Map as _Map,
 } from '@maplibre/maplibre-react-native'
-import { NativeSyntheticEvent } from 'react-native'
+import type { NativeSyntheticEvent } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 import { useMap } from '@/composables/useMap'
@@ -15,10 +15,8 @@ import { useMapStyle } from '@/composables/useMapStyle'
 
 import { useSettingsStore } from '../stores/settings'
 
-// so compiler is not upset
-const getInitialMapBounds = () => {
-  return useSettingsStore.getState().initialMapBounds
-}
+// So compiler is not upset
+const getInitialMapBounds = () => useSettingsStore.getState().initialMapBounds
 
 export const Map = ({
   children,
@@ -32,15 +30,15 @@ export const Map = ({
 
   const onMapRegionChange = (event: NativeSyntheticEvent<ViewStateChangeEvent>) => {
     useSettingsStore.setState(() => ({
-      initialMapBounds: event.nativeEvent.bounds,
       bearing: event.nativeEvent.bearing,
+      initialMapBounds: event.nativeEvent.bounds,
       pitch: event.nativeEvent.pitch,
     }))
   }
 
   const containerStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
     flex: 1,
+    opacity: opacity.value,
   }))
 
   return (
@@ -57,8 +55,8 @@ export const Map = ({
         }}
         onLongPress={({ nativeEvent }) => {
           navigation.navigate('(sheet)/markers/nearby', {
-            lng: nativeEvent.lngLat[0],
             lat: nativeEvent.lngLat[1],
+            lng: nativeEvent.lngLat[0],
           })
         }}
         style={{ flex: 1 }}

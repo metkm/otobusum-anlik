@@ -13,23 +13,17 @@ interface Announcement {
   MESAJ: string
 }
 
-const extractInnerContentXml = (key: string, content: string) => {
-  return content.split(`${key}>`).at(1)?.split(`</`).at(0)
-}
+const extractInnerContentXml = (key: string, content: string) =>
+  content.split(`${key}>`).at(1)?.split(`</`).at(0)
 
-export function useLineNews() {
+export const useLineNews = () => {
   const { code } = useLine()
 
   const query = useQuery({
-    queryKey: ['announcements'],
     queryFn: async () => {
       const response = await ky.post(
         'https://api.ibb.gov.tr/iett/UlasimDinamikVeri/Duyurular.asmx?wsdl',
         {
-          headers: {
-            'Content-Type': 'text/xml; charset=UTF-8',
-            SOAPAction: '"http://tempuri.org/GetDuyurular_json"',
-          },
           body: `
       <soap:Envelope
         xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -37,6 +31,10 @@ export function useLineNews() {
         </soap:Body>
       </soap:Envelope>
     `,
+          headers: {
+            'Content-Type': 'text/xml; charset=UTF-8',
+            SOAPAction: '"http://tempuri.org/GetDuyurular_json"',
+          },
         },
       )
 
@@ -44,18 +42,21 @@ export function useLineNews() {
       const content = await response.text()
 
       const innerContent = extractInnerContentXml(key, content)
-      if (!innerContent) return []
+      if (!innerContent) {
+        return []
+      }
 
       const responseParsed: Announcement[] = JSON.parse(innerContent)
       return responseParsed
     },
+    queryKey: ['announcements'],
     staleTime: CACHE_MS_30_MINUTES,
   })
 
   const news = query.data?.filter((a) => a.HATKODU === code) || []
 
   return {
-    query,
     news,
+    query,
   }
 }

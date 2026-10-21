@@ -4,7 +4,7 @@ import { Camera, GeoJSONSource } from '@maplibre/maplibre-react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Linking, ScrollViewInstance, View } from 'react-native'
+import { Linking, View, type ScrollViewInstance } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import { useCSSVariable } from 'uniwind'
 
@@ -41,7 +41,9 @@ export const StopScreen = () => {
   }, [navigation])
 
   const openDirectionsToStop = async () => {
-    if (!stopQuery.data) return
+    if (!stopQuery.data) {
+      return
+    }
 
     const scheme = `geo:0,0?q=${stopQuery.data.stop.lat},${stopQuery.data.stop.lng}&label=${stopQuery.data.stop.name}`
     void Linking.openURL(scheme)
@@ -72,14 +74,14 @@ export const StopScreen = () => {
 
                 <GeoJSONSource
                   data={{
-                    type: 'Feature',
+                    geometry: {
+                      coordinates: [stopQuery.data.stop.lng, stopQuery.data.stop.lat],
+                      type: 'Point',
+                    },
                     properties: {
                       color: colorPrimary,
                     },
-                    geometry: {
-                      type: 'Point',
-                      coordinates: [stopQuery.data.stop.lng, stopQuery.data.stop.lat],
-                    },
+                    type: 'Feature',
                   }}
                 >
                   <LineMarkerStopLayer
@@ -122,10 +124,10 @@ export const StopScreen = () => {
                   label={bus}
                   variant="soft"
                   to={{
-                    pathname: '/groups',
                     params: {
                       addToGroup: bus,
                     },
+                    pathname: '/groups',
                   }}
                 />
               ))}

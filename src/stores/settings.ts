@@ -28,19 +28,19 @@ export const useSettingsStore = create(
   persist(
     subscribeWithSelector(
       immer<SettingsStoreV4>((set, get) => ({
+        bearing: 0,
+        colorScheme: undefined,
+        expandStopsWhenScrolled: false,
+        hideMap: false,
         initialMapBounds: [
           26.218823938242565, 36.08430119633523, 30.10080291867854, 42.351104713710356,
         ],
-        bearing: 0,
-        pitch: 0,
-        showMyLocation: false,
-        expandStopsWhenScrolled: false,
-        mapStyle: undefined,
-        colorScheme: undefined,
-        showOnBoarding: true,
-        hideMap: false,
         lineCardExpanded: false,
         mapButtonsPlacement: 'right',
+        mapStyle: undefined,
+        pitch: 0,
+        showMyLocation: false,
+        showOnBoarding: true,
         toggleMyLocation: async () => {
           let showLocation = get().showMyLocation
 
@@ -60,8 +60,6 @@ export const useSettingsStore = create(
       })),
     ),
     {
-      name: 'settings-storage',
-      storage: createJSONStorage(() => AsyncStorage),
       migrate: (persistedStore: unknown, version: number) => {
         const store = persistedStore as SettingsStoreV4
 
@@ -72,6 +70,8 @@ export const useSettingsStore = create(
 
         return store
       },
+      name: 'settings-storage',
+      storage: createJSONStorage(() => AsyncStorage),
       version: 4.1,
     },
   ),

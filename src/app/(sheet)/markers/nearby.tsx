@@ -6,7 +6,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import type { FeatureCollection } from 'geojson'
 import { t } from 'i18next'
 import { useEffect, useMemo, useRef } from 'react'
-import { ScrollViewInstance, View } from 'react-native'
+import { View, type ScrollViewInstance } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import { ScopedVariables, useCSSVariable } from 'uniwind'
 
@@ -36,43 +36,43 @@ export const NearbyScreen = () => {
   const navigation = useTrueSheetNavigation()
 
   const scrollableRef = useRef<ScrollViewInstance>(null)
-  const bounds = useRef<LngLatBounds>(null)
+  const bounds = useRef<LngLatBounds>(undefined)
 
   const colors = useMemo(() => query.data?.routes.map(() => createRandomTheme()), [query.data])
 
   const routeCollection = useMemo<FeatureCollection>(
     () => ({
-      type: 'FeatureCollection',
       features:
         query.data?.routes.map((route, index) => ({
-          type: 'Feature',
+          geometry: {
+            coordinates: route.path?.map((point) => [point.lng, point.lat]) ?? [],
+            type: 'LineString',
+          },
           properties: {
             color: colors?.[index] ? hexFromArgb(colors[index].schemes.dark.primary) : undefined,
             line_code: route.line_code,
           },
-          geometry: {
-            type: 'LineString',
-            coordinates: route.path?.map((point) => [point.lng, point.lat]) ?? [],
-          },
+          type: 'Feature',
         })) || [],
+      type: 'FeatureCollection',
     }),
     [colors, query.data?.routes],
   )
 
   const stopCollection = useMemo<FeatureCollection>(
     () => ({
-      type: 'FeatureCollection',
       features:
         query.data?.stops.map((stop) => ({
-          type: 'Feature',
+          geometry: {
+            coordinates: [stop.lng, stop.lat],
+            type: 'Point',
+          },
           properties: {
             color: primaryColor,
           },
-          geometry: {
-            type: 'Point',
-            coordinates: [stop.lng, stop.lat],
-          },
+          type: 'Feature',
         })) || [],
+      type: 'FeatureCollection',
     }),
     [primaryColor, query.data?.stops],
   )
@@ -83,43 +83,43 @@ export const NearbyScreen = () => {
     }
 
     return {
-      type: 'FeatureCollection',
       features: [
         {
-          type: 'Feature',
-          properties: {},
           geometry: {
-            type: 'Polygon',
             coordinates: [getPolygonCoordinatesFromPoint([lng!, lat!], query.data.stops_radius)],
+            type: 'Polygon',
           },
+          properties: {},
+          type: 'Feature',
         },
       ],
+      type: 'FeatureCollection',
     }
   }, [lat, lng, query.data])
 
   useMapCollection({
+    data: routeCollection,
     id: 'route-collection',
     renderer: 'route',
-    data: routeCollection,
   })
 
   useMapCollection({
+    data: stopCollection,
     id: 'stop-collection',
     renderer: 'stops',
-    data: stopCollection,
   })
 
   useMapCollection({
-    id: 'area-polygon',
-    renderer: 'layer',
     data: polygonCollection,
+    id: 'area-polygon',
     layerProps: {
-      type: 'fill',
       paint: {
         'fill-color': 'white',
         'fill-opacity': 0.2,
       },
+      type: 'fill',
     },
+    renderer: 'layer',
   })
 
   useEffect(() => {
@@ -130,9 +130,9 @@ export const NearbyScreen = () => {
     }
 
     const fit = async () => {
-      bounds.current = (await map.current?.getBounds()) || null
+      bounds.current = (await map.current?.getBounds()) || undefined
 
-      const result = geo.coordinates[0]?.map((coord) => ({ lng: coord[0]!, lat: coord[1]! }))
+      const result = geo.coordinates[0]?.map((coord) => ({ lat: coord[1]!, lng: coord[0]! }))
       if (!result) {
         return
       }
@@ -152,7 +152,6 @@ export const NearbyScreen = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      scrollableRef,
       header: (
         <GestureHandlerRootView style={{ flexShrink: 0 }}>
           <UButton
@@ -164,6 +163,7 @@ export const NearbyScreen = () => {
           />
         </GestureHandlerRootView>
       ),
+      scrollableRef,
     })
   }, [navigation, router])
 
@@ -191,7 +191,7 @@ export const NearbyScreen = () => {
           </TrueSheetPeek>
         )}
       >
-        <GestureHandlerRootView style={{ gap: 8, flexGrow: 1 }}>
+        <GestureHandlerRootView style={{ flexGrow: 1, gap: 8 }}>
           {query.data && query.data.stops.length > 0 && (
             <View className="gap-2">
               <TrueSheetPeek>
@@ -245,8 +245,8 @@ export const NearbyScreen = () => {
                 <UButton
                   key={route.id}
                   to={{
-                    pathname: '/groups',
                     params: { addToGroup: route.line_code },
+                    pathname: '/groups',
                   }}
                   variant="ghost"
                   color="neutral"

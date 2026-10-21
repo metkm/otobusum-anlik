@@ -3,13 +3,12 @@ import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useFilterStore } from '@/stores'
-import { StopArrival } from '@/types/stop'
+import type { StopArrival } from '@/types/stop'
 
 export const useStopArrivals = (stopCode: string | number) => {
   const city = useFilterStore(useShallow((state) => state.city))
 
   const query = useQuery({
-    queryKey: ['stop', stopCode, 'arrival'],
     queryFn: () =>
       ky
         .get<StopArrival[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/stop/${stopCode}/arrivals`, {
@@ -18,8 +17,9 @@ export const useStopArrivals = (stopCode: string | number) => {
           },
         })
         .json(),
-    staleTime: 60_000,
+    queryKey: ['stop', stopCode, 'arrival'],
     refetchInterval: 60_000,
+    staleTime: 60_000,
   })
 
   return {

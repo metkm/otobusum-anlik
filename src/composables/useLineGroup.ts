@@ -10,9 +10,9 @@ export const useLineGroup = (_groupId?: string) => {
   const group = groups.find((gr) => gr.id === (_groupId ?? groupId))
 
   return {
-    group,
-    groups,
-    groupId,
     codes: group?.codes || [],
+    group,
+    groupId,
+    groups,
   }
 }

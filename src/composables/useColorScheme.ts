@@ -8,7 +8,9 @@ export const useColorScheme = (): ColorScheme => {
   const colorSchemeStore = useSettingsStore(useShallow((state) => state.colorScheme))
   const colorScheme = _useColorScheme()
 
-  if (colorSchemeStore) return colorSchemeStore
+  if (colorSchemeStore) {
+    return colorSchemeStore
+  }
 
   return colorScheme ?? 'dark'
 }

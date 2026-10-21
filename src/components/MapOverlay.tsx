@@ -1,4 +1,4 @@
-import { ViewProps } from 'react-native'
+import type { ViewProps } from 'react-native'
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -16,7 +16,7 @@ export const MapOverlay = ({ className, ...props }: ViewProps) => {
       exiting={FadeOut}
       className={cn(
         'absolute bottom-0 inset-x-0',
-        hideMap ? 'h-full pt-safe-offset-2' : lineCardExpanded ? 'h-3/4' : '',
+        hideMap ? 'h-full pt-safe-offset-2' : lineCardExpanded && 'h-3/4',
         className,
       )}
       pointerEvents="box-none"

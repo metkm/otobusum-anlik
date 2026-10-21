@@ -1,7 +1,7 @@
-import { TrueSheet } from '@lodev09/react-native-true-sheet'
+import type { TrueSheet } from '@lodev09/react-native-true-sheet'
 import Constants from 'expo-constants'
 import { Image } from 'expo-image'
-import { ComponentProps, useRef } from 'react'
+import { useRef, type ComponentProps } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -14,9 +14,9 @@ import { UIcon } from '@/components/u/UIcon'
 import { USheet } from '@/components/u/USheet'
 import { USwitch } from '@/components/u/USwitch'
 import { UText } from '@/components/u/UText'
-import { MapStyle } from '@/constants/mapStyles'
+import type { MapStyle } from '@/constants/mapStyles'
 import { useFilterStore, useSettingsStore } from '@/stores'
-import { City } from '@/types/city'
+import type { City } from '@/types/city'
 
 const StyledImage = withUniwind(Image)
 
@@ -28,22 +28,23 @@ const ToggleSetting = ({
   label: string
   value: boolean
   onPress: () => void
-}) => {
-  return (
-    <UButton
-      label={label}
-      color="neutral"
-      variant="ghost"
-      size="lg"
-      onPress={onPress}
-      className="flex-row-reverse justify-between"
-    >
-      <USwitch value={value} />
-    </UButton>
-  )
-}
+}) => (
+  <UButton
+    label={label}
+    color="neutral"
+    variant="ghost"
+    size="lg"
+    onPress={onPress}
+    className="flex-row-reverse justify-between"
+  >
+    <USwitch value={value} />
+  </UButton>
+)
 
-type Option<T> = { label: string; value: T }
+interface Option<T> {
+  label: string
+  value: T
+}
 
 export const OptionPicker = <T,>({
   label,
@@ -118,14 +119,12 @@ const SettingsSectionTitle = ({
 }: {
   icon: ComponentProps<typeof UIcon>['name']
   title: string
-}) => {
-  return (
-    <View className="bg-muted -mx-2 flex-row items-center gap-2 p-2 px-5">
-      <UIcon name={icon} />
-      <UText className="font-inter-semibold">{title}</UText>
-    </View>
-  )
-}
+}) => (
+  <View className="bg-muted -mx-2 flex-row items-center gap-2 p-2 px-5">
+    <UIcon name={icon} />
+    <UText className="font-inter-semibold">{title}</UText>
+  </View>
+)
 
 export const SettingsScreen = () => {
   const { t } = useTranslation()
@@ -163,13 +162,13 @@ export const SettingsScreen = () => {
   const mapThemeOptions: { label: string; value: MapStyle | undefined; preview?: string }[] = [
     {
       label: t('dark'),
-      value: 'dark',
       preview: require('@/assets/maps/dark.png'),
+      value: 'dark',
     },
     {
       label: t('liberty'),
-      value: 'liberty',
       preview: require('@/assets/maps/liberty.png'),
+      value: 'liberty',
     },
     {
       label: t('system'),

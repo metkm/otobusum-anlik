@@ -6,54 +6,45 @@ import location from 'expo-location/plugin'
 import router from 'expo-router/plugin'
 import splashScreen from 'expo-splash-screen/plugin'
 import statusBar from 'expo-status-bar/plugin'
-import { ConfigContext } from 'expo/config'
+import type { ConfigContext } from 'expo/config'
 
 export default ({ config }: ConfigContext) =>
   ({
     ...config,
-    name: 'Otobüsüm Anlık',
-    slug: 'otobusum-anlik',
-    version: '1.4.29',
-    orientation: 'portrait',
-    icon: './src/assets/icon.png',
-    scheme: 'otobusum-anlik',
-    userInterfaceStyle: 'automatic',
+    android: {
+      adaptiveIcon: {
+        backgroundColor: '#0a0a0a',
+        foregroundImage: './src/assets/adaptive-icon.png',
+      },
+      package: 'com.anonymous.otobusumanlik',
+    },
+    experiments: {
+      reactCompiler: true,
+      typedRoutes: true,
+    },
     extra: {
       eas: {
         projectId: '2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
       },
     },
-    updates: {
-      url: 'https://u.expo.dev/2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
-      requestHeaders: {
-        'expo-channel-name': 'production',
-      },
-    },
-    runtimeVersion: {
-      policy: 'appVersion',
-    },
-    android: {
-      adaptiveIcon: {
-        foregroundImage: './src/assets/adaptive-icon.png',
-        backgroundColor: '#0a0a0a',
-      },
-      package: 'com.anonymous.otobusumanlik',
-    },
+    icon: './src/assets/icon.png',
+    name: 'Otobüsüm Anlık',
+    orientation: 'portrait',
     plugins: [
       router(),
       localization(),
       location(),
       buildProperties({
         android: {
-          usePrecompiledHeaders: true,
+          cmakeVersion: '3.31.6',
           enableMinifyInReleaseBuilds: true,
           enableShrinkResourcesInReleaseBuilds: true,
-          cmakeVersion: '3.31.6',
+          usePrecompiledHeaders: true,
         },
       }),
       splashScreen({
-        image: './src/assets/icon.png',
         backgroundColor: '#0a0a0a',
+        image: './src/assets/icon.png',
       }),
       font({
         fonts: [
@@ -66,8 +57,17 @@ export default ({ config }: ConfigContext) =>
       statusBar(),
       '@maplibre/maplibre-react-native',
     ],
-    experiments: {
-      reactCompiler: true,
-      typedRoutes: true,
+    runtimeVersion: {
+      policy: 'appVersion',
     },
+    scheme: 'otobusum-anlik',
+    slug: 'otobusum-anlik',
+    updates: {
+      requestHeaders: {
+        'expo-channel-name': 'production',
+      },
+      url: 'https://u.expo.dev/2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
+    },
+    userInterfaceStyle: 'automatic',
+    version: '1.4.29',
   }) satisfies ConfigContext['config']

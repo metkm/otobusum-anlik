@@ -17,9 +17,9 @@ import { UEmpty } from '@/components/u/UEmpty'
 import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
-import { useLineStops, useLineBuses, useMap } from '@/composables'
+import { useLineBuses, useLineStops, useMap } from '@/composables'
 import { useSettingsStore } from '@/stores'
-import { BusStop } from '@/types/bus'
+import type { BusStop } from '@/types/bus'
 import { getClosestPoint } from '@/utils/getClosestPoint'
 
 const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
@@ -28,19 +28,23 @@ const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
   const { query: lineStopsQuery } = useLineStops()
 
   const closestBus = buses.find((bus) => {
-    if (!lineStopsQuery.data) return false
+    if (!lineStopsQuery.data) {
+      return false
+    }
 
     const closestStop = getClosestPoint(bus, lineStopsQuery.data)
     return closestStop?.id && closestStop.id === item.id
   })
 
   const goToBus = () => {
-    if (!closestBus) return
+    if (!closestBus) {
+      return
+    }
 
     camera.current?.flyTo({
       center: [closestBus.lng, closestBus.lat],
-      zoom: 13,
       duration: 1000,
+      zoom: 13,
     })
   }
 
@@ -77,10 +81,10 @@ const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
             <UButton
               icon="info"
               to={{
-                pathname: '/bus-info/[doorNo]',
                 params: {
                   doorNo: closestBus.bus_id,
                 },
+                pathname: '/bus-info/[doorNo]',
               }}
               variant="soft"
             />
@@ -113,11 +117,15 @@ export const LineCardStops = () => {
 
   const onScroll = useAnimatedScrollHandler({
     onBeginDrag: () => {
-      if (!expandStopsWhenScrolled) return
+      if (!expandStopsWhenScrolled) {
+        return
+      }
       containerHeight.set(EXPANDED)
     },
     onMomentumEnd: () => {
-      if (!expandStopsWhenScrolled && containerHeight.value !== EXPANDED) return
+      if (!expandStopsWhenScrolled && containerHeight.value !== EXPANDED) {
+        return
+      }
       containerHeight.set(withDelay(1500, withTiming(COLLAPSED)))
     },
   })

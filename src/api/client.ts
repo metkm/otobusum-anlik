@@ -7,7 +7,7 @@ export const queryCache = new QueryCache()
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      gcTime: 1_000 * 60 * 60 * 12,
+      gcTime: 1000 * 60 * 60 * 12,
     },
   },
   queryCache,

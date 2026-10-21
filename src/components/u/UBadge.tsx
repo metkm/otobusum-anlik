@@ -1,55 +1,55 @@
 import { View } from 'react-native'
-import { tv, type VariantProps } from 'tailwind-variants'
+import { type VariantProps, tv } from 'tailwind-variants'
 
 import { cn } from '@/utils/cn'
 
-import { IconName, UIcon } from './UIcon'
+import { UIcon, type IconName } from './UIcon'
 import { UText } from './UText'
 
 const ui = tv({
-  variants: {
-    color: {
-      primary: '',
-      neutral: '',
-    },
-    variant: {
-      solid: '',
-      soft: '',
-    },
-  },
   compoundVariants: [
     {
-      color: 'primary',
-      variant: 'solid',
       className: {
         base: 'bg-primary',
         label: 'text-inverted',
       },
+      color: 'primary',
+      variant: 'solid',
     },
     {
-      color: 'primary',
-      variant: 'soft',
       className: {
         base: 'bg-primary/15',
         label: 'text-primary',
       },
+      color: 'primary',
+      variant: 'soft',
     },
     {
-      color: 'neutral',
-      variant: 'soft',
       className: {
         base: 'bg-neutral-muted',
         label: 'text-neutral-default',
       },
+      color: 'neutral',
+      variant: 'soft',
     },
   ],
+  defaultVariants: {
+    color: 'primary',
+    variant: 'solid',
+  },
   slots: {
     base: 'px-2.5 py-1.5 flex-row gap-1 rounded-full',
     label: 'font-inter-semibold text-xs',
   },
-  defaultVariants: {
-    color: 'primary',
-    variant: 'solid',
+  variants: {
+    color: {
+      neutral: '',
+      primary: '',
+    },
+    variant: {
+      soft: '',
+      solid: '',
+    },
   },
 })
 

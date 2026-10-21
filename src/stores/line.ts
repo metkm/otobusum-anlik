@@ -7,8 +7,8 @@ import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middl
 import { immer } from 'zustand/middleware/immer'
 
 import { GROUP_LINE_LIMIT } from '@/constants/app'
-import { City } from '@/types/city'
-import { LineGroup, RouteCode, RouteDirection } from '@/types/line'
+import type { City } from '@/types/city'
+import type { LineGroup, RouteCode, RouteDirection } from '@/types/line'
 
 import { useFilterStore } from './filter'
 import { useThemeStore } from './theme'
@@ -38,78 +38,16 @@ export interface LineRouteSlice {
 type LineStore = LineCodeSlice & LineRouteSlice
 
 const createLineCodeSlice = immer<LineCodeSlice>((set) => ({
-  lines: {
-    istanbul: [{ id: 'default', name: 'default', codes: [] }],
-    izmir: [{ id: 'default', name: 'default', codes: [] }],
-  },
-  groupId: {
-    istanbul: 'default',
-    izmir: 'default',
-  },
-  setGroupId: (id) =>
-    set((state) => {
-      const city = useFilterStore.getState().city
-      state.groupId[city] = id
-    }),
-  createGroup: () =>
-    set((state) => {
-      const city = useFilterStore.getState().city
-      const uuid = randomUUID()
-
-      state.lines[city].push({
-        id: uuid,
-        codes: [],
-        name: uuid,
-      })
-    }),
-  deleteGroup: async (id) => {
-    await new Promise<void>((resolve) => {
-      Alert.alert(t('deleteGroup'), t('areYouSure'), [
-        {
-          text: t('cancel'),
-        },
-        {
-          text: t('delete'),
-          onPress: () => resolve(),
-        },
-      ])
-    })
-
-    return set((state) => {
-      const city = useFilterStore.getState().city
-      const groups = state.lines[city]
-
-      if (groups.length < 2) return
-
-      const i = groups.findIndex((gr) => gr.id === id)
-      if (i === -1) return
-
-      state.lines[city].splice(i, 1)
-
-      if (state.groupId[city] === id) {
-        state.groupId[city] = groups.at(0)!.id
-      }
-
-      useThemeStore.getState().deleteUnusedThemes(state.lines[city].flatMap((gr) => gr.codes))
-    })
-  },
-  updateGroupName: (id, name) =>
-    set((state) => {
-      const city = useFilterStore.getState().city
-
-      const group = state.lines[city].find((gr) => gr.id === id)
-      if (!group) return
-
-      group.name = name
-    }),
   addLine: (code, groupId) =>
     set((state) => {
-      const city = useFilterStore.getState().city
+      const { city } = useFilterStore.getState()
       const grId = groupId ?? state.groupId[city]
 
       const codes = state.lines[city].find((c) => c.id === grId)?.codes
 
-      if (!codes) return
+      if (!codes) {
+        return
+      }
 
       if (codes.length >= GROUP_LINE_LIMIT) {
         ToastAndroid.show(t('lineLimitExceeded'), ToastAndroid.SHORT)
@@ -126,44 +64,106 @@ const createLineCodeSlice = immer<LineCodeSlice>((set) => ({
 
       ToastAndroid.show(t('added', { code }), ToastAndroid.SHORT)
     }),
+  createGroup: () =>
+    set((state) => {
+      const { city } = useFilterStore.getState()
+      const uuid = randomUUID()
+
+      state.lines[city].push({
+        codes: [],
+        id: uuid,
+        name: uuid,
+      })
+    }),
+  deleteGroup: async (id) => {
+    await new Promise<void>((resolve) => {
+      Alert.alert(t('deleteGroup'), t('areYouSure'), [
+        {
+          text: t('cancel'),
+        },
+        {
+          onPress: () => resolve(),
+          text: t('delete'),
+        },
+      ])
+    })
+
+    return set((state) => {
+      const { city } = useFilterStore.getState()
+      const groups = state.lines[city]
+
+      if (groups.length < 2) {
+        return
+      }
+
+      const i = groups.findIndex((gr) => gr.id === id)
+      if (i === -1) {
+        return
+      }
+
+      state.lines[city].splice(i, 1)
+
+      if (state.groupId[city] === id) {
+        state.groupId[city] = groups.at(0)!.id
+      }
+
+      useThemeStore.getState().deleteUnusedThemes(state.lines[city].flatMap((gr) => gr.codes))
+    })
+  },
   deleteLine: (code, groupId) =>
     set((state) => {
-      const city = useFilterStore.getState().city
-      const grId = groupId ?? state.groupId[city]
+      const { city } = useFilterStore.getState()
+      const targetGroupId = groupId ?? state.groupId[city]
 
-      const codes = state.lines[city].find((c) => c.id === (groupId || grId))?.codes
+      const codes = state.lines[city].find((c) => c.id === targetGroupId)?.codes
 
-      const i = codes?.findIndex((c) => c === code)
-      if (i === -1 || i === undefined) return
+      const i = codes?.indexOf(code)
+      if (i === -1 || i === undefined) {
+        return
+      }
 
       codes?.splice(i, 1)
 
       const groups = state.lines[city]
-      for (let index = 0; index < groups.length; index++) {
-        const group = groups[index]
 
-        if (!group || group.id === groupId) continue
-
-        if (group.codes.includes(code)) return
+      for (const group of groups) {
+        if (group.codes.includes(code) && group.id !== targetGroupId) {
+          return
+        }
       }
 
       useThemeStore.getState().deleteTheme(code)
     }),
+  groupId: {
+    istanbul: 'default',
+    izmir: 'default',
+  },
+  lines: {
+    istanbul: [{ codes: [], id: 'default', name: 'default' }],
+    izmir: [{ codes: [], id: 'default', name: 'default' }],
+  },
+  setGroupId: (id) =>
+    set((state) => {
+      const { city } = useFilterStore.getState()
+      state.groupId[city] = id
+    }),
+  updateGroupName: (id, name) =>
+    set((state) => {
+      const { city } = useFilterStore.getState()
+
+      const group = state.lines[city].find((gr) => gr.id === id)
+      if (!group) {
+        return
+      }
+
+      group.name = name
+    }),
 }))
 
 const createLineRouteSlice = immer<LineRouteSlice>((set) => ({
-  routes: {
-    istanbul: {},
-    izmir: {},
-  },
-  setRoute: (code, routeCode) =>
-    set((state) => {
-      const city = useFilterStore.getState().city
-      state.routes[city][code] = routeCode
-    }),
   changeRouteDirection: (code) =>
     set((state) => {
-      const city = useFilterStore.getState().city
+      const { city } = useFilterStore.getState()
       const routeCode = state.routes[city][code] || `${code}_G_D0`
 
       const direction = routeCode.split('_')[1] as RouteDirection
@@ -173,6 +173,15 @@ const createLineRouteSlice = immer<LineRouteSlice>((set) => ({
       ) as RouteCode
 
       state.routes[city][code] = otherDirectionCode
+    }),
+  routes: {
+    istanbul: {},
+    izmir: {},
+  },
+  setRoute: (code, routeCode) =>
+    set((state) => {
+      const { city } = useFilterStore.getState()
+      state.routes[city][code] = routeCode
     }),
 }))
 
@@ -188,21 +197,21 @@ const migrate = (persistedStore: unknown, version: number) => {
   if (version === 3) {
     const allCodes = new Set<string>()
 
-    // migrate lines
+    // Migrate lines
     for (const [city, value] of Object.entries(oldStore.lines)) {
-      if (!newStore.lines) continue
-
-      newStore.lines[city as City] = [{ id: 'default', name: 'default', codes: value }]
-      value.forEach((c) => allCodes.add(c))
+      if (newStore.lines) {
+        newStore.lines[city as City] = [{ codes: value, id: 'default', name: 'default' }]
+        value.forEach((c) => allCodes.add(c))
+      }
     }
 
-    // migrate groups
+    // Migrate groups
     for (const [city, groups] of Object.entries(oldStore.lineGroups)) {
       for (const [id, value] of Object.entries(groups)) {
-        if (!newStore.lines) continue
-
-        newStore.lines[city as City].push({ id, name: value.title, codes: value.lineCodes })
-        value.lineCodes.forEach((c) => allCodes.add(c))
+        if (newStore.lines) {
+          newStore.lines[city as City].push({ codes: value.lineCodes, id, name: value.title })
+          value.lineCodes.forEach((c) => allCodes.add(c))
+        }
       }
     }
 
@@ -221,9 +230,9 @@ export const useLineStore = create(
       ...createLineRouteSlice(...a),
     })),
     {
+      migrate,
       name: 'line-storage',
       storage: createJSONStorage(() => AsyncStorage),
-      migrate,
       version: 4,
     },
   ),

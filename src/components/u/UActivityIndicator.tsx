@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { withUniwind } from 'uniwind'
 
@@ -9,13 +9,11 @@ const StyledActivityIndicator = withUniwind(ActivityIndicator, {
   },
 })
 
-export const UActivityIndicator = (props: ComponentProps<typeof StyledActivityIndicator>) => {
-  return (
-    <View className="items-center justify-center">
-      <StyledActivityIndicator
-        colorClassName="accent-(--ui-text)"
-        {...props}
-      />
-    </View>
-  )
-}
+export const UActivityIndicator = (props: ComponentProps<typeof StyledActivityIndicator>) => (
+  <View className="items-center justify-center">
+    <StyledActivityIndicator
+      colorClassName="accent-(--ui-text)"
+      {...props}
+    />
+  </View>
+)

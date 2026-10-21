@@ -18,10 +18,10 @@ import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 import { useMap } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { isStop, MIN_CHARACTER_LIMIT, useSearch } from '@/composables/useSearch'
+import { MIN_CHARACTER_LIMIT, isStop, useSearch } from '@/composables/useSearch'
 import { useFilterStore, useLineStore } from '@/stores'
-import { BusLine, BusStop } from '@/types/bus'
-import { Route } from '@/types/route'
+import type { BusLine, BusStop } from '@/types/bus'
+import type { Route } from '@/types/route'
 import { getLatLngBounds } from '@/utils/bounds'
 
 const RenderItemLine = ({ item }: { item: BusLine }) => {
@@ -33,7 +33,6 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
     addLine(item.code)
 
     const data = await queryClient.query<Route[]>({
-      queryKey: ['line', item.code, 'routes'],
       queryFn: () =>
         ky
           .get<Route[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${item.code}`, {
@@ -42,11 +41,14 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
             },
           })
           .json(),
+      queryKey: ['line', item.code, 'routes'],
       staleTime: 'static',
     })
 
     const path = data.find((x) => x.code === `${item.code}_G_D0`)?.path
-    if (!path) return
+    if (!path) {
+      return
+    }
 
     fitBounds(getLatLngBounds(path))
   }
@@ -66,8 +68,8 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
       <UButton
         icon="circle-plus"
         to={{
-          pathname: '/groups',
           params: { addToGroup: item.code },
+          pathname: '/groups',
         }}
         variant="soft"
         size="lg"
@@ -76,17 +78,15 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
   )
 }
 
-const RenderItemStop = ({ item }: { item: BusStop }) => {
-  return (
-    <UButton
-      variant="ghost"
-      color="neutral"
-      label={item.name}
-      to={`/(sheet)/stop/${item.code}`}
-      icon="bus-front"
-    />
-  )
-}
+const RenderItemStop = ({ item }: { item: BusStop }) => (
+  <UButton
+    variant="ghost"
+    color="neutral"
+    label={item.name}
+    to={`/(sheet)/stop/${item.code}`}
+    icon="bus-front"
+  />
+)
 
 export const SearchScreen = () => {
   const [query, setQuery] = useState('')
@@ -169,7 +169,7 @@ export const SearchScreen = () => {
             }}
             keyExtractor={(item) => item.id.toString()}
             className="flex-1"
-            contentContainerStyle={{ paddingHorizontal: 8, gap: 8 }}
+            contentContainerStyle={{ gap: 8, paddingHorizontal: 8 }}
             fadingEdgeLength={10}
             recycleItems
           />

@@ -1,8 +1,8 @@
-import Lucide from '@react-native-vector-icons/lucide'
-import { Href, useRouter } from 'expo-router'
-import { ComponentProps } from 'react'
+import type Lucide from '@react-native-vector-icons/lucide'
+import { useRouter, type Href } from 'expo-router'
+import type { ComponentProps } from 'react'
 import { Touchable } from 'react-native-gesture-handler'
-import { tv, VariantProps } from 'tailwind-variants'
+import { tv, type VariantProps } from 'tailwind-variants'
 import { withUniwind } from 'uniwind'
 
 import { cn } from '@/utils/cn'
@@ -16,112 +16,112 @@ const StyledTouchable = withUniwind(Touchable)
 type TouchableProps = ComponentProps<typeof StyledTouchable>
 
 const ui = tv({
-  variants: {
-    color: {
-      primary: '',
-      neutral: '',
-      error: '',
-    },
-    variant: {
-      solid: '',
-      ghost: '',
-      soft: '',
-    },
-    size: {
-      md: {
-        base: 'p-2.5',
-        icon: 'size-4',
-      },
-      lg: {
-        base: 'p-3',
-        icon: 'size-4.5',
-      },
-    },
-    block: {
-      true: 'justify-center',
-    },
-    disabled: {
-      true: 'opacity-75',
-    },
-  },
   compoundVariants: [
     {
-      color: 'primary',
-      variant: 'solid',
       className: {
         base: 'bg-primary',
         label: 'text-inverted',
       },
+      color: 'primary',
+      variant: 'solid',
     },
     {
-      color: 'primary',
-      variant: 'soft',
       className: {
         base: 'bg-primary/15',
         label: 'text-primary',
       },
+      color: 'primary',
+      variant: 'soft',
     },
     {
-      color: 'primary',
-      variant: 'ghost',
       className: {
         base: 'bg-transparent',
         label: 'text-primary',
       },
+      color: 'primary',
+      variant: 'ghost',
     },
     {
-      color: 'neutral',
-      variant: 'soft',
       className: {
         base: 'bg-neutral-elevated',
         label: 'text-neutral-default',
       },
+      color: 'neutral',
+      variant: 'soft',
     },
     {
-      color: 'neutral',
-      variant: 'solid',
       className: {
         base: 'bg-neutral-muted',
         label: 'text-neutral-default',
       },
+      color: 'neutral',
+      variant: 'solid',
     },
     {
-      color: 'neutral',
-      variant: 'ghost',
       className: {
         base: 'bg-transparent',
         label: 'text-neutral-default',
       },
+      color: 'neutral',
+      variant: 'ghost',
     },
     {
-      color: 'error',
-      variant: 'solid',
       className: {
         base: 'bg-error',
         label: 'text-inverted',
       },
+      color: 'error',
+      variant: 'solid',
     },
     {
-      color: 'error',
-      variant: 'soft',
       className: {
         base: 'bg-error/15',
         label: 'text-error',
       },
+      color: 'error',
+      variant: 'soft',
     },
     {
-      color: 'error',
-      variant: 'ghost',
       className: {
         base: 'bg-transparent',
         label: 'text-error',
       },
+      color: 'error',
+      variant: 'ghost',
     },
   ],
   slots: {
     base: 'flex flex-row items-center gap-1.5 rounded-md',
-    label: 'shrink font-inter-medium text-xs',
     icon: '',
+    label: 'shrink font-inter-medium text-xs',
+  },
+  variants: {
+    block: {
+      true: 'justify-center',
+    },
+    color: {
+      error: '',
+      neutral: '',
+      primary: '',
+    },
+    disabled: {
+      true: 'opacity-75',
+    },
+    size: {
+      lg: {
+        base: 'p-3',
+        icon: 'size-4.5',
+      },
+      md: {
+        base: 'p-2.5',
+        icon: 'size-4',
+      },
+    },
+    variant: {
+      ghost: '',
+      soft: '',
+      solid: '',
+    },
   },
 })
 
@@ -154,17 +154,34 @@ export const UButton = ({
   loading?: boolean
   labelClassName?: string
 }) => {
-  const router = useRouter()
+  const router = useRouter(),
+    { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ block, color, disabled, size, variant }),
+    handlePress: TouchableProps['onPress'] = () => {
+      if (!to) {
+        return
+      }
+      router.push(to)
+    }
 
-  const {
-    base: uiBase,
-    label: uiLabel,
-    icon: uiIcon,
-  } = ui({ color, variant, size, block, disabled })
+  const Icon = () => {
+    if (loading) {
+      return (
+        <UActivityIndicator
+          sizeClassName={uiIcon()}
+          className={uiLabel()}
+        />
+      )
+    }
 
-  const handlePress: TouchableProps['onPress'] = () => {
-    if (!to) return
-    router.push(to)
+    if (icon) {
+      return (
+        <UIcon
+          name={icon}
+          sizeClassName={uiIcon()}
+          colorClassName={uiLabel()}
+        />
+      )
+    }
   }
 
   return (
@@ -178,18 +195,7 @@ export const UButton = ({
       disabled={disabled}
       {...props}
     >
-      {loading ? (
-        <UActivityIndicator
-          sizeClassName={uiIcon()}
-          className={uiLabel()}
-        />
-      ) : icon ? (
-        <UIcon
-          name={icon}
-          sizeClassName={uiIcon()}
-          colorClassName={uiLabel()}
-        />
-      ) : undefined}
+      <Icon />
 
       {children}
 

@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native'
-import Animated, { LinearTransition, SharedValue } from 'react-native-reanimated'
+import Animated, { LinearTransition, type SharedValue } from 'react-native-reanimated'
 
 import { useLineCardWidth, useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'

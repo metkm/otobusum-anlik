@@ -23,29 +23,29 @@ export interface StopArrival {
 }
 
 // #[derive(Serialize, Deserialize)]
-// pub struct StopArrival {
-//     stop_order: u32,
-//     stop_code: u32,
-//     door_no: String,
-//     garage: String,
-//     line_code: String,
-//     lat: f64,
-//     lng: f64,
-//     last_speed: u8,
-//     arrival_time: String,
-//     minutes_left: u16,
-//     line_name: String,
-//     last_location_time: String,
-//     route_code: String,
-//     stop_name: String,
-//     features: BusFeatures,
+// Pub struct StopArrival {
+//     Stop_order: u32,
+//     Stop_code: u32,
+//     Door_no: String,
+//     Garage: String,
+//     Line_code: String,
+//     Lat: f64,
+//     Lng: f64,
+//     Last_speed: u8,
+//     Arrival_time: String,
+//     Minutes_left: u16,
+//     Line_name: String,
+//     Last_location_time: String,
+//     Route_code: String,
+//     Stop_name: String,
+//     Features: BusFeatures,
 // }
 
 // #[derive(Serialize, Deserialize)]
-// struct BusFeatures {
-//     accessible: bool,
-//     usb_available: bool,
-//     wifi_avalable: bool,
-//     ac_active: bool,
-//     bicycle_rack: bool,
+// Struct BusFeatures {
+//     Accessible: bool,
+//     Usb_available: bool,
+//     Wifi_avalable: bool,
+//     Ac_active: bool,
+//     Bicycle_rack: bool,
 // }

@@ -10,25 +10,23 @@ import { useFilterStore } from '@/stores'
 export const LineMarkerStopLayer = ({
   isHidden,
   ...props
-}: { isHidden?: boolean } & Omit<Extract<LayerProps, { type: 'circle' }>, 'style' | 'type'>) => {
-  return (
-    <Layer
-      type="circle"
-      paint={{
-        'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 4, 16, 7],
-        'circle-color': ['get', 'color'],
-        'circle-stroke-width': 2,
-        'circle-stroke-color': ['get', 'borderColor'],
-        'circle-pitch-alignment': 'map',
-      }}
-      layout={{
-        visibility: isHidden ? 'none' : 'visible',
-      }}
-      minzoom={11}
-      {...props}
-    />
-  )
-}
+}: { isHidden?: boolean } & Omit<Extract<LayerProps, { type: 'circle' }>, 'style' | 'type'>) => (
+  <Layer
+    type="circle"
+    paint={{
+      'circle-color': ['get', 'color'],
+      'circle-pitch-alignment': 'map',
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 11, 4, 16, 7],
+      'circle-stroke-color': ['get', 'borderColor'],
+      'circle-stroke-width': 2,
+    }}
+    layout={{
+      visibility: isHidden ? 'none' : 'visible',
+    }}
+    minzoom={11}
+    {...props}
+  />
+)
 
 export const LineMarkerStops = () => {
   const { code } = useLine()
@@ -39,30 +37,34 @@ export const LineMarkerStops = () => {
 
   const isLineHidden = useFilterStore(useShallow((state) => state.hiddenLines.includes(code)))
 
-  if (!lineStopsQuery.data) return
+  if (!lineStopsQuery.data) {
+    return
+  }
 
   const features: Feature[] = lineStopsQuery.data.map((bus) => ({
-    type: 'Feature',
+    geometry: {
+      coordinates: [bus.lng, bus.lat],
+      type: 'Point',
+    },
     properties: {
+      borderColor,
       code: bus.code,
       color: primaryColor,
-      borderColor: borderColor,
     },
-    geometry: {
-      type: 'Point',
-      coordinates: [bus.lng, bus.lat],
-    },
+    type: 'Feature',
   }))
 
   return (
     <GeoJSONSource
       data={{
-        type: 'FeatureCollection',
         features,
+        type: 'FeatureCollection',
       }}
       onPress={(event) => {
         const stopCode = event.nativeEvent.features[0]?.properties?.code
-        if (!stopCode) return
+        if (!stopCode) {
+          return
+        }
         router.navigate(`/stop/${stopCode}`)
       }}
     >

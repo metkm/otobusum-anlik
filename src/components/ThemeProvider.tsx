@@ -1,4 +1,4 @@
-import { ReactNode, use } from 'react'
+import { use, type ReactNode } from 'react'
 import { ScopedVariables } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -26,13 +26,13 @@ export const ThemeProvider = ({ code, children }: { code?: string; children?: Re
   return (
     <ScopedVariables
       variables={{
+        '--color-primary': theme['ui-primary'],
         '--ui-bg': theme['ui-bg'],
         '--ui-bg-muted': theme['ui-bg-muted'],
         '--ui-border': theme['ui-border'],
         '--ui-border-muted': theme['ui-border-muted'],
         '--ui-text': theme['ui-text'],
         '--ui-text-inverted': theme['ui-text-inverted'],
-        '--color-primary': theme['ui-primary'],
       }}
     >
       {children}

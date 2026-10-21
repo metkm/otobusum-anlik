@@ -4,8 +4,8 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { CACHE_MS_3_DAYS } from '@/constants/app'
 import { useFilterStore, useLineStore } from '@/stores'
-import { RouteCode, RouteDirection } from '@/types/line'
-import { Route } from '@/types/route'
+import type { RouteCode, RouteDirection } from '@/types/line'
+import type { Route } from '@/types/route'
 
 import { useLine } from './useLine'
 
@@ -16,7 +16,7 @@ export const useLineRoutes = () => {
     useLineStore(useShallow((state) => state.routes[city][code])) || (`${code}_G_D0` as RouteCode)
 
   const query = useQuery({
-    queryKey: ['line', code, 'routes'],
+    meta: { persist: true },
     queryFn: () =>
       ky
         .get<Route[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${code}`, {
@@ -25,8 +25,8 @@ export const useLineRoutes = () => {
           },
         })
         .json(),
+    queryKey: ['line', code, 'routes'],
     staleTime: CACHE_MS_3_DAYS,
-    meta: { persist: true },
   })
 
   const route = query.data?.find((r) => r.code === routeCode)
@@ -36,10 +36,10 @@ export const useLineRoutes = () => {
   const otherDirectionRoute = query.data?.find((r) => r.code === otherDirectionCode)
 
   return {
-    query,
-    routeCode,
-    route,
     direction,
     otherDirectionRoute,
+    query,
+    route,
+    routeCode,
   }
 }

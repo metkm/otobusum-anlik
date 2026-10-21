@@ -1,21 +1,21 @@
 import React, { createContext, use } from 'react'
-import { Dimensions, ViewProps } from 'react-native'
+import { Dimensions, type ViewProps } from 'react-native'
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler'
 import Animated, {
-  clamp,
   LinearTransition,
-  SharedValue,
+  clamp,
   useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withDecay,
   withSpring,
+  type SharedValue,
 } from 'react-native-reanimated'
 
 import { cn } from '@/utils/cn'
 
-const width = Dimensions.get('window').width
+const { width } = Dimensions.get('window')
 
 const dampen = (value: number) => {
   'worklet'
@@ -27,7 +27,7 @@ const roundToStep = (x: number, step: number) => {
   return Math.round(x / step) * step
 }
 
-export const CarouselContext = createContext<SharedValue<number> | null>(null)
+export const CarouselContext = createContext<SharedValue<number> | undefined>(undefined)
 
 export const UCarousel = ({
   snapInterval,
@@ -54,16 +54,6 @@ export const UCarousel = ({
     onActivate: () => {
       offsetStart.value = offset.value
     },
-    onUpdate: ({ translationX }) => {
-      let newOffset = offsetStart.value + translationX
-      let offsetModifier = translationX > 0 ? 1 : -1
-
-      if (newOffset > 0 || newOffset < offsetLimit.value) {
-        newOffset = offsetStart.value + dampen(Math.abs(translationX)) * offsetModifier
-      }
-
-      offset.value = newOffset
-    },
     onDeactivate: ({ canceled, velocityX }) => {
       if (canceled) {
         return
@@ -81,26 +71,36 @@ export const UCarousel = ({
 
       offset.value = withDecay(
         {
-          velocity: velocityX,
           clamp: [offsetLimit.value, 0],
+          velocity: velocityX,
         },
         () => {
-          if (!snapInterval) return
+          if (!snapInterval) {
+            return
+          }
 
           const clamped = clamp(offset.value, offsetLimit.value, 0)
           const rounded = roundToStep(clamped, snapInterval)
 
-          offset.value = withSpring(clamp(rounded, offsetLimit.value, 0)) // clamped twice to remove padding on last element
+          offset.value = withSpring(clamp(rounded, offsetLimit.value, 0)) // Clamped twice to remove padding on last element
         },
       )
     },
+    onUpdate: ({ translationX }) => {
+      let newOffset = offsetStart.value + translationX
+      const offsetModifier = translationX > 0 ? 1 : -1
+
+      if (newOffset > 0 || newOffset < offsetLimit.value) {
+        newOffset = offsetStart.value + dampen(Math.abs(translationX)) * offsetModifier
+      }
+
+      offset.value = newOffset
+    },
   })
 
-  const containerStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: offset.value }],
-    }
-  })
+  const containerStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: offset.value }],
+  }))
 
   useAnimatedReaction(
     () => contentWidth.value,

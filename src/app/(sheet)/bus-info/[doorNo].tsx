@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router'
 import { t } from 'i18next'
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { View } from 'react-native'
 
 import { UActivityIndicator } from '@/components/u/UActivityIndicator'
@@ -17,22 +17,20 @@ const BusInfoItem = ({
   label: string
   value?: string | number
   icon: ComponentProps<typeof UIcon>['name']
-}) => {
-  return (
-    <View className="gap-1">
-      <View className="flex-row gap-1">
-        <UIcon
-          name={icon}
-          colorClassName="text-default"
-        />
+}) => (
+  <View className="gap-1">
+    <View className="flex-row gap-1">
+      <UIcon
+        name={icon}
+        colorClassName="text-default"
+      />
 
-        <UText className="font-inter-medium text-muted text-xs">{label}</UText>
-      </View>
-
-      <UText>{value}</UText>
+      <UText className="font-inter-medium text-muted text-xs">{label}</UText>
     </View>
-  )
-}
+
+    <UText>{value}</UText>
+  </View>
+)
 
 const BusInfo = () => {
   const searchParams = useLocalSearchParams()

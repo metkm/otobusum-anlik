@@ -1,6 +1,6 @@
 import IonIcons from '@react-native-vector-icons/ionicons'
 import { Tabs } from 'expo-router'
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { cn } from 'tailwind-variants'
@@ -8,22 +8,22 @@ import { useCSSVariable } from 'uniwind'
 
 const screens = [
   {
-    name: 'index',
-    label: 'map',
     icon: 'map-outline',
     iconActive: 'map',
+    label: 'map',
+    name: 'index',
   },
   {
-    name: 'timetable',
-    label: 'timetable',
     icon: 'time-outline',
     iconActive: 'time',
+    label: 'timetable',
+    name: 'timetable',
   },
   {
-    name: 'settings',
-    label: 'settings',
     icon: 'settings-outline',
     iconActive: 'settings',
+    label: 'settings',
+    name: 'settings',
   },
 ]
 
@@ -38,29 +38,27 @@ export const TabsLayout = () => {
           key={screen.name}
           name={screen.name}
           options={{
+            tabBarIcon: ({ focused }) => (
+              <View
+                className={cn(
+                  focused ? 'bg-muted' : undefined,
+                  'w-12 h-6 rounded-md items-center justify-center',
+                )}
+              >
+                <IonIcons
+                  name={
+                    (focused ? screen.iconActive : screen.icon) as ComponentProps<
+                      typeof IonIcons
+                    >['name']
+                  }
+                  color={color as string}
+                  size={20}
+                />
+              </View>
+            ),
             tabBarLabel: t(screen.label),
             tabBarLabelStyle: {
               color: color as string,
-            },
-            tabBarIcon: ({ focused }) => {
-              return (
-                <View
-                  className={cn(
-                    focused ? 'bg-muted' : undefined,
-                    'w-12 h-6 rounded-md items-center justify-center',
-                  )}
-                >
-                  <IonIcons
-                    name={
-                      (focused ? screen.iconActive : screen.icon) as ComponentProps<
-                        typeof IonIcons
-                      >['name']
-                    }
-                    color={color as string}
-                    size={20}
-                  />
-                </View>
-              )
             },
           }}
         />

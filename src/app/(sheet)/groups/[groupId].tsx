@@ -3,7 +3,7 @@ import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigat
 import { router, useLocalSearchParams } from 'expo-router'
 import { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TextInputInstance, View } from 'react-native'
+import { View, type TextInputInstance } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import { UButton } from '@/components/u/UButton'
@@ -23,7 +23,9 @@ export const GroupIdScreen = () => {
   const inputRef = useRef<TextInputInstance>(null)
 
   const handleSave = useCallback(() => {
-    if (!group) return
+    if (!group) {
+      return
+    }
 
     useLineStore.getState().updateGroupName(group.id, name.current)
     inputRef.current?.clear()
@@ -48,7 +50,9 @@ export const GroupIdScreen = () => {
                 label={t('deleteGroup')}
                 icon="trash-2"
                 onPress={() => {
-                  if (!group) return
+                  if (!group) {
+                    return
+                  }
 
                   useLineStore.getState().deleteGroup(group.id)
                   router.back()

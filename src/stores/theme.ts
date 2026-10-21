@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import { createJSONStorage, persist, subscribeWithSelector } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
-import { City } from '@/types/city'
+import type { City } from '@/types/city'
 import { createRandomTheme } from '@/utils/color'
 
 import { useFilterStore } from './filter'
@@ -37,62 +37,61 @@ export const useThemeStore = create(
   persist(
     subscribeWithSelector(
       immer<ThemeStore>((set, get) => ({
-        themesByCity: {
-          istanbul: {},
-          izmir: {},
-        },
         createTheme: (code, overwrite, hslColor) => {
           const { schemes, palettes } = createRandomTheme(hslColor)
-          const city = useFilterStore.getState().city
+          const { city } = useFilterStore.getState()
 
-          if (get().themesByCity[city][code] && !overwrite) return
+          if (get().themesByCity[city][code] && !overwrite) {
+            return
+          }
 
           set((state) => {
             state.themesByCity[city][code] = {
               dark: {
                 'ui-bg': hexFromArgb(schemes.dark.surface),
                 'ui-bg-muted': hexFromArgb(palettes.neutral.tone(12)),
-                'ui-text-muted': hexFromArgb(palettes.neutral.tone(90)),
-                'ui-text': hexFromArgb(schemes.dark.onSurface),
-                'ui-text-inverted': hexFromArgb(schemes.dark.inverseOnSurface),
-                'ui-primary': hexFromArgb(schemes.dark.primary),
-                'ui-error': hexFromArgb(schemes.dark.error),
                 'ui-border': hexFromArgb(schemes.dark.outline),
                 'ui-border-muted': hexFromArgb(schemes.dark.outlineVariant),
+                'ui-error': hexFromArgb(schemes.dark.error),
+                'ui-primary': hexFromArgb(schemes.dark.primary),
+                'ui-text': hexFromArgb(schemes.dark.onSurface),
+                'ui-text-inverted': hexFromArgb(schemes.dark.inverseOnSurface),
+                'ui-text-muted': hexFromArgb(palettes.neutral.tone(90)),
               },
               light: {
                 'ui-bg': hexFromArgb(schemes.light.surface),
                 'ui-bg-muted': hexFromArgb(palettes.neutral.tone(97)),
-                'ui-text-muted': hexFromArgb(palettes.neutral.tone(10)),
-                'ui-text': hexFromArgb(schemes.light.onSurface),
-                'ui-text-inverted': hexFromArgb(schemes.light.inverseOnSurface),
-                'ui-primary': hexFromArgb(schemes.light.primary),
-                'ui-error': hexFromArgb(schemes.light.error),
                 'ui-border': hexFromArgb(schemes.light.outline),
                 'ui-border-muted': hexFromArgb(schemes.light.outlineVariant),
+                'ui-error': hexFromArgb(schemes.light.error),
+                'ui-primary': hexFromArgb(schemes.light.primary),
+                'ui-text': hexFromArgb(schemes.light.onSurface),
+                'ui-text-inverted': hexFromArgb(schemes.light.inverseOnSurface),
+                'ui-text-muted': hexFromArgb(palettes.neutral.tone(10)),
               },
             }
           })
         },
         deleteTheme: (code) =>
           set((state) => {
-            const city = useFilterStore.getState().city
+            const { city } = useFilterStore.getState()
             delete state.themesByCity[city][code]
           }),
         deleteUnusedThemes: (codes) =>
           set((state) => {
-            const city = useFilterStore.getState().city
+            const { city } = useFilterStore.getState()
             const themeCodes = Object.keys(state.themesByCity[city])
 
-            for (let index = 0; index < themeCodes.length; index++) {
-              const code = themeCodes[index]
-              if (!code) continue
-
-              if (codes.includes(code)) continue
-
-              delete state.themesByCity[city][code]
+            for (const code of themeCodes) {
+              if (!codes.includes(code)) {
+                delete state.themesByCity[city][code]
+              }
             }
           }),
+        themesByCity: {
+          istanbul: {},
+          izmir: {},
+        },
       })),
     ),
     {

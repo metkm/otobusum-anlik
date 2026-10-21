@@ -1,5 +1,5 @@
-import { LegendList, LegendListRef } from '@legendapp/list/react-native'
-import { TrueSheet } from '@lodev09/react-native-true-sheet'
+import { LegendList, type LegendListRef } from '@legendapp/list/react-native'
+import type { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
@@ -42,7 +42,9 @@ export const LineCardMenu = () => {
   }
 
   const zoomToLine = () => {
-    if (!route?.path) return
+    if (!route?.path) {
+      return
+    }
 
     fitBounds(getLatLngBounds(route.path))
   }
@@ -95,17 +97,15 @@ export const LineCardMenu = () => {
           <LegendList
             ref={scrollableRef}
             data={news}
-            renderItem={({ item }) => {
-              return (
-                <View className="gap-1 p-2">
-                  <UText className="text-muted font-inter-medium text-xs">{item.HATKODU}</UText>
-                  <UText>{item.MESAJ}</UText>
-                  <UText className="text-muted font-inter-medium text-xs">
-                    {item.GUNCELLEME_SAATI}
-                  </UText>
-                </View>
-              )
-            }}
+            renderItem={({ item }) => (
+              <View className="gap-1 p-2">
+                <UText className="text-muted font-inter-medium text-xs">{item.HATKODU}</UText>
+                <UText>{item.MESAJ}</UText>
+                <UText className="text-muted font-inter-medium text-xs">
+                  {item.GUNCELLEME_SAATI}
+                </UText>
+              </View>
+            )}
             keyExtractor={(item) => `${item.HATKODU}-${item.GUNCELLEME_SAATI}-${item.MESAJ}`}
             className="flex-1"
             recycleItems
@@ -125,10 +125,10 @@ export const LineCardMenu = () => {
           block
           variant="soft"
           to={{
-            pathname: '/groups',
             params: {
               addToGroup: code,
             },
+            pathname: '/groups',
           }}
         />
 

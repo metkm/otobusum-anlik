@@ -45,7 +45,7 @@ const RootContent = () => {
         <Sheet.Screen name="(sheet)/stop/[stopCode]" />
         <Sheet.Screen
           name="(sheet)/markers/nearby"
-          options={{ dimmed: false, detents: ['auto'] }}
+          options={{ detents: ['auto'], dimmed: false }}
         />
       </Sheet>
     </MapProvider>
@@ -75,17 +75,15 @@ export const RootLayout = () => {
       <PersistQueryClientProvider
         client={queryClient}
         persistOptions={{
-          persister,
           dehydrateOptions: {
-            shouldDehydrateQuery: (query) => {
-              return !!query.meta?.persist
-            },
+            shouldDehydrateQuery: (query) => Boolean(query.meta?.persist),
           },
+          persister,
         }}
       >
         <StatusBar style="auto" />
 
-        <GestureHandlerRootView style={{ flexGrow: 1, backgroundColor: background as string }}>
+        <GestureHandlerRootView style={{ backgroundColor: background as string, flexGrow: 1 }}>
           <SafeAreaListener
             onChange={({ insets }) => {
               Uniwind.updateInsets(insets)

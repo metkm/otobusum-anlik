@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View, ViewProps } from 'react-native'
+import { View, type ViewProps } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLineCardWidth, useLineNews, useLineRoutes, useLineTimetable } from '@/composables'
-import { Time } from '@/composables/useLineTimetable'
+import type { Time } from '@/composables/useLineTimetable'
 import { useFilterStore } from '@/stores'
-import { City } from '@/types/city'
+import type { City } from '@/types/city'
 import { cn } from '@/utils/cn'
 import { groupDeparturesByHour } from '@/utils/groupDepartures'
 import { toAscii } from '@/utils/toAscii'
@@ -41,7 +41,9 @@ export const LineTimetable = ({ className }: ViewProps) => {
   const { query: lineNewsQuery } = useLineNews()
 
   const filteredData = useMemo(() => {
-    if (!lineTimetableQuery.data) return []
+    if (!lineTimetableQuery.data) {
+      return []
+    }
 
     const times: Time[] = []
 
@@ -73,23 +75,29 @@ export const LineTimetable = ({ className }: ViewProps) => {
       times.push(...lineTimetableQuery.data.saturday)
     }
 
-    return Array.from(new Set(times))
+    return [...new Set(times)]
   }, [lineTimetableQuery.data, day])
 
   const groupedByHour = groupDeparturesByHour(filteredData)
   const hourEntries = Object.entries(groupedByHour).sort((a, b) => Number(a[0]) - Number(b[0]))
 
   const cancelledTimes = lineNewsQuery.data?.map((ann) => {
-    if (!ann.MESAJ.includes('dan Saat')) return
+    if (!ann.MESAJ.includes('dan Saat')) {
+      return
+    }
 
     const msgSplit = ann.MESAJ.split('dan Saat')
     const from = msgSplit.at(0)
-    if (!from) return
+    if (!from) {
+      return
+    }
 
     const [leftTitle] = route?.name.trim().split('-') ?? ['', '']
 
     const tLeftTitle = leftTitle ? toAscii(leftTitle) : undefined
-    if (from.trim() !== tLeftTitle?.trim()) return
+    if (from.trim() !== tLeftTitle?.trim()) {
+      return
+    }
 
     const time = msgSplit.at(1)?.split('de hareket etmesi planlanan').at(0)?.trim()
     return time
@@ -98,53 +106,53 @@ export const LineTimetable = ({ className }: ViewProps) => {
   const options: Record<City, { label: string; value: number }[]> = {
     istanbul: [
       {
-        value: monday | tuesday | wednesday | thursday | friday,
         label: t('workday'),
+        value: monday | tuesday | wednesday | thursday | friday,
       },
       {
-        value: saturday,
         label: t('saturday'),
+        value: saturday,
       },
       {
-        value: sunday,
         label: t('sunday'),
+        value: sunday,
       },
     ],
     izmir: [
       {
-        value: saturday,
         label: t('saturday'),
+        value: saturday,
       },
       {
-        value: monday,
         label: t('monday'),
+        value: monday,
       },
       {
-        value: tuesday,
         label: t('tuesday'),
+        value: tuesday,
       },
       {
-        value: wednesday,
         label: t('wednesday'),
+        value: wednesday,
       },
       {
-        value: thursday,
         label: t('thursday'),
+        value: thursday,
       },
       {
-        value: friday,
         label: t('friday'),
+        value: friday,
       },
       {
-        value: sunday,
         label: t('sunday'),
+        value: sunday,
       },
     ],
   }
 
   return (
     <View
-      style={{ width: cardWidth, elevation: 2 }}
+      style={{ elevation: 2, width: cardWidth }}
       className={cn('bg-muted rounded-md border-2 border-muted', className)}
     >
       <View className="m-2 mb-0">
@@ -195,8 +203,8 @@ export const LineTimetable = ({ className }: ViewProps) => {
                       className="leading-tight"
                       style={[
                         cancelledTimes?.includes(`${hour}:${min}`) && {
-                          textDecorationLine: 'line-through',
                           opacity: 0.5,
+                          textDecorationLine: 'line-through',
                         },
                       ]}
                     >

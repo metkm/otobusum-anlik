@@ -1,9 +1,9 @@
-import { ViewProps, View } from 'react-native'
+import { View, type ViewProps } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { createAnimatedComponent } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useMap, useLineGroup } from '@/composables'
+import { useLineGroup, useMap } from '@/composables'
 import { EnterScaleIn, ExitScaleOut, ItemLayoutAnimation } from '@/constants/animation'
 import { useLineStore, useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
@@ -47,11 +47,13 @@ export const MapButtons = (props: ViewProps) => {
             style={{ elevation: 1 }}
             onPress={async () => {
               const center = await map.current?.getCenter()
-              if (!center) return
+              if (!center) {
+                return
+              }
 
               camera.current?.easeTo({
-                center,
                 bearing: 0,
+                center,
                 pitch: 0,
               })
             }}

@@ -3,7 +3,7 @@ import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigat
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ScrollViewInstance, View } from 'react-native'
+import { type ScrollViewInstance, View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import Animated, { LinearTransition } from 'react-native-reanimated'
 
@@ -17,7 +17,7 @@ import { useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
 import { useLineStore } from '@/stores'
-import { LineGroup } from '@/types/line'
+import type { LineGroup } from '@/types/line'
 
 const GroupItem = ({
   group,
@@ -112,10 +112,10 @@ const GroupItem = ({
           variant="ghost"
           color="neutral"
           to={{
-            pathname: '/groups/[groupId]',
             params: {
               groupId: group.id,
             },
+            pathname: '/groups/[groupId]',
           }}
         />
       </Animated.View>
@@ -134,7 +134,6 @@ export const GroupsScreen = () => {
 
   useEffect(() => {
     const options = {
-      scrollableRef,
       header: (
         <USheetHeader
           icon="component"
@@ -159,6 +158,7 @@ export const GroupsScreen = () => {
           </LineContext>
         </USheetHeader>
       ),
+      scrollableRef,
     }
 
     navigation.setOptions({

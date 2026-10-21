@@ -1,4 +1,4 @@
-import type { UseQueryResult, DefaultError } from '@tanstack/react-query'
+import type { DefaultError, UseQueryResult } from '@tanstack/react-query'
 import { View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
@@ -23,7 +23,9 @@ export const UQueryState = <T,>({
   children?: React.ReactNode
   className?: string
 }) => {
-  if (query.isLoading) return loading?.() ?? <UActivityIndicator />
+  if (query.isLoading) {
+    return loading?.() ?? <UActivityIndicator />
+  }
 
   if (query.isError) {
     return (

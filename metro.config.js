@@ -1,19 +1,19 @@
 // // Learn more https://docs.expo.io/guides/customizing-metro
-// const { getDefaultConfig } = require('expo/metro-config')
-// const { withUniwindConfig } = require('uniwind/metro')
+// Const { getDefaultConfig } = require('expo/metro-config')
+// Const { withUniwindConfig } = require('uniwind/metro')
 
 // /** @type {import('expo/metro-config').MetroConfig} */
-// const config = getDefaultConfig(__dirname)
+// Const config = getDefaultConfig(__dirname)
 
-// module.exports = withUniwindConfig(config, {
+// Module.exports = withUniwindConfig(config, {
 //   // relative path to your global.css file (from previous step)
-//   cssEntryFile: './src/global.css',
+//   CssEntryFile: './src/global.css',
 //   // (optional) path where we gonna auto-generate typings
 //   // defaults to project's root
-//   dtsFile: './src/uniwind-types.d.ts',
+//   DtsFile: './src/uniwind-types.d.ts',
 // })
 
-// metro.config.js
+// Metro.config.js
 
 const { getDefaultConfig } = require('expo/metro-config')
 const { withBoostConfig } = require('react-native-boost/metro')
