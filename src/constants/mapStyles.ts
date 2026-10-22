@@ -7,7 +7,7 @@ export const mapStyles = {
       {
         id: 'background',
         paint: {
-          'background-color': 'rgb(12,12,12)',
+          'background-color': '#1e293b',
         },
         type: 'background',
       },
@@ -20,7 +20,7 @@ export const mapStyles = {
         id: 'water',
         paint: {
           'fill-antialias': false,
-          'fill-color': 'rgb(27 ,27 ,29)',
+          'fill-color': '#020617',
         },
         source: 'openmaptiles',
         'source-layer': 'water',
@@ -146,7 +146,7 @@ export const mapStyles = {
         minzoom: 12,
         paint: {
           'fill-antialias': true,
-          'fill-color': 'rgb(10,10,10)',
+          'fill-color': '#475569',
           'fill-outline-color': 'rgb(27 ,27 ,29)',
         },
         source: 'openmaptiles',
@@ -158,7 +158,7 @@ export const mapStyles = {
         minzoom: 14,
         paint: {
           'fill-extrusion-base': ['get', 'render_min_height'],
-          'fill-extrusion-color': '#171717',
+          'fill-extrusion-color': '#475569',
           'fill-extrusion-height': ['get', 'render_height'],
           'fill-extrusion-opacity': 0.8,
         },
@@ -305,7 +305,7 @@ export const mapStyles = {
         },
         minzoom: 8,
         paint: {
-          'line-color': '#181818',
+          'line-color': '#475569',
           'line-opacity': 0.9,
           'line-width': ['interpolate', ['exponential', 1.55], ['zoom'], 13, 1.8, 20, 20],
         },
@@ -347,7 +347,7 @@ export const mapStyles = {
         },
         minzoom: 11,
         paint: {
-          'line-color': 'hsl(0,0%,7%)',
+          'line-color': '#475569',
           'line-width': ['interpolate', ['exponential', 1.3], ['zoom'], 10, 2, 20, 20],
         },
         source: 'openmaptiles',
@@ -410,15 +410,7 @@ export const mapStyles = {
         },
         minzoom: 6,
         paint: {
-          'line-color': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            5.8,
-            'hsla(0,0%,85%,0.53)',
-            6,
-            '#000',
-          ],
+          'line-color': '#64748b',
           'line-width': ['interpolate', ['exponential', 1.4], ['zoom'], 4, 2, 6, 1.3, 20, 30],
         },
         source: 'openmaptiles',
