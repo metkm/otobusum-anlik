@@ -166,12 +166,12 @@ export const mapStyles = {
       },
       {
         id: 'building-3d',
-        minzoom: 14,
+        minzoom: 12,
         paint: {
           'fill-extrusion-base': ['get', 'render_min_height'],
           'fill-extrusion-color': '#1e293b',
           'fill-extrusion-height': ['get', 'render_height'],
-          'fill-extrusion-opacity': 0.8,
+          'fill-extrusion-opacity': 1,
         },
         source: 'openmaptiles',
         'source-layer': 'building',
@@ -240,8 +240,7 @@ export const mapStyles = {
         },
         minzoom: 11,
         paint: {
-          'line-color': '#000',
-          'line-opacity': 1,
+          'line-color': '#181818',
           'line-width': ['interpolate', ['exponential', 1.5], ['zoom'], 11, 4, 17, 50],
         },
         source: 'openmaptiles',
@@ -2761,7 +2760,7 @@ export const mapStyles = {
       },
       {
         id: 'building-3d',
-        minzoom: 14,
+        minzoom: 12,
         paint: {
           'fill-extrusion-base': ['get', 'render_min_height'],
           'fill-extrusion-color': 'hsl(35,8%,85%)',
