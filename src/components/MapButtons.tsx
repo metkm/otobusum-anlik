@@ -1,11 +1,11 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
-import { View, type ViewProps } from 'react-native'
+import { type ViewProps } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { createAnimatedComponent } from 'react-native-reanimated'
+import Animated, { createAnimatedComponent, LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLineGroup, useMap } from '@/composables'
-import { EnterScaleIn, ExitScaleOut, ItemLayoutAnimation } from '@/constants/animation'
+import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
 import { useLineStore, useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
@@ -39,7 +39,8 @@ export const MapButtons = (props: ViewProps) => {
   }
 
   return (
-    <View
+    <Animated.View
+      layout={LinearTransition}
       className={cn(
         'p-2 gap-2',
         lineCardExpanded || hideMap ? 'flex-row' : undefined,
@@ -50,7 +51,7 @@ export const MapButtons = (props: ViewProps) => {
     >
       {(bearing !== 0 || pitch !== 0) && (
         <AnimatedGestureHandlerRootView
-          layout={ItemLayoutAnimation}
+          layout={LinearTransition}
           entering={EnterScaleIn}
           exiting={ExitScaleOut}
           style={{ width: 'auto' }}
@@ -77,7 +78,7 @@ export const MapButtons = (props: ViewProps) => {
       )}
 
       <AnimatedGestureHandlerRootView
-        layout={ItemLayoutAnimation}
+        layout={LinearTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
         style={{ width: 'auto' }}
@@ -92,7 +93,7 @@ export const MapButtons = (props: ViewProps) => {
       </AnimatedGestureHandlerRootView>
 
       <AnimatedGestureHandlerRootView
-        layout={ItemLayoutAnimation}
+        layout={LinearTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
         style={{ width: 'auto' }}
@@ -108,7 +109,7 @@ export const MapButtons = (props: ViewProps) => {
 
       {codes.length > 1 && (
         <AnimatedGestureHandlerRootView
-          layout={ItemLayoutAnimation}
+          layout={LinearTransition}
           entering={EnterScaleIn}
           exiting={ExitScaleOut}
           style={{ width: 'auto' }}
@@ -126,7 +127,7 @@ export const MapButtons = (props: ViewProps) => {
       )}
 
       <AnimatedGestureHandlerRootView
-        layout={ItemLayoutAnimation}
+        layout={LinearTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
         style={{ maxWidth: '75%' }}
@@ -140,6 +141,6 @@ export const MapButtons = (props: ViewProps) => {
           label={group?.name}
         />
       </AnimatedGestureHandlerRootView>
-    </View>
+    </Animated.View>
   )
 }
