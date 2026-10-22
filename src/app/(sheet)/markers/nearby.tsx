@@ -138,7 +138,13 @@ export const NearbyScreen = () => {
         return
       }
 
-      fitBounds(getLatLngBounds(result))
+      const bnds = getLatLngBounds(result)
+
+      if (!bnds) {
+        return
+      }
+
+      fitBounds(bnds)
     }
 
     void fit()
