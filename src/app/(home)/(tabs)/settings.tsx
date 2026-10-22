@@ -235,7 +235,6 @@ export const SettingsScreen = () => {
 
       <OptionPicker
         label={t('mapTheme')}
-        description={t('settingsWillChangeOnRestart')}
         options={mapThemeOptions}
         value={{ label: t(mapStyleStore ?? 'system'), value: mapStyleStore }}
         onSelect={({ value }) => {

@@ -75,7 +75,6 @@ export default {
   searchPlaceholder: 'KM-12, KM-12...',
   selectedCity: 'Selected city: {{city}}',
   settings: 'Settings',
-  settingsWillChangeOnRestart: 'This change will take effect after restarting the app',
   showMyLocation: 'Show my location on the map',
   showTraffic: 'Show traffic information on the map',
   shrink: 'Shrink',

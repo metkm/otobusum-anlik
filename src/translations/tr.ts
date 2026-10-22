@@ -74,7 +74,6 @@ export default {
   searchPlaceholder: 'KM-12, KM-12...',
   selectedCity: 'Seçili şehir: {{city}}',
   settings: 'Ayarlar',
-  settingsWillChangeOnRestart: 'Bu ayar uygulamayı bir sonraki açışınızda değişecek',
   showMyLocation: 'Haritada konumumu göster',
   showTraffic: 'Haritada trafik bilgisini göster',
   shrink: 'Küçült',
