@@ -1,17 +1,18 @@
 import '@/global.css'
 import { Sheet } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
+import { NavigationBar } from 'expo-navigation-bar'
 import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router'
 import { type Theme } from 'expo-router/react-navigation'
 import { StatusBar } from 'expo-status-bar'
 import { I18nextProvider } from 'react-i18next'
-import { useColorScheme } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaListener } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
 import { persister, queryClient } from '@/api/client'
 import { MapProvider } from '@/components/MapProvider'
+import { useColorScheme } from '@/composables'
 import { useSettingsStore } from '@/stores'
 import i18n from '@/translations/i18n'
 
@@ -82,6 +83,7 @@ export const RootLayout = () => {
         }}
       >
         <StatusBar style="auto" />
+        <NavigationBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
 
         <GestureHandlerRootView style={{ backgroundColor: background as string, flexGrow: 1 }}>
           <SafeAreaListener
