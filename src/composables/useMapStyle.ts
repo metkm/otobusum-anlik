@@ -1,12 +1,11 @@
+import { useShallow } from 'zustand/react/shallow'
+
 import { useColorScheme } from '@/composables/useColorScheme'
 import { mapStyles } from '@/constants/mapStyles'
 import { useSettingsStore, type ColorScheme } from '@/stores'
 
-const getMapStyle = () => useSettingsStore.getState().mapStyle
-
 export const useMapStyle = () => {
-  // Const prefferedMapStyle = useSettingsStore(useShallow(state => state.mapStyle))
-  const prefferedMapStyle = getMapStyle()
+  const prefferedMapStyle = useSettingsStore(useShallow((state) => state.mapStyle))
   const colorScheme = useColorScheme()
 
   const scheme = prefferedMapStyle ?? (colorScheme === 'dark' ? 'dark' : 'liberty')

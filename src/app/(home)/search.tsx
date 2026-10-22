@@ -50,7 +50,13 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
       return
     }
 
-    fitBounds(getLatLngBounds(path))
+    const bounds = getLatLngBounds(path)
+
+    if (!bounds) {
+      return
+    }
+
+    fitBounds(bounds)
   }
 
   return (

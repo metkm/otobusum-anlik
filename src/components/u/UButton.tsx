@@ -91,7 +91,7 @@ const ui = tv({
     },
   ],
   slots: {
-    base: 'flex flex-row items-center gap-1.5 rounded-md',
+    base: 'flex flex-row items-center gap-1.5 rounded-md disabled:opacity-50',
     icon: '',
     label: 'shrink font-inter-medium text-xs',
   },
@@ -105,7 +105,9 @@ const ui = tv({
       primary: '',
     },
     disabled: {
-      true: 'opacity-75',
+      true: {
+        base: 'opacity-50',
+      },
     },
     size: {
       lg: {

@@ -35,6 +35,7 @@ export const useLineBuses = () => {
         })
         .json(),
     queryKey: ['line', code, 'buses'],
+
     refetchInterval: getRefetchAndStaleTime,
     staleTime: getRefetchAndStaleTime,
   })

@@ -46,7 +46,13 @@ export const LineCardMenu = () => {
       return
     }
 
-    fitBounds(getLatLngBounds(route.path))
+    const bounds = getLatLngBounds(route.path)
+
+    if (!bounds) {
+      return
+    }
+
+    fitBounds(bounds)
   }
 
   return (
@@ -56,6 +62,7 @@ export const LineCardMenu = () => {
         variant="ghost"
         color="neutral"
         onPress={zoomToLine}
+        disabled={!route?.path || route.path.length < 1}
       />
 
       <UButton

@@ -1,9 +1,9 @@
 import { Dimensions } from 'react-native'
-import Animated, { LinearTransition, type SharedValue } from 'react-native-reanimated'
+import Animated, { type SharedValue } from 'react-native-reanimated'
 
 import { useLineCardWidth, useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { ExitScaleOut } from '@/constants/animation'
+import { ExitScaleOut, ItemLayoutAnimation } from '@/constants/animation'
 import { cn } from '@/utils/cn'
 
 import { ThemeProvider } from '../ThemeProvider'
@@ -36,17 +36,8 @@ export const LineCards = ({
         <Animated.View
           key={code}
           exiting={ExitScaleOut}
-          layout={LinearTransition}
+          layout={ItemLayoutAnimation}
         >
-          {/* <LineContext value={code}>
-            <LineCard
-              style={{ width: cardWidth }}
-              className={cn(
-                'grow',
-                codes.length < 2 && 'rounded-b-none',
-              )}
-            />
-          </LineContext> */}
           <LineContext value={code}>
             <ThemeProvider>
               <LineCard
