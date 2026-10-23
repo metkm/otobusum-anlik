@@ -105,7 +105,7 @@ const ui = tv({
   slots: {
     base: 'flex flex-row items-center gap-1.5 rounded-md',
     icon: '',
-    label: 'shrink font-inter-medium text-xs',
+    label: 'shrink font-inter-medium text-sm',
   },
   variants: {
     block: {

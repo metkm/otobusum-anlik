@@ -127,16 +127,16 @@ export const StopScreen = () => {
         </GestureHandlerRootView>
 
         <View>
-          <UText className="text-muted text-xs">{stopQuery.data?.stop.code}</UText>
+          <UText className="text-muted text-sm">{stopQuery.data?.stop.code}</UText>
           <UText className="font-inter-medium text-lg">{stopQuery.data?.stop.name}</UText>
           {stopQuery.data?.stop.province && (
-            <UText className="text-muted text-xs">{stopQuery.data.stop.province}</UText>
+            <UText className="text-muted text-sm">{stopQuery.data.stop.province}</UText>
           )}
         </View>
 
         {stopQuery.data && stopQuery.data.buses.length > 0 && (
           <GestureHandlerRootView style={{ flexShrink: 0 }}>
-            <UText className="text-muted text-xs">{t('linesThatUseStop')}</UText>
+            <UText className="text-muted text-sm">{t('linesThatUseStop')}</UText>
 
             <View className="mt-1 flex-row flex-wrap gap-2">
               {stopQuery.data.buses.map((bus) => (
@@ -224,7 +224,7 @@ export const StopScreen = () => {
                 <UText className="font-inter-medium text-right">
                   {t('arrivingMinutes', { min: arrival.minutes_left })}
                 </UText>
-                <UText className="text-muted font-inter-medium text-xs">{t('arrivingIn')}</UText>
+                <UText className="text-muted font-inter-medium text-sm">{t('arrivingIn')}</UText>
               </View>
             </View>
           )}

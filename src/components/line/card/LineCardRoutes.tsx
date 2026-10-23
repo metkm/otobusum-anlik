@@ -110,7 +110,7 @@ export const LineCardRoutes = () => {
           name="bus-front"
           sizeClassName="size-4.5"
         />
-        <UText className="font-inter-semibold text-xs">{buses.length}</UText>
+        <UText className="font-inter-semibold text-sm">{buses.length}</UText>
       </View>
 
       <UButton

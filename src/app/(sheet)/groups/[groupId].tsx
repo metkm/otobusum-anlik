@@ -84,7 +84,7 @@ export const GroupIdScreen = () => {
       <View className="gap-2">
         <View className="flex-row items-center gap-2">
           <UText className="font-inter-medium ml-1">{t('addedLines')}</UText>
-          <UText className="font-inter-medium text-xs">{`(${group?.codes.length} / ${GROUP_LINE_LIMIT})`}</UText>
+          <UText className="font-inter-medium text-sm">{`(${group?.codes.length} / ${GROUP_LINE_LIMIT})`}</UText>
         </View>
 
         {group && group.codes.length > 0 && (

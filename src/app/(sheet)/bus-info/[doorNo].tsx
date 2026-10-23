@@ -24,7 +24,7 @@ const BusInfoItem = ({
         colorClassName="text-default"
       />
 
-      <UText className="font-inter-medium text-muted text-xs">{label}</UText>
+      <UText className="font-inter-medium text-muted text-sm">{label}</UText>
     </View>
 
     <UText>{value}</UText>

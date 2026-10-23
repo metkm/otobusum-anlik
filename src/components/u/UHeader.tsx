@@ -34,7 +34,7 @@ export const UHeader = ({ icon, title, description, children, className }: UHead
           {title && <UText className="font-inter-medium">{title}</UText>}
 
           {description && (
-            <UText className="font-inter-medium text-muted text-xs">{description}</UText>
+            <UText className="font-inter-medium text-muted text-sm">{description}</UText>
           )}
         </View>
       )}

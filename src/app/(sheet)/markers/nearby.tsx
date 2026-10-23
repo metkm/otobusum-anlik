@@ -273,7 +273,7 @@ export const NearbyScreen = () => {
                     </ScopedVariables>
 
                     <UText
-                      className="font-inter-medium shrink text-xs"
+                      className="font-inter-medium shrink text-sm"
                       numberOfLines={1}
                     >
                       {route.name}

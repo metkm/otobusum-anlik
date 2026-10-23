@@ -36,7 +36,7 @@ export const UQueryState = <T,>({
             className,
           )}
         >
-          <UText className="text-error font-inter-medium shrink truncate text-center text-xs">
+          <UText className="text-error font-inter-medium shrink truncate text-center text-sm">
             {errorMessage ?? query.error.message}
           </UText>
 

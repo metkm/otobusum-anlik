@@ -35,11 +35,13 @@ const ui = tv({
   ],
   defaultVariants: {
     color: 'primary',
+    size: 'md',
     variant: 'solid',
   },
   slots: {
-    base: 'px-2.5 py-1.5 flex-row gap-1 rounded-full',
-    label: 'font-inter-semibold text-xs',
+    base: 'px-2.5 py-1.5 flex-row items-center gap-1 rounded-full',
+    icon: '',
+    label: 'font-inter-semibold',
   },
   variants: {
     color: {
@@ -49,6 +51,11 @@ const ui = tv({
     size: {
       lg: {
         base: 'px-3 py-2',
+        icon: 'size-5',
+      },
+      md: {
+        base: 'px-3 py-1.5',
+        icon: 'size-4',
         label: 'text-sm',
       },
     },
@@ -71,14 +78,14 @@ export const UBadge = ({
   icon?: IconName
   className?: string
 } & VariantProps<typeof ui>) => {
-  const { base: uiBase, label: uiLabel } = ui({ color, size, variant })
+  const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, size, variant })
 
   return (
     <View className={cn(uiBase(), className)}>
       {icon && (
         <UIcon
           name={icon}
-          sizeClassName="size-4"
+          sizeClassName={uiIcon()}
           colorClassName={uiLabel()}
         />
       )}

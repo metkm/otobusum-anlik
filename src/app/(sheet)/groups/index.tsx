@@ -73,7 +73,7 @@ const GroupItem = ({
 
           <View className="flex-row flex-wrap gap-2">
             {group.codes.length < 1 ? (
-              <UText className="font-inter-medium text-muted h-6 text-xs">{t('emptyGroup')}</UText>
+              <UText className="font-inter-medium text-muted h-6 text-sm">{t('emptyGroup')}</UText>
             ) : (
               group.codes.map((code) => (
                 <UBadge

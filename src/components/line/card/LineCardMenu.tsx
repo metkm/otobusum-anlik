@@ -106,9 +106,9 @@ export const LineCardMenu = () => {
             data={news}
             renderItem={({ item }) => (
               <View className="gap-1 p-2">
-                <UText className="text-muted font-inter-medium text-xs">{item.HATKODU}</UText>
+                <UText className="text-muted font-inter-medium text-sm">{item.HATKODU}</UText>
                 <UText>{item.MESAJ}</UText>
-                <UText className="text-muted font-inter-medium text-xs">
+                <UText className="text-muted font-inter-medium text-sm">
                   {item.GUNCELLEME_SAATI}
                 </UText>
               </View>

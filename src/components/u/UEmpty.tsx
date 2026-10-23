@@ -29,6 +29,6 @@ export const UEmpty = ({
 
     <UText className="font-inter-medium">{title}</UText>
 
-    {description && <UText className="text-muted text-xs">{description}</UText>}
+    {description && <UText className="text-muted text-sm">{description}</UText>}
   </View>
 )

@@ -76,11 +76,11 @@ export const OptionPicker = <T,>({
       >
         <View className="flex-1 flex-row items-center justify-between gap-2">
           <View className="flex-1">
-            <UText className="font-inter-medium text-xs">{label}</UText>
+            <UText className="font-inter-medium text-sm">{label}</UText>
 
             {description && (
               <UText
-                className="font-inter-medium text-muted flex-1 text-xs"
+                className="font-inter-medium text-muted flex-1 text-sm"
                 numberOfLines={1}
               >
                 {description}
@@ -88,7 +88,7 @@ export const OptionPicker = <T,>({
             )}
           </View>
 
-          <UText className="font-inter-medium text-xs">{value.label}</UText>
+          <UText className="font-inter-medium text-sm">{value.label}</UText>
         </View>
       </UButton>
 
@@ -332,7 +332,7 @@ export const SettingsScreen = () => {
         />
       </UButton>
 
-      <UText className="text-muted font-inter-medium mr-2 ml-auto text-xs">
+      <UText className="text-muted font-inter-medium mr-2 ml-auto text-sm">
         {`${t('version')} ${Constants.expoConfig?.version}`}
       </UText>
     </ScrollView>

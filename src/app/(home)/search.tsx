@@ -139,12 +139,12 @@ export const SearchScreen = () => {
         </UInput>
       </View>
 
-      <UText className="text-muted font-inter-medium text-center text-xs">
+      <UText className="text-muted font-inter-medium text-center text-sm">
         {t('selectedCity', { city })}
       </UText>
 
       {neededCharacterCount > 0 && (
-        <UText className="text-muted font-inter-medium text-center text-xs">
+        <UText className="text-muted font-inter-medium text-center text-sm">
           {t('neededCharacterCountToSearch', { count: neededCharacterCount })}
         </UText>
       )}
