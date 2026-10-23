@@ -130,8 +130,7 @@ export const LineCardRoutes = () => {
         disabled={routesQuery.isError}
         block
         className="shrink grow"
-        loading={true}
-        // Loading={routesQuery.isFetching}
+        loading={routesQuery.isFetching}
       />
 
       {routesQuery.data && (
