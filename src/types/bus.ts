@@ -15,17 +15,17 @@ export interface BusLine {
   city: string
 }
 
-interface BusLocation {
+export interface BusLocation {
   bus_id: string
   lng: number
   lat: number
   route_code: string
   closest_stop_code: number
+  last_update_time: Date
 }
 
 export interface BusLocationResponse {
   data: BusLocation[]
-  polled_at: number
   next_poll: number
 }
 
@@ -43,4 +43,13 @@ export interface BusInfo {
   lat: number
   speed: number
   plate: string
+}
+
+export interface BusLocationOpenData {
+  kapino: string
+  boylam: string
+  enlem: string
+  guzergahkodu: string
+  son_konum_zamani: string
+  yakinDurakKodu: string
 }

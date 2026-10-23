@@ -1,7 +1,7 @@
 import { type Query, useQuery } from '@tanstack/react-query'
-import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
+import { fetchBusLocations } from '@/api/bus'
 import { useFilterStore } from '@/stores'
 import type { BusLocationResponse } from '@/types/bus'
 
@@ -26,14 +26,7 @@ export const useLineBuses = () => {
   const city = useFilterStore(useShallow((state) => state.city))
 
   const query = useQuery({
-    queryFn: () =>
-      ky
-        .get<BusLocationResponse>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/bus-locations/${code}`, {
-          searchParams: {
-            city,
-          },
-        })
-        .json(),
+    queryFn: () => fetchBusLocations(code, city),
     queryKey: ['line', code, 'buses'],
 
     refetchInterval: getRefetchAndStaleTime,
