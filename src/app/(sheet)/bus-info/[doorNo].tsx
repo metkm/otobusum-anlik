@@ -3,7 +3,6 @@ import { t } from 'i18next'
 import type { ComponentProps } from 'react'
 import { View } from 'react-native'
 
-import { UActivityIndicator } from '@/components/u/UActivityIndicator'
 import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
@@ -46,10 +45,7 @@ const BusInfo = () => {
         icon="door-closed"
       />
 
-      <UQueryState
-        query={query}
-        loading={() => <UActivityIndicator />}
-      >
+      <UQueryState query={query}>
         <BusInfoItem
           label={t('operator')}
           value={query.data?.operator}

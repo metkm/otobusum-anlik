@@ -194,7 +194,7 @@ export const NearbyScreen = () => {
     >
       <UQueryState
         query={query}
-        loading={() => (
+        fetching={() => (
           <TrueSheetPeek style={{ padding: 12 }}>
             <UActivityIndicator />
           </TrueSheetPeek>

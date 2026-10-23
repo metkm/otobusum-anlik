@@ -135,7 +135,7 @@ export const LineCardStops = () => {
   return (
     <UQueryState
       query={lineStopsQuery}
-      loading={() => <SkeletonLineStops />}
+      fetching={() => <SkeletonLineStops />}
     >
       <AnimatedLegendList
         layout={LinearTransition}

@@ -68,7 +68,7 @@ export const StopScreen = () => {
     >
       <UQueryState
         query={stopQuery}
-        loading={SkeletonStop}
+        fetching={SkeletonStop}
       >
         {stopQuery.data && (
           <View className="h-48 overflow-hidden rounded-md">

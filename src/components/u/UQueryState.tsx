@@ -10,21 +10,21 @@ import { UText } from './UText'
 
 export const UQueryState = <T,>({
   query,
-  loading,
+  fetching,
   error,
   errorMessage,
   children,
   className,
 }: {
   query: UseQueryResult<T>
-  loading?: () => React.ReactNode
+  fetching?: () => React.ReactNode
   error?: (error: DefaultError) => React.ReactNode
   errorMessage?: string
   children?: React.ReactNode
   className?: string
 }) => {
-  if (query.isLoading) {
-    return loading?.() ?? <UActivityIndicator />
+  if (query.isFetching) {
+    return fetching?.() ?? <UActivityIndicator />
   }
 
   if (query.isError) {

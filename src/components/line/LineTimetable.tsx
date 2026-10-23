@@ -179,7 +179,7 @@ export const LineTimetable = () => {
 
       <UQueryState
         query={lineTimetableQuery}
-        loading={() => <SkeletonTimetable />}
+        fetching={() => <SkeletonTimetable />}
         className="m-2"
       >
         {hourEntries.length > 1 ? (
