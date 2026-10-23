@@ -49,60 +49,54 @@ const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
   }
 
   return (
-    <View className="flex-row items-center gap-2">
-      <UText className="font-inter-medium w-6.5 text-center">{index + 1}</UText>
-
-      <View className="border-muted size-8 items-center justify-center rounded-full border-2">
-        {closestBus && (
-          <UIcon
-            name="bus-front"
-            size={16}
-          />
-        )}
-      </View>
-
-      <UText
-        className="shrink truncate text-xs"
-        numberOfLines={2}
+    <View className="flex-row items-center gap-2 pr-3">
+      <UButton
+        className="grow"
+        to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
+        variant="ghost"
+        trailingIcon="chevron-right"
+        label={item.name}
+        labelClassName="text-default"
       >
-        {item.name}
-      </UText>
+        <UText className="font-inter-medium text-muted w-6.5 text-center">{index + 1}</UText>
 
-      <View className="ml-auto flex-row gap-1">
-        {closestBus && (
-          <>
-            <UButton
-              icon="locate"
-              className="ml-auto"
-              variant="soft"
-              onPress={goToBus}
-            />
+        <View className="outline-muted mx-1 size-7 items-center justify-center rounded-full outline-2 outline-offset-2">
+          <UIcon
+            name={closestBus ? 'bus-front' : 'map-pin'}
+            colorClassName={closestBus ? 'text-primary' : 'text-muted/15'}
+            sizeClassName="size-4"
+          />
+        </View>
+      </UButton>
 
-            <UButton
-              icon="info"
-              to={{
-                params: {
-                  doorNo: closestBus.bus_id,
-                },
-                pathname: '(sheet)/bus-info/[doorNo]',
-              }}
-              variant="soft"
-            />
-          </>
-        )}
+      {closestBus && (
+        <>
+          <UButton
+            icon="locate-fixed"
+            variant="soft"
+            onPress={goToBus}
+          />
 
-        <UButton
-          icon="chevron-right"
-          variant="soft"
-          to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
-        />
-      </View>
+          <UButton
+            icon="info"
+            to={{
+              params: {
+                doorNo: closestBus.bus_id,
+              },
+              pathname: '(sheet)/bus-info/[doorNo]',
+            }}
+            variant="soft"
+          />
+        </>
+      )}
     </View>
   )
 }
 
-const COLLAPSED = 112
-const EXPANDED = 192
+const ONE_ITEM = 48
+const PADDING = 6 * 2
+const COLLAPSED = ONE_ITEM * 3 + PADDING
+const EXPANDED = ONE_ITEM * 4 + PADDING
 
 export const LineCardStops = () => {
   const expandStopsWhenScrolled = useSettingsStore(
@@ -154,14 +148,13 @@ export const LineCardStops = () => {
             index={index}
           />
         )}
-        fadingEdgeLength={10}
-        contentContainerStyle={{ gap: 4, paddingHorizontal: 8 }}
+        contentContainerClassName="py-1.5"
         // @ts-expect-error
         style={containerStyle}
         onScroll={onScroll}
         keyExtractor={(item) => item.id.toString()}
         scrollEventThrottle={16}
-        getFixedItemSize={() => 36}
+        GetFixedItemSize={() => 48}
         recycleItems
       />
     </UQueryState>

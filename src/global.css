@@ -116,9 +116,23 @@
   --border-color-default: var(--ui-border);
   --border-color-muted: var(--ui-border-muted);
 
+  --outline-color-muted: var(--ui-border-muted);
+
   --ring-color-default: var(--ui-border);
   --ring-color-muted: var(--ui-border-muted);
 
   --color-primary: var(--ui-primary);
   --color-error: var(--ui-error);
+}
+
+@utility border-width-hairline {
+  border-width: hairlineWidth();
+}
+
+@utility border-width-t-hairline {
+  border-top-width: hairlineWidth();
+}
+
+@utility border-width-b-hairline {
+  border-bottom-width: hairlineWidth();
 }

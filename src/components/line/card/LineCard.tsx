@@ -1,7 +1,6 @@
-import { View, type ViewProps } from 'react-native'
-import Animated from 'react-native-reanimated'
+import { View, StyleSheet, type ViewProps } from 'react-native'
+import Animated, { LinearTransition } from 'react-native-reanimated'
 
-import { ItemLayoutAnimation } from '@/constants/animation'
 import { cn } from '@/utils/cn'
 
 import { LineCardMenu } from './LineCardMenu'
@@ -11,12 +10,12 @@ import { LineCardStops } from './LineCardStops'
 
 export const LineCard = ({ className, style, ...props }: ViewProps) => (
   <Animated.View
-    layout={ItemLayoutAnimation}
-    className={cn('p-2 bg-default gap-2 rounded-md border-2 border-muted', className)}
-    style={style}
+    layout={LinearTransition}
+    className={cn('bg-default rounded-md border-muted', className)}
+    style={[style, { borderWidth: StyleSheet.hairlineWidth }]}
     {...props}
   >
-    <View className="flex-row items-center justify-between pl-1">
+    <View className="border-width-b-hairline border-muted flex-row items-center justify-between p-2">
       <LineCardName />
       <LineCardMenu />
     </View>

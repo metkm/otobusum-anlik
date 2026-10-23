@@ -29,7 +29,7 @@ export const LineCards = ({
     <UCarousel
       snapInterval={snapInterval}
       style={{ width }}
-      contentClassName={cn('gap-2', codes.length > 1 ? 'p-2 pt-0' : 'p-0')}
+      contentClassName={cn('gap-2 p-2 pt-0')}
       className={className}
     >
       {codes.map((code) => (
@@ -42,7 +42,7 @@ export const LineCards = ({
             <ThemeProvider>
               <LineCard
                 style={{ width: cardWidth }}
-                className={cn('grow', codes.length < 2 && 'rounded-b-none')}
+                className={cn('grow')}
               />
             </ThemeProvider>
           </LineContext>

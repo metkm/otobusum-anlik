@@ -46,6 +46,12 @@ const ui = tv({
       neutral: '',
       primary: '',
     },
+    size: {
+      lg: {
+        base: 'px-3 py-2',
+        label: 'text-sm',
+      },
+    },
     variant: {
       soft: '',
       solid: '',
@@ -59,12 +65,13 @@ export const UBadge = ({
   color,
   variant,
   className,
+  size,
 }: {
   label?: string
   icon?: IconName
   className?: string
 } & VariantProps<typeof ui>) => {
-  const { base: uiBase, label: uiLabel } = ui({ color, variant })
+  const { base: uiBase, label: uiLabel } = ui({ color, size, variant })
 
   return (
     <View className={cn(uiBase(), className)}>

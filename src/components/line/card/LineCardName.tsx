@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated'
 
+import { UBadge } from '@/components/u/UBadge'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 import { useCountdown, useLine, useLineBuses } from '@/composables'
@@ -19,7 +20,12 @@ export const LineCardName = () => {
 
   return (
     <View className="shrink grow flex-row items-center gap-2 overflow-hidden">
-      <UText className="font-inter-semibold text-lg">{code}</UText>
+      <UBadge
+        label={code}
+        variant="soft"
+        size="lg"
+        className="rounded-sm"
+      />
 
       <Animated.View
         key={lineBusesQuery.isFetching ? 'loading' : 'text'}
