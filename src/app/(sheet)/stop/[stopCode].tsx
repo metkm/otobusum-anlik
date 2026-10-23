@@ -18,12 +18,13 @@ import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
-import { useStop } from '@/composables'
+import { useMap, useStop } from '@/composables'
 import { useStopArrivals } from '@/composables/useStopArrivals'
 import { ItemLayoutAnimation } from '@/constants/animation'
 
 export const StopScreen = () => {
   const { t } = useTranslation()
+  const { flyTo } = useMap()
   const scrollableRef = useRef<ScrollViewInstance>(null)
   const navigation = useTrueSheetNavigation()
   const colorPrimary = useCSSVariable('--color-primary')?.toString()
@@ -47,6 +48,16 @@ export const StopScreen = () => {
 
     const scheme = `geo:0,0?q=${stopQuery.data.stop.lat},${stopQuery.data.stop.lng}&label=${stopQuery.data.stop.name}`
     void Linking.openURL(scheme)
+  }
+
+  const zoomStopOnMap = () => {
+    if (!stopQuery.data) {
+      return
+    }
+
+    flyTo({
+      center: [stopQuery.data.stop.lng, stopQuery.data.stop.lat],
+    })
   }
 
   return (
@@ -96,13 +107,23 @@ export const StopScreen = () => {
       </UQueryState>
 
       <View className="gap-2">
-        <GestureHandlerRootView style={{ flexShrink: 0 }}>
-          <UButton
-            label={t('directionToStop')}
-            onPress={openDirectionsToStop}
-            icon="droplet"
-            block
-          />
+        <GestureHandlerRootView style={{ flexGrow: 1, flexShrink: 0 }}>
+          <View className="grow flex-row flex-wrap gap-2">
+            <UButton
+              label={t('directionToStop')}
+              onPress={openDirectionsToStop}
+              icon="droplet"
+              block
+              className="flex-1"
+            />
+            <UButton
+              label={t('zoomStopOnMap')}
+              onPress={zoomStopOnMap}
+              icon="locate-fixed"
+              block
+              className="flex-1"
+            />
+          </View>
         </GestureHandlerRootView>
 
         <View>

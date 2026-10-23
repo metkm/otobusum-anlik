@@ -1,16 +1,16 @@
-import type { CameraRef, LngLatBounds, MapRef } from '@maplibre/maplibre-react-native'
+import type { CameraRef, MapRef } from '@maplibre/maplibre-react-native'
 import { useMemo, useRef } from 'react'
 
-import { MapContext } from '@/composables/useMap'
+import { MapContext, type MapContextInstance } from '@/composables/useMap'
 
 export const MapProvider = ({ children }: { children: React.ReactNode }) => {
   const map = useRef<MapRef>(null)
   const camera = useRef<CameraRef>(null)
 
-  const value = useMemo(
+  const value = useMemo<MapContextInstance>(
     () => ({
       camera,
-      fitBounds: (bounds: LngLatBounds) => {
+      fitBounds: (bounds) => {
         camera.current?.fitBounds(bounds, {
           duration: 750,
           padding: {
@@ -20,6 +20,13 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
             top: 80,
           },
           pitch: 0,
+        })
+      },
+      flyTo: (options) => {
+        camera.current?.flyTo({
+          duration: 1000,
+          zoom: 14,
+          ...options,
         })
       },
       map,

@@ -24,7 +24,7 @@ import { getClosestPoint } from '@/utils/getClosestPoint'
 
 const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
   const { buses } = useLineBuses()
-  const { camera } = useMap()
+  const { flyTo } = useMap()
   const { query: lineStopsQuery } = useLineStops()
 
   const closestBus = buses.find((bus) => {
@@ -41,17 +41,15 @@ const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
       return
     }
 
-    camera.current?.flyTo({
+    flyTo({
       center: [closestBus.lng, closestBus.lat],
-      duration: 1000,
-      zoom: 13,
     })
   }
 
   return (
-    <View className="flex-row items-center gap-2 pr-3">
+    <View className="shrink flex-row items-center gap-2 pr-3">
       <UButton
-        className="grow"
+        className="flex-1"
         to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
         variant="ghost"
         trailingIcon="chevron-right"

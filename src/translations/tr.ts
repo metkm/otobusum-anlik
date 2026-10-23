@@ -92,4 +92,5 @@ export default {
   wednesday: 'Çarşamba',
   welcome: 'Hoşgeldin',
   workday: 'Haftaiçi',
+  zoomStopOnMap: 'Haritada yakınlaştır',
 }
