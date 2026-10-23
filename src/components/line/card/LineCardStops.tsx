@@ -19,10 +19,10 @@ import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 import { useLineBuses, useLineStops, useMap } from '@/composables'
 import { useSettingsStore } from '@/stores'
-import type { BusStop } from '@/types/bus'
+import type { Stop } from '@/types/bus'
 import { getClosestPoint } from '@/utils/getClosestPoint'
 
-const StopItem = ({ item, index }: { item: BusStop; index: number }) => {
+const StopItem = ({ item, index }: { item: Stop; index: number }) => {
   const { buses } = useLineBuses()
   const { flyTo } = useMap()
   const { query: lineStopsQuery } = useLineStops()

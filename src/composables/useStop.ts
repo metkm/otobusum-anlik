@@ -3,7 +3,7 @@ import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useFilterStore } from '@/stores'
-import type { BusStopWithBuses } from '@/types/bus'
+import type { StopWithBuses } from '@/types/bus'
 
 export const useStop = (stopCode: string | number) => {
   const city = useFilterStore(useShallow((state) => state.city))
@@ -12,7 +12,7 @@ export const useStop = (stopCode: string | number) => {
     meta: { persist: true },
     queryFn: () =>
       ky
-        .get<BusStopWithBuses>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/stop/${stopCode}`, {
+        .get<StopWithBuses>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/stop/${stopCode}`, {
           searchParams: {
             city,
           },

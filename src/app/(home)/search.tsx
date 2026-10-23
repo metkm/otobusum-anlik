@@ -20,11 +20,11 @@ import { useMap } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { MIN_CHARACTER_LIMIT, isStop, useSearch } from '@/composables/useSearch'
 import { useFilterStore, useLineStore } from '@/stores'
-import type { BusLine, BusStop } from '@/types/bus'
+import type { Line, Stop } from '@/types/bus'
 import type { Route } from '@/types/route'
 import { getLatLngBounds } from '@/utils/bounds'
 
-const RenderItemLine = ({ item }: { item: BusLine }) => {
+const RenderItemLine = ({ item }: { item: Line }) => {
   const addLine = useLineStore(useShallow((state) => state.addLine))
   const city = useFilterStore(useShallow((state) => state.city))
   const { fitBounds } = useMap()
@@ -84,7 +84,7 @@ const RenderItemLine = ({ item }: { item: BusLine }) => {
   )
 }
 
-const RenderItemStop = ({ item }: { item: BusStop }) => (
+const RenderItemStop = ({ item }: { item: Stop }) => (
   <UButton
     variant="ghost"
     color="neutral"

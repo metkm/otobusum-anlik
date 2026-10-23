@@ -1,4 +1,4 @@
-export interface BusStop {
+export interface Stop {
   id: number
   code: number
   name: string
@@ -8,7 +8,7 @@ export interface BusStop {
   city: string
 }
 
-export interface BusLine {
+export interface Line {
   id: number
   code: string
   name: string
@@ -29,9 +29,9 @@ export interface BusLocationResponse {
   next_poll: number
 }
 
-export interface BusStopWithBuses {
+export interface StopWithBuses {
   buses: string[]
-  stop: BusStop
+  stop: Stop
 }
 
 export interface BusInfo {

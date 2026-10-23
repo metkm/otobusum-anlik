@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { CACHE_MS_3_DAYS } from '@/constants/app'
 import { useFilterStore } from '@/stores'
-import type { BusStop } from '@/types/bus'
+import type { Stop } from '@/types/bus'
 
 import { useLine } from './useLine'
 import { useLineRoutes } from './useLineRoutes'
@@ -18,7 +18,7 @@ export const useLineStops = () => {
     meta: { persist: true },
     queryFn: () =>
       ky
-        .get<BusStop[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/route-stops/${code}`, {
+        .get<Stop[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/route-stops/${code}`, {
           searchParams: { city, direction },
         })
         .json(),

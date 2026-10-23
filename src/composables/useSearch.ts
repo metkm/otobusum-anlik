@@ -3,15 +3,14 @@ import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useFilterStore } from '@/stores'
-import type { BusLine, BusStop } from '@/types/bus'
+import type { Line, Stop } from '@/types/bus'
 
 export interface SearchResponse {
-  stops: BusStop[]
-  lines: BusLine[]
+  stops: Stop[]
+  lines: Line[]
 }
 
-export const isStop = (item: BusStop | BusLine): item is BusStop =>
-  (item as BusStop).lng !== undefined
+export const isStop = (item: Stop | Line): item is Stop => (item as Stop).lng !== undefined
 
 export const MIN_CHARACTER_LIMIT = 1
 
