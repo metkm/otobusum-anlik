@@ -21,9 +21,7 @@ export const fetchBusLocations = async (code: string, city: City) => {
   throw new Error('Error getting bus locatios')
 }
 
-export const fetchBusLocationsUsingOpenData = async (
-  code: string,
-): Promise<BusLocationResponse> => {
+const fetchBusLocationsUsingOpenData = async (code: string): Promise<BusLocationResponse> => {
   const body = `
     <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
         <soap:Body>
