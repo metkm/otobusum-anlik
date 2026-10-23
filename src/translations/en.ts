@@ -73,7 +73,6 @@ export default {
   saturday: 'Saturday',
   save: 'Save',
   searchPlaceholder: 'KM-12, KM-12...',
-  selectedCity: 'Selected city: {{city}}',
   settings: 'Settings',
   showMyLocation: 'Show my location on the map',
   showTraffic: 'Show traffic information on the map',

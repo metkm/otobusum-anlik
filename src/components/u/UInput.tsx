@@ -10,13 +10,13 @@ import { UIcon } from './UIcon'
 
 const ui = tv({
   slots: {
-    base: 'rounded-md px-3 grow',
+    base: 'rounded-md p-3 grow',
     icon: 'text-muted',
   },
   variants: {
     variant: {
-      outline: 'ring ring-inset ring-muted',
-      soft: 'bg-muted/50',
+      outline: 'border-hairline border-accented',
+      soft: 'bg-neutral-elevated',
     },
   },
 })
@@ -39,7 +39,7 @@ export const UInput = ({
 
   const Icon = () => {
     if (loading) {
-      return <UActivityIndicator />
+      return <UActivityIndicator className="absolute left-2.5" />
     }
 
     if (icon) {
@@ -47,6 +47,7 @@ export const UInput = ({
         <UIcon
           name={icon}
           colorClassName={uiIcon()}
+          className="absolute left-2.5"
         />
       )
     }
@@ -55,15 +56,11 @@ export const UInput = ({
   return (
     <View className={cn('relative flex-row items-center', containerClassName)}>
       <TextInput
-        className={cn(uiBase(), icon || loading ? 'pl-8' : undefined, className)}
+        className={cn(uiBase(), icon || loading ? 'pl-10' : undefined, className)}
         {...props}
       />
 
-      {Icon && (
-        <View className="absolute left-2.5">
-          <Icon />
-        </View>
-      )}
+      <Icon />
 
       {children}
     </View>

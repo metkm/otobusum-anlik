@@ -35,6 +35,7 @@ const RouteItem = ({
   }
 
   const variant = isSelected ? 'soft' : 'ghost'
+  const badgeVariant = isSelected ? 'solid' : 'subtle'
   const color = isSelected ? 'primary' : 'neutral'
 
   return (
@@ -45,16 +46,16 @@ const RouteItem = ({
       variant={variant}
       color={color}
     >
-      <View className="flex-row justify-center gap-1">
+      <View className="flex-row justify-center gap-2">
         <UBadge
           icon="bus-front"
           label={busCount.toString()}
-          color={color}
+          variant={badgeVariant}
         />
 
         <UBadge
           label={item.code.split('_').slice(1).join('_')}
-          color={color}
+          variant={badgeVariant}
         />
       </View>
     </UButton>

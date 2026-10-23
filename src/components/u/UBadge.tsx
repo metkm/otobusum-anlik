@@ -18,7 +18,7 @@ const ui = tv({
     },
     {
       className: {
-        base: 'bg-primary/15',
+        base: 'bg-primary/10',
         label: 'text-primary',
       },
       color: 'primary',
@@ -31,6 +31,14 @@ const ui = tv({
       },
       color: 'neutral',
       variant: 'soft',
+    },
+    {
+      className: {
+        base: 'border-hairline border-primary/25 bg-primary/10 rounded-full',
+        label: 'text-primary',
+      },
+      color: 'primary',
+      variant: 'subtle',
     },
   ],
   defaultVariants: {
@@ -62,6 +70,7 @@ const ui = tv({
     variant: {
       soft: '',
       solid: '',
+      subtle: '',
     },
   },
 })

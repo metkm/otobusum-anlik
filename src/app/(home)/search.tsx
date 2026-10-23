@@ -90,7 +90,7 @@ const RenderItemStop = ({ item }: { item: Stop }) => (
     color="neutral"
     label={item.name}
     to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
-    icon="bus-front"
+    icon="map-pin"
   />
 )
 
@@ -123,6 +123,7 @@ export const SearchScreen = () => {
           placeholder={t('searchPlaceholder')}
           onChangeText={(q) => setQuery(q)}
           loading={searchQuery.isFetching}
+          variant="soft"
           icon="search"
           containerClassName="grow"
         >
@@ -139,15 +140,20 @@ export const SearchScreen = () => {
         </UInput>
       </View>
 
-      <UText className="text-muted font-inter-medium text-center text-sm">
-        {t('selectedCity', { city })}
-      </UText>
+      <View className="flex-row flex-wrap items-center gap-2 px-2">
+        {neededCharacterCount > 0 && (
+          <UText className="text-muted font-inter-medium text-center text-sm">
+            {t('neededCharacterCountToSearch', { count: neededCharacterCount })}
+          </UText>
+        )}
 
-      {neededCharacterCount > 0 && (
-        <UText className="text-muted font-inter-medium text-center text-sm">
-          {t('neededCharacterCountToSearch', { count: neededCharacterCount })}
-        </UText>
-      )}
+        <UBadge
+          label={city}
+          variant="soft"
+          color="neutral"
+          className="ml-auto"
+        />
+      </View>
 
       <UQueryState query={searchQuery}>
         {results.length < 1 && searchQuery.isSuccess ? (

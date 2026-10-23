@@ -14,7 +14,7 @@ import { UActivityIndicator } from '@/components/u/UActivityIndicator'
 import { UBadge } from '@/components/u/UBadge'
 import { UButton } from '@/components/u/UButton'
 import { UEmpty } from '@/components/u/UEmpty'
-import { UHeader } from '@/components/u/UHeader'
+import { UHeader, USheetHeader } from '@/components/u/UHeader'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 import { useMap } from '@/composables'
@@ -160,15 +160,17 @@ export const NearbyScreen = () => {
   useEffect(() => {
     navigation.setOptions({
       header: (
-        <GestureHandlerRootView style={{ flexShrink: 0 }}>
-          <UButton
-            icon="x"
-            variant="soft"
-            color="neutral"
-            className="m-2 ml-auto"
-            onPress={() => router.back()}
-          />
-        </GestureHandlerRootView>
+        <USheetHeader>
+          <GestureHandlerRootView style={{ flexShrink: 0 }}>
+            <UButton
+              icon="x"
+              variant="soft"
+              color="neutral"
+              className="ml-auto"
+              onPress={() => router.back()}
+            />
+          </GestureHandlerRootView>
+        </USheetHeader>
       ),
       scrollableRef,
     })
@@ -205,7 +207,7 @@ export const NearbyScreen = () => {
             <View className="gap-2">
               <TrueSheetPeek>
                 <UHeader
-                  icon="bus-front"
+                  icon="map-pin"
                   title={t('stops')}
                   description={t('nearbyStops')}
                 >
@@ -220,9 +222,9 @@ export const NearbyScreen = () => {
                   to={{ params: { stopCode: stop.code }, pathname: `(sheet)/stop/[stopCode]` }}
                   variant="ghost"
                   color="neutral"
-                  trailingIcon="arrow-right"
+                  trailingIcon="chevron-right"
                 >
-                  <UBadge icon="bus-front" />
+                  <UBadge icon="map-pin" />
                 </UButton>
               ))}
             </View>

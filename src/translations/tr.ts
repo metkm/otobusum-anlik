@@ -72,7 +72,6 @@ export default {
   saturday: 'Cumartesi',
   save: 'Kaydet',
   searchPlaceholder: 'KM-12, KM-12...',
-  selectedCity: 'Seçili şehir: {{city}}',
   settings: 'Ayarlar',
   showMyLocation: 'Haritada konumumu göster',
   showTraffic: 'Haritada trafik bilgisini göster',

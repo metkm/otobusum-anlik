@@ -22,6 +22,7 @@ export const unstable_settings = {
 
 const RootContent = () => {
   const backgroundColor = useCSSVariable('--ui-bg')?.toString()
+  const spacing = useCSSVariable('--spacing') as number
 
   const storeColor = useSettingsStore.getState().colorScheme
   if (storeColor) {
@@ -30,7 +31,13 @@ const RootContent = () => {
 
   return (
     <MapProvider>
-      <Sheet screenOptions={{ backgroundColor, style: { flex: 1 } }}>
+      <Sheet
+        screenOptions={{
+          backgroundColor,
+          grabberOptions: { topMargin: spacing * 2 },
+          style: { flex: 1 },
+        }}
+      >
         <Sheet.Screen name="(home)" />
 
         <Sheet.Screen

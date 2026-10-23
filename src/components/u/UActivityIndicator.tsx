@@ -2,6 +2,8 @@ import type { ComponentProps } from 'react'
 import { ActivityIndicator, View } from 'react-native'
 import { withUniwind } from 'uniwind'
 
+import { cn } from '@/utils/cn'
+
 const StyledActivityIndicator = withUniwind(ActivityIndicator, {
   size: {
     fromClassName: 'sizeClassName',
@@ -9,9 +11,14 @@ const StyledActivityIndicator = withUniwind(ActivityIndicator, {
   },
 })
 
-export const UActivityIndicator = (props: ComponentProps<typeof StyledActivityIndicator>) => (
-  <View className="items-center justify-center">
-    <StyledActivityIndicator
+export const UActivityIndicator = ({
+  className,
+  ...props
+}: {
+  className?: string
+} & ComponentProps<typeof StyledActivityIndicator>) => (
+  <View className={cn('items-center justify-center', className)}>
+    <ActivityIndicator
       colorClassName="accent-(--ui-text)"
       {...props}
     />

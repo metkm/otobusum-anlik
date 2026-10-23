@@ -13,7 +13,8 @@ export const USheet = ({
   children,
   ...props
 }: { ref: RefObject<TrueSheet | null>; contentContainerClassName?: string } & TrueSheetProps) => {
-  const backgroundColor = useCSSVariable(['--background-color-default'])?.toString()
+  const backgroundColor = useCSSVariable('--background-color-default')?.toString()
+  const spacing = useCSSVariable('--spacing') as number
 
   return (
     <TrueSheet
@@ -21,10 +22,14 @@ export const USheet = ({
       backgroundColor={backgroundColor}
       detents={[0.5, 0.8]}
       style={{ flex: 1 }}
+      grabberOptions={{
+        adaptive: true,
+        topMargin: spacing * 2,
+      }}
       {...props}
     >
       <StyledGestureHandlerRootView
-        className={cn('grow pb-2', props.header ? 'p-0' : 'pt-9', contentContainerClassName)}
+        className={cn('flex-1 pb-2', props.header ? 'p-0' : 'pt-5', contentContainerClassName)}
       >
         {children}
       </StyledGestureHandlerRootView>

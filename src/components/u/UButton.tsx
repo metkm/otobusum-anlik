@@ -26,7 +26,7 @@ const ui = tv({
     },
     {
       className: {
-        base: 'bg-primary/15',
+        base: 'bg-primary/10',
         label: 'text-primary',
       },
       color: 'primary',

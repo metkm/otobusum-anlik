@@ -39,7 +39,10 @@ export const LineCards = ({
         >
           <LineContext value={code}>
             <ThemeProvider>
-              <LineCard style={{ width: cardWidth }} />
+              <LineCard
+                style={{ width: cardWidth }}
+                className="grow"
+              />
             </ThemeProvider>
           </LineContext>
         </Animated.View>

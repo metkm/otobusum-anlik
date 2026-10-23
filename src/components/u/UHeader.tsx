@@ -17,7 +17,7 @@ interface UHeaderProps {
 export const UHeader = ({ icon, title, description, children, className }: UHeaderProps) => (
   <View
     className={cn(
-      'flex-row items-center justify-between gap-2 bg-default border-b-hairline border-muted p-2',
+      'flex-row items-center justify-between gap-2 bg-default border-b-hairline border-muted p-3',
       className,
     )}
   >
@@ -25,7 +25,7 @@ export const UHeader = ({ icon, title, description, children, className }: UHead
       {icon && (
         <UIcon
           name={icon}
-          sizeClassName="size-6"
+          sizeClassName="size-8"
         />
       )}
 
@@ -49,7 +49,7 @@ export const USheetHeader = ({ icon, title, description, children }: UHeaderProp
     icon={icon}
     title={title}
     description={description}
-    className="pt-8"
+    className="pt-5"
   >
     {children}
   </UHeader>
