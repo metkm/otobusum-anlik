@@ -4,7 +4,6 @@ import Animated, { type SharedValue } from 'react-native-reanimated'
 import { useLineCardWidth, useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { ExitScaleOut, ItemLayoutAnimation } from '@/constants/animation'
-import { cn } from '@/utils/cn'
 
 import { ThemeProvider } from '../ThemeProvider'
 import { UCarousel } from '../u/UCarousel'
@@ -29,7 +28,7 @@ export const LineCards = ({
     <UCarousel
       snapInterval={snapInterval}
       style={{ width }}
-      contentClassName={cn('gap-2 p-2 pt-0')}
+      contentClassName="gap-2 p-2 pt-0"
       className={className}
     >
       {codes.map((code) => (
@@ -40,10 +39,7 @@ export const LineCards = ({
         >
           <LineContext value={code}>
             <ThemeProvider>
-              <LineCard
-                style={{ width: cardWidth }}
-                className={cn('grow')}
-              />
+              <LineCard style={{ width: cardWidth }} />
             </ThemeProvider>
           </LineContext>
         </Animated.View>

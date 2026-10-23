@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react'
 import { View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
-import { tv, type VariantProps } from 'tailwind-variants'
+import { type VariantProps } from 'tailwind-variants'
 
-import { cn } from '@/utils/cn'
+import { cn, tv } from '@/utils/cn'
 
 import { UActivityIndicator } from './UActivityIndicator'
 import { UIcon } from './UIcon'

@@ -1,7 +1,7 @@
 import { View } from 'react-native'
-import { type VariantProps, tv } from 'tailwind-variants'
+import { type VariantProps } from 'tailwind-variants'
 
-import { cn } from '@/utils/cn'
+import { cn, tv } from '@/utils/cn'
 
 import { UIcon, type IconName } from './UIcon'
 import { UText } from './UText'

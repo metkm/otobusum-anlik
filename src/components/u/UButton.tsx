@@ -1,14 +1,13 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
-import type Lucide from '@react-native-vector-icons/lucide'
 import type { ComponentProps } from 'react'
 import { Touchable } from 'react-native-gesture-handler'
-import { tv, type VariantProps } from 'tailwind-variants'
+import { type VariantProps } from 'tailwind-variants'
 import { withUniwind } from 'uniwind'
 
-import { cn } from '@/utils/cn'
+import { cn, tv } from '@/utils/cn'
 
 import { UActivityIndicator } from './UActivityIndicator'
-import { UIcon } from './UIcon'
+import { UIcon, type IconName } from './UIcon'
 import { UText } from './UText'
 
 const StyledTouchable = withUniwind(Touchable)
@@ -89,9 +88,22 @@ const ui = tv({
       color: 'error',
       variant: 'ghost',
     },
+    {
+      className: {
+        base: 'border-hairline border-accented bg-muted',
+      },
+      color: 'neutral',
+      size: 'lg',
+      variant: 'subtle',
+    },
   ],
+  defaultVariants: {
+    color: 'primary',
+    size: 'md',
+    variant: 'solid',
+  },
   slots: {
-    base: 'flex flex-row items-center gap-1.5 rounded-md disabled:opacity-50',
+    base: 'flex flex-row items-center gap-1.5 rounded-md',
     icon: '',
     label: 'shrink font-inter-medium text-xs',
   },
@@ -123,6 +135,7 @@ const ui = tv({
       ghost: '',
       soft: '',
       solid: '',
+      subtle: '',
     },
   },
 })
@@ -133,9 +146,9 @@ export const UButton = ({
   icon,
   trailingIcon,
   to,
-  color = 'primary',
-  variant = 'solid',
-  size = 'md',
+  color,
+  variant,
+  size,
   block,
   children,
   style,
@@ -143,19 +156,16 @@ export const UButton = ({
   loading,
   labelClassName,
   ...props
-}: TouchableProps & {
-  label?: string
-  icon?: ComponentProps<typeof Lucide>['name']
-  trailingIcon?: ComponentProps<typeof Lucide>['name']
-  to?: { pathname: string; params?: object }
-  color?: VariantProps<typeof ui>['color']
-  variant?: VariantProps<typeof ui>['variant']
-  size?: 'md' | 'lg'
-  block?: boolean
-  disabled?: boolean
-  loading?: boolean
-  labelClassName?: string
-}) => {
+}: TouchableProps &
+  VariantProps<typeof ui> & {
+    label?: string
+    icon?: IconName
+    trailingIcon?: IconName
+    to?: { pathname: string; params?: object }
+    disabled?: boolean
+    loading?: boolean
+    labelClassName?: string
+  }) => {
   const navigation = useTrueSheetNavigation()
 
   const {

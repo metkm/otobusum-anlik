@@ -37,7 +37,7 @@ const LineTimetables = () => {
   return (
     <UCarousel
       snapInterval={snapInterval}
-      contentClassName={`gap-2 pt-0 ${codes.length > 1 ? 'p-2 pt-0' : ''}`}
+      contentClassName="gap-2 p-2 pt-0"
       className="flex-1"
     >
       {codes.map((item) => (
@@ -46,7 +46,7 @@ const LineTimetables = () => {
           value={item}
         >
           <ThemeProvider>
-            <LineTimetable className={codes.length < 2 ? 'rounded-none' : ''} />
+            <LineTimetable />
           </ThemeProvider>
         </LineContext>
       ))}

@@ -88,6 +88,7 @@ export const MapButtons = (props: ViewProps) => {
           onPress={queryArea}
           size="lg"
           color="neutral"
+          variant="subtle"
           style={{ elevation: 1 }}
         />
       </AnimatedGestureHandlerRootView>
@@ -103,6 +104,7 @@ export const MapButtons = (props: ViewProps) => {
           to={{ pathname: 'search' }}
           size="lg"
           color="neutral"
+          variant="subtle"
           style={{ elevation: 1 }}
         />
       </AnimatedGestureHandlerRootView>
@@ -119,6 +121,7 @@ export const MapButtons = (props: ViewProps) => {
             color="neutral"
             style={{ elevation: 2 }}
             size="lg"
+            variant="subtle"
             onPress={() => {
               codes.forEach((code) => changeRouteDirection(code))
             }}
@@ -135,10 +138,11 @@ export const MapButtons = (props: ViewProps) => {
         <UButton
           icon="component"
           color="neutral"
-          style={{ elevation: 1 }}
           size="lg"
+          variant="subtle"
           to={{ pathname: '(sheet)/groups/index' }}
           label={group?.name}
+          style={{ elevation: 2 }}
         />
       </AnimatedGestureHandlerRootView>
     </Animated.View>

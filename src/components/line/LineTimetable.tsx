@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View, type ViewProps } from 'react-native'
+import { View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -29,7 +29,7 @@ const saturday = 1 << 7
 const now = new Date()
 const nowDay = now.getDay()
 
-export const LineTimetable = ({ className }: ViewProps) => {
+export const LineTimetable = () => {
   const { t } = useTranslation()
 
   const city = useFilterStore(useShallow((state) => state.city))
@@ -153,7 +153,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
   return (
     <View
       style={{ elevation: 2, width: cardWidth }}
-      className={cn('bg-muted rounded-md border-2 border-muted', className)}
+      className="bg-default border-hairline border-muted rounded-md"
     >
       <View className="m-2 mb-0">
         <UText className="text-muted">{routeCode}</UText>
@@ -189,7 +189,7 @@ export const LineTimetable = ({ className }: ViewProps) => {
                 key={hour}
                 className={cn(
                   'flex-row items-center shrink p-2 gap-2',
-                  index % 2 !== 0 ? 'bg-default' : false,
+                  index % 2 !== 0 ? 'bg-muted' : false,
                 )}
               >
                 <UText className="font-inter-medium bg-primary text-inverted h-full min-h-7 w-7 rounded-md text-center align-middle">

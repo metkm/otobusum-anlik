@@ -14,7 +14,6 @@ export const fetchBusLocations = async (code: string, city: City) => {
       .json()
   } catch {
     if (city === 'istanbul') {
-      console.log('fetching data using open data')
       return fetchBusLocationsUsingOpenData(code)
     }
   }

@@ -36,6 +36,7 @@
       --ui-bg-accented: var(--color-neutral-700);
       --ui-border: var(--color-neutral-800);
       --ui-border-muted: var(--color-neutral-700);
+      --ui-border-accented: var(--color-neutral-700);
       --ui-text-muted: var(--color-neutral-400);
       --ui-text: var(--color-neutral-200);
       --ui-text-inverted: var(--color-neutral-900);
@@ -62,6 +63,7 @@
       --ui-bg-accented: var(--color-neutral-200);
       --ui-border: var(--color-neutral-200);
       --ui-border-muted: var(--color-neutral-200);
+      --ui-border-accented: var(--color-neutral-300);
       --ui-text-muted: var(--color-neutral-500);
       --ui-text: var(--color-neutral-700);
       --ui-text-inverted: white;
@@ -91,10 +93,12 @@
   --background-color-default: var(--ui-bg);
   --background-color-muted: var(--ui-bg-muted);
   --background-color-elevated: var(--ui-bg-elevated);
+  --background-color-accented: var(--ui-bg-accented);
 
   --background-color-neutral-default: var(--ui-neutral-bg);
   --background-color-neutral-muted: var(--ui-neutral-bg-muted);
   --background-color-neutral-elevated: var(--ui-neutral-bg-elevated);
+  --background-color-neutral-accented: var(--ui-neutral-bg-accented);
 
   --text-color-muted: var(--ui-text-muted);
   --text-color-default: var(--ui-text);
@@ -115,24 +119,23 @@
 
   --border-color-default: var(--ui-border);
   --border-color-muted: var(--ui-border-muted);
+  --border-color-accented: var(--ui-border-accented);
 
   --outline-color-muted: var(--ui-border-muted);
-
-  --ring-color-default: var(--ui-border);
   --ring-color-muted: var(--ui-border-muted);
 
   --color-primary: var(--ui-primary);
   --color-error: var(--ui-error);
 }
 
-@utility border-width-hairline {
+@utility border-hairline {
   border-width: hairlineWidth();
 }
 
-@utility border-width-t-hairline {
+@utility border-t-hairline {
   border-top-width: hairlineWidth();
 }
 
-@utility border-width-b-hairline {
+@utility border-b-hairline {
   border-bottom-width: hairlineWidth();
 }
