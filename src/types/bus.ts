@@ -35,10 +35,7 @@ export interface StopWithBuses {
 }
 
 export interface BusInfo {
-  operator: string
-  garage?: string
   door_no: string
-  hour: string
   lng: number
   lat: number
   speed: number

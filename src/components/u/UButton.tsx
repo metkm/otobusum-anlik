@@ -19,6 +19,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-primary',
+        icon: 'accent-inverted',
         label: 'text-inverted',
       },
       color: 'primary',
@@ -27,6 +28,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-primary/10',
+        icon: 'accent-primary',
         label: 'text-primary',
       },
       color: 'primary',
@@ -35,6 +37,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-transparent',
+        icon: 'accent-primary',
         label: 'text-primary',
       },
       color: 'primary',
@@ -43,6 +46,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-neutral-elevated',
+        icon: 'accent-neutral-default',
         label: 'text-neutral-default',
       },
       color: 'neutral',
@@ -51,6 +55,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-neutral-muted',
+        icon: 'text-neutral-default',
         label: 'text-neutral-default',
       },
       color: 'neutral',
@@ -59,6 +64,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-transparent',
+        icon: 'text-neutral-default',
         label: 'text-neutral-default',
       },
       color: 'neutral',
@@ -67,6 +73,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-error',
+        icon: 'text-inverted',
         label: 'text-inverted',
       },
       color: 'error',
@@ -184,12 +191,7 @@ export const UButton = ({
 
   const Icon = () => {
     if (loading) {
-      return (
-        <UActivityIndicator
-          sizeClassName={uiIcon()}
-          className={uiLabel()}
-        />
-      )
+      return <UActivityIndicator colorClassName={uiIcon()} />
     }
 
     if (icon) {

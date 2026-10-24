@@ -8,13 +8,18 @@ export const SkeletonPulse = ({ className, ...props }: ComponentProps<AnimatedVi
   <Animated.View
     className={cn('shrink-0 bg-black/50 rounded-md', className)}
     style={{
+      animationDirection: 'alternate',
       animationDuration: 2000,
       animationIterationCount: 'infinite',
       animationName: {
-        '50%': {
+        from: {
           opacity: 0.5,
         },
+        to: {
+          opacity: 1,
+        },
       },
+      animationTimingFunction: 'ease-in-out',
     }}
     {...props}
   />

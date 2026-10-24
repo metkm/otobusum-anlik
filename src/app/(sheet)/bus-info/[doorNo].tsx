@@ -1,9 +1,9 @@
 import { useLocalSearchParams } from 'expo-router'
 import { t } from 'i18next'
-import type { ComponentProps } from 'react'
 import { View } from 'react-native'
 
-import { UIcon } from '@/components/u/UIcon'
+import { SkeletonBusInfo } from '@/components/u/skeleton/SkeletonBusInfo'
+import { type IconName, UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 import { useLineBusInfo } from '@/composables/useLineBusInfo'
@@ -15,19 +15,19 @@ const BusInfoItem = ({
 }: {
   label: string
   value?: string | number
-  icon: ComponentProps<typeof UIcon>['name']
+  icon: IconName
 }) => (
-  <View className="gap-1">
-    <View className="flex-row gap-1">
+  <View className="bg-muted h-14 flex-1 gap-1 rounded-md p-2">
+    <View className="flex-row gap-1.5">
       <UIcon
         name={icon}
         colorClassName="text-default"
       />
 
-      <UText className="font-inter-medium text-muted text-sm">{label}</UText>
+      <UText className="font-inter-medium text-muted">{label}</UText>
     </View>
 
-    <UText>{value}</UText>
+    <UText className="font-inter-medium">{value}</UText>
   </View>
 )
 
@@ -38,19 +38,22 @@ const BusInfo = () => {
   const { query } = useLineBusInfo(doorNo)
 
   return (
-    <View className="gap-2 px-2 pt-5 pb-2">
+    <View className="flex-row flex-wrap items-center gap-2 px-2 pt-5 pb-2">
       <BusInfoItem
         label={t('doorNo')}
         value={doorNo}
         icon="door-closed"
       />
 
-      <UQueryState query={query}>
-        <BusInfoItem
+      <UQueryState
+        query={query}
+        fetching={() => [1, 2].map((i) => <SkeletonBusInfo key={i} />)}
+      >
+        {/* <BusInfoItem
           label={t('operator')}
           value={query.data?.operator}
           icon="circle-user"
-        />
+        /> */}
 
         <BusInfoItem
           label={t('plate')}
@@ -64,13 +67,13 @@ const BusInfo = () => {
           icon="gauge"
         />
 
-        {query.data?.garage && (
+        {/* {query.data?.garage && (
           <BusInfoItem
             label={t('garage')}
             value={query.data.garage}
             icon="van"
           />
-        )}
+        )} */}
       </UQueryState>
     </View>
   )

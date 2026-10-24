@@ -109,9 +109,17 @@
   --text-color-inverted: var(--ui-text-inverted);
   --text-color-error: var(--ui-error);
 
+  --accent-color-muted: var(--ui-text-muted);
+  --accent-color-default: var(--ui-text);
+  --accent-color-inverted: var(--ui-text-inverted);
+
   --text-color-neutral-muted: var(--ui-neutral-text-muted);
   --text-color-neutral-default: var(--ui-neutral-text);
   --text-color-neutral-inverted: var(--ui-neutral-text-inverted);
+
+  --accent-color-neutral-muted: var(--ui-neutral-text-muted);
+  --accent-color-neutral-default: var(--ui-neutral-text);
+  --accent-color-neutral-inverted: var(--ui-neutral-text-inverted);
 
   --radius-xs: calc(var(--ui-radius) * 0.5);
   --radius-sm: var(--ui-radius);

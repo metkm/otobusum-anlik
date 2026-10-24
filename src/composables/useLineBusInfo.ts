@@ -9,7 +9,8 @@ export const useLineBusInfo = (doorNo: string) => {
     meta: {
       persist: true,
     },
-    queryFn: () => ky.get<BusInfo>(`${process.env.EXPO_PUBLIC_BASE_URL}/bus-info/${doorNo}`).json(),
+    queryFn: () =>
+      ky.get<BusInfo>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/bus-info/${doorNo}`).json(),
     queryKey: ['bus', doorNo, 'info'],
     staleTime: LINE_UPDATE_INTERVAL,
   })
