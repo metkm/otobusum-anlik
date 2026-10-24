@@ -215,7 +215,10 @@ export const SettingsScreen = () => {
   }
 
   return (
-    <ScrollView contentContainerClassName="gap-2 p-2 pt-safe">
+    <ScrollView
+      contentContainerClassName="gap-2 p-2 pt-safe"
+      showsVerticalScrollIndicator={false}
+    >
       <SettingsSectionTitle
         title={t('map')}
         icon="map"

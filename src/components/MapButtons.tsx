@@ -60,6 +60,7 @@ export const MapButtons = (props: ViewProps) => {
             icon="compass"
             size="lg"
             color="neutral"
+            variant="subtle"
             style={{ elevation: 1 }}
             onPress={async () => {
               const center = await map.current?.getCenter()

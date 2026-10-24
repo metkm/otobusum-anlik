@@ -1,9 +1,9 @@
 import { LegendList } from '@legendapp/list/react-native'
 import { router } from 'expo-router'
 import ky from 'ky'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { type TextInputInstance, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useDebounce } from 'use-debounce'
 import { useShallow } from 'zustand/react/shallow'
@@ -90,17 +90,24 @@ const RenderItemStop = ({ item }: { item: Stop }) => (
     color="neutral"
     label={item.name}
     to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
-    icon="map-pin"
-  />
+  >
+    <UBadge icon="map-pin" />
+  </UButton>
 )
 
 export const SearchScreen = () => {
   const [query, setQuery] = useState('')
   const city = useFilterStore(useShallow((state) => state.city))
+  const inputRef = useRef<TextInputInstance>(null)
   const { t } = useTranslation()
 
   const [debouncedQuery] = useDebounce(query, 500)
   const { query: searchQuery } = useSearch(debouncedQuery)
+
+  const clearQuery = () => {
+    setQuery('')
+    inputRef.current?.clear()
+  }
 
   const results = [...(searchQuery.data?.lines || []), ...(searchQuery.data?.stops || [])]
 
@@ -119,6 +126,7 @@ export const SearchScreen = () => {
         />
 
         <UInput
+          ref={inputRef}
           autoFocus={true}
           placeholder={t('searchPlaceholder')}
           onChangeText={(q) => setQuery(q)}
@@ -133,7 +141,7 @@ export const SearchScreen = () => {
                 icon="x"
                 variant="ghost"
                 color="neutral"
-                onPress={() => setQuery('')}
+                onPress={clearQuery}
               />
             </GestureHandlerRootView>
           )}

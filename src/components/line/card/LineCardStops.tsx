@@ -57,7 +57,7 @@ const StopItem = ({
   }
 
   return (
-    <View className="shrink flex-row items-center gap-2 pr-3">
+    <View className="shrink flex-row items-center gap-2">
       <UButton
         className="flex-1"
         to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
@@ -74,16 +74,27 @@ const StopItem = ({
           />
         </View>
 
-        <View>
-          <UText className="font-inter-medium text-sm">{item.name}</UText>
+        <View className="shrink">
+          <UText
+            className="font-inter-medium shrink text-sm"
+            numberOfLines={1}
+          >
+            {item.name}
+          </UText>
+
           {closestToUser && (
-            <UText className="text-primary text-xs">{t('userClosestToThisStop')}</UText>
+            <UText
+              className="text-primary shrink text-xs"
+              numberOfLines={1}
+            >
+              {t('userClosestToThisStop')}
+            </UText>
           )}
         </View>
       </UButton>
 
       {closestBus && (
-        <>
+        <View className="flex-row gap-2 pr-2">
           <UButton
             icon="locate-fixed"
             variant="soft"
@@ -100,7 +111,7 @@ const StopItem = ({
             }}
             variant="soft"
           />
-        </>
+        </View>
       )}
     </View>
   )
@@ -150,7 +161,7 @@ export const LineCardStops = () => {
     }
 
     void getCurrentLocation()
-  }, [])
+  }, [showMyLocation])
 
   if (lineStopsQuery.data && lineStopsQuery.data.length < 1) {
     return (
@@ -193,6 +204,7 @@ export const LineCardStops = () => {
         scrollEventThrottle={16}
         GetFixedItemSize={() => 48}
         recycleItems
+        showsVerticalScrollIndicator={false}
       />
     </UQueryState>
   )

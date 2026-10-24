@@ -180,10 +180,12 @@ export const LineTimetable = () => {
       <UQueryState
         query={lineTimetableQuery}
         fetching={() => <SkeletonTimetable />}
-        className="m-2"
       >
         {hourEntries.length > 1 ? (
-          <ScrollView fadingEdgeLength={10}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            className="border-t-hairline border-muted"
+          >
             {hourEntries.map(([hour, minutes], index) => (
               <View
                 key={hour}
