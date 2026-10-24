@@ -16,8 +16,8 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
           padding: {
             bottom: 250,
             left: 25,
-            right: 25,
-            top: 80,
+            right: 75,
+            top: 10,
           },
           pitch: 0,
         })

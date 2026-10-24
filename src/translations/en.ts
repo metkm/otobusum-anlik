@@ -88,6 +88,7 @@ export default {
   timetableEmptyRange: 'Timetable for this day is empty',
   tuesday: 'Tuesday',
   updateCount: 'update in {{count}}s',
+  userClosestToThisStop: 'You are closest to this stop',
   version: 'Version',
   wednesday: 'Wednesday',
   welcome: 'Welcome',

@@ -1,5 +1,7 @@
 import { AnimatedLegendList } from '@legendapp/list/reanimated'
+import { type LocationObject, getCurrentPositionAsync } from 'expo-location'
 import { t } from 'i18next'
+import { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import {
   LinearTransition,
@@ -22,7 +24,15 @@ import { useSettingsStore } from '@/stores'
 import type { Stop } from '@/types/bus'
 import { getClosestPoint } from '@/utils/getClosestPoint'
 
-const StopItem = ({ item, index }: { item: Stop; index: number }) => {
+const StopItem = ({
+  item,
+  index,
+  closestToUser,
+}: {
+  item: Stop
+  index: number
+  closestToUser?: boolean
+}) => {
   const { buses } = useLineBuses()
   const { flyTo } = useMap()
   const { query: lineStopsQuery } = useLineStops()
@@ -53,8 +63,6 @@ const StopItem = ({ item, index }: { item: Stop; index: number }) => {
         to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
         variant="ghost"
         trailingIcon="chevron-right"
-        label={item.name}
-        labelClassName="text-default"
       >
         <UText className="font-inter-medium text-muted w-6.5 text-center">{index + 1}</UText>
 
@@ -64,6 +72,13 @@ const StopItem = ({ item, index }: { item: Stop; index: number }) => {
             colorClassName={closestBus ? 'text-primary' : 'text-muted/15'}
             sizeClassName="size-4"
           />
+        </View>
+
+        <View>
+          <UText className="font-inter-medium text-sm">{item.name}</UText>
+          {closestToUser && (
+            <UText className="text-primary text-xs">{t('userClosestToThisStop')}</UText>
+          )}
         </View>
       </UButton>
 
@@ -100,6 +115,8 @@ export const LineCardStops = () => {
   const expandStopsWhenScrolled = useSettingsStore(
     useShallow((state) => state.expandStopsWhenScrolled),
   )
+  const showMyLocation = useSettingsStore(useShallow((state) => state.showMyLocation))
+  const [location, setLocation] = useState<LocationObject>()
   const { query: lineStopsQuery } = useLineStops()
   const containerHeight = useSharedValue(COLLAPSED)
 
@@ -122,6 +139,19 @@ export const LineCardStops = () => {
     },
   })
 
+  useEffect(() => {
+    if (!showMyLocation) {
+      return
+    }
+
+    const getCurrentLocation = async () => {
+      const lc = await getCurrentPositionAsync()
+      setLocation(lc)
+    }
+
+    void getCurrentLocation()
+  }, [])
+
   if (lineStopsQuery.data && lineStopsQuery.data.length < 1) {
     return (
       <UEmpty
@@ -131,6 +161,14 @@ export const LineCardStops = () => {
       />
     )
   }
+
+  const closestStopToUser =
+    location && lineStopsQuery.data
+      ? getClosestPoint(
+          { lat: location.coords.latitude, lng: location.coords.longitude },
+          lineStopsQuery.data,
+        )
+      : undefined
 
   return (
     <UQueryState
@@ -144,6 +182,7 @@ export const LineCardStops = () => {
           <StopItem
             item={item}
             index={index}
+            closestToUser={closestStopToUser && item.id === closestStopToUser.id}
           />
         )}
         contentContainerClassName="py-1.5"

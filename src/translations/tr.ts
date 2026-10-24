@@ -87,6 +87,7 @@ export default {
   timetableEmptyRange: 'Bu gün için zaman tarifesi bulunamadı',
   tuesday: 'Salı',
   updateCount: 'güncellemeye {{count}} sn',
+  userClosestToThisStop: 'En yakın olduğun durak',
   version: 'Versiyon',
   wednesday: 'Çarşamba',
   welcome: 'Hoşgeldin',

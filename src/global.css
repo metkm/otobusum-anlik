@@ -88,6 +88,7 @@
 @theme {
   --text-base: 0.875rem;
   --text-sm: 0.75rem;
+  --text-xs: 0.625rem;
 
   --font-inter: 'Inter-Regular';
   --font-inter-medium: 'Inter-Medium';
