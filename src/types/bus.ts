@@ -50,3 +50,12 @@ export interface BusLocationOpenData {
   son_konum_zamani: string
   yakinDurakKodu: string
 }
+
+export interface BusLocationOtobusumNerede {
+  K_ARAC_KAPINUMARASI: string
+  BOYLAM: number // Lng
+  ENLEM: number
+  K_GUZERGAH_GUZERGAHKODU: string // Route code
+  H_GOREV_D_G_KAYITZAMANI: string
+  H_GOREV_DURAK_GECIS_DURAKID: number
+}
