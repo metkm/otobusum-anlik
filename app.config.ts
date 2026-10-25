@@ -9,6 +9,8 @@ import splashScreen from 'expo-splash-screen/plugin'
 import statusBar from 'expo-status-bar/plugin'
 import type { ConfigContext } from 'expo/config'
 
+const isWindows = process.platform === 'win32'
+
 export default ({ config }: ConfigContext) =>
   ({
     ...config,
@@ -37,7 +39,7 @@ export default ({ config }: ConfigContext) =>
       location(),
       buildProperties({
         android: {
-          cmakeVersion: '3.31.6',
+          cmakeVersion: isWindows ? '3.31.6' : undefined,
           enableMinifyInReleaseBuilds: true,
           enableShrinkResourcesInReleaseBuilds: true,
           usePrecompiledHeaders: true,
