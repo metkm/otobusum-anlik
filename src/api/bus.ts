@@ -50,6 +50,7 @@ const fetchBusLocationsUsingOpenData = async (code: string): Promise<BusLocation
         'Content-Type': 'text/xml; charset=UTF-8',
         SOAPAction: `"http://tempuri.org/GetHatOtoKonum_json"`,
       },
+      timeout: 3000,
     })
     .text()
 
@@ -117,6 +118,7 @@ export const fetchBusLocationsUsingOtobusumNerede = async (
         },
       }),
       headers,
+      timeout: 5000,
     })
     .json()
 
@@ -140,6 +142,7 @@ export const fetchBusLocationsUsingOtobusumNerede = async (
         },
       }),
       headers,
+      timeout: 5000,
     })
     .json()
 

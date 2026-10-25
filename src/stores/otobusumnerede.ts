@@ -28,6 +28,7 @@ export const useOtobusumNeredeTokenStore = create(
                 'Accept-Encoding': 'gzip',
                 'Content-Type': 'application/json; charset=UTF-8',
               },
+              timeout: 5000,
             })
             .json()
 
