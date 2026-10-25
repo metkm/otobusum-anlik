@@ -38,7 +38,7 @@ export const UInput = ({
   const { base: uiBase, icon: uiIcon } = ui({ variant })
 
   const Icon = () => {
-    if (!loading) {
+    if (loading) {
       return <UActivityIndicator className="absolute left-2.5" />
     }
 
