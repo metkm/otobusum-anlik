@@ -28,7 +28,7 @@ const LineTimetables = () => {
           icon="search"
           variant="soft"
           color="neutral"
-          to={{ pathname: '(home)/search' }}
+          to={{ pathname: 'search' }}
         />
       </View>
     )

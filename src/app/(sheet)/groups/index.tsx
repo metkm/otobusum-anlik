@@ -115,7 +115,7 @@ const GroupItem = ({
             params: {
               groupId: group.id,
             },
-            pathname: '/groups/[groupId]',
+            pathname: '(sheet)/groups/[groupId]',
           }}
         />
       </Animated.View>

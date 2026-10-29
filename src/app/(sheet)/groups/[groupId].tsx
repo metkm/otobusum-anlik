@@ -69,7 +69,7 @@ export const GroupIdScreen = () => {
   }, [group, groups.length, handleSave, navigation, t])
 
   return (
-    <View className="gap-2 px-2 pt-8">
+    <View className="gap-2 p-2 pt-8">
       <View className="gap-2">
         <UText className="font-inter-medium ml-1">{group?.name}</UText>
         <UInput
@@ -92,20 +92,15 @@ export const GroupIdScreen = () => {
             data={group.codes}
             renderItem={({ item }) => (
               <GestureHandlerRootView style={{ flexShrink: 0 }}>
-                <View className="flex-row items-stretch gap-1">
-                  <UButton
-                    icon="trash-2"
-                    onPress={() => {
-                      useLineStore.getState().deleteLine(item, group.id)
-                    }}
-                    color="neutral"
-                    variant="soft"
-                  />
-
-                  <UText className="font-inter-medium bg-muted rounded-md px-2 py-1 align-middle">
-                    {item}
-                  </UText>
-                </View>
+                <UButton
+                  icon="trash-2"
+                  onPress={() => {
+                    useLineStore.getState().deleteLine(item, group.id)
+                  }}
+                  color="neutral"
+                  variant="soft"
+                  label={item}
+                />
               </GestureHandlerRootView>
             )}
             contentContainerStyle={{ gap: 8 }}
