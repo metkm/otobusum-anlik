@@ -32,7 +32,7 @@ export default ({ config }: ConfigContext) =>
     },
     icon: './src/assets/icon.png',
     ios: {
-      bundleIdentifier: 'com.anonymous.otobusumanlik'
+      bundleIdentifier: 'com.anonymous.otobusumanlik',
     },
     name: 'Otobüsüm Anlık',
     orientation: 'portrait',
