@@ -78,5 +78,5 @@ export default ({ config }: ConfigContext) =>
       url: 'https://u.expo.dev/2c43cbc3-221c-4ca7-ac8c-ebfcc102426c',
     },
     userInterfaceStyle: 'automatic',
-    version: '1.5.2',
+    version: '1.5.3',
   }) satisfies ConfigContext['config']
