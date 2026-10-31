@@ -6,7 +6,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import type { FeatureCollection } from 'geojson'
 import { t } from 'i18next'
 import { useEffect, useMemo, useRef } from 'react'
-import { View, type ScrollViewInstance } from 'react-native'
+import { Dimensions, View, type ScrollViewInstance } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import { ScopedVariables, useCSSVariable } from 'uniwind'
 
@@ -90,7 +90,9 @@ export const NearbyScreen = () => {
             coordinates: [getPolygonCoordinatesFromPoint([lng!, lat!], query.data.stops_radius)],
             type: 'Polygon',
           },
-          properties: {},
+          properties: {
+            color: primaryColor,
+          },
           type: 'Feature',
         },
       ],
@@ -112,10 +114,23 @@ export const NearbyScreen = () => {
 
   useMapCollection({
     data: polygonCollection,
+    id: 'area-polygon-border',
+    layerProps: {
+      paint: {
+        'line-color': ['get', 'color'],
+        'line-width': 2,
+      },
+      type: 'line',
+    },
+    renderer: 'layer',
+  })
+
+  useMapCollection({
+    data: polygonCollection,
     id: 'area-polygon',
     layerProps: {
       paint: {
-        'fill-color': 'white',
+        'fill-color': 'black',
         'fill-opacity': 0.2,
       },
       type: 'fill',
@@ -144,7 +159,12 @@ export const NearbyScreen = () => {
         return
       }
 
-      fitBounds(bnds)
+      const screenHeight = Dimensions.get('screen').height * 0.5
+      fitBounds(bnds, {
+        padding: {
+          bottom: screenHeight,
+        },
+      })
     }
 
     void fit()

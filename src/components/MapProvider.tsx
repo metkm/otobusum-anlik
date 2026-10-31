@@ -1,4 +1,5 @@
 import type { CameraRef, MapRef } from '@maplibre/maplibre-react-native'
+import deepmerge from 'deepmerge'
 import { useCallback, useMemo, useRef } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -59,19 +60,25 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
   const value = useMemo<MapContextInstance>(
     () => ({
       camera,
-      fitBounds: (bounds) => {
+      fitBounds: (bounds, _options) => {
         const padding = getPadding()
 
-        camera.current?.fitBounds(bounds, {
-          duration: 750,
-          padding: {
-            bottom: padding.bottom,
-            left: padding.left,
-            right: padding.right,
-            top: padding.top,
-          },
-          pitch: 0,
-        })
+        camera.current?.fitBounds(
+          bounds,
+          deepmerge(
+            {
+              duration: 750,
+              padding: {
+                bottom: padding.bottom,
+                left: padding.left,
+                right: padding.right,
+                top: padding.top,
+              },
+              pitch: 0,
+            },
+            _options ?? {},
+          ),
+        )
       },
       flyTo: (options) => {
         camera.current?.flyTo({
