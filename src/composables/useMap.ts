@@ -16,7 +16,10 @@ export interface MapContextInstance {
   camera: RefObject<CameraRef | null>
 
   fitBounds: (bounds: LngLatBounds, options?: CameraOptions & CameraAnimationOptions) => void
-  easeTo: (easeTo: LngLat, options?: CameraCenterOptions & CameraOptions & CameraAnimationOptions) => void
+  easeTo: (
+    easeTo: LngLat,
+    options?: CameraCenterOptions & CameraOptions & CameraAnimationOptions,
+  ) => void
 
   registerPadding: (id: string, edge: keyof Padding, value: number) => void
   unRegisterPadding: (id: string) => void
