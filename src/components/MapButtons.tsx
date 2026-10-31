@@ -47,7 +47,7 @@ export const MapButtons = (props: ViewProps) => {
       className={cn(
         'p-2 gap-2',
         lineCardExpanded || hideMap ? 'flex-row' : undefined,
-        mapButtonsPlacement === 'left' ? 'mr-auto' : 'ml-auto items-end justify-end',
+        mapButtonsPlacement === 'left' ? 'mr-auto items-start' : 'ml-auto items-end justify-end',
       )}
       pointerEvents="box-none"
       {...props}
