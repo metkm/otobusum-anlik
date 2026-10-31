@@ -15,8 +15,8 @@ export const MapOverlay = ({ className, ...props }: ViewProps) => {
       entering={FadeIn}
       exiting={FadeOut}
       className={cn(
-        'absolute bottom-0 inset-x-0',
-        hideMap ? 'h-full pt-safe-offset-2' : lineCardExpanded && 'h-3/4',
+        'absolute bottom-0 inset-x-0 pb-safe',
+        hideMap ? 'h-full pt-safe' : lineCardExpanded && 'h-3/4',
         className,
       )}
       pointerEvents="box-none"

@@ -11,15 +11,15 @@ export default defineConfig({
     typeCheck: true,
   },
   rules: {
+    'capitalized-comments': 'off',
     'id-length': 'off',
     'max-nested-callbacks': 'off',
     'max-statements': 'off',
     'no-magic-numbers': 'off',
-    // 'no-nested-ternary': 'off',
     'no-ternary': 'off',
     'one-var': 'off',
     'sort-imports': 'off',
     'unicorn/filename-case': 'off',
-    'unicorn/max-nested-calls': 'off',
+    'unicorn/max-nested-calls': 'off'
   },
 })

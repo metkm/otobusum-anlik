@@ -11,8 +11,10 @@ import { SafeAreaListener } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
 import { persister, queryClient } from '@/api/client'
+import { BottomTabHeightProvider } from '@/components/BottomTabHeightProvider'
 import { MapProvider } from '@/components/MapProvider'
 import { useColorScheme } from '@/composables'
+import { useBottomTabHeight } from '@/composables/useBottomTabHeight'
 import { useSettingsStore } from '@/stores'
 import i18n from '@/translations/i18n'
 
@@ -23,46 +25,8 @@ export const unstable_settings = {
 const RootContent = () => {
   const backgroundColor = useCSSVariable('--ui-bg')?.toString()
   const spacing = useCSSVariable('--spacing') as number
-
-  const storeColor = useSettingsStore.getState().colorScheme
-  if (storeColor) {
-    Uniwind.setTheme(storeColor)
-  }
-
-  return (
-    <MapProvider>
-      <Sheet
-        screenOptions={{
-          backgroundColor,
-          grabberOptions: { topMargin: spacing * 2 },
-          style: { flex: 1 },
-        }}
-      >
-        <Sheet.Screen name="(home)" />
-
-        <Sheet.Screen
-          name="(sheet)/groups/index"
-          options={{ detents: ['auto'] }}
-        />
-        <Sheet.Screen
-          name="(sheet)/groups/[groupId]"
-          options={{ detents: ['auto'] }}
-        />
-
-        <Sheet.Screen name="(sheet)/bus-info/[doorNo]" />
-        <Sheet.Screen name="(sheet)/stop/[stopCode]" />
-        <Sheet.Screen
-          name="(sheet)/markers/nearby"
-          options={{ detents: ['auto'], dimmed: false }}
-        />
-      </Sheet>
-    </MapProvider>
-  )
-}
-
-export const RootLayout = () => {
-  const background = useCSSVariable('--background-color-default')?.toString()
   const colorScheme = useColorScheme()
+  const bottomTabHeight = useBottomTabHeight()
 
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
@@ -70,10 +34,59 @@ export const RootLayout = () => {
     ...baseTheme,
     colors: {
       ...baseTheme.colors,
-      background: background ?? baseTheme.colors.background,
-      card: background ?? baseTheme.colors.background,
+      background: backgroundColor ?? baseTheme.colors.background,
+      card: backgroundColor ?? baseTheme.colors.background,
     },
   }
+
+  const storeColor = useSettingsStore.getState().colorScheme
+  if (storeColor) {
+    Uniwind.setTheme(storeColor)
+  }
+
+  return (
+    <SafeAreaListener
+      onChange={({ insets }) => {
+        Uniwind.updateInsets(insets)
+      }}
+    >
+      <ThemeProvider value={theme}>
+        <MapProvider>
+          <NavigationBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+
+          <Sheet
+            screenOptions={{
+              backgroundColor,
+              grabberOptions: { topMargin: spacing * 2 },
+              style: { flex: 1 },
+            }}
+          >
+            <Sheet.Screen name="(home)" />
+
+            <Sheet.Screen
+              name="(sheet)/groups/index"
+              options={{ detents: ['auto'] }}
+            />
+            <Sheet.Screen
+              name="(sheet)/groups/[groupId]"
+              options={{ detents: ['auto'] }}
+            />
+
+            <Sheet.Screen name="(sheet)/bus-info/[doorNo]" />
+            <Sheet.Screen name="(sheet)/stop/[stopCode]" />
+            <Sheet.Screen
+              name="(sheet)/markers/nearby"
+              options={{ detents: ['auto'], dimmed: false }}
+            />
+          </Sheet>
+        </MapProvider>
+      </ThemeProvider>
+    </SafeAreaListener>
+  )
+}
+
+export const RootLayout = () => {
+  const background = useCSSVariable('--background-color-default')?.toString()
 
   return (
     <I18nextProvider
@@ -90,18 +103,11 @@ export const RootLayout = () => {
         }}
       >
         <StatusBar style="auto" />
-        <NavigationBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
 
         <GestureHandlerRootView style={{ backgroundColor: background as string, flexGrow: 1 }}>
-          <SafeAreaListener
-            onChange={({ insets }) => {
-              Uniwind.updateInsets(insets)
-            }}
-          >
-            <ThemeProvider value={theme}>
-              <RootContent />
-            </ThemeProvider>
-          </SafeAreaListener>
+          <BottomTabHeightProvider>
+            <RootContent />
+          </BottomTabHeightProvider>
         </GestureHandlerRootView>
       </PersistQueryClientProvider>
     </I18nextProvider>
