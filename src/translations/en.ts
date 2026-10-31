@@ -94,5 +94,5 @@ export default {
   wednesday: 'Wednesday',
   welcome: 'Welcome',
   workday: 'Workday',
-  zoomStopOnMap: 'Zoom on map'
+  zoomStopOnMap: 'Zoom on map',
 }
