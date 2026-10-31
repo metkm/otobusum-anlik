@@ -7,7 +7,7 @@ import { cn } from '@/utils/cn'
 export const StyledLucide = withUniwind(Lucide, {
   color: {
     fromClassName: 'colorClassName',
-    styleProperty: 'color',
+    styleProperty: 'accentColor',
   },
   size: {
     fromClassName: 'sizeClassName',
@@ -24,7 +24,7 @@ export const UIcon = ({
 }: ComponentProps<typeof StyledLucide>) => (
   <StyledLucide
     sizeClassName={cn('size-5', sizeClassName)}
-    colorClassName={cn('text-default', colorClassName)}
+    colorClassName={cn('accent-default', colorClassName)}
     className={sizeClassName}
     {...props}
   />

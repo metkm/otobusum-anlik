@@ -114,7 +114,7 @@ export const SearchScreen = () => {
   const neededCharacterCount = MIN_CHARACTER_LIMIT - query.length + 1
 
   return (
-    <View className="m-safe grow gap-2">
+    <View className="m-safe grow">
       <View className="mx-2 mt-2 flex-row gap-2">
         <UButton
           icon="arrow-left"
@@ -127,7 +127,7 @@ export const SearchScreen = () => {
 
         <UInput
           ref={inputRef}
-          autoFocus={true}
+          autoFocus
           placeholder={t('searchPlaceholder')}
           onChangeText={(q) => setQuery(q)}
           loading={searchQuery.isFetching}
@@ -148,7 +148,7 @@ export const SearchScreen = () => {
         </UInput>
       </View>
 
-      <View className="flex-row flex-wrap items-center gap-2 px-2">
+      <View className="border-b-hairline border-b-muted flex-row flex-wrap items-center gap-2 p-2">
         {neededCharacterCount > 0 && (
           <UText className="text-muted font-inter-medium text-center text-sm">
             {t('neededCharacterCountToSearch', { count: neededCharacterCount })}
@@ -189,8 +189,7 @@ export const SearchScreen = () => {
             }}
             keyExtractor={(item) => item.id.toString()}
             className="flex-1"
-            contentContainerStyle={{ gap: 8, paddingHorizontal: 8 }}
-            fadingEdgeLength={10}
+            contentContainerStyle={{ gap: 8, padding: 8 }}
             recycleItems
           />
         )}

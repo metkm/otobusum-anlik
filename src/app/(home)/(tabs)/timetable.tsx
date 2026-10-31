@@ -58,7 +58,7 @@ export const TimetableScreen = () => {
   const offset = useSharedValue(0)
 
   return (
-    <View className="mt-safe mx-safe flex-1 pt-2">
+    <View className="mt-safe mx-safe mb-[calc(58.3+env(safe-area-inset-bottom))] flex-1 pt-2">
       <CarouselContext value={offset}>
         <LineCards />
         <LineTimetables />

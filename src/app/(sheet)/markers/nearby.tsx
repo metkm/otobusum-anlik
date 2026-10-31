@@ -6,7 +6,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import type { FeatureCollection } from 'geojson'
 import { t } from 'i18next'
 import { useEffect, useMemo, useRef } from 'react'
-import { View, type ScrollViewInstance } from 'react-native'
+import { Dimensions, View, type ScrollViewInstance } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import { ScopedVariables, useCSSVariable } from 'uniwind'
 
@@ -24,6 +24,8 @@ import { getLatLngBounds } from '@/utils/bounds'
 import { createRandomTheme } from '@/utils/color'
 import { getPolygonCoordinatesFromPoint } from '@/utils/getPolygonFromCenter'
 
+export const DEFAULT_STOPS_QUERY_RADIUS = 500
+
 export const NearbyScreen = () => {
   const primaryColor = useCSSVariable('--color-primary')?.toString()
   const params = useLocalSearchParams()
@@ -33,11 +35,11 @@ export const NearbyScreen = () => {
   const lng = params.lng ? Number(params.lng) : undefined
 
   const { query } = useTransitNearby(lat, lng)
-  const { map, camera, fitBounds } = useMap()
+  const { fitBounds, map, camera } = useMap()
   const navigation = useTrueSheetNavigation()
 
+  const initialBounds = useRef<LngLatBounds>(undefined)
   const scrollableRef = useRef<ScrollViewInstance>(null)
-  const bounds = useRef<LngLatBounds>(undefined)
 
   const colors = useMemo(() => query.data?.routes.map(() => createRandomTheme()), [query.data])
 
@@ -79,24 +81,24 @@ export const NearbyScreen = () => {
   )
 
   const polygonCollection = useMemo<FeatureCollection | undefined>(() => {
-    if (!query.data) {
-      return
-    }
+    const radius = query.data?.stops_radius ?? DEFAULT_STOPS_QUERY_RADIUS
 
     return {
       features: [
         {
           geometry: {
-            coordinates: [getPolygonCoordinatesFromPoint([lng!, lat!], query.data.stops_radius)],
+            coordinates: [getPolygonCoordinatesFromPoint([lng!, lat!], radius)],
             type: 'Polygon',
           },
-          properties: {},
+          properties: {
+            color: primaryColor,
+          },
           type: 'Feature',
         },
       ],
       type: 'FeatureCollection',
     }
-  }, [lat, lng, query.data])
+  }, [lat, lng, query.data, primaryColor])
 
   useMapCollection({
     data: routeCollection,
@@ -112,10 +114,24 @@ export const NearbyScreen = () => {
 
   useMapCollection({
     data: polygonCollection,
+    id: 'area-polygon-border',
+    layerProps: {
+      paint: {
+        'line-color': ['get', 'color'],
+        'line-dasharray': [8, 2],
+        'line-width': 2,
+      },
+      type: 'line',
+    },
+    renderer: 'layer',
+  })
+
+  useMapCollection({
+    data: polygonCollection,
     id: 'area-polygon',
     layerProps: {
       paint: {
-        'fill-color': 'white',
+        'fill-color': 'black',
         'fill-opacity': 0.2,
       },
       type: 'fill',
@@ -124,38 +140,36 @@ export const NearbyScreen = () => {
   })
 
   useEffect(() => {
-    const geo = polygonCollection?.features[0]?.geometry
-
-    if (geo?.type !== 'Polygon') {
+    const geometry = polygonCollection?.features[0]?.geometry
+    if (!geometry || geometry.type !== 'Polygon') {
       return
     }
 
-    const fit = async () => {
-      bounds.current = (await map.current?.getBounds()) || undefined
+    const zoom = async () => {
+      initialBounds.current = await map.current?.getBounds()
 
-      const result = geo.coordinates[0]?.map((coord) => ({ lat: coord[1]!, lng: coord[0]! }))
-      if (!result) {
-        return
+      const bounds = getLatLngBounds(
+        geometry.coordinates[0]?.map((coord) => ({ lat: coord[1]!, lng: coord[0]! })) ?? [],
+      )
+
+      if (bounds) {
+        fitBounds(bounds, {
+          padding: {
+            bottom: Dimensions.get('screen').height * 0.5,
+          },
+        })
       }
-
-      const bnds = getLatLngBounds(result)
-
-      if (!bnds) {
-        return
-      }
-
-      fitBounds(bnds)
     }
 
-    void fit()
-
+    zoom()
     const cam = camera.current
+
     return () => {
-      if (bounds.current && cam) {
-        cam.fitBounds(bounds.current, { duration: 750 })
+      if (initialBounds.current) {
+        cam?.fitBounds(initialBounds.current, { duration: 750 })
       }
     }
-  }, [camera, fitBounds, map, polygonCollection?.features])
+  }, [polygonCollection?.features, map.current, fitBounds, camera])
 
   useEffect(() => {
     navigation.setOptions({

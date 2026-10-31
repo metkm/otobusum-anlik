@@ -8,11 +8,17 @@ import type {
 } from '@maplibre/maplibre-react-native'
 import { createContext, use, type RefObject } from 'react'
 
+import type { Padding } from '@/components/MapProvider'
+
 export interface MapContextInstance {
   map: RefObject<MapRef | null>
   camera: RefObject<CameraRef | null>
-  fitBounds: (bounds: LngLatBounds) => void
+  fitBounds: (bounds: LngLatBounds, options?: CameraOptions & CameraAnimationOptions) => void
   flyTo: (bounds: CameraOptions & CameraCenterOptions & CameraAnimationOptions) => void
+
+  registerPadding: (id: string, edge: keyof Padding, value: number) => void
+  unRegisterPadding: (id: string) => void
+  getPadding: () => Padding
 }
 
 export const MapContext = createContext<MapContextInstance | undefined>(undefined)

@@ -133,6 +133,9 @@ export const SettingsScreen = () => {
   const expandStopsWhenScrolled = useSettingsStore(
     useShallow((state) => state.expandStopsWhenScrolled),
   )
+
+  const showLineCardStops = useSettingsStore(useShallow((state) => state.lineCardShowStops))
+
   const toggleMyLocation = useSettingsStore(useShallow((state) => state.toggleMyLocation))
   const showMyLocation = useSettingsStore(useShallow((state) => state.showMyLocation))
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
@@ -216,7 +219,7 @@ export const SettingsScreen = () => {
 
   return (
     <ScrollView
-      contentContainerClassName="gap-2 p-2 pt-safe"
+      contentContainerClassName="gap-2 p-2 pt-safe pb-[calc(var(--navigation-bar-height)+env(safe-area-inset-bottom)+var(--spacing)*2)]"
       showsVerticalScrollIndicator={false}
     >
       <SettingsSectionTitle
@@ -268,6 +271,16 @@ export const SettingsScreen = () => {
         label={t('expandStopsWhenScrolled')}
         value={expandStopsWhenScrolled}
         onPress={toggleExpandStopsWhenScrolled}
+      />
+
+      <ToggleSetting
+        label={t('showLineCardStops')}
+        value={showLineCardStops}
+        onPress={() => {
+          useSettingsStore.setState((state) => {
+            state.lineCardShowStops = !state.lineCardShowStops
+          })
+        }}
       />
 
       <OptionPicker

@@ -18,7 +18,7 @@ export const USwitch = ({ value }: { value: boolean }) => {
   ]
 
   useEffect(() => {
-    progress.value = withTiming(value ? 1 : 0, { duration: 100 })
+    progress.set(withTiming(value ? 1 : 0, { duration: 100 }))
   }, [value, progress])
 
   const thumbStyle = useAnimatedStyle(() => ({

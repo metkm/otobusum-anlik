@@ -19,11 +19,7 @@ const BusInfoItem = ({
 }) => (
   <View className="bg-muted h-14 flex-1 gap-1 rounded-md p-2">
     <View className="flex-row gap-1.5">
-      <UIcon
-        name={icon}
-        colorClassName="text-default"
-      />
-
+      <UIcon name={icon} />
       <UText className="font-inter-medium text-muted">{label}</UText>
     </View>
 

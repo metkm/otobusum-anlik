@@ -73,6 +73,7 @@ export default {
   save: 'Kaydet',
   searchPlaceholder: 'KM-12, KM-12...',
   settings: 'Ayarlar',
+  showLineCardStops: 'Hat duraklarını kart üzerinde göster',
   showMyLocation: 'Haritada konumumu göster',
   showTraffic: 'Haritada trafik bilgisini göster',
   shrink: 'Küçült',

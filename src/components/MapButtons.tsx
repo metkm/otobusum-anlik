@@ -44,7 +44,7 @@ export const MapButtons = (props: ViewProps) => {
       className={cn(
         'p-2 gap-2',
         lineCardExpanded || hideMap ? 'flex-row' : undefined,
-        mapButtonsPlacement === 'left' ? 'items-start justify-start' : 'items-end justify-end',
+        mapButtonsPlacement === 'left' ? 'mr-auto items-start' : 'ml-auto items-end justify-end',
       )}
       pointerEvents="box-none"
       {...props}
@@ -82,7 +82,6 @@ export const MapButtons = (props: ViewProps) => {
         layout={LinearTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
-        style={{ width: 'auto' }}
       >
         <UButton
           icon="radar"
@@ -115,7 +114,6 @@ export const MapButtons = (props: ViewProps) => {
           layout={LinearTransition}
           entering={EnterScaleIn}
           exiting={ExitScaleOut}
-          style={{ width: 'auto' }}
         >
           <UButton
             icon="repeat"

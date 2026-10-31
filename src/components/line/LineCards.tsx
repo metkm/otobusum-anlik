@@ -3,6 +3,7 @@ import Animated, { type SharedValue } from 'react-native-reanimated'
 
 import { useLineCardWidth, useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
+import { useMapPadding } from '@/composables/useMapPadding'
 import { ExitScaleOut, ItemLayoutAnimation } from '@/constants/animation'
 
 import { ThemeProvider } from '../ThemeProvider'
@@ -19,6 +20,7 @@ export const LineCards = ({
 }) => {
   const { cardWidth, snapInterval } = useLineCardWidth()
   const { codes } = useLineGroup()
+  const { onLayout } = useMapPadding('bottom')
 
   if (codes.length < 1) {
     return
@@ -30,6 +32,7 @@ export const LineCards = ({
       style={{ width }}
       contentClassName="gap-2 p-2 pt-0"
       className={className}
+      onLayout={onLayout}
     >
       {codes.map((code) => (
         <Animated.View

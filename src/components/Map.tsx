@@ -5,7 +5,7 @@ import {
   type LngLatBounds,
   type MapProps,
   type ViewStateChangeEvent,
-  Map as _Map,
+  Map as MapLibre,
 } from '@maplibre/maplibre-react-native'
 import type { NativeSyntheticEvent } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -43,7 +43,7 @@ export const Map = ({
 
   return (
     <Animated.View style={containerStyle}>
-      <_Map
+      <MapLibre
         ref={map}
         logo={false}
         attribution={false}
@@ -70,7 +70,7 @@ export const Map = ({
         />
 
         {children}
-      </_Map>
+      </MapLibre>
     </Animated.View>
   )
 }

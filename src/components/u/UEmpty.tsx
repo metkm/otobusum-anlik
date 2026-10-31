@@ -22,7 +22,6 @@ export const UEmpty = ({
       <UIcon
         name={icon}
         sizeClassName="size-6"
-        colorClassName="text-default"
         className="bg-muted rounded-md p-2"
       />
     )}

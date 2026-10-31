@@ -1,62 +1,110 @@
-import IonIcons from '@react-native-vector-icons/ionicons'
-import { Tabs } from 'expo-router'
-import type { ComponentProps } from 'react'
+import Ionicons from '@react-native-vector-icons/ionicons'
+import { Tabs, type Href } from 'expo-router'
+import { type ComponentProps } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import { useCSSVariable } from 'uniwind'
+import { useCSSVariable, withUniwind } from 'uniwind'
 
-import { cn } from '@/utils/cn'
+import { UButton } from '@/components/u/UButton'
+import { useMapPadding } from '@/composables/useMapPadding'
 
 const screens = [
   {
+    href: '/',
     icon: 'map-outline',
     iconActive: 'map',
     label: 'map',
     name: 'index',
   },
   {
+    href: '/timetable',
     icon: 'time-outline',
     iconActive: 'time',
     label: 'timetable',
     name: 'timetable',
   },
   {
+    href: '/settings',
     icon: 'settings-outline',
     iconActive: 'settings',
     label: 'settings',
     name: 'settings',
   },
-]
+] satisfies {
+  icon: ComponentProps<typeof Ionicons>['name']
+  iconActive: ComponentProps<typeof Ionicons>['name']
+  label: string
+  name: string
+  href: Href
+}[]
+
+const StyledIonicons = withUniwind(Ionicons)
 
 export const TabsLayout = () => {
-  const color = useCSSVariable('--text-color-default')?.toString()
   const { t } = useTranslation()
+  const { onLayout } = useMapPadding('bottom')
+
+  const color = useCSSVariable('--text-color-default')?.toString()
 
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs
+      screenOptions={{ headerShown: false }}
+      tabBar={({ descriptors, emitter, state, navigateToTab }) => (
+        <View
+          className="absolute bottom-0 flex-row bg-linear-to-t from-white/90 via-white/45 to-transparent dark:from-black/90 dark:via-black/85"
+          onLayout={onLayout}
+        >
+          {state.routes.map(({ key }, index) => {
+            const { options } = descriptors[key]!
+
+            let label = ''
+            if (options.tabBarLabel) {
+              if (typeof options.tabBarLabel === 'string') {
+                label = options.tabBarLabel
+              }
+            }
+
+            const isFocused = index === state.index
+
+            const onPress = () => {
+              const event = emitter.emit({
+                canPreventDefault: true,
+                type: 'tabPress',
+              })
+
+              if (!event.defaultPrevented) {
+                navigateToTab(key)
+              }
+            }
+
+            return (
+              <UButton
+                key={key}
+                label={label}
+                className="pb-safe-offset-2 flex-1 flex-col gap-0"
+                labelClassName="text-shadow-white dark:text-shadow-black text-shadow-lg"
+                variant="ghost"
+                color="neutral"
+                block
+                onPress={onPress}
+              >
+                <StyledIonicons
+                  name={isFocused ? screens[index]!.iconActive : screens[index]!.icon}
+                  colorClassName="accent-default"
+                  className="text-shadow-lg text-shadow-white dark:text-shadow-black"
+                  size={20}
+                />
+              </UButton>
+            )
+          })}
+        </View>
+      )}
+    >
       {screens.map((screen) => (
         <Tabs.Screen
           key={screen.name}
           name={screen.name}
           options={{
-            tabBarIcon: ({ focused }) => (
-              <View
-                className={cn(
-                  focused ? 'bg-muted border-hairline border-accented' : undefined,
-                  'w-12 h-6 rounded-md items-center justify-center',
-                )}
-              >
-                <IonIcons
-                  name={
-                    (focused ? screen.iconActive : screen.icon) as ComponentProps<
-                      typeof IonIcons
-                    >['name']
-                  }
-                  color={color}
-                  size={20}
-                />
-              </View>
-            ),
             tabBarLabel: t(screen.label),
             tabBarLabelStyle: {
               color,

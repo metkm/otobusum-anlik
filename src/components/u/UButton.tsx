@@ -147,6 +147,32 @@ const ui = tv({
   },
 })
 
+const Icon = ({
+  colorClassName,
+  sizeClassName,
+  loading,
+  icon,
+}: {
+  icon?: IconName
+  colorClassName: string
+  sizeClassName: string
+  loading?: boolean
+}) => {
+  if (loading) {
+    return <UActivityIndicator colorClassName={colorClassName} />
+  }
+
+  if (icon) {
+    return (
+      <UIcon
+        name={icon}
+        sizeClassName={sizeClassName}
+        colorClassName={colorClassName}
+      />
+    )
+  }
+}
+
 export const UButton = ({
   label,
   className,
@@ -189,22 +215,6 @@ export const UButton = ({
     navigation.navigate(to.pathname, to.params)
   }
 
-  const Icon = () => {
-    if (loading) {
-      return <UActivityIndicator colorClassName={uiIcon()} />
-    }
-
-    if (icon) {
-      return (
-        <UIcon
-          name={icon}
-          sizeClassName={uiIcon()}
-          colorClassName={uiLabel()}
-        />
-      )
-    }
-  }
-
   return (
     <StyledTouchable
       className={cn(uiBase(), className)}
@@ -216,7 +226,12 @@ export const UButton = ({
       disabled={disabled}
       {...props}
     >
-      <Icon />
+      <Icon
+        colorClassName={uiIcon()}
+        sizeClassName={uiIcon()}
+        icon={icon}
+        loading={loading}
+      />
 
       {children}
 
@@ -233,7 +248,7 @@ export const UButton = ({
         <UIcon
           name={trailingIcon}
           sizeClassName={uiIcon()}
-          colorClassName={uiLabel()}
+          colorClassName={uiIcon()}
           className="ml-auto"
         />
       )}
