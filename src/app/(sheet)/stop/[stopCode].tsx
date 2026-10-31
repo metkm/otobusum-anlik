@@ -24,7 +24,7 @@ import { ItemLayoutAnimation } from '@/constants/animation'
 
 export const StopScreen = () => {
   const { t } = useTranslation()
-  const { flyTo } = useMap()
+  const { easeTo } = useMap()
   const scrollableRef = useRef<ScrollViewInstance>(null)
   const navigation = useTrueSheetNavigation()
   const colorPrimary = useCSSVariable('--color-primary')?.toString()
@@ -55,9 +55,7 @@ export const StopScreen = () => {
       return
     }
 
-    flyTo({
-      center: [stopQuery.data.stop.lng, stopQuery.data.stop.lat],
-    })
+    easeTo([stopQuery.data.stop.lng, stopQuery.data.stop.lat])
   }
 
   return (

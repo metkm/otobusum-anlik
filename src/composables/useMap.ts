@@ -3,6 +3,7 @@ import type {
   CameraCenterOptions,
   CameraOptions,
   CameraRef,
+  LngLat,
   LngLatBounds,
   MapRef,
 } from '@maplibre/maplibre-react-native'
@@ -13,8 +14,9 @@ import type { Padding } from '@/components/MapProvider'
 export interface MapContextInstance {
   map: RefObject<MapRef | null>
   camera: RefObject<CameraRef | null>
+
   fitBounds: (bounds: LngLatBounds, options?: CameraOptions & CameraAnimationOptions) => void
-  flyTo: (bounds: CameraOptions & CameraCenterOptions & CameraAnimationOptions) => void
+  easeTo: (easeTo: LngLat, options?: CameraCenterOptions & CameraOptions & CameraAnimationOptions) => void
 
   registerPadding: (id: string, edge: keyof Padding, value: number) => void
   unRegisterPadding: (id: string) => void

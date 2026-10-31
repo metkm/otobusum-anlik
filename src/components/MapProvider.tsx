@@ -60,6 +60,13 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
   const value = useMemo<MapContextInstance>(
     () => ({
       camera,
+      easeTo: (center, options) => {
+        const padding = getPadding()
+
+        camera.current?.easeTo(
+          deepmerge({ center, duration: 750, padding, zoom: 14 }, options ?? {}),
+        )
+      },
       fitBounds: (bounds, _options) => {
         const padding = getPadding()
 
@@ -68,24 +75,12 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
           deepmerge(
             {
               duration: 750,
-              padding: {
-                bottom: padding.bottom,
-                left: padding.left,
-                right: padding.right,
-                top: padding.top,
-              },
+              padding,
               pitch: 0,
             },
             _options ?? {},
           ),
         )
-      },
-      flyTo: (options) => {
-        camera.current?.flyTo({
-          duration: 1000,
-          zoom: 14,
-          ...options,
-        })
       },
       getPadding,
       map,

@@ -34,7 +34,7 @@ const StopItem = ({
   closestToUser?: boolean
 }) => {
   const { buses } = useLineBuses()
-  const { flyTo } = useMap()
+  const { easeTo } = useMap()
   const { query: lineStopsQuery } = useLineStops()
 
   const closestBus = buses.find((bus) => {
@@ -51,9 +51,7 @@ const StopItem = ({
       return
     }
 
-    flyTo({
-      center: [closestBus.lng, closestBus.lat],
-    })
+    easeTo([closestBus.lng, closestBus.lat])
   }
 
   return (
@@ -196,6 +194,7 @@ export const LineCardStops = () => {
             closestToUser={closestStopToUser && item.id === closestStopToUser.id}
           />
         )}
+        className="border-b-hairline border-b-muted"
         contentContainerClassName="py-1.5"
         // @ts-expect-error
         style={containerStyle}

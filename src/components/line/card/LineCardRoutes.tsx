@@ -104,7 +104,7 @@ export const LineCardRoutes = () => {
   return (
     <Animated.View
       layout={LinearTransition}
-      className="border-t-hairline border-muted flex-row items-center gap-2 p-2"
+      className="flex-row items-center gap-2 p-2"
     >
       <View className="flex-row items-center gap-1.5 p-2">
         <UIcon
