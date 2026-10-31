@@ -4,7 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Animated, { createAnimatedComponent, LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLineGroup, useMap } from '@/composables'
+import { useLineGroup, useMap, useMapPadding } from '@/composables'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
 import { useLineStore, useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
@@ -25,6 +25,8 @@ export const MapButtons = (props: ViewProps) => {
   const changeRouteDirection = useLineStore(useShallow((state) => state.changeRouteDirection))
   const mapButtonsPlacement = useSettingsStore(useShallow((state) => state.mapButtonsPlacement))
 
+  const { onLayout } = useMapPadding(mapButtonsPlacement)
+
   const queryArea = async () => {
     if (!map.current) {
       return
@@ -41,10 +43,11 @@ export const MapButtons = (props: ViewProps) => {
   return (
     <Animated.View
       layout={LinearTransition}
+      onLayout={onLayout}
       className={cn(
         'p-2 gap-2',
         lineCardExpanded || hideMap ? 'flex-row' : undefined,
-        mapButtonsPlacement === 'left' ? 'items-start justify-start' : 'items-end justify-end',
+        mapButtonsPlacement === 'left' ? 'mr-auto' : 'ml-auto items-end justify-end',
       )}
       pointerEvents="box-none"
       {...props}
@@ -82,7 +85,6 @@ export const MapButtons = (props: ViewProps) => {
         layout={LinearTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
-        style={{ width: 'auto' }}
       >
         <UButton
           icon="radar"
@@ -115,7 +117,6 @@ export const MapButtons = (props: ViewProps) => {
           layout={LinearTransition}
           entering={EnterScaleIn}
           exiting={ExitScaleOut}
-          style={{ width: 'auto' }}
         >
           <UButton
             icon="repeat"

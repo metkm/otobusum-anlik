@@ -20,6 +20,6 @@ export default defineConfig({
     'one-var': 'off',
     'sort-imports': 'off',
     'unicorn/filename-case': 'off',
-    'unicorn/max-nested-calls': 'off',
+    'unicorn/max-nested-calls': 'off'
   },
 })

@@ -216,7 +216,7 @@ export const SettingsScreen = () => {
 
   return (
     <ScrollView
-      contentContainerClassName="gap-2 p-2 pt-safe pb-safe-offset-2"
+      contentContainerClassName="gap-2 p-2 pt-safe pb-[calc(var(--navigation-bar-height)+env(safe-area-inset-bottom)+var(--spacing)*2)]"
       showsVerticalScrollIndicator={false}
     >
       <SettingsSectionTitle

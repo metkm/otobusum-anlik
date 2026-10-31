@@ -138,6 +138,8 @@
 
   --color-primary: var(--ui-primary);
   --color-error: var(--ui-error);
+
+  --navigation-bar-height: 58.33px;
 }
 
 @utility border-hairline {

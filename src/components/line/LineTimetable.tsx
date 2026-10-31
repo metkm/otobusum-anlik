@@ -153,7 +153,7 @@ export const LineTimetable = () => {
   return (
     <View
       style={{ elevation: 2, width: cardWidth }}
-      className="bg-default border-hairline border-muted rounded-md"
+      className="bg-default border-hairline border-muted overflow-hidden rounded-md"
     >
       <View className="m-2 mb-0">
         <UText className="text-muted">{routeCode}</UText>

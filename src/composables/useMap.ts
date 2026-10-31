@@ -1,3 +1,4 @@
+import type { Padding } from '@/components/MapProvider'
 import type {
   CameraAnimationOptions,
   CameraCenterOptions,
@@ -13,6 +14,10 @@ export interface MapContextInstance {
   camera: RefObject<CameraRef | null>
   fitBounds: (bounds: LngLatBounds) => void
   flyTo: (bounds: CameraOptions & CameraCenterOptions & CameraAnimationOptions) => void
+
+  registerPadding: (id: string, edge: keyof Padding, value: number) => void
+  unRegisterPadding: (id: string) => void
+  getPadding: () => Padding
 }
 
 export const MapContext = createContext<MapContextInstance | undefined>(undefined)
