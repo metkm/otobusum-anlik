@@ -1,4 +1,3 @@
-import type { Padding } from '@/components/MapProvider'
 import type {
   CameraAnimationOptions,
   CameraCenterOptions,
@@ -8,6 +7,8 @@ import type {
   MapRef,
 } from '@maplibre/maplibre-react-native'
 import { createContext, use, type RefObject } from 'react'
+
+import type { Padding } from '@/components/MapProvider'
 
 export interface MapContextInstance {
   map: RefObject<MapRef | null>
