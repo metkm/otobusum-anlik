@@ -74,6 +74,7 @@ export default {
   save: 'Save',
   searchPlaceholder: 'KM-12, KM-12...',
   settings: 'Settings',
+  showLineCardStops: 'Show line card stops',
   showMyLocation: 'Show my location on the map',
   showTraffic: 'Show traffic information on the map',
   shrink: 'Shrink',
@@ -93,5 +94,5 @@ export default {
   wednesday: 'Wednesday',
   welcome: 'Welcome',
   workday: 'Workday',
-  zoomStopOnMap: 'Zoom on map',
+  zoomStopOnMap: 'Zoom on map'
 }
