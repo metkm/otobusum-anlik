@@ -52,7 +52,7 @@ export const UCarousel = ({
   const gesture = usePanGesture({
     activeOffsetX: [-25, 25],
     onActivate: () => {
-      offsetStart.value = offset.value
+      offsetStart.set(offset.value)
     },
     onDeactivate: ({ canceled, velocityX }) => {
       if (canceled) {
@@ -60,30 +60,32 @@ export const UCarousel = ({
       }
 
       if (offset.value < offsetLimit.value) {
-        offset.value = withSpring(offsetLimit.value)
+        offset.set(withSpring(offsetLimit.value))
         return
       }
 
       if (offset.value > 0) {
-        offset.value = withSpring(0)
+        offset.set(withSpring(0))
         return
       }
 
-      offset.value = withDecay(
-        {
-          clamp: [offsetLimit.value, 0],
-          velocity: velocityX,
-        },
-        () => {
-          if (!snapInterval) {
-            return
-          }
+      offset.set(
+        withDecay(
+          {
+            clamp: [offsetLimit.value, 0],
+            velocity: velocityX,
+          },
+          () => {
+            if (!snapInterval) {
+              return
+            }
 
-          const clamped = clamp(offset.value, offsetLimit.value, 0)
-          const rounded = roundToStep(clamped, snapInterval)
+            const clamped = clamp(offset.value, offsetLimit.value, 0)
+            const rounded = roundToStep(clamped, snapInterval)
 
-          offset.value = withSpring(clamp(rounded, offsetLimit.value, 0)) // Clamped twice to remove padding on last element
-        },
+            offset.value = withSpring(clamp(rounded, offsetLimit.value, 0)) // Clamped twice to remove padding on last element
+          },
+        ),
       )
     },
     onUpdate: ({ translationX }) => {
@@ -94,7 +96,7 @@ export const UCarousel = ({
         newOffset = offsetStart.value + dampen(Math.abs(translationX)) * offsetModifier
       }
 
-      offset.value = newOffset
+      offset.set(newOffset)
     },
   })
 
@@ -107,7 +109,7 @@ export const UCarousel = ({
     () => {
       const limit = Math.min(0, -(contentWidth.value - width))
       if (offset.value < limit) {
-        offset.value = withSpring(limit)
+        offset.set(withSpring(limit))
       }
     },
   )

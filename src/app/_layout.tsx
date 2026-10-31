@@ -73,7 +73,7 @@ const RootContent = () => {
             <Sheet.Screen name="(sheet)/stop/[stopCode]" />
             <Sheet.Screen
               name="(sheet)/markers/nearby"
-              options={{ detents: [0.5, 'auto'], dimmed: false }}
+              options={{ detents: [0.5, 0.8], dimmed: false }}
             />
           </Sheet>
         </MapProvider>

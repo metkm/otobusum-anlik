@@ -57,8 +57,7 @@ const GroupItem = ({
           {selected && (
             <UIcon
               name="check"
-              sizeClassName="size-5"
-              colorClassName="text-inverted"
+              colorClassName="accent-inverted"
             />
           )}
         </View>

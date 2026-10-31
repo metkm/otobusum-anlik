@@ -127,7 +127,7 @@ export const SearchScreen = () => {
 
         <UInput
           ref={inputRef}
-          autoFocus={true}
+          autoFocus
           placeholder={t('searchPlaceholder')}
           onChangeText={(q) => setQuery(q)}
           loading={searchQuery.isFetching}

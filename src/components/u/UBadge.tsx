@@ -11,6 +11,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-primary',
+        icon: 'accent-inverted',
         label: 'text-inverted',
       },
       color: 'primary',
@@ -19,6 +20,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-primary/10',
+        icon: 'accent-primary',
         label: 'text-primary',
       },
       color: 'primary',
@@ -27,6 +29,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-neutral-muted',
+        icon: 'accent-neutral-default',
         label: 'text-neutral-default',
       },
       color: 'neutral',
@@ -35,6 +38,7 @@ const ui = tv({
     {
       className: {
         base: 'border-hairline border-primary/25 bg-primary/10 rounded-full',
+        icon: 'accent-primary',
         label: 'text-primary',
       },
       color: 'primary',
@@ -95,7 +99,7 @@ export const UBadge = ({
         <UIcon
           name={icon}
           sizeClassName={uiIcon()}
-          colorClassName={uiLabel()}
+          colorClassName={uiIcon()}
         />
       )}
 

@@ -6,7 +6,7 @@ import { type VariantProps } from 'tailwind-variants'
 import { cn, tv } from '@/utils/cn'
 
 import { UActivityIndicator } from './UActivityIndicator'
-import { UIcon } from './UIcon'
+import { IconName, UIcon } from './UIcon'
 
 const ui = tv({
   slots: {
@@ -21,6 +21,32 @@ const ui = tv({
   },
 })
 
+const Icon = ({
+  colorClassName,
+  loading,
+  sizeClassName,
+  icon,
+}: {
+  icon?: IconName
+  colorClassName: string
+  sizeClassName: string
+  loading?: boolean
+}) => {
+  if (loading) {
+    return <UActivityIndicator colorClassName={colorClassName} />
+  }
+
+  if (icon) {
+    return (
+      <UIcon
+        name={icon}
+        sizeClassName={sizeClassName}
+        colorClassName={colorClassName}
+      />
+    )
+  }
+}
+
 export const UInput = ({
   variant = 'outline',
   className,
@@ -31,27 +57,11 @@ export const UInput = ({
   ...props
 }: {
   variant?: VariantProps<typeof ui>['variant']
-  icon?: ComponentProps<typeof UIcon>['name']
+  icon?: IconName
   loading?: boolean
   containerClassName?: string
 } & ComponentProps<TextInput>) => {
   const { base: uiBase, icon: uiIcon } = ui({ variant })
-
-  const Icon = () => {
-    if (loading) {
-      return <UActivityIndicator className="absolute left-2.5" />
-    }
-
-    if (icon) {
-      return (
-        <UIcon
-          name={icon}
-          colorClassName={uiIcon()}
-          className="absolute left-2.5"
-        />
-      )
-    }
-  }
 
   return (
     <View className={cn('relative flex-row items-center', containerClassName)}>
@@ -60,7 +70,13 @@ export const UInput = ({
         {...props}
       />
 
-      <Icon />
+      <View className="absolute left-2.5">
+        <Icon
+          colorClassName={uiIcon()}
+          sizeClassName={uiIcon()}
+          icon={icon}
+        />
+      </View>
 
       {children}
     </View>

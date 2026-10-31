@@ -44,9 +44,9 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
 
   const getPadding = useCallback(() => {
     const result: Padding = {
-      bottom: 25,
-      left: insets.left + 25,
-      right: insets.right + 25,
+      bottom: insets.bottom + 25,
+      left: insets.left + 50,
+      right: insets.right + 50,
       top: insets.top + 25,
     }
 
@@ -55,7 +55,7 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return result
-  }, [paddingRef])
+  }, [paddingRef, insets.bottom, insets.left, insets.right, insets.top])
 
   const value = useMemo<MapContextInstance>(
     () => ({
@@ -92,7 +92,7 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
       registerPadding,
       unRegisterPadding,
     }),
-    [map, camera, getPadding, registerPadding],
+    [map, camera, getPadding, registerPadding, unRegisterPadding],
   )
 
   return <MapContext value={value}>{children}</MapContext>

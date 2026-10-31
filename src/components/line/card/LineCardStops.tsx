@@ -69,7 +69,7 @@ const StopItem = ({
         <View className="outline-muted mx-1 size-7 items-center justify-center rounded-full outline-2 outline-offset-2">
           <UIcon
             name={closestBus ? 'bus-front' : 'map-pin'}
-            colorClassName={closestBus ? 'text-primary' : 'text-muted/15'}
+            colorClassName={closestBus ? 'accent-primary' : 'accent-muted/15'}
             sizeClassName="size-4"
           />
         </View>
