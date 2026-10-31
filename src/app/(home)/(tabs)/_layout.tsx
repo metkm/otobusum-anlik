@@ -1,13 +1,13 @@
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { Tabs, type Href } from 'expo-router'
-import { useEffect, type ComponentProps } from 'react'
+import { useEffect, useState, type ComponentProps } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable, withUniwind } from 'uniwind'
 
 import { UButton } from '@/components/u/UButton'
-import { useBottomTabHeight } from '@/composables/useBottomTabHeight'
+import { BottomTabHeightContext } from '@/composables/useBottomTabHeight'
 
 const screens = [
   {
@@ -43,31 +43,27 @@ const StyledIonicons = withUniwind(Ionicons)
 
 export const TabsLayout = () => {
   const { t } = useTranslation()
-  const bottomTabHeight = useBottomTabHeight()
+  const [height, setHeight] = useState(0)
   const insets = useSafeAreaInsets()
 
   useEffect(() => {
     Uniwind.updateInsets({
       ...insets,
-      bottom: bottomTabHeight?.height ?? 0,
+      bottom: height,
     })
-  }, [bottomTabHeight?.height])
+  }, [height])
 
   const color = useCSSVariable('--text-color-default')?.toString()
 
   return (
-    <Tabs
-      screenOptions={{ headerShown: false }}
-      tabBar={({ descriptors, insets, emitter, state, navigateToTab }) => {
-        console.log('tabbar')
-
-        return (
+    <BottomTabHeightContext value={height}>
+      <Tabs
+        screenOptions={{ headerShown: false }}
+        tabBar={({ descriptors, insets, emitter, state, navigateToTab }) => (
           <View
-            className="absolute bottom-0 flex-row bg-linear-to-t from-black to-transparent"
+            className="from-default absolute bottom-0 flex-row bg-linear-to-t to-transparent dark:from-black"
             onLayout={({ nativeEvent }) => {
-              if (bottomTabHeight) {
-                bottomTabHeight.setHeight(nativeEvent.layout.height)
-              }
+              setHeight(nativeEvent.layout.height)
             }}
           >
             {state.routes.map(({ key }, index) => {
@@ -98,6 +94,7 @@ export const TabsLayout = () => {
                   key={key}
                   label={label}
                   className="flex-1 flex-col gap-0"
+                  labelClassName="text-shadow-xs text-shadow-default dark:text-shadow-black/50"
                   style={{ paddingBottom: insets.bottom }}
                   variant="ghost"
                   color="neutral"
@@ -107,46 +104,29 @@ export const TabsLayout = () => {
                   <StyledIonicons
                     name={isFocused ? screens[index]!.iconActive : screens[index]!.icon}
                     colorClassName="accent-default"
-                    size={18}
+                    className="text-shadow-default font-bold text-shadow-xs dark:text-shadow-black/50"
+                    size={20}
                   />
                 </UButton>
               )
             })}
           </View>
-        )
-      }}
-    >
-      {screens.map((screen) => (
-        <Tabs.Screen
-          key={screen.name}
-          name={screen.name}
-          options={{
-            // tabBarIcon: ({ focused }) => (
-            //   <View
-            //     className={cn(
-            //       focused ? 'bg-muted border-hairline border-accented' : undefined,
-            //       'w-12 h-6 rounded-md items-center justify-center',
-            //     )}
-            //   >
-            //     <Ionicons
-            //       name={
-            //         (focused ? screen.iconActive : screen.icon) as ComponentProps<
-            //           typeof Ionicons
-            //         >['name']
-            //       }
-            //       color={color}
-            //       size={20}
-            //     />
-            //   </View>
-            // ),
-            tabBarLabel: t(screen.label),
-            tabBarLabelStyle: {
-              color,
-            },
-          }}
-        />
-      ))}
-    </Tabs>
+        )}
+      >
+        {screens.map((screen) => (
+          <Tabs.Screen
+            key={screen.name}
+            name={screen.name}
+            options={{
+              tabBarLabel: t(screen.label),
+              tabBarLabelStyle: {
+                color,
+              },
+            }}
+          />
+        ))}
+      </Tabs>
+    </BottomTabHeightContext>
   )
 }
 

@@ -1,8 +1,6 @@
-import { createContext, use, type SetStateAction, type Dispatch } from 'react'
+import { createContext, use } from 'react'
 
-export const BottomTabHeightContext = createContext<
-  { height: number; setHeight: Dispatch<SetStateAction<number>> } | undefined
->(undefined)
+export const BottomTabHeightContext = createContext<number>(0)
 
 export const useBottomTabHeight = () => {
   const context = use(BottomTabHeightContext)

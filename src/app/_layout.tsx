@@ -11,10 +11,8 @@ import { SafeAreaListener } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
 import { persister, queryClient } from '@/api/client'
-import { BottomTabHeightProvider } from '@/components/BottomTabHeightProvider'
 import { MapProvider } from '@/components/MapProvider'
 import { useColorScheme } from '@/composables'
-import { useBottomTabHeight } from '@/composables/useBottomTabHeight'
 import { useSettingsStore } from '@/stores'
 import i18n from '@/translations/i18n'
 
@@ -26,7 +24,6 @@ const RootContent = () => {
   const backgroundColor = useCSSVariable('--ui-bg')?.toString()
   const spacing = useCSSVariable('--spacing') as number
   const colorScheme = useColorScheme()
-  const bottomTabHeight = useBottomTabHeight()
 
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
@@ -105,9 +102,7 @@ export const RootLayout = () => {
         <StatusBar style="auto" />
 
         <GestureHandlerRootView style={{ backgroundColor: background as string, flexGrow: 1 }}>
-          <BottomTabHeightProvider>
-            <RootContent />
-          </BottomTabHeightProvider>
+          <RootContent />
         </GestureHandlerRootView>
       </PersistQueryClientProvider>
     </I18nextProvider>
