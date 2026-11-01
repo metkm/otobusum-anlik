@@ -173,6 +173,16 @@ const Icon = ({
   }
 }
 
+interface UButtonProps extends VariantProps<typeof ui>, TouchableProps {
+  label?: string
+  icon?: IconName
+  trailingIcon?: IconName
+  to?: { pathname: string; params?: object }
+  disabled?: boolean
+  loading?: boolean
+  labelClassName?: string
+}
+
 export const UButton = ({
   label,
   className,
@@ -189,16 +199,7 @@ export const UButton = ({
   loading,
   labelClassName,
   ...props
-}: TouchableProps &
-  VariantProps<typeof ui> & {
-    label?: string
-    icon?: IconName
-    trailingIcon?: IconName
-    to?: { pathname: string; params?: object }
-    disabled?: boolean
-    loading?: boolean
-    labelClassName?: string
-  }) => {
+}: UButtonProps) => {
   const navigation = useTrueSheetNavigation()
 
   const {

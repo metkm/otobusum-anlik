@@ -1,4 +1,4 @@
-import React, { createContext, use } from 'react'
+import { createContext, ReactNode, use } from 'react'
 import { Dimensions, type ViewProps } from 'react-native'
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler'
 import Animated, {
@@ -29,17 +29,19 @@ const roundToStep = (x: number, step: number) => {
 
 export const CarouselContext = createContext<SharedValue<number> | undefined>(undefined)
 
+interface UCarouselProps extends ViewProps {
+  snapInterval?: number
+  children?: ReactNode
+  contentClassName?: string
+}
+
 export const UCarousel = ({
   snapInterval,
   children,
   className,
   contentClassName,
   ...props
-}: {
-  snapInterval?: number
-  children?: React.ReactNode
-  contentClassName?: string
-} & ViewProps) => {
+}: UCarouselProps) => {
   const carouselContext = use(CarouselContext)
   const internalOffset = useSharedValue(0)
 

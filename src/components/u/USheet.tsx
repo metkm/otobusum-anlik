@@ -7,12 +7,12 @@ import { cn } from '@/utils/cn'
 
 const StyledGestureHandlerRootView = withUniwind(GestureHandlerRootView)
 
-export const USheet = ({
-  ref,
-  contentContainerClassName,
-  children,
-  ...props
-}: { ref: RefObject<TrueSheet | null>; contentContainerClassName?: string } & TrueSheetProps) => {
+interface USheetProps extends TrueSheetProps {
+  ref: RefObject<TrueSheet | null>
+  contentContainerClassName?: string
+}
+
+export const USheet = ({ ref, contentContainerClassName, children, ...props }: USheetProps) => {
   const backgroundColor = useCSSVariable('--background-color-default')?.toString()
   const spacing = useCSSVariable('--spacing') as number
 

@@ -1,7 +1,7 @@
 import type { TrueSheet } from '@lodev09/react-native-true-sheet'
 import Constants from 'expo-constants'
 import { Image } from 'expo-image'
-import { useRef, type ComponentProps } from 'react'
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -10,7 +10,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { queryCache } from '@/api/client'
 import { UButton } from '@/components/u/UButton'
-import { UIcon } from '@/components/u/UIcon'
+import { IconName, UIcon } from '@/components/u/UIcon'
 import { USheet } from '@/components/u/USheet'
 import { USwitch } from '@/components/u/USwitch'
 import { UText } from '@/components/u/UText'
@@ -113,13 +113,7 @@ export const OptionPicker = <T,>({
   )
 }
 
-const SettingsSectionTitle = ({
-  icon,
-  title,
-}: {
-  icon: ComponentProps<typeof UIcon>['name']
-  title: string
-}) => (
+const SettingsSectionTitle = ({ icon, title }: { icon: IconName; title: string }) => (
   <View className="bg-muted -mx-2 flex-row items-center gap-2 p-2 px-5">
     <UIcon name={icon} />
     <UText className="font-inter-semibold">{title}</UText>

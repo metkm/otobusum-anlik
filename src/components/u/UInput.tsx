@@ -1,5 +1,5 @@
-import type { ComponentProps } from 'react'
-import { View } from 'react-native'
+import { Ref } from 'react'
+import { TextInputInstance, TextInputProps, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { type VariantProps } from 'tailwind-variants'
 
@@ -47,6 +47,14 @@ const Icon = ({
   }
 }
 
+interface UInputProps extends TextInputProps {
+  ref?: Ref<TextInputInstance>
+  variant?: VariantProps<typeof ui>['variant']
+  icon?: IconName
+  loading?: boolean
+  containerClassName?: string
+}
+
 export const UInput = ({
   variant = 'outline',
   className,
@@ -55,12 +63,7 @@ export const UInput = ({
   containerClassName,
   children,
   ...props
-}: {
-  variant?: VariantProps<typeof ui>['variant']
-  icon?: IconName
-  loading?: boolean
-  containerClassName?: string
-} & ComponentProps<TextInput>) => {
+}: UInputProps) => {
   const { base: uiBase, icon: uiIcon } = ui({ variant })
 
   return (

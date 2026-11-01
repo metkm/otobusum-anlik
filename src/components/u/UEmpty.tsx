@@ -1,9 +1,8 @@
-import type { ComponentProps } from 'react'
 import { View } from 'react-native'
 
 import { cn } from '@/utils/cn'
 
-import { UIcon } from './UIcon'
+import { IconName, UIcon } from './UIcon'
 import { UText } from './UText'
 
 export const UEmpty = ({
@@ -13,7 +12,7 @@ export const UEmpty = ({
   className,
 }: {
   title: string
-  icon?: ComponentProps<typeof UIcon>['name']
+  icon?: IconName
   description?: string
   className?: string
 }) => (

@@ -35,7 +35,7 @@ export interface LineRouteSlice {
   changeRouteDirection: (code: string) => void
 }
 
-type LineStore = LineCodeSlice & LineRouteSlice
+interface LineStore extends LineCodeSlice, LineRouteSlice { }
 
 const createLineCodeSlice = immer<LineCodeSlice>((set) => ({
   addLine: (code, groupId) =>

@@ -79,18 +79,13 @@ const ui = tv({
   },
 })
 
-export const UBadge = ({
-  label,
-  icon,
-  color,
-  variant,
-  className,
-  size,
-}: {
+interface UBadgeProps extends VariantProps<typeof ui> {
   label?: string
   icon?: IconName
   className?: string
-} & VariantProps<typeof ui>) => {
+}
+
+export const UBadge = ({ label, icon, color, variant, className, size }: UBadgeProps) => {
   const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, size, variant })
 
   return (

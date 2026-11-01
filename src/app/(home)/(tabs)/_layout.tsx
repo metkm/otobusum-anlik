@@ -8,6 +8,8 @@ import { Uniwind, useCSSVariable, useUniwind, withUniwind } from 'uniwind'
 import { UButton } from '@/components/u/UButton'
 import { useMapPadding } from '@/composables/useMapPadding'
 
+type IconName = ComponentProps<typeof Ionicons>['name']
+
 const screens = [
   {
     href: '/',
@@ -31,8 +33,8 @@ const screens = [
     name: 'settings',
   },
 ] satisfies {
-  icon: ComponentProps<typeof Ionicons>['name']
-  iconActive: ComponentProps<typeof Ionicons>['name']
+  icon: IconName
+  iconActive: IconName
   label: string
   name: string
   href: Href

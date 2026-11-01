@@ -10,17 +10,17 @@ interface MarkerCollectionBaseProps {
   data?: string | GeoJSON<Geometry, GeoJsonProperties>
 }
 
-export type MarkerCollection = (
-  | {
-      layerProps: LayerProps
-      renderer: 'layer'
-    }
-  | {
-      renderer: 'stops' | 'route'
-      layerProps?: LayerProps
-    }
-) &
-  MarkerCollectionBaseProps
+interface MarkerCollectionLayer extends MarkerCollectionBaseProps {
+  renderer: 'layer'
+  layerProps: LayerProps
+}
+
+interface MarkerCollectionStopsRoute extends MarkerCollectionBaseProps {
+  renderer: 'stops' | 'route'
+  layerProps?: LayerProps
+}
+
+export type MarkerCollection = MarkerCollectionLayer | MarkerCollectionStopsRoute
 
 interface TemporaryMarkerStore {
   data: MarkerCollection[]

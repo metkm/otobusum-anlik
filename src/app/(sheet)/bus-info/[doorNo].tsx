@@ -45,12 +45,6 @@ const BusInfo = () => {
         query={query}
         fetching={() => [1, 2].map((i) => <SkeletonBusInfo key={i} />)}
       >
-        {/* <BusInfoItem
-          label={t('operator')}
-          value={query.data?.operator}
-          icon="circle-user"
-        /> */}
-
         <BusInfoItem
           label={t('plate')}
           value={query.data?.plate}
@@ -62,14 +56,6 @@ const BusInfo = () => {
           value={`${query.data?.speed} km/h`}
           icon="gauge"
         />
-
-        {/* {query.data?.garage && (
-          <BusInfoItem
-            label={t('garage')}
-            value={query.data.garage}
-            icon="van"
-          />
-        )} */}
       </UQueryState>
     </View>
   )

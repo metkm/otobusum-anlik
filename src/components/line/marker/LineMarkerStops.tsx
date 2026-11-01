@@ -7,10 +7,11 @@ import { useShallow } from 'zustand/react/shallow'
 import { useLine, useLineStops } from '@/composables'
 import { useFilterStore } from '@/stores'
 
-export const LineMarkerStopLayer = ({
-  isHidden,
-  ...props
-}: { isHidden?: boolean } & Omit<Extract<LayerProps, { type: 'circle' }>, 'style' | 'type'>) => (
+interface StopLayerProps extends Omit<Extract<LayerProps, { type: 'circle' }>, 'style' | 'type'> {
+  isHidden?: boolean
+}
+
+export const LineMarkerStopLayer = ({ isHidden, ...props }: StopLayerProps) => (
   <Layer
     type="circle"
     paint={{

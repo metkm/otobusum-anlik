@@ -3,7 +3,7 @@ import {
   Camera,
   type CameraProps,
   type LngLatBounds,
-  type MapProps,
+  type MapProps as _MapProps,
   type ViewStateChangeEvent,
   Map as MapLibre,
 } from '@maplibre/maplibre-react-native'
@@ -18,11 +18,12 @@ import { useSettingsStore } from '../stores/settings'
 // So compiler is not upset
 const getInitialMapBounds = () => useSettingsStore.getState().initialMapBounds
 
-export const Map = ({
-  children,
-  onDidFinishLoadingMap,
-  ...props
-}: { initialMapBounds?: LngLatBounds; cameraProps?: CameraProps } & Omit<MapProps, 'mapStyle'>) => {
+interface MapProps extends Omit<_MapProps, 'mapStyle'> {
+  initialMapBounds?: LngLatBounds
+  cameraProps?: CameraProps
+}
+
+export const Map = ({ children, onDidFinishLoadingMap, ...props }: MapProps) => {
   const { camera, map } = useMap()
   const { style: mapStyle } = useMapStyle()
   const navigation = useTrueSheetNavigation()
