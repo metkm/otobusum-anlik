@@ -11,10 +11,9 @@ import { createContext, use, type RefObject } from 'react'
 
 import type { Padding } from '@/components/MapProvider'
 
-interface FitBoundsOptionsProps extends CameraOptions, CameraAnimationOptions { }
+interface FitBoundsOptionsProps extends CameraOptions, CameraAnimationOptions {}
 
-interface EaseToOptionsProps
-  extends CameraCenterOptions, CameraOptions, CameraAnimationOptions { }
+interface EaseToOptionsProps extends CameraCenterOptions, CameraOptions, CameraAnimationOptions {}
 
 export interface MapContextInstance {
   map: RefObject<MapRef | null>
