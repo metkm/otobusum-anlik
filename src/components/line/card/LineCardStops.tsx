@@ -37,6 +37,8 @@ const StopItem = ({
   const { easeTo } = useMap()
   const { query: lineStopsQuery } = useLineStops()
 
+  const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
+
   const closestBus = buses.find((bus) => {
     if (!lineStopsQuery.data) {
       return false
@@ -93,11 +95,13 @@ const StopItem = ({
 
       {closestBus && (
         <View className="flex-row gap-2 pr-2">
-          <UButton
-            icon="locate-fixed"
-            variant="soft"
-            onPress={goToBus}
-          />
+          {!hideMap && (
+            <UButton
+              icon="locate-fixed"
+              variant="soft"
+              onPress={goToBus}
+            />
+          )}
 
           <UButton
             icon="info"

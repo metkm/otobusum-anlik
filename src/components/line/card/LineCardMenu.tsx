@@ -28,6 +28,7 @@ export const LineCardMenu = () => {
   const deleteLine = useLineStore(useShallow((state) => state.deleteLine))
   const createTheme = useThemeStore(useShallow((state) => state.createTheme))
   const lineCardExpanded = useSettingsStore(useShallow((state) => state.lineCardExpanded))
+  const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
 
   const menuSheet = useRef<TrueSheet>(null)
   const announcementsSheet = useRef<TrueSheet>(null)
@@ -54,20 +55,24 @@ export const LineCardMenu = () => {
 
   return (
     <>
-      <UButton
-        icon="zoom-in"
-        variant="ghost"
-        color="neutral"
-        onPress={zoomToLine}
-        disabled={!route?.path || route.path.length < 1}
-      />
+      {!hideMap && (
+        <>
+          <UButton
+            icon="zoom-in"
+            variant="ghost"
+            color="neutral"
+            onPress={zoomToLine}
+            disabled={!route?.path || route.path.length < 1}
+          />
 
-      <UButton
-        icon={isLineHidden ? 'eye-closed' : 'eye'}
-        onPress={() => toggleLineHidden(code)}
-        variant="ghost"
-        color="neutral"
-      />
+          <UButton
+            icon={isLineHidden ? 'eye-closed' : 'eye'}
+            onPress={() => toggleLineHidden(code)}
+            variant="ghost"
+            color="neutral"
+          />
+        </>
+      )}
 
       {news.length > 0 && (
         <UButton

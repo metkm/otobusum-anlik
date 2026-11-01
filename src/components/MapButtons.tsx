@@ -78,21 +78,23 @@ export const MapButtons = (props: ViewProps) => {
         </AnimatedGestureHandlerRootView>
       )}
 
-      <AnimatedGestureHandlerRootView
-        layout={LinearTransition}
-        entering={EnterScaleIn}
-        exiting={ExitScaleOut}
-        style={{ display: 'flex' }}
-      >
-        <UButton
-          icon="radar"
-          onPress={queryArea}
-          size="lg"
-          color="neutral"
-          variant="subtle"
-          style={{ elevation: 1 }}
-        />
-      </AnimatedGestureHandlerRootView>
+      {!hideMap && (
+        <AnimatedGestureHandlerRootView
+          layout={LinearTransition}
+          entering={EnterScaleIn}
+          exiting={ExitScaleOut}
+          style={{ display: 'flex' }}
+        >
+          <UButton
+            icon="radar"
+            onPress={queryArea}
+            size="lg"
+            color="neutral"
+            variant="subtle"
+            style={{ elevation: 1 }}
+          />
+        </AnimatedGestureHandlerRootView>
+      )}
 
       <AnimatedGestureHandlerRootView
         layout={LinearTransition}
