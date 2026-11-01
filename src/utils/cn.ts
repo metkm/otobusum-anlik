@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx'
 import { extendTailwindMerge } from 'tailwind-merge'
-import { createTV } from 'tailwind-variants'
+import { createTV } from 'tailwind-variants/config'
 
 const config = {
   extend: {
