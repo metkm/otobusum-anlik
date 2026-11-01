@@ -3,7 +3,7 @@ import { Tabs, type Href } from 'expo-router'
 import { type ComponentProps } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import { useCSSVariable, withUniwind } from 'uniwind'
+import { Uniwind, useCSSVariable, useUniwind, withUniwind } from 'uniwind'
 
 import { UButton } from '@/components/u/UButton'
 import { useMapPadding } from '@/composables/useMapPadding'
@@ -43,16 +43,22 @@ const StyledIonicons = withUniwind(Ionicons)
 export const TabsLayout = () => {
   const { t } = useTranslation()
   const { onLayout } = useMapPadding('bottom')
+  const { theme } = useUniwind()
 
   const color = useCSSVariable('--text-color-default')?.toString()
 
   return (
     <Tabs
       screenOptions={{ headerShown: false }}
-      tabBar={({ descriptors, emitter, state, navigateToTab }) => (
+      tabBar={({ descriptors, emitter, state, insets, navigateToTab }) => (
         <View
           className="absolute bottom-0 flex-row bg-linear-to-t from-white/90 via-white/45 to-transparent dark:from-black/90 dark:via-black/85"
-          onLayout={onLayout}
+          onLayout={(event) => {
+            Uniwind.updateCSSVariables(theme, {
+              '--navigation-height': event.nativeEvent.layout.height - insets.bottom,
+            })
+            onLayout(event)
+          }}
         >
           {state.routes.map(({ key }, index) => {
             const { options } = descriptors[key]!
