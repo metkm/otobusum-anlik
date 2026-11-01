@@ -47,12 +47,9 @@ export const LineCardMenu = () => {
     }
 
     const bounds = getLatLngBounds(route.path)
-
-    if (!bounds) {
-      return
+    if (bounds) {
+      fitBounds(bounds)
     }
-
-    fitBounds(bounds)
   }
 
   return (

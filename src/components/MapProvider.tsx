@@ -51,7 +51,8 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     for (const contribution of paddingRef.current.values()) {
-      result[contribution.edge] = Math.max(result[contribution.edge], contribution.value)
+      result[contribution.edge] += contribution.value
+      // result[contribution.edge] = Math.max(result[contribution.edge], contribution.value)
     }
 
     return result

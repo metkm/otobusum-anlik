@@ -20,7 +20,7 @@ export const LineCards = ({
 }) => {
   const { cardWidth, snapInterval } = useLineCardWidth()
   const { codes } = useLineGroup()
-  const { onLayout } = useMapPadding('bottom')
+  const { onLayout } = useMapPadding('lineCards', 'bottom')
 
   if (codes.length < 1) {
     return

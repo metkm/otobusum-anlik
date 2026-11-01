@@ -54,7 +54,7 @@ export const MapButtons = (props: ViewProps) => {
           layout={LinearTransition}
           entering={EnterScaleIn}
           exiting={ExitScaleOut}
-          style={{ width: 'auto' }}
+          style={{ display: 'flex' }}
         >
           <UButton
             icon="compass"
@@ -82,6 +82,7 @@ export const MapButtons = (props: ViewProps) => {
         layout={LinearTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
+        style={{ display: 'flex' }}
       >
         <UButton
           icon="radar"
@@ -97,7 +98,7 @@ export const MapButtons = (props: ViewProps) => {
         layout={LinearTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
-        style={{ width: 'auto' }}
+        style={{ display: 'flex' }}
       >
         <UButton
           icon="search"
@@ -114,6 +115,7 @@ export const MapButtons = (props: ViewProps) => {
           layout={LinearTransition}
           entering={EnterScaleIn}
           exiting={ExitScaleOut}
+          style={{ display: 'flex' }}
         >
           <UButton
             icon="repeat"
@@ -132,7 +134,7 @@ export const MapButtons = (props: ViewProps) => {
         layout={LinearTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
-        style={{ maxWidth: '75%' }}
+        style={{ display: 'flex', maxWidth: '75%' }}
       >
         <UButton
           icon="component"

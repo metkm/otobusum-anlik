@@ -42,7 +42,7 @@ const StyledIonicons = withUniwind(Ionicons)
 
 export const TabsLayout = () => {
   const { t } = useTranslation()
-  const { onLayout } = useMapPadding('bottom')
+  const { onLayout } = useMapPadding('navigationTabs', 'bottom')
   const { theme } = useUniwind()
 
   const color = useCSSVariable('--text-color-default')?.toString()

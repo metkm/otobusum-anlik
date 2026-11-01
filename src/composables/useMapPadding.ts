@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useId } from 'react'
+import { useCallback, useEffect } from 'react'
 import type { LayoutChangeEvent } from 'react-native'
 
 import type { Padding } from '@/components/MapProvider'
 
 import { useMap } from './useMap'
 
-export const useMapPadding = (edge: keyof Padding) => {
-  const id = useId()
+export const useMapPadding = (id: string, edge: keyof Padding) => {
   const { registerPadding, unRegisterPadding } = useMap()
 
   const onLayout = useCallback(
