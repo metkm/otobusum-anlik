@@ -163,6 +163,7 @@ export const StopScreen = () => {
           getFixedItemSize={() => 64.33}
           style={{ flex: 1 }}
           recycleItems
+          contentContainerStyle={{ gap: 8 }}
           renderItem={({ item: arrival }) => (
             <View
               key={arrival.stop_order}
@@ -173,7 +174,7 @@ export const StopScreen = () => {
                 sizeClassName="size-6"
               />
 
-              <View className="flex-1">
+              <View className="flex-1 gap-1">
                 <ThemeProvider code={arrival.line_code}>
                   <View className="flex-row items-center gap-2">
                     <UBadge label={arrival.line_code} />
