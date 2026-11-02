@@ -1,10 +1,10 @@
+import { usePathname } from 'expo-router'
 import type { ViewProps } from 'react-native'
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
-import { usePathname } from 'expo-router'
 
 export const MapOverlay = ({ className, ...props }: ViewProps) => {
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
