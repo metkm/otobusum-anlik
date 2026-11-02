@@ -4,10 +4,16 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
+import { usePathname } from 'expo-router'
 
 export const MapOverlay = ({ className, ...props }: ViewProps) => {
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
   const lineCardExpanded = useSettingsStore(useShallow((state) => state.lineCardExpanded))
+  const pathname = usePathname()
+
+  if (pathname === '/markers/nearby') {
+    return
+  }
 
   return (
     <Animated.View
