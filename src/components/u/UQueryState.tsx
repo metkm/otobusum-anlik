@@ -24,7 +24,14 @@ export const UQueryState = <T,>({
   className?: string
 }) => {
   if (query.isFetching) {
-    return fetching?.() ?? <UActivityIndicator />
+    return (
+      fetching?.() ?? (
+        <UActivityIndicator
+          className="p-2"
+          sizeClassName="size-7"
+        />
+      )
+    )
   }
 
   if (query.isError) {
