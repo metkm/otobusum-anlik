@@ -6,10 +6,7 @@ export const SkeletonStop = () => (
   <View className="gap-2">
     <SkeletonPulse className="h-48" />
 
-    <View
-      className="flex-row gap-2"
-      onLayout={({ nativeEvent }) => console.log(nativeEvent.layout, 'skeleton')}
-    >
+    <View className="flex-row gap-2">
       <SkeletonPulse className="h-9.25 flex-1" />
       <SkeletonPulse className="h-9.25 flex-1" />
     </View>
