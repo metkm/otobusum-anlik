@@ -31,11 +31,18 @@ export interface UCarouselProps<T> extends ViewProps {
   ui?: {
     [K in keyof (typeof ui)['slots']]?: string
   }
+  enabled?: boolean
 }
 
 export const CarouselContext = createContext<SharedValue<number> | undefined>(undefined)
 
-export const UCarousel = <T,>({ data, renderItem, keyExtractor, ...props }: UCarouselProps<T>) => {
+export const UCarousel = <T,>({
+  data,
+  renderItem,
+  keyExtractor,
+  enabled = true,
+  ...props
+}: UCarouselProps<T>) => {
   const carouselContext = use(CarouselContext)
 
   const { width: windowWidth } = useWindowDimensions()
@@ -45,7 +52,10 @@ export const UCarousel = <T,>({ data, renderItem, keyExtractor, ...props }: UCar
   const containerX = useSharedValue(0)
   const containerWidth = useSharedValue(0)
   const viewportWidth = useSharedValue(windowWidth)
-  const offset = carouselContext ?? useSharedValue(0)
+
+  const localOffset = useSharedValue(0)
+
+  const offset = carouselContext ?? localOffset
   const offsetStart = useSharedValue(0)
 
   const getClosestSnap = (offset: number, snaps: number[]) => {
@@ -72,6 +82,7 @@ export const UCarousel = <T,>({ data, renderItem, keyExtractor, ...props }: UCar
 
   const gesture = usePanGesture({
     activeOffsetX: [-25, 25],
+    enabled,
     onActivate: () => {
       offsetStart.set(offset.value)
     },

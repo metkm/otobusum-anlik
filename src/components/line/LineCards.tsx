@@ -31,8 +31,13 @@ export const LineCards = <T,>({ ui, ...props }: LineCardsProps<T>) => {
           </ThemeProvider>
         </LineContext>
       )}
-      ui={{ container: cn('gap-2 px-2 pb-2', ui?.container), viewport: ui?.viewport }}
-      keyExtractor={(item) => item}
+      ui={{
+        container: cn('gap-2 px-2 pb-2', ui?.container),
+        item: codes.length > 1 ? 'basis-[94%]' : 'basis-full',
+        viewport: ui?.viewport,
+      }}
+      enabled={codes.length > 1}
+      keyExtractor={(item) => `${codes.length > 1}-${item}`}
       {...props}
     />
   )
