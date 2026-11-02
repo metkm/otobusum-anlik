@@ -1,6 +1,6 @@
 import { createContext, ReactNode, use } from 'react'
 import { useWindowDimensions, ViewProps } from 'react-native'
-import { GestureDetector, usePanGesture } from 'react-native-gesture-handler'
+import { GestureDetector, GestureHandlerRootView, usePanGesture } from 'react-native-gesture-handler'
 import Animated, {
   clamp,
   LinearTransition,
@@ -44,6 +44,9 @@ export const UCarousel = <T,>({
   enabled = true,
   ...props
 }: UCarouselProps<T>) => {
+  "use no memo"
+  // Have to disable react compiler or else it gives errors about reading shared values etc 
+
   const carouselContext = use(CarouselContext)
 
   const { width: windowWidth } = useWindowDimensions()
@@ -125,51 +128,53 @@ export const UCarousel = <T,>({
   )
 
   return (
-    <Animated.View
-      layout={LinearTransition}
-      className={cn(uiViewport(), props.ui?.viewport)}
-      style={{ overflow: 'hidden', width: windowWidth }}
-      {...props}
-      onLayout={(event) => {
-        'worklet'
-        viewportWidth.set(event.nativeEvent.layout.width)
-        props.onLayout?.(event)
-      }}
-    >
+    <GestureHandlerRootView>
       <GestureDetector gesture={gesture}>
         <Animated.View
-          className={cn(uiContainer(), props.ui?.container)}
-          style={containerStyle}
-          onLayout={({ nativeEvent }) => {
+          layout={LinearTransition}
+          className={cn(uiViewport(), props.ui?.viewport)}
+          style={{ overflow: 'hidden', width: windowWidth }}
+          {...props}
+          onLayout={(event) => {
             'worklet'
-            containerX.set(nativeEvent.layout.x)
-            containerWidth.set(nativeEvent.layout.width)
+            viewportWidth.set(event.nativeEvent.layout.width)
+            props.onLayout?.(event)
           }}
         >
-          {data.map((item, index) => (
-            <Animated.View
-              layout={LinearTransition}
-              exiting={ExitScaleOut}
-              key={keyExtractor(item)}
-              className={cn(uiItem(), props.ui?.item)}
-              onLayout={({ nativeEvent }) => {
-                'worklet'
-                const { x, width } = nativeEvent.layout
-
-                const snap = -(x + containerX.value) + alignCenter(viewportWidth.value, width)
-
-                snapPoints.modify((current) => {
+          <Animated.View
+            className={cn(uiContainer(), props.ui?.container)}
+            style={containerStyle}
+            onLayout={({ nativeEvent }) => {
+              'worklet'
+              containerX.set(nativeEvent.layout.x)
+              containerWidth.set(nativeEvent.layout.width)
+            }}
+          >
+            {data.map((item, index) => (
+              <Animated.View
+                layout={LinearTransition}
+                exiting={ExitScaleOut}
+                key={keyExtractor(item)}
+                className={cn(uiItem(), props.ui?.item)}
+                onLayout={({ nativeEvent }) => {
                   'worklet'
-                  current[index] = snap
-                  return current
-                })
-              }}
-            >
-              {renderItem({ item })}
-            </Animated.View>
-          ))}
+                  const { x, width } = nativeEvent.layout
+
+                  const snap = -(x + containerX.value) + alignCenter(viewportWidth.value, width)
+
+                  snapPoints.modify((current) => {
+                    'worklet'
+                    current[index] = snap
+                    return current
+                  })
+                }}
+              >
+                {renderItem({ item })}
+              </Animated.View>
+            ))}
+          </Animated.View>
         </Animated.View>
       </GestureDetector>
-    </Animated.View>
+    </GestureHandlerRootView>
   )
 }
