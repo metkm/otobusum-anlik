@@ -20,6 +20,7 @@ import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 import { useLineBuses, useLineStops, useMap } from '@/composables'
+import { COLLAPSED_STOPS_HEIGHT, EXPANDED_STOPS_HEIGHT } from '@/constants/linecard'
 import { useSettingsStore } from '@/stores'
 import type { Stop } from '@/types/bus'
 import { getClosestPoint } from '@/utils/getClosestPoint'
@@ -119,11 +120,6 @@ const StopItem = ({
   )
 }
 
-const ONE_ITEM = 48
-const PADDING = 6 * 2
-const COLLAPSED = ONE_ITEM * 3 + PADDING
-const EXPANDED = ONE_ITEM * 4 + PADDING
-
 export const LineCardStops = () => {
   const expandStopsWhenScrolled = useSettingsStore(
     useShallow((state) => state.expandStopsWhenScrolled),
@@ -131,7 +127,7 @@ export const LineCardStops = () => {
   const showMyLocation = useSettingsStore(useShallow((state) => state.showMyLocation))
   const [location, setLocation] = useState<LocationObject>()
   const { query: lineStopsQuery } = useLineStops()
-  const containerHeight = useSharedValue(COLLAPSED)
+  const containerHeight = useSharedValue(COLLAPSED_STOPS_HEIGHT)
 
   const containerStyle = useAnimatedStyle(() => ({
     height: containerHeight.value,
@@ -142,13 +138,13 @@ export const LineCardStops = () => {
       if (!expandStopsWhenScrolled) {
         return
       }
-      containerHeight.set(EXPANDED)
+      containerHeight.set(EXPANDED_STOPS_HEIGHT)
     },
     onMomentumEnd: () => {
-      if (!expandStopsWhenScrolled && containerHeight.value !== EXPANDED) {
+      if (!expandStopsWhenScrolled && containerHeight.value !== EXPANDED_STOPS_HEIGHT) {
         return
       }
-      containerHeight.set(withDelay(1500, withTiming(COLLAPSED)))
+      containerHeight.set(withDelay(1500, withTiming(COLLAPSED_STOPS_HEIGHT)))
     },
   })
 

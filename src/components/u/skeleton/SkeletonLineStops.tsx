@@ -1,9 +1,14 @@
 import { View } from 'react-native'
 
+import { COLLAPSED_STOPS_HEIGHT } from '@/constants/linecard'
+
 import { SkeletonPulse } from './SkeletonPulse'
 
 export const SkeletonLineStops = () => (
-  <View className="overflow-hidden px-2 py-1.5">
+  <View
+    className="overflow-hidden px-2 py-1.5"
+    style={{ height: COLLAPSED_STOPS_HEIGHT }}
+  >
     {[1, 2, 3].map((i) => (
       <View
         key={i}

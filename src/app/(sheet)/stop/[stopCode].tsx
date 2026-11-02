@@ -69,91 +69,91 @@ export const StopScreen = () => {
         fetching={SkeletonStop}
       >
         {stopQuery.data && (
-          <View className="h-48 overflow-hidden rounded-md">
-            <MapProvider>
-              <Map
-                dragPan={false}
-                touchZoom={false}
-                doubleTapZoom={false}
-              >
-                <Camera
-                  center={[stopQuery.data.stop.lng, stopQuery.data.stop.lat]}
-                  zoom={15}
-                />
-
-                <GeoJSONSource
-                  data={{
-                    geometry: {
-                      coordinates: [stopQuery.data.stop.lng, stopQuery.data.stop.lat],
-                      type: 'Point',
-                    },
-                    properties: {
-                      color: colorPrimary,
-                    },
-                    type: 'Feature',
-                  }}
+          <View className="gap-2">
+            <View className="h-48 overflow-hidden rounded-md">
+              <MapProvider>
+                <Map
+                  dragPan={false}
+                  touchZoom={false}
+                  doubleTapZoom={false}
                 >
-                  <LineMarkerStopLayer
-                    isHidden={false}
-                    afterId={undefined}
+                  <Camera
+                    center={[stopQuery.data.stop.lng, stopQuery.data.stop.lat]}
+                    zoom={15}
                   />
-                </GeoJSONSource>
-              </Map>
-            </MapProvider>
+
+                  <GeoJSONSource
+                    data={{
+                      geometry: {
+                        coordinates: [stopQuery.data.stop.lng, stopQuery.data.stop.lat],
+                        type: 'Point',
+                      },
+                      properties: {
+                        color: colorPrimary,
+                      },
+                      type: 'Feature',
+                    }}
+                  >
+                    <LineMarkerStopLayer
+                      isHidden={false}
+                      afterId={undefined}
+                    />
+                  </GeoJSONSource>
+                </Map>
+              </MapProvider>
+            </View>
+
+            <GestureHandlerRootView style={{ flexGrow: 1, flexShrink: 0 }}>
+              <View className="grow flex-row flex-wrap gap-2">
+                <UButton
+                  label={t('directionToStop')}
+                  onPress={openDirectionsToStop}
+                  icon="droplet"
+                  block
+                  className="flex-1"
+                />
+                <UButton
+                  label={t('zoomStopOnMap')}
+                  onPress={zoomStopOnMap}
+                  icon="locate-fixed"
+                  block
+                  className="flex-1"
+                />
+              </View>
+            </GestureHandlerRootView>
+
+            <View>
+              <UText className="text-muted text-sm">{stopQuery.data?.stop.code}</UText>
+              <UText className="font-inter-medium text-lg">{stopQuery.data?.stop.name}</UText>
+              {stopQuery.data?.stop.province && (
+                <UText className="text-muted text-sm">{stopQuery.data.stop.province}</UText>
+              )}
+            </View>
+
+            {stopQuery.data.buses.length > 0 && (
+              <GestureHandlerRootView style={{ flexShrink: 0 }}>
+                <UText className="text-muted text-sm">{t('linesThatUseStop')}</UText>
+
+                <View className="mt-1 flex-row flex-wrap gap-2">
+                  {stopQuery.data.buses.map((bus) => (
+                    <UButton
+                      key={bus}
+                      label={bus}
+                      variant="soft"
+                      to={{
+                        params: {
+                          addToGroup: bus,
+                        },
+                        pathname: '(sheet)/groups/index',
+                      }}
+                    />
+                  ))}
+                </View>
+              </GestureHandlerRootView>
+            )}
           </View>
         )}
       </UQueryState>
-
-      <View className="gap-2">
-        <GestureHandlerRootView style={{ flexGrow: 1, flexShrink: 0 }}>
-          <View className="grow flex-row flex-wrap gap-2">
-            <UButton
-              label={t('directionToStop')}
-              onPress={openDirectionsToStop}
-              icon="droplet"
-              block
-              className="flex-1"
-            />
-            <UButton
-              label={t('zoomStopOnMap')}
-              onPress={zoomStopOnMap}
-              icon="locate-fixed"
-              block
-              className="flex-1"
-            />
-          </View>
-        </GestureHandlerRootView>
-
-        <View>
-          <UText className="text-muted text-sm">{stopQuery.data?.stop.code}</UText>
-          <UText className="font-inter-medium text-lg">{stopQuery.data?.stop.name}</UText>
-          {stopQuery.data?.stop.province && (
-            <UText className="text-muted text-sm">{stopQuery.data.stop.province}</UText>
-          )}
-        </View>
-
-        {stopQuery.data && stopQuery.data.buses.length > 0 && (
-          <GestureHandlerRootView style={{ flexShrink: 0 }}>
-            <UText className="text-muted text-sm">{t('linesThatUseStop')}</UText>
-
-            <View className="mt-1 flex-row flex-wrap gap-2">
-              {stopQuery.data.buses.map((bus) => (
-                <UButton
-                  key={bus}
-                  label={bus}
-                  variant="soft"
-                  to={{
-                    params: {
-                      addToGroup: bus,
-                    },
-                    pathname: '(sheet)/groups/index',
-                  }}
-                />
-              ))}
-            </View>
-          </GestureHandlerRootView>
-        )}
-      </View>
 
       <UQueryState query={arrivalQuery}>
         <AnimatedLegendList
