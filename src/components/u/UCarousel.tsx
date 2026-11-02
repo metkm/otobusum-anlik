@@ -13,6 +13,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated'
 
+import { ExitScaleOut } from '@/constants/animation'
 import { cn, tv } from '@/utils/cn'
 import { alignCenter, dampen } from '@/utils/math'
 
@@ -148,6 +149,7 @@ export const UCarousel = <T,>({
           {data.map((item, index) => (
             <Animated.View
               layout={LinearTransition}
+              exiting={ExitScaleOut}
               key={keyExtractor(item)}
               className={cn(uiItem(), props.ui?.item)}
               onLayout={({ nativeEvent }) => {
