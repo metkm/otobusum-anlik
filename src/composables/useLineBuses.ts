@@ -26,7 +26,6 @@ export const useLineBuses = () => {
   const city = useFilterStore(useShallow((state) => state.city))
 
   const query = useQuery({
-    enabled: false,
     queryFn: () => fetchBusLocations(code, city),
     queryKey: ['line', code, 'buses'],
     refetchInterval: getRefetchAndStaleTime,
