@@ -1,6 +1,10 @@
 import { createContext, ReactNode, use } from 'react'
 import { useWindowDimensions, ViewProps } from 'react-native'
-import { GestureDetector, GestureHandlerRootView, usePanGesture } from 'react-native-gesture-handler'
+import {
+  GestureDetector,
+  GestureHandlerRootView,
+  usePanGesture,
+} from 'react-native-gesture-handler'
 import Animated, {
   clamp,
   LinearTransition,
@@ -44,8 +48,8 @@ export const UCarousel = <T,>({
   enabled = true,
   ...props
 }: UCarouselProps<T>) => {
-  "use no memo"
-  // Have to disable react compiler or else it gives errors about reading shared values etc 
+  'use no memo'
+  // Have to disable react compiler or else it gives errors about reading shared values etc
 
   const carouselContext = use(CarouselContext)
 
