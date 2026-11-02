@@ -24,7 +24,7 @@ export const SkeletonStop = () => (
       <SkeletonPulse className="h-4 w-36" />
 
       <View className="flex-row flex-wrap gap-2">
-        {[...Array(10).values()].map((i) => (
+        {[...Array(10).keys()].map((i) => (
           <SkeletonPulse
             key={i}
             className="h-9.5 w-12"
