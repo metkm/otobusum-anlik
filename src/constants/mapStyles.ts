@@ -1189,16 +1189,6 @@ export const mapStyles = {
         type: 'fill',
       },
       {
-        id: 'park_outline',
-        paint: {
-          'line-color': 'rgba(228, 241, 215, 1)',
-          'line-dasharray': [1, 1.5],
-        },
-        source: 'openmaptiles',
-        'source-layer': 'park',
-        type: 'line',
-      },
-      {
         filter: ['==', ['get', 'class'], 'residential'],
         id: 'landuse_residential',
         maxzoom: 12,
