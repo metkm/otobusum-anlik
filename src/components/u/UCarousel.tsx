@@ -1,55 +1,74 @@
 import { createContext, ReactNode, use } from 'react'
-import { Dimensions, type ViewProps } from 'react-native'
+import { useWindowDimensions, ViewProps } from 'react-native'
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler'
 import Animated, {
-  LinearTransition,
   clamp,
+  LinearTransition,
+  SharedValue,
   useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
   withDecay,
   withSpring,
-  type SharedValue,
 } from 'react-native-reanimated'
 
-import { cn } from '@/utils/cn'
+import { cn, tv } from '@/utils/cn'
+import { alignCenter, dampen } from '@/utils/math'
 
-const { width } = Dimensions.get('window')
+const ui = tv({
+  slots: {
+    container: 'flex-row',
+    item: 'min-w-0 shrink-0 grow-0 basis-[94%]',
+    viewport: 'flex-row',
+  },
+})
 
-const dampen = (value: number) => {
-  'worklet'
-  return 8 * Math.log(value + 1)
-}
-
-const roundToStep = (x: number, step: number) => {
-  'worklet'
-  return Math.round(x / step) * step
+export interface UCarouselProps<T> extends ViewProps {
+  data: T[]
+  renderItem: (props: { item: T }) => ReactNode
+  keyExtractor: (item: T) => string
+  ui?: {
+    [K in keyof (typeof ui)['slots']]?: string
+  }
 }
 
 export const CarouselContext = createContext<SharedValue<number> | undefined>(undefined)
 
-interface UCarouselProps extends ViewProps {
-  snapInterval?: number
-  children?: ReactNode
-  contentClassName?: string
-}
-
-export const UCarousel = ({
-  snapInterval,
-  children,
-  className,
-  contentClassName,
-  ...props
-}: UCarouselProps) => {
+export const UCarousel = <T,>({ data, renderItem, keyExtractor, ...props }: UCarouselProps<T>) => {
   const carouselContext = use(CarouselContext)
-  const internalOffset = useSharedValue(0)
 
-  const offset = carouselContext ?? internalOffset
+  const { width: windowWidth } = useWindowDimensions()
+  const { viewport: uiViewport, container: uiContainer, item: uiItem } = ui()
+
+  const snapPoints = useSharedValue<number[]>([])
+  const containerX = useSharedValue(0)
+  const containerWidth = useSharedValue(0)
+  const viewportWidth = useSharedValue(windowWidth)
+  const offset = carouselContext ?? useSharedValue(0)
   const offsetStart = useSharedValue(0)
-  const contentWidth = useSharedValue(0)
 
-  const offsetLimit = useDerivedValue(() => -(contentWidth.value - width))
+  const getClosestSnap = (offset: number, snaps: number[]) => {
+    'worklet'
+
+    return snaps.reduce(
+      (closest, snap) => (Math.abs(snap - offset) < Math.abs(closest - offset) ? snap : closest),
+      snaps[0] ?? 0,
+    )
+  }
+
+  const offsetLimits = useDerivedValue(
+    () => [-(containerWidth.value - viewportWidth.value), 0] satisfies [number, number],
+  )
+
+  const snapToCard = () => {
+    'worklet'
+
+    const snap = getClosestSnap(offset.value, snapPoints.value)
+    const clamped = clamp(snap, ...offsetLimits.value)
+
+    offset.set(withSpring(clamped))
+  }
 
   const gesture = usePanGesture({
     activeOffsetX: [-25, 25],
@@ -61,41 +80,19 @@ export const UCarousel = ({
         return
       }
 
-      if (offset.value < offsetLimit.value) {
-        offset.set(withSpring(offsetLimit.value))
+      if (offset.value < offsetLimits.value[0] || offset.value > offsetLimits.value[1]) {
+        snapToCard()
         return
       }
 
-      if (offset.value > 0) {
-        offset.set(withSpring(0))
-        return
-      }
-
-      offset.set(
-        withDecay(
-          {
-            clamp: [offsetLimit.value, 0],
-            velocity: velocityX,
-          },
-          () => {
-            if (!snapInterval) {
-              return
-            }
-
-            const clamped = clamp(offset.value, offsetLimit.value, 0)
-            const rounded = roundToStep(clamped, snapInterval)
-
-            offset.value = withSpring(clamp(rounded, offsetLimit.value, 0)) // Clamped twice to remove padding on last element
-          },
-        ),
-      )
+      offset.set(withDecay({ clamp: offsetLimits.value, velocity: velocityX }, snapToCard))
     },
     onUpdate: ({ translationX }) => {
       let newOffset = offsetStart.value + translationX
-      const offsetModifier = translationX > 0 ? 1 : -1
 
-      if (newOffset > 0 || newOffset < offsetLimit.value) {
-        newOffset = offsetStart.value + dampen(Math.abs(translationX)) * offsetModifier
+      if (newOffset < offsetLimits.value[0] || newOffset > offsetLimits.value[1]) {
+        const modifier = translationX > 0 ? 1 : -1
+        newOffset = offsetStart.value + dampen(Math.abs(translationX)) * modifier
       }
 
       offset.set(newOffset)
@@ -107,11 +104,10 @@ export const UCarousel = ({
   }))
 
   useAnimatedReaction(
-    () => contentWidth.value,
-    () => {
-      const limit = Math.min(0, -(contentWidth.value - width))
-      if (offset.value < limit) {
-        offset.set(withSpring(limit))
+    () => containerWidth.value,
+    (current, previous) => {
+      if (previous && current < previous) {
+        snapToCard()
       }
     },
   )
@@ -119,19 +115,46 @@ export const UCarousel = ({
   return (
     <Animated.View
       layout={LinearTransition}
-      className={cn('flex-row', className)}
+      className={cn(uiViewport(), props.ui?.viewport)}
+      style={{ overflow: 'hidden', width: windowWidth }}
       {...props}
+      onLayout={(event) => {
+        'worklet'
+        viewportWidth.set(event.nativeEvent.layout.width)
+        props.onLayout?.(event)
+      }}
     >
       <GestureDetector gesture={gesture}>
         <Animated.View
-          style={[containerStyle]}
-          className={cn('flex flex-row', contentClassName)}
+          className={cn(uiContainer(), props.ui?.container)}
+          style={containerStyle}
           onLayout={({ nativeEvent }) => {
-            const cw = nativeEvent.layout.width
-            contentWidth.set(cw)
+            'worklet'
+            containerX.set(nativeEvent.layout.x)
+            containerWidth.set(nativeEvent.layout.width)
           }}
         >
-          {children}
+          {data.map((item, index) => (
+            <Animated.View
+              layout={LinearTransition}
+              key={keyExtractor(item)}
+              className={cn(uiItem(), props.ui?.item)}
+              onLayout={({ nativeEvent }) => {
+                'worklet'
+                const { x, width } = nativeEvent.layout
+
+                const snap = -(x + containerX.value) + alignCenter(viewportWidth.value, width)
+
+                snapPoints.modify((current) => {
+                  'worklet'
+                  current[index] = snap
+                  return current
+                })
+              }}
+            >
+              {renderItem({ item })}
+            </Animated.View>
+          ))}
         </Animated.View>
       </GestureDetector>
     </Animated.View>

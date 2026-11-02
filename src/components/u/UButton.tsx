@@ -159,7 +159,12 @@ const Icon = ({
   loading?: boolean
 }) => {
   if (loading) {
-    return <UActivityIndicator colorClassName={colorClassName} />
+    return (
+      <UActivityIndicator
+        colorClassName={colorClassName}
+        sizeClassName={sizeClassName}
+      />
+    )
   }
 
   if (icon) {

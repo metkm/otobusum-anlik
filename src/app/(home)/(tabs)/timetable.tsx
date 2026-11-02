@@ -8,12 +8,11 @@ import { ThemeProvider } from '@/components/ThemeProvider'
 import { UButton } from '@/components/u/UButton'
 import { CarouselContext, UCarousel } from '@/components/u/UCarousel'
 import { UText } from '@/components/u/UText'
-import { useLineCardWidth, useLineGroup } from '@/composables'
+import { useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 
 const LineTimetables = () => {
   const { codes } = useLineGroup()
-  const { snapInterval } = useLineCardWidth()
   const { t } = useTranslation()
 
   if (codes.length < 1) {
@@ -36,21 +35,20 @@ const LineTimetables = () => {
 
   return (
     <UCarousel
-      snapInterval={snapInterval}
-      contentClassName="gap-2 p-2 pt-0"
-      className="flex-1"
-    >
-      {codes.map((item) => (
+      data={codes}
+      keyExtractor={(item) => item}
+      ui={{ container: 'p-2 pt-0 gap-2', viewport: 'flex-1' }}
+      renderItem={({ item }) => (
         <LineContext
           key={item}
           value={item}
         >
           <ThemeProvider>
-            <LineTimetable />
+            <LineTimetable className="flex-1" />
           </ThemeProvider>
         </LineContext>
-      ))}
-    </UCarousel>
+      )}
+    />
   )
 }
 

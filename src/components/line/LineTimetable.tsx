@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLineCardWidth, useLineNews, useLineRoutes, useLineTimetable } from '@/composables'
+import { useLineNews, useLineRoutes, useLineTimetable } from '@/composables'
 import type { Time } from '@/composables/useLineTimetable'
 import { useFilterStore } from '@/stores'
 import type { City } from '@/types/city'
@@ -29,13 +29,16 @@ const saturday = 1 << 7
 const now = new Date()
 const nowDay = now.getDay()
 
-export const LineTimetable = () => {
+interface LineTimetableProps {
+  className?: string
+}
+
+export const LineTimetable = ({ className }: LineTimetableProps) => {
   const { t } = useTranslation()
 
   const city = useFilterStore(useShallow((state) => state.city))
   const [day, setDay] = useState(() => 1 << (nowDay + 1))
 
-  const { cardWidth } = useLineCardWidth()
   const { route, routeCode } = useLineRoutes()
   const { query: lineTimetableQuery } = useLineTimetable()
   const { query: lineNewsQuery } = useLineNews()
@@ -151,9 +154,12 @@ export const LineTimetable = () => {
   }
 
   return (
+    // <View className="bg-default border-hairline border-muted overflow-hidden rounded-md"></View>
     <View
-      style={{ elevation: 2, width: cardWidth }}
-      className="bg-default border-hairline border-muted overflow-hidden rounded-md"
+      className={cn(
+        'bg-default border-hairline border-muted rounded-md overflow-hidden',
+        className,
+      )}
     >
       <View className="m-2 mb-0">
         <UText className="text-muted">{routeCode}</UText>
@@ -184,7 +190,7 @@ export const LineTimetable = () => {
         {hourEntries.length > 1 ? (
           <ScrollView
             showsVerticalScrollIndicator={false}
-            className="border-t-hairline border-muted"
+            className="border-t-hairline border-muted overflow-y-auto"
           >
             {hourEntries.map(([hour, minutes], index) => (
               <View

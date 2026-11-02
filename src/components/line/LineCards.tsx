@@ -1,24 +1,18 @@
-import { Dimensions } from 'react-native'
-import Animated, { type SharedValue } from 'react-native-reanimated'
-
-import { useLineCardWidth, useLineGroup } from '@/composables'
+import { useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { useMapPadding } from '@/composables/useMapPadding'
-import { ExitScaleOut, ItemLayoutAnimation } from '@/constants/animation'
+import { cn } from '@/utils/cn'
 
 import { ThemeProvider } from '../ThemeProvider'
-import { UCarousel } from '../u/UCarousel'
+import { UCarousel, UCarouselProps } from '../u/UCarousel'
 import { LineCard } from './card/LineCard'
 
-const { width } = Dimensions.get('window')
+interface LineCardsProps<T> extends Omit<
+  UCarouselProps<T>,
+  'data' | 'renderItem' | 'keyExtractor'
+> {}
 
-export const LineCards = ({
-  className,
-}: {
-  className?: string
-  buttonsHeight?: SharedValue<number>
-}) => {
-  const { cardWidth, snapInterval } = useLineCardWidth()
+export const LineCards = <T,>({ ui, ...props }: LineCardsProps<T>) => {
   const { codes } = useLineGroup()
   const { onLayout } = useMapPadding('lineCards', 'bottom')
 
@@ -28,28 +22,18 @@ export const LineCards = ({
 
   return (
     <UCarousel
-      snapInterval={snapInterval}
-      style={{ width }}
-      contentClassName="gap-2 p-2 pt-0"
-      className={className}
       onLayout={onLayout}
-    >
-      {codes.map((code) => (
-        <Animated.View
-          key={code}
-          exiting={ExitScaleOut}
-          layout={ItemLayoutAnimation}
-        >
-          <LineContext value={code}>
-            <ThemeProvider>
-              <LineCard
-                style={{ width: cardWidth }}
-                className="grow"
-              />
-            </ThemeProvider>
-          </LineContext>
-        </Animated.View>
-      ))}
-    </UCarousel>
+      data={codes}
+      renderItem={({ item }) => (
+        <LineContext value={item}>
+          <ThemeProvider>
+            <LineCard className="grow" />
+          </ThemeProvider>
+        </LineContext>
+      )}
+      ui={{ container: cn('gap-2 px-2 pb-2', ui?.container), viewport: ui?.viewport }}
+      keyExtractor={(item) => item}
+      {...props}
+    />
   )
 }

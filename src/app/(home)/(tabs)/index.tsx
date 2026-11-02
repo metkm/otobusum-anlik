@@ -37,7 +37,7 @@ export const HomeScreen = () => {
       {pathname !== '/markers/nearby' && (
         <MapOverlay>
           <MapButtons />
-          <LineCards className="flex-1" />
+          <LineCards ui={{ viewport: 'flex-1' }} />
         </MapOverlay>
       )}
     </View>
