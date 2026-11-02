@@ -5,17 +5,14 @@ import { cn } from '@/utils/cn'
 
 export const SkeletonPulse = ({ className, ...props }: ViewProps) => (
   <Animated.View
-    className={cn('shrink-0 bg-black/50 rounded-md', className)}
+    className={cn('shrink-0 bg-muted rounded-md', className)}
     style={{
       animationDirection: 'alternate',
-      animationDuration: 2000,
+      animationDuration: 1500,
       animationIterationCount: 'infinite',
       animationName: {
-        from: {
+        '50%': {
           opacity: 0.5,
-        },
-        to: {
-          opacity: 1,
         },
       },
       animationTimingFunction: 'ease-in-out',
