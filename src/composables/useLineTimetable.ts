@@ -36,7 +36,7 @@ export const useLineTimetable = () => {
           },
         })
         .json(),
-    queryKey: ['timetable', code, direction],
+    queryKey: ['timetable', code, direction, city],
     staleTime: CACHE_MS_3_DAYS,
   })
 

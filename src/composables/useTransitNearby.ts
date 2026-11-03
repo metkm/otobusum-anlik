@@ -20,7 +20,7 @@ export const useTransitNearby = (lat?: number, lng?: number) => {
           },
         })
         .json(),
-    queryKey: ['transit', 'nearby', lat, lng],
+    queryKey: ['transit', 'nearby', lat, lng, city],
   })
 
   return {

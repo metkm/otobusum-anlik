@@ -23,7 +23,7 @@ const getRefetchAndStaleTime = (query: Query<BusLocationResponse>) => {
 export const busesQueryOptions = (code: string, city: City) =>
   queryOptions({
     queryFn: () => fetchBusLocations(code, city),
-    queryKey: ['buses', code],
+    queryKey: ['buses', code, city],
     refetchInterval: getRefetchAndStaleTime,
     staleTime: getRefetchAndStaleTime,
   })

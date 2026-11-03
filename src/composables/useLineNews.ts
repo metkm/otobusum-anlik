@@ -1,7 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
+import { useShallow } from 'zustand/react/shallow'
 
 import { CACHE_MS_30_MINUTES } from '@/constants/app'
+import { useFilterStore } from '@/stores'
 
 import { useLine } from './useLine'
 
@@ -18,6 +20,7 @@ const extractInnerContentXml = (key: string, content: string) =>
 
 export const useLineNews = () => {
   const { code } = useLine()
+  const city = useFilterStore(useShallow((state) => state.city))
 
   const query = useQuery({
     queryFn: async () => {
@@ -49,7 +52,7 @@ export const useLineNews = () => {
       const responseParsed: Announcement[] = JSON.parse(innerContent)
       return responseParsed
     },
-    queryKey: ['announcements'],
+    queryKey: ['announcements', city],
     staleTime: CACHE_MS_30_MINUTES,
   })
 

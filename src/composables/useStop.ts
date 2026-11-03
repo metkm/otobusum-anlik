@@ -18,7 +18,7 @@ export const useStop = (stopCode: string | number) => {
           },
         })
         .json(),
-    queryKey: ['stop', stopCode],
+    queryKey: ['stop', stopCode, city],
     staleTime: 86_400_000,
   })
 

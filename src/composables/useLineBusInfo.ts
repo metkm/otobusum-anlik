@@ -11,9 +11,6 @@ export const useLineBusInfo = (doorNo: string) => {
 
   const query = useQuery({
     enabled: city === 'istanbul',
-    meta: {
-      persist: true,
-    },
     queryFn: () =>
       ky
         .get<BusInfo>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/bus-info/${doorNo}`, {
@@ -22,7 +19,7 @@ export const useLineBusInfo = (doorNo: string) => {
           },
         })
         .json(),
-    queryKey: ['bus', doorNo, 'info'],
+    queryKey: ['bus', 'info', doorNo, city],
     staleTime: LINE_UPDATE_INTERVAL,
   })
 

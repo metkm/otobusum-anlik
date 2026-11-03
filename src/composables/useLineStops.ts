@@ -22,7 +22,7 @@ export const useLineStops = () => {
           searchParams: { city, direction },
         })
         .json(),
-    queryKey: ['line', code, 'stops', direction],
+    queryKey: ['route', 'stops', code, direction, city],
     staleTime: CACHE_MS_3_DAYS,
   })
 

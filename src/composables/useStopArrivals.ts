@@ -18,7 +18,7 @@ export const useStopArrivals = (stopCode: string | number) => {
           },
         })
         .json(),
-    queryKey: ['stop', stopCode, 'arrival'],
+    queryKey: ['stop', 'arrival', stopCode, city],
     refetchInterval: 60_000,
     staleTime: 60_000,
   })
