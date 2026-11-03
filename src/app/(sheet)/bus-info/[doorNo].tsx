@@ -6,7 +6,7 @@ import { SkeletonBusInfo } from '@/components/u/skeleton/SkeletonBusInfo'
 import { type IconName, UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
-import { useLineBusInfo } from '@/composables/useLineBusInfo'
+import { useLineBusInfo } from '@/composables/query'
 
 const BusInfoItem = ({
   label,

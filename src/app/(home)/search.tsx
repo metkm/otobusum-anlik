@@ -16,10 +16,14 @@ import { UInput } from '@/components/u/UInput'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 import { useMap } from '@/composables'
+import {
+  busesQueryOptions,
+  routesQueryOptions,
+  getDefaultRouteCode,
+  useSearch,
+} from '@/composables/query'
+import { MIN_CHARACTER_LIMIT, isStop } from '@/composables/query/useSearch'
 import { LineContext } from '@/composables/useLine'
-import { busesQueryOptions } from '@/composables/useLineBuses'
-import { getDefaultRouteCode, routesQueryOptions } from '@/composables/useLineRoutes'
-import { MIN_CHARACTER_LIMIT, isStop, useSearch } from '@/composables/useSearch'
 import { useFilterStore, useLineStore } from '@/stores'
 import type { Line, Stop } from '@/types/bus'
 import { getLatLngBounds } from '@/utils/bounds'

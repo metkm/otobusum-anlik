@@ -4,21 +4,10 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { MS_3_DAYS } from '@/constants/time'
 import { useFilterStore } from '@/stores'
+import { Timetable } from '@/types/timetable'
 
-import { useLine } from './useLine'
+import { useLine } from '../useLine'
 import { useLineRoutes } from './useLineRoutes'
-
-export type Time = `${number}:${number}:${number}`
-
-interface Timetable {
-  sunday: Time[]
-  monday: Time[]
-  tuesday: Time[]
-  wednesday: Time[]
-  thursday: Time[]
-  friday: Time[]
-  saturday: Time[]
-}
 
 export const useLineTimetable = () => {
   const { direction } = useLineRoutes()

@@ -5,7 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { MS_30_MINUTES } from '@/constants/time'
 import { useFilterStore } from '@/stores'
 
-import { useLine } from './useLine'
+import { useLine } from '../useLine'
 
 interface Announcement {
   HAT: string

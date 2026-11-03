@@ -20,8 +20,8 @@ import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
-import { useCountdown, useMap, useStop } from '@/composables'
-import { useStopArrivals } from '@/composables/useStopArrivals'
+import { useCountdown, useMap } from '@/composables'
+import { useStopArrivals, useStop } from '@/composables/query'
 import { EnterScaleIn, ExitScaleOut, ItemLayoutAnimation } from '@/constants/animation'
 
 export const StopScreen = () => {

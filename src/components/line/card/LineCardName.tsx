@@ -5,7 +5,8 @@ import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated'
 import { UBadge } from '@/components/u/UBadge'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
-import { useCountdown, useLine, useLineBuses } from '@/composables'
+import { useCountdown, useLine } from '@/composables'
+import { useLineBuses } from '@/composables/query'
 
 export const LineCardName = () => {
   const { code } = useLine()

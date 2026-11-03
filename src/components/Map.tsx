@@ -10,8 +10,7 @@ import {
 import type { NativeSyntheticEvent } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
-import { useMap } from '@/composables/useMap'
-import { useMapStyle } from '@/composables/useMapStyle'
+import { useMapStyle, useMap } from '@/composables'
 
 import { useSettingsStore } from '../stores/settings'
 

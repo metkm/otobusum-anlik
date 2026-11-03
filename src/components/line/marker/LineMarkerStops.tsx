@@ -4,7 +4,8 @@ import type { Feature } from 'geojson'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine, useLineStops } from '@/composables'
+import { useLine } from '@/composables'
+import { useLineStops } from '@/composables/query'
 import { useFilterStore } from '@/stores'
 
 interface StopLayerProps extends Omit<Extract<LayerProps, { type: 'circle' }>, 'style' | 'type'> {

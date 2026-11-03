@@ -6,7 +6,7 @@ import { useFilterStore } from '@/stores'
 import type { BusLocationResponse } from '@/types/bus'
 import { City } from '@/types/city'
 
-import { useLine } from './useLine'
+import { useLine } from '../useLine'
 import { useLineRoutes } from './useLineRoutes'
 
 const getRefetchAndStaleTime = (query: Query<BusLocationResponse>) => {

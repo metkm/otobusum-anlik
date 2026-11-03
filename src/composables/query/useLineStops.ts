@@ -6,7 +6,7 @@ import { MS_3_DAYS } from '@/constants/time'
 import { useFilterStore } from '@/stores'
 import type { Stop } from '@/types/bus'
 
-import { useLine } from './useLine'
+import { useLine } from '../useLine'
 import { useLineRoutes } from './useLineRoutes'
 
 export const useLineStops = () => {

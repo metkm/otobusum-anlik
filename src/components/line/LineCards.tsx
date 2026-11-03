@@ -1,6 +1,5 @@
-import { useLineGroup } from '@/composables'
+import { useLineGroup, useMapPadding } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { useMapPadding } from '@/composables/useMapPadding'
 import { cn } from '@/utils/cn'
 
 import { ThemeProvider } from '../ThemeProvider'
