@@ -23,13 +23,17 @@ import { useTransitNearby } from '@/composables/useTransitNearby'
 import { getLatLngBounds } from '@/utils/bounds'
 import { createRandomTheme } from '@/utils/color'
 import { getPolygonCoordinatesFromPoint } from '@/utils/getPolygonFromCenter'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export const DEFAULT_STOPS_QUERY_RADIUS = 500
+
+const screenDimensions = Dimensions.get('screen')
 
 export const NearbyScreen = () => {
   const primaryColor = useCSSVariable('--color-primary')?.toString()
   const params = useLocalSearchParams()
   const router = useRouter()
+  const insets = useSafeAreaInsets()
 
   const lat = params.lat ? Number(params.lat) : undefined
   const lng = params.lng ? Number(params.lng) : undefined
@@ -155,7 +159,7 @@ export const NearbyScreen = () => {
       if (bounds) {
         fitBounds(bounds, {
           padding: {
-            bottom: Dimensions.get('screen').height * 0.5,
+            bottom: screenDimensions.height * 0.5 + 25 + insets.bottom,
           },
         })
       }
@@ -169,7 +173,7 @@ export const NearbyScreen = () => {
         cam?.fitBounds(initialBounds.current, { duration: 750 })
       }
     }
-  }, [polygonCollection?.features, map.current, fitBounds, camera])
+  }, [polygonCollection?.features, map.current, fitBounds, camera, insets.bottom])
 
   useEffect(() => {
     navigation.setOptions({

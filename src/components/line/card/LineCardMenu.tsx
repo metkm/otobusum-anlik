@@ -95,7 +95,7 @@ export const LineCardMenu = () => {
           ref={announcementsSheet}
           scrollableRef={scrollableRef}
           style={{ flex: 1 }}
-          detents={['auto', 1]}
+          detents={['auto']}
           header={
             <USheetHeader
               title="News"
