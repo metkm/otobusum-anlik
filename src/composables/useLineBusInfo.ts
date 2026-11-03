@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
-import { LINE_UPDATE_INTERVAL } from '@/constants/app'
 import { useFilterStore } from '@/stores'
 import type { BusInfo } from '@/types/bus'
+import { MS_60_SECONDS } from '@/constants/time'
 
 export const useLineBusInfo = (doorNo: string) => {
   const city = useFilterStore(useShallow((state) => state.city))
@@ -20,7 +20,7 @@ export const useLineBusInfo = (doorNo: string) => {
         })
         .json(),
     queryKey: ['bus', 'info', doorNo, city],
-    staleTime: LINE_UPDATE_INTERVAL,
+    staleTime: MS_60_SECONDS,
   })
 
   return {

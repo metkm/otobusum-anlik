@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
-import { CACHE_MS_30_MINUTES } from '@/constants/app'
 import { useFilterStore } from '@/stores'
 
 import { useLine } from './useLine'
+import { MS_30_MINUTES } from '@/constants/time'
 
 interface Announcement {
   HAT: string
@@ -53,7 +53,7 @@ export const useLineNews = () => {
       return responseParsed
     },
     queryKey: ['announcements', city],
-    staleTime: CACHE_MS_30_MINUTES,
+    staleTime: MS_30_MINUTES,
   })
 
   const news = query.data?.filter((a) => a.HATKODU === code) || []

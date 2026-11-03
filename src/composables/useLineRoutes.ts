@@ -2,13 +2,13 @@ import { queryOptions, useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
-import { CACHE_MS_3_DAYS } from '@/constants/app'
 import { useFilterStore, useLineStore } from '@/stores'
 import { City } from '@/types/city'
 import type { RouteDirection } from '@/types/line'
 import type { Route } from '@/types/route'
 
 import { useLine } from './useLine'
+import { MS_3_DAYS } from '@/constants/time'
 
 export const routesQueryOptions = (code: string, city: City) =>
   queryOptions({
@@ -22,7 +22,7 @@ export const routesQueryOptions = (code: string, city: City) =>
         })
         .json(),
     queryKey: ['routes', code, city],
-    staleTime: CACHE_MS_3_DAYS,
+    staleTime: MS_3_DAYS,
   })
 
 export const getDefaultRouteCode = (code: string) => `${code}_G_D0`

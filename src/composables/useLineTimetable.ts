@@ -2,11 +2,11 @@ import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
-import { CACHE_MS_3_DAYS } from '@/constants/app'
 import { useFilterStore } from '@/stores'
 
 import { useLine } from './useLine'
 import { useLineRoutes } from './useLineRoutes'
+import { MS_3_DAYS } from '@/constants/time'
 
 export type Time = `${number}:${number}:${number}`
 
@@ -37,7 +37,7 @@ export const useLineTimetable = () => {
         })
         .json(),
     queryKey: ['timetable', code, direction, city],
-    staleTime: CACHE_MS_3_DAYS,
+    staleTime: MS_3_DAYS,
   })
 
   return {
