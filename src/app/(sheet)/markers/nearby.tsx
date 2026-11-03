@@ -8,6 +8,7 @@ import { t } from 'i18next'
 import { useEffect, useMemo, useRef } from 'react'
 import { Dimensions, View, type ScrollViewInstance } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { ScopedVariables, useCSSVariable } from 'uniwind'
 
 import { UActivityIndicator } from '@/components/u/UActivityIndicator'
@@ -23,7 +24,6 @@ import { useTransitNearby } from '@/composables/useTransitNearby'
 import { getLatLngBounds } from '@/utils/bounds'
 import { createRandomTheme } from '@/utils/color'
 import { getPolygonCoordinatesFromPoint } from '@/utils/getPolygonFromCenter'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export const DEFAULT_STOPS_QUERY_RADIUS = 500
 
