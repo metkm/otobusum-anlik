@@ -13,12 +13,8 @@ import {
 } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
+import { UButton, UEmpty, UIcon, UQueryState, UText } from '@/components/u'
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
-import { UButton } from '@/components/u/UButton'
-import { UEmpty } from '@/components/u/UEmpty'
-import { UIcon } from '@/components/u/UIcon'
-import { UQueryState } from '@/components/u/UQueryState'
-import { UText } from '@/components/u/UText'
 import { useMap } from '@/composables'
 import { useLineBuses, useLineStops } from '@/composables/query'
 import { COLLAPSED_STOPS_HEIGHT, EXPANDED_STOPS_HEIGHT } from '@/constants/linecard'

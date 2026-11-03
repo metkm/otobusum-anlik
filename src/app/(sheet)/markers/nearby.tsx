@@ -11,13 +11,16 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { ScopedVariables, useCSSVariable } from 'uniwind'
 
-import { UActivityIndicator } from '@/components/u/UActivityIndicator'
-import { UBadge } from '@/components/u/UBadge'
-import { UButton } from '@/components/u/UButton'
-import { UEmpty } from '@/components/u/UEmpty'
-import { UHeader, USheetHeader } from '@/components/u/UHeader'
-import { UQueryState } from '@/components/u/UQueryState'
-import { UText } from '@/components/u/UText'
+import {
+  UBadge,
+  UButton,
+  UActivityIndicator,
+  UEmpty,
+  USheetHeader,
+  UHeader,
+  UQueryState,
+  UText,
+} from '@/components/u'
 import { useMapCollection, useMap } from '@/composables'
 import { useTransitNearby } from '@/composables/query'
 import { getLatLngBounds } from '@/utils/bounds'

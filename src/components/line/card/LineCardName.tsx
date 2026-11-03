@@ -2,9 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated'
 
-import { UBadge } from '@/components/u/UBadge'
-import { UQueryState } from '@/components/u/UQueryState'
-import { UText } from '@/components/u/UText'
+import { UBadge, UQueryState, UText } from '@/components/u'
 import { useCountdown, useLine } from '@/composables'
 import { useLineBuses } from '@/composables/query'
 

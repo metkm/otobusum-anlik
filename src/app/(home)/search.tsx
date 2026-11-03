@@ -9,12 +9,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { queryClient } from '@/api/client'
 import { ThemeProvider } from '@/components/ThemeProvider'
-import { UBadge } from '@/components/u/UBadge'
-import { UButton } from '@/components/u/UButton'
-import { UEmpty } from '@/components/u/UEmpty'
-import { UInput } from '@/components/u/UInput'
-import { UQueryState } from '@/components/u/UQueryState'
-import { UText } from '@/components/u/UText'
+import { UBadge, UButton, UEmpty, UInput, UQueryState, UText } from '@/components/u'
 import { useMap } from '@/composables'
 import {
   busesQueryOptions,

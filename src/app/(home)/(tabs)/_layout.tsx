@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { Uniwind, useCSSVariable, useUniwind, withUniwind } from 'uniwind'
 
-import { UButton } from '@/components/u/UButton'
-import { useMapPadding } from '@/composables/useMapPadding'
+import { UButton } from '@/components/u'
+import { useMapPadding } from '@/composables'
 
 type IconName = ComponentProps<typeof Ionicons>['name']
 

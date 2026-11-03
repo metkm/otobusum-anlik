@@ -4,7 +4,7 @@ import { withUniwind } from 'uniwind'
 
 import { cn } from '@/utils/cn'
 
-export const StyledLucide = withUniwind(Lucide, {
+const StyledLucide = withUniwind(Lucide, {
   color: {
     fromClassName: 'colorClassName',
     styleProperty: 'accentColor',

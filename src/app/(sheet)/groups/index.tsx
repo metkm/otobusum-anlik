@@ -8,11 +8,7 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import Animated, { LinearTransition } from 'react-native-reanimated'
 
 import { ThemeProvider } from '@/components/ThemeProvider'
-import { UBadge } from '@/components/u/UBadge'
-import { UButton } from '@/components/u/UButton'
-import { USheetHeader } from '@/components/u/UHeader'
-import { UIcon } from '@/components/u/UIcon'
-import { UText } from '@/components/u/UText'
+import { UBadge, UButton, USheetHeader, UIcon, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
 import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'

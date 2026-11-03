@@ -5,7 +5,7 @@ import { GestureHandlerRootView, Pressable } from 'react-native-gesture-handler'
 import ColorPicker, { type ColorFormatsObject, Panel3, Preview } from 'reanimated-color-picker'
 import { useCSSVariable, withUniwind } from 'uniwind'
 
-import { UButton } from '@/components/u/UButton'
+import { UButton } from '@/components/u'
 import { useLine } from '@/composables'
 import { useThemeStore } from '@/stores'
 
