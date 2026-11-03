@@ -162,16 +162,18 @@ export const StopScreen = () => {
         query={arrivalQuery}
         useIsLoading
       >
-        <View className="items-end">
-          <UQueryState
-            query={arrivalQuery}
-            fetching={() => <UActivityIndicator sizeClassName="size-4" />}
-          >
-            <UText className="text-muted font-inter-medium text-sm">
-              {t('updateCount', { count: remaining })}
-            </UText>
-          </UQueryState>
-        </View>
+        {arrivalQuery.isEnabled && (
+          <View className="items-end">
+            <UQueryState
+              query={arrivalQuery}
+              fetching={() => <UActivityIndicator sizeClassName="size-4" />}
+            >
+              <UText className="text-muted font-inter-medium text-sm">
+                {t('updateCount', { count: remaining })}
+              </UText>
+            </UQueryState>
+          </View>
+        )}
 
         <AnimatedLegendList
           data={arrivalQuery.data}

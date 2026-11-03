@@ -25,6 +25,10 @@ export const UQueryState = <T,>({
   className?: string
   useIsLoading?: boolean
 }) => {
+  if (!query.isEnabled) {
+    return
+  }
+
   if (useIsLoading ? query.isLoading : query.isFetching) {
     return fetching?.() ?? <UActivityIndicator sizeClassName="size-5" />
   }
