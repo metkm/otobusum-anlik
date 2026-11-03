@@ -12,9 +12,9 @@ export const SkeletonStop = () => (
     </View>
 
     <View className="gap-2">
-      <SkeletonPulse className="h-3.25 w-14" />
-      <SkeletonPulse className="h-4.5 w-36" />
-      <SkeletonPulse className="h-3.25 w-14" />
+      <SkeletonPulse className="h-3.5 w-14" />
+      <SkeletonPulse className="h-4.75 w-36" />
+      <SkeletonPulse className="h-3.5 w-14" />
     </View>
 
     <View className="gap-1">
