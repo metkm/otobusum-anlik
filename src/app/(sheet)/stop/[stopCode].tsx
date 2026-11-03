@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking, View, type ScrollViewInstance } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
+import Animated from 'react-native-reanimated'
 import { useCSSVariable } from 'uniwind'
 
 import { LineMarkerStopLayer } from '@/components/line/marker/LineMarkerStops'
@@ -13,14 +14,15 @@ import { Map } from '@/components/Map'
 import { MapProvider } from '@/components/MapProvider'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { SkeletonStop } from '@/components/u/skeleton/SkeletonStop'
+import { UActivityIndicator } from '@/components/u/UActivityIndicator'
 import { UBadge } from '@/components/u/UBadge'
 import { UButton } from '@/components/u/UButton'
 import { UIcon } from '@/components/u/UIcon'
 import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
-import { useMap, useStop } from '@/composables'
+import { useCountdown, useMap, useStop } from '@/composables'
 import { useStopArrivals } from '@/composables/useStopArrivals'
-import { ItemLayoutAnimation } from '@/constants/animation'
+import { EnterScaleIn, ExitScaleOut, ItemLayoutAnimation } from '@/constants/animation'
 
 export const StopScreen = () => {
   const { t } = useTranslation()
@@ -34,6 +36,7 @@ export const StopScreen = () => {
 
   const { query: stopQuery } = useStop(stopCode)
   const { query: arrivalQuery } = useStopArrivals(stopCode)
+  const { remaining } = useCountdown(arrivalQuery.dataUpdatedAt, 60_000)
 
   useEffect(() => {
     navigation.setOptions({
@@ -155,7 +158,21 @@ export const StopScreen = () => {
         )}
       </UQueryState>
 
-      <UQueryState query={arrivalQuery}>
+      <UQueryState
+        query={arrivalQuery}
+        useIsLoading
+      >
+        <View className="items-end">
+          <UQueryState
+            query={arrivalQuery}
+            fetching={() => <UActivityIndicator sizeClassName="size-4" />}
+          >
+            <UText className="text-muted font-inter-medium text-sm">
+              {t('updateCount', { count: remaining })}
+            </UText>
+          </UQueryState>
+        </View>
+
         <AnimatedLegendList
           data={arrivalQuery.data}
           itemLayoutAnimation={ItemLayoutAnimation}
@@ -165,9 +182,10 @@ export const StopScreen = () => {
           recycleItems
           contentContainerStyle={{ gap: 8 }}
           renderItem={({ item: arrival }) => (
-            <View
-              key={arrival.stop_order}
+            <Animated.View
               className="flex-row items-center gap-2 p-2"
+              exiting={ExitScaleOut}
+              entering={EnterScaleIn}
             >
               <UIcon
                 name="bus-front"
@@ -225,7 +243,7 @@ export const StopScreen = () => {
                 </UText>
                 <UText className="text-muted font-inter-medium text-sm">{t('arrivingIn')}</UText>
               </View>
-            </View>
+            </Animated.View>
           )}
         />
       </UQueryState>

@@ -15,6 +15,7 @@ export const UQueryState = <T,>({
   errorMessage,
   children,
   className,
+  useIsLoading,
 }: {
   query: UseQueryResult<T>
   fetching?: () => React.ReactNode
@@ -22,8 +23,9 @@ export const UQueryState = <T,>({
   errorMessage?: string
   children?: React.ReactNode
   className?: string
+  useIsLoading?: boolean
 }) => {
-  if (query.isFetching) {
+  if (useIsLoading ? query.isLoading : query.isFetching) {
     return fetching?.() ?? <UActivityIndicator sizeClassName="size-5" />
   }
 
