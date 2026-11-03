@@ -17,12 +17,12 @@ import { UQueryState } from '@/components/u/UQueryState'
 import { UText } from '@/components/u/UText'
 import { useMap } from '@/composables'
 import { LineContext } from '@/composables/useLine'
+import { busesQueryOptions } from '@/composables/useLineBuses'
+import { getDefaultRouteCode, routesQueryOptions } from '@/composables/useLineRoutes'
 import { MIN_CHARACTER_LIMIT, isStop, useSearch } from '@/composables/useSearch'
 import { useFilterStore, useLineStore } from '@/stores'
 import type { Line, Stop } from '@/types/bus'
 import { getLatLngBounds } from '@/utils/bounds'
-import { getDefaultRouteCode, routesQueryOptions } from '@/composables/useLineRoutes'
-import { busesQueryOptions } from '@/composables/useLineBuses'
 
 const RenderItemLine = ({ item }: { item: Line }) => {
   const addLine = useLineStore(useShallow((state) => state.addLine))
@@ -33,7 +33,7 @@ const RenderItemLine = ({ item }: { item: Line }) => {
     addLine(item.code)
 
     const routes = await queryClient.query(routesQueryOptions(item.code, city))
-    const path = routes.find(route => route.code === getDefaultRouteCode(item.code))?.path
+    const path = routes.find((route) => route.code === getDefaultRouteCode(item.code))?.path
 
     if (path) {
       const bounds = getLatLngBounds(path)

@@ -4,10 +4,10 @@ import { useShallow } from 'zustand/react/shallow'
 import { fetchBusLocations } from '@/api/bus'
 import { useFilterStore } from '@/stores'
 import type { BusLocationResponse } from '@/types/bus'
+import { City } from '@/types/city'
 
 import { useLine } from './useLine'
 import { useLineRoutes } from './useLineRoutes'
-import { City } from '@/types/city'
 
 const getRefetchAndStaleTime = (query: Query<BusLocationResponse>) => {
   const { data } = query.state
@@ -20,12 +20,13 @@ const getRefetchAndStaleTime = (query: Query<BusLocationResponse>) => {
   return Math.max(1000, left)
 }
 
-export const busesQueryOptions = (code: string, city: City) => queryOptions({
-  queryFn: () => fetchBusLocations(code, city),
-  queryKey: ['buses', code],
-  refetchInterval: getRefetchAndStaleTime,
-  staleTime: getRefetchAndStaleTime,
-})
+export const busesQueryOptions = (code: string, city: City) =>
+  queryOptions({
+    queryFn: () => fetchBusLocations(code, city),
+    queryKey: ['buses', code],
+    refetchInterval: getRefetchAndStaleTime,
+    staleTime: getRefetchAndStaleTime,
+  })
 
 export const useLineBuses = () => {
   const { code } = useLine()

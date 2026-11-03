@@ -64,7 +64,10 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
         const padding = getPadding()
 
         camera.current?.easeTo(
-          deepmerge({ center: [center.lng, center.lat], duration: 750, padding, zoom: 14 }, options ?? {}),
+          deepmerge(
+            { center: [center.lng, center.lat], duration: 750, padding, zoom: 14 },
+            options ?? {},
+          ),
         )
       },
       fitBounds: (bounds, _options) => {

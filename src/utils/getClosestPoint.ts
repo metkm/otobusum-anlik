@@ -1,4 +1,4 @@
-import { Point } from "@/types/point"
+import { Point } from '@/types/point'
 
 export const getClosestPoint = <T extends Point, Y extends Point>(point: T, points: Y[]) => {
   if (points.length < 2) {

@@ -1,5 +1,6 @@
-import { Point } from '@/types/point'
 import type { LngLatBounds } from '@maplibre/maplibre-react-native'
+
+import { Point } from '@/types/point'
 
 export const getLatLngBounds = (path: Point[]): LngLatBounds | undefined => {
   if (path.length < 1) {
