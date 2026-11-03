@@ -1,33 +1,37 @@
-import { useQuery } from '@tanstack/react-query'
+import { queryOptions, useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
 import { CACHE_MS_3_DAYS } from '@/constants/app'
 import { useFilterStore, useLineStore } from '@/stores'
-import type { RouteCode, RouteDirection } from '@/types/line'
+import type { RouteDirection } from '@/types/line'
 import type { Route } from '@/types/route'
 
 import { useLine } from './useLine'
+import { City } from '@/types/city'
+
+export const routesQueryOptions = (code: string, city: City) => queryOptions({
+  meta: { persist: true },
+  queryFn: () =>
+    ky
+      .get<Route[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${code}`, {
+        searchParams: {
+          city,
+        },
+      })
+      .json(),
+  queryKey: ['routes', code, city],
+  staleTime: CACHE_MS_3_DAYS,
+})
+
+export const getDefaultRouteCode = (code: string) => `${code}_G_D0`
 
 export const useLineRoutes = () => {
   const { code } = useLine()
   const city = useFilterStore(useShallow((state) => state.city))
-  const routeCode =
-    useLineStore(useShallow((state) => state.routes[city][code])) || (`${code}_G_D0` as RouteCode)
+  const routeCode = useLineStore(useShallow((state) => state.routes[city][code])) ?? getDefaultRouteCode(code)
 
-  const query = useQuery({
-    meta: { persist: true },
-    queryFn: () =>
-      ky
-        .get<Route[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${code}`, {
-          searchParams: {
-            city,
-          },
-        })
-        .json(),
-    queryKey: ['line', code, 'routes'],
-    staleTime: CACHE_MS_3_DAYS,
-  })
+  const query = useQuery(routesQueryOptions(code, city))
 
   const route = query.data?.find((r) => r.code === routeCode)
 

@@ -1,6 +1,5 @@
 import { LegendList } from '@legendapp/list/react-native'
 import { router } from 'expo-router'
-import ky from 'ky'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { type TextInputInstance, View } from 'react-native'
@@ -21,42 +20,35 @@ import { LineContext } from '@/composables/useLine'
 import { MIN_CHARACTER_LIMIT, isStop, useSearch } from '@/composables/useSearch'
 import { useFilterStore, useLineStore } from '@/stores'
 import type { Line, Stop } from '@/types/bus'
-import type { Route } from '@/types/route'
 import { getLatLngBounds } from '@/utils/bounds'
+import { getDefaultRouteCode, routesQueryOptions } from '@/composables/useLineRoutes'
+import { busesQueryOptions } from '@/composables/useLineBuses'
 
 const RenderItemLine = ({ item }: { item: Line }) => {
   const addLine = useLineStore(useShallow((state) => state.addLine))
   const city = useFilterStore(useShallow((state) => state.city))
-  const { fitBounds } = useMap()
+  const { fitBounds, easeTo } = useMap()
 
   const addLineAndZoom = async () => {
     addLine(item.code)
 
-    const data = await queryClient.query<Route[]>({
-      queryFn: () =>
-        ky
-          .get<Route[]>(`${process.env.EXPO_PUBLIC_BASE_URL}/v1/routes/${item.code}`, {
-            searchParams: {
-              city,
-            },
-          })
-          .json(),
-      queryKey: ['line', item.code, 'routes'],
-      staleTime: 'static',
-    })
+    const routes = await queryClient.query(routesQueryOptions(item.code, city))
+    const path = routes.find(route => route.code === getDefaultRouteCode(item.code))?.path
 
-    const path = data.find((x) => x.code === `${item.code}_G_D0`)?.path
-    if (!path) {
-      return
+    if (path) {
+      const bounds = getLatLngBounds(path)
+      if (bounds) {
+        fitBounds(bounds)
+        return
+      }
     }
 
-    const bounds = getLatLngBounds(path)
+    const buses = await queryClient.query(busesQueryOptions(item.code, city))
+    const bus = buses.data.at(0)
 
-    if (!bounds) {
-      return
+    if (bus) {
+      easeTo({ lat: bus.lat, lng: bus.lng })
     }
-
-    fitBounds(bounds)
   }
 
   return (

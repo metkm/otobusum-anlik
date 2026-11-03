@@ -1,4 +1,5 @@
 import type { RouteCode } from './line'
+import { Point } from './point'
 
 export interface Route {
   id: number
@@ -8,5 +9,5 @@ export interface Route {
   type: string
   desc: string
   code: RouteCode
-  path?: { lat: number; lng: number }[]
+  path?: Point[]
 }

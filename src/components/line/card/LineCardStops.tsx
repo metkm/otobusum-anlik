@@ -50,11 +50,9 @@ const StopItem = ({
   })
 
   const goToBus = () => {
-    if (!closestBus) {
-      return
+    if (closestBus) {
+      easeTo({ lat: closestBus.lat, lng: closestBus.lng })
     }
-
-    easeTo([closestBus.lng, closestBus.lat])
   }
 
   return (
@@ -174,9 +172,9 @@ export const LineCardStops = () => {
   const closestStopToUser =
     location && lineStopsQuery.data
       ? getClosestPoint(
-          { lat: location.coords.latitude, lng: location.coords.longitude },
-          lineStopsQuery.data,
-        )
+        { lat: location.coords.latitude, lng: location.coords.longitude },
+        lineStopsQuery.data,
+      )
       : undefined
 
   return (

@@ -1,4 +1,4 @@
-import { type Query, useQuery } from '@tanstack/react-query'
+import { type Query, queryOptions, useQuery } from '@tanstack/react-query'
 import { useShallow } from 'zustand/react/shallow'
 
 import { fetchBusLocations } from '@/api/bus'
@@ -7,6 +7,7 @@ import type { BusLocationResponse } from '@/types/bus'
 
 import { useLine } from './useLine'
 import { useLineRoutes } from './useLineRoutes'
+import { City } from '@/types/city'
 
 const getRefetchAndStaleTime = (query: Query<BusLocationResponse>) => {
   const { data } = query.state
@@ -19,20 +20,22 @@ const getRefetchAndStaleTime = (query: Query<BusLocationResponse>) => {
   return Math.max(1000, left)
 }
 
+export const busesQueryOptions = (code: string, city: City) => queryOptions({
+  queryFn: () => fetchBusLocations(code, city),
+  queryKey: ['buses', code],
+  refetchInterval: getRefetchAndStaleTime,
+  staleTime: getRefetchAndStaleTime,
+})
+
 export const useLineBuses = () => {
   const { code } = useLine()
   const { routeCode } = useLineRoutes()
 
   const city = useFilterStore(useShallow((state) => state.city))
 
-  const query = useQuery({
-    queryFn: () => fetchBusLocations(code, city),
-    queryKey: ['line', code, 'buses'],
-    refetchInterval: getRefetchAndStaleTime,
-    staleTime: getRefetchAndStaleTime,
-  })
+  const query = useQuery(busesQueryOptions(code, city))
 
-  const buses = query.data?.data.filter((bus) => bus.route_code === routeCode) || []
+  const buses = query.data?.data.filter((bus) => bus.route_code === routeCode) ?? []
 
   return {
     buses,

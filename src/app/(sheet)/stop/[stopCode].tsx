@@ -54,11 +54,9 @@ export const StopScreen = () => {
   }
 
   const zoomStopOnMap = () => {
-    if (!stopQuery.data) {
-      return
+    if (stopQuery.data) {
+      easeTo({ lat: stopQuery.data.stop.lat, lng: stopQuery.data.stop.lng })
     }
-
-    easeTo([stopQuery.data.stop.lng, stopQuery.data.stop.lat])
   }
 
   return (
