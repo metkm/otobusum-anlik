@@ -142,19 +142,19 @@ export const SettingsScreen = () => {
     label: string
     value: 'dark' | 'light' | undefined
   }[] = [
-      {
-        label: t('dark'),
-        value: 'dark',
-      },
-      {
-        label: t('light'),
-        value: 'light',
-      },
-      {
-        label: t('system'),
-        value: undefined,
-      },
-    ]
+    {
+      label: t('dark'),
+      value: 'dark',
+    },
+    {
+      label: t('light'),
+      value: 'light',
+    },
+    {
+      label: t('system'),
+      value: undefined,
+    },
+  ]
 
   const mapThemeOptions: { label: string; value: MapStyle | undefined; preview?: string }[] = [
     {
