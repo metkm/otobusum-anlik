@@ -2,13 +2,13 @@ import { queryOptions, useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
+import { MS_3_DAYS } from '@/constants/time'
 import { useFilterStore, useLineStore } from '@/stores'
 import { City } from '@/types/city'
 import type { RouteDirection } from '@/types/line'
 import type { Route } from '@/types/route'
 
 import { useLine } from './useLine'
-import { MS_3_DAYS } from '@/constants/time'
 
 export const routesQueryOptions = (code: string, city: City) =>
   queryOptions({

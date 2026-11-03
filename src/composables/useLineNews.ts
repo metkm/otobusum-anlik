@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
+import { MS_30_MINUTES } from '@/constants/time'
 import { useFilterStore } from '@/stores'
 
 import { useLine } from './useLine'
-import { MS_30_MINUTES } from '@/constants/time'
 
 interface Announcement {
   HAT: string

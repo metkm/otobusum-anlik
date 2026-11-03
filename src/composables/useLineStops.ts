@@ -2,12 +2,12 @@ import { useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
+import { MS_3_DAYS } from '@/constants/time'
 import { useFilterStore } from '@/stores'
 import type { Stop } from '@/types/bus'
 
 import { useLine } from './useLine'
 import { useLineRoutes } from './useLineRoutes'
-import { MS_3_DAYS } from '@/constants/time'
 
 export const useLineStops = () => {
   const { code } = useLine()
