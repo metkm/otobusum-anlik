@@ -169,9 +169,9 @@ export const LineCardStops = () => {
   const closestStopToUser =
     location && lineStopsQuery.data
       ? getClosestPoint(
-        { lat: location.coords.latitude, lng: location.coords.longitude },
-        lineStopsQuery.data,
-      )
+          { lat: location.coords.latitude, lng: location.coords.longitude },
+          lineStopsQuery.data,
+        )
       : undefined
 
   return (
@@ -191,8 +191,12 @@ export const LineCardStops = () => {
         )}
         ItemSeparatorComponent={() => (
           // <View className="absolute left-14.75 -bottom-1.5 h-3 bg-(--ui-border) w-0.5">
-          <View className="absolute justify-center items-center left-13 -bottom-2 opacity-50">
-            <UIcon name="chevron-down" colorClassName='accent-muted' sizeClassName="size-4" />
+          <View className="absolute -bottom-2 left-13 items-center justify-center opacity-50">
+            <UIcon
+              name="chevron-down"
+              colorClassName="accent-muted"
+              sizeClassName="size-4"
+            />
           </View>
         )}
         className="border-b-hairline border-b-muted"
