@@ -16,7 +16,10 @@ export const LineCard = ({ style, className, ...props }: ViewProps) => {
   return (
     <Animated.View
       layout={LinearTransition}
-      className={cn('bg-default border-hairline border-muted rounded-md', className)}
+      className={cn(
+        'bg-default border-hairline border-muted rounded-md overflow-hidden',
+        className,
+      )}
       style={style}
       {...props}
     >

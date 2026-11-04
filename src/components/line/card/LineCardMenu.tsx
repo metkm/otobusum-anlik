@@ -3,6 +3,7 @@ import type { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
+import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton, USheetHeader, USheet, UText } from '@/components/u'
@@ -51,7 +52,10 @@ export const LineCardMenu = () => {
   }
 
   return (
-    <>
+    <Animated.View
+      layout={LinearTransition}
+      className="flex-row"
+    >
       {!hideMap && (
         <>
           <UButton
@@ -174,6 +178,6 @@ export const LineCardMenu = () => {
           variant="soft"
         />
       </USheet>
-    </>
+    </Animated.View>
   )
 }

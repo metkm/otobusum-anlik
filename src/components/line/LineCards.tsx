@@ -10,7 +10,7 @@ import { LineCard } from './card/LineCard'
 
 interface LineCardsProps<T> extends Omit<
   UCarouselProps<T>,
-  'data' | 'renderItem' | 'keyExtractor'
+  'data' | 'renderItem' | 'keyExtractor' | 'width'
 > {}
 
 export const LineCards = <T,>({ ui, ...props }: LineCardsProps<T>) => {
@@ -35,11 +35,11 @@ export const LineCards = <T,>({ ui, ...props }: LineCardsProps<T>) => {
         )}
         ui={{
           container: cn('gap-2 px-2 pb-2', ui?.container),
-          item: codes.length > 1 ? 'basis-[94%]' : 'basis-full',
-          viewport: ui?.viewport,
+          // item: codes.length > 1 ? 'basis-[94%]' : 'basis-full',
+          viewport: cn('w-screen', ui?.viewport),
         }}
         enabled={codes.length > 1}
-        keyExtractor={(item) => `${codes.length > 1}-${item}`}
+        keyExtractor={(item) => item}
         {...props}
       />
     </Animated.View>

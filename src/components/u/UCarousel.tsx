@@ -1,4 +1,4 @@
-import { createContext, ReactNode, use } from 'react'
+import { createContext, ReactNode, use, useEffect } from 'react'
 import { useWindowDimensions, ViewProps } from 'react-native'
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler'
 import Animated, {
@@ -20,8 +20,9 @@ import { alignCenter, dampen } from '@/utils/math'
 const ui = tv({
   slots: {
     container: 'flex-row',
-    item: 'min-w-0 shrink-0 grow-0 basis-[94%]',
-    viewport: 'flex-row',
+    item: 'min-w-0 shrink-0 grow-0',
+    // item: 'min-w-0 shrink-0 grow-0 basis-[94%]',
+    viewport: 'flex-row overflow-hidden',
   },
 })
 
@@ -64,6 +65,7 @@ export const UCarousel = <T,>({
   const containerX = useSharedValue(0)
   const containerWidth = useSharedValue(0)
   const viewportWidth = useSharedValue(windowWidth)
+  const slideWidth = useSharedValue(data.length > 1 ? 0.94 : 1)
 
   const localOffset = useSharedValue(0)
 
@@ -113,8 +115,18 @@ export const UCarousel = <T,>({
     },
   })
 
+  useEffect(() => {
+    slideWidth.set(data.length > 1 ? 0.94 : 1)
+  }, [data.length, slideWidth])
+
   const containerStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: offset.value }],
+  }))
+
+  // have to do this because using flexBasis is buggy. It doesn't update the value when it changes
+  // https://github.com/react/react-native/issues/58294
+  const slideStyle = useAnimatedStyle(() => ({
+    width: viewportWidth.value * slideWidth.value - 16,
   }))
 
   useAnimatedReaction(
@@ -131,7 +143,6 @@ export const UCarousel = <T,>({
       <Animated.View
         layout={LinearTransition}
         className={cn(uiViewport(), props.ui?.viewport)}
-        style={{ overflow: 'hidden', width: windowWidth }}
         {...props}
         onLayout={(event) => {
           'worklet'
@@ -154,6 +165,7 @@ export const UCarousel = <T,>({
               exiting={ExitScaleOut}
               entering={EnterScaleIn}
               key={keyExtractor(item)}
+              style={slideStyle}
               className={cn(uiItem(), props.ui?.item)}
               onLayout={({ nativeEvent }) => {
                 'worklet'
