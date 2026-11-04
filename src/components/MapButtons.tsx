@@ -21,7 +21,6 @@ export const MapButtons = (props: ViewProps) => {
 
   const bearing = useSettingsStore(useShallow((state) => state.bearing))
   const pitch = useSettingsStore(useShallow((state) => state.pitch))
-  const lineCardExpanded = useSettingsStore(useShallow((state) => state.lineCardExpanded))
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
   const changeRouteDirection = useLineStore(useShallow((state) => state.changeRouteDirection))
   const mapButtonsPlacement = useSettingsStore(useShallow((state) => state.mapButtonsPlacement))
@@ -44,7 +43,7 @@ export const MapButtons = (props: ViewProps) => {
       layout={LinearTransition}
       className={cn(
         'p-2 gap-2 flex-wrap',
-        lineCardExpanded || hideMap ? 'flex-row' : undefined,
+        hideMap && 'flex-row',
         mapButtonsPlacement === 'left' ? 'mr-auto items-start' : 'ml-auto items-end justify-end',
       )}
       pointerEvents="box-none"
