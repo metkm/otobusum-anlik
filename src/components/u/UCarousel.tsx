@@ -2,7 +2,6 @@ import { createContext, ReactNode, use } from 'react'
 import { useWindowDimensions, ViewProps } from 'react-native'
 import {
   GestureDetector,
-  GestureHandlerRootView,
   usePanGesture,
 } from 'react-native-gesture-handler'
 import Animated, {
@@ -17,7 +16,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated'
 
-import { ExitScaleOut } from '@/constants/animation'
+import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
 import { cn, tv } from '@/utils/cn'
 import { alignCenter, dampen } from '@/utils/math'
 
@@ -131,53 +130,52 @@ export const UCarousel = <T,>({
   )
 
   return (
-    <GestureHandlerRootView>
-      <GestureDetector gesture={gesture}>
+    <GestureDetector gesture={gesture}>
+      <Animated.View
+        layout={LinearTransition}
+        className={cn(uiViewport(), props.ui?.viewport)}
+        style={{ overflow: 'hidden', width: windowWidth }}
+        {...props}
+        onLayout={(event) => {
+          'worklet'
+          viewportWidth.set(event.nativeEvent.layout.width)
+          props.onLayout?.(event)
+        }}
+      >
         <Animated.View
-          layout={LinearTransition}
-          className={cn(uiViewport(), props.ui?.viewport)}
-          style={{ overflow: 'hidden', width: windowWidth }}
-          {...props}
-          onLayout={(event) => {
+          className={cn(uiContainer(), props.ui?.container)}
+          style={containerStyle}
+          onLayout={({ nativeEvent }) => {
             'worklet'
-            viewportWidth.set(event.nativeEvent.layout.width)
-            props.onLayout?.(event)
+            containerX.set(nativeEvent.layout.x)
+            containerWidth.set(nativeEvent.layout.width)
           }}
         >
-          <Animated.View
-            className={cn(uiContainer(), props.ui?.container)}
-            style={containerStyle}
-            onLayout={({ nativeEvent }) => {
-              'worklet'
-              containerX.set(nativeEvent.layout.x)
-              containerWidth.set(nativeEvent.layout.width)
-            }}
-          >
-            {data.map((item, index) => (
-              <Animated.View
-                layout={LinearTransition}
-                exiting={ExitScaleOut}
-                key={keyExtractor(item)}
-                className={cn(uiItem(), props.ui?.item)}
-                onLayout={({ nativeEvent }) => {
+          {data.map((item, index) => (
+            <Animated.View
+              layout={LinearTransition}
+              exiting={ExitScaleOut}
+              entering={EnterScaleIn}
+              key={keyExtractor(item)}
+              className={cn(uiItem(), props.ui?.item)}
+              onLayout={({ nativeEvent }) => {
+                'worklet'
+                const { x, width } = nativeEvent.layout
+
+                const snap = -(x + containerX.value) + alignCenter(viewportWidth.value, width)
+
+                snapPoints.modify((current) => {
                   'worklet'
-                  const { x, width } = nativeEvent.layout
-
-                  const snap = -(x + containerX.value) + alignCenter(viewportWidth.value, width)
-
-                  snapPoints.modify((current) => {
-                    'worklet'
-                    current[index] = snap
-                    return current
-                  })
-                }}
-              >
-                {renderItem({ item })}
-              </Animated.View>
-            ))}
-          </Animated.View>
+                  current[index] = snap
+                  return current
+                })
+              }}
+            >
+              {renderItem({ item })}
+            </Animated.View>
+          ))}
         </Animated.View>
-      </GestureDetector>
-    </GestureHandlerRootView>
+      </Animated.View>
+    </GestureDetector>
   )
 }
