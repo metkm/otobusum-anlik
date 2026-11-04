@@ -41,6 +41,14 @@ export interface UCarouselProps<T> extends ViewProps {
 
 export const CarouselContext = createContext<SharedValue<number> | undefined>(undefined)
 
+const getClosestSnap = (offset: number, snaps: number[]) => {
+  'worklet'
+  return snaps.reduce(
+    (closest, snap) => (Math.abs(snap - offset) < Math.abs(closest - offset) ? snap : closest),
+    snaps[0] ?? 0,
+  )
+}
+
 export const UCarousel = <T,>({
   data,
   renderItem,
@@ -66,15 +74,6 @@ export const UCarousel = <T,>({
   const offset = carouselContext ?? localOffset
   const offsetStart = useSharedValue(0)
 
-  const getClosestSnap = (offset: number, snaps: number[]) => {
-    'worklet'
-
-    return snaps.reduce(
-      (closest, snap) => (Math.abs(snap - offset) < Math.abs(closest - offset) ? snap : closest),
-      snaps[0] ?? 0,
-    )
-  }
-
   const offsetLimits = useDerivedValue(
     () => [-(containerWidth.value - viewportWidth.value), 0] satisfies [number, number],
   )
@@ -83,7 +82,7 @@ export const UCarousel = <T,>({
     'worklet'
 
     const snap = getClosestSnap(offset.value, snapPoints.value)
-    const clamped = clamp(snap, ...offsetLimits.value)
+    const clamped = clamp(snap, -(containerWidth.value - viewportWidth.value), 0)
 
     offset.set(withSpring(clamped))
   }
