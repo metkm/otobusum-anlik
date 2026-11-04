@@ -12,6 +12,7 @@ import { LineCardStops } from './LineCardStops'
 
 export const LineCard = ({ style, className, ...props }: ViewProps) => {
   const showLineCardStops = useSettingsStore(useShallow((state) => state.lineCardShowStops))
+  const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
 
   return (
     <Animated.View
@@ -28,7 +29,7 @@ export const LineCard = ({ style, className, ...props }: ViewProps) => {
         <LineCardMenu />
       </View>
 
-      {showLineCardStops && <LineCardStops />}
+      {(showLineCardStops || hideMap) && <LineCardStops />}
 
       <LineCardRoutes />
     </Animated.View>
