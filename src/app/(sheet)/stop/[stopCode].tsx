@@ -169,7 +169,7 @@ export const StopScreen = () => {
         )}
 
         <AnimatedLegendList
-          data={arrivalQuery.data}
+          data={arrivalQuery.data?.data}
           itemLayoutAnimation={ItemLayoutAnimation}
           keyExtractor={(item) => item.door_no}
           getFixedItemSize={() => 64.33}
