@@ -12,6 +12,7 @@ import { cn } from '@/utils/cn'
 import { UButton } from './u/UButton'
 
 const AnimatedGestureHandlerRootView = createAnimatedComponent(GestureHandlerRootView)
+const AnimatedUButton = createAnimatedComponent(UButton)
 
 export const MapButtons = (props: ViewProps) => {
   const { map, camera } = useMap()
@@ -42,7 +43,7 @@ export const MapButtons = (props: ViewProps) => {
     <Animated.View
       layout={LinearTransition}
       className={cn(
-        'p-2 gap-2',
+        'p-2 gap-2 flex-wrap',
         lineCardExpanded || hideMap ? 'flex-row' : undefined,
         mapButtonsPlacement === 'left' ? 'mr-auto items-start' : 'ml-auto items-end justify-end',
       )}
@@ -125,6 +126,7 @@ export const MapButtons = (props: ViewProps) => {
             style={{ elevation: 2 }}
             size="lg"
             variant="subtle"
+            className="ml-auto flex"
             onPress={() => {
               codes.forEach((code) => changeRouteDirection(code))
             }}
@@ -138,7 +140,9 @@ export const MapButtons = (props: ViewProps) => {
         exiting={ExitScaleOut}
         style={{ display: 'flex', maxWidth: '75%' }}
       >
-        <UButton
+        <AnimatedUButton
+          layout={LinearTransition}
+          className="overflow-hidden"
           icon="component"
           color="neutral"
           size="lg"

@@ -22,7 +22,10 @@ export const LineCards = <T,>({ ui, ...props }: LineCardsProps<T>) => {
   }
 
   return (
-    <Animated.View layout={LinearTransition}>
+    <Animated.View
+      layout={LinearTransition}
+      className="grow"
+    >
       <UCarousel
         onLayout={onLayout}
         data={codes}
