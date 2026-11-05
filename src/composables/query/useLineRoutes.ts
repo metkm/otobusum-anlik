@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { MS_3_DAYS } from '@/constants/time'
 import { useFilterStore, useLineStore } from '@/stores'
-import { City } from '@/types/city'
+import type { City } from '@/types/city'
 import type { RouteDirection } from '@/types/line'
 import type { Route } from '@/types/route'
 

@@ -1,12 +1,12 @@
-import { Ref } from 'react'
-import { TextInputInstance, TextInputProps, View } from 'react-native'
+import type { Ref } from 'react'
+import { type TextInputInstance, type TextInputProps, View } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 import { type VariantProps } from 'tailwind-variants'
 
 import { cn, tv } from '@/utils/cn'
 
 import { UActivityIndicator } from './UActivityIndicator'
-import { IconName, UIcon } from './UIcon'
+import { type IconName, UIcon } from './UIcon'
 
 const ui = tv({
   slots: {

@@ -1,10 +1,10 @@
-import { createContext, ReactNode, use, useEffect } from 'react'
-import { useWindowDimensions, ViewProps } from 'react-native'
+import { createContext, type ReactNode, use, useEffect } from 'react'
+import { useWindowDimensions, type ViewProps } from 'react-native'
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler'
 import Animated, {
   clamp,
   LinearTransition,
-  SharedValue,
+  type SharedValue,
   useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,

@@ -5,13 +5,10 @@ import { LineContext } from '@/composables/useLine'
 import { cn } from '@/utils/cn'
 
 import { ThemeProvider } from '../ThemeProvider'
-import { UCarousel, UCarouselProps } from '../u/UCarousel'
+import { UCarousel, type UCarouselProps } from '../u/UCarousel'
 import { LineCard } from './card/LineCard'
 
-interface LineCardsProps<T> extends Omit<
-  UCarouselProps<T>,
-  'data' | 'renderItem' | 'keyExtractor' | 'width'
-> {}
+type LineCardsProps<T> = Omit<UCarouselProps<T>, 'data' | 'renderItem' | 'keyExtractor' | 'width'>
 
 export const LineCards = <T,>({ ui, ...props }: LineCardsProps<T>) => {
   const { codes } = useLineGroup()

@@ -9,7 +9,7 @@ import type {
 import { createContext, use, type RefObject } from 'react'
 
 import type { Padding } from '@/components/MapProvider'
-import { Point } from '@/types/point'
+import type { Point } from '@/types/point'
 
 interface FitBoundsOptionsProps extends CameraOptions, CameraAnimationOptions {}
 

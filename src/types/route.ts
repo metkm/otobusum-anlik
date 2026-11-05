@@ -1,5 +1,5 @@
 import type { RouteCode } from './line'
-import { Point } from './point'
+import type { Point } from './point'
 
 export interface Route {
   id: number

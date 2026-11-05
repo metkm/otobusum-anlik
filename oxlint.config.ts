@@ -10,7 +10,7 @@ export default defineConfig({
     typeAware: true,
     typeCheck: true,
   },
-  plugins: ['react'],
+  plugins: ['eslint', 'typescript', 'unicorn', 'oxc', 'promise', 'react'],
   rules: {
     'capitalized-comments': 'off',
     'func-style': 'off',

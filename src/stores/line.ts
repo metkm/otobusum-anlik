@@ -76,6 +76,7 @@ const createLineCodeSlice = immer<LineCodeSlice>((set) => ({
       })
     }),
   deleteGroup: async (id) => {
+    // oxlint-disable-next-line promise/avoid-new
     await new Promise<void>((resolve) => {
       Alert.alert(t('deleteGroup'), t('areYouSure'), [
         {

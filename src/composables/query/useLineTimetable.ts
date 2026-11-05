@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { MS_3_DAYS } from '@/constants/time'
 import { useFilterStore } from '@/stores'
-import { Timetable } from '@/types/timetable'
+import type { Timetable } from '@/types/timetable'
 
 import { useLine } from '../useLine'
 import { useLineRoutes } from './useLineRoutes'

@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { fetchBusLocations } from '@/api/bus'
 import { LINE_UPDATE_INTERVAL } from '@/constants/app'
 import { useFilterStore } from '@/stores'
-import { City } from '@/types/city'
+import type { City } from '@/types/city'
 import { getNextPollDelay } from '@/utils/query'
 
 import { useLine } from '../useLine'

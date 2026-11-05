@@ -1,4 +1,4 @@
-import { ViewProps } from 'react-native'
+import type { ViewProps } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 import { cn } from '@/utils/cn'

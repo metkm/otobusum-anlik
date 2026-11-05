@@ -1,4 +1,4 @@
-import { Query } from '@tanstack/react-query'
+import type { Query } from '@tanstack/react-query'
 
 export const getNextPollDelay = <T>(queryState: Query<T>['state'], duration: number) => {
   if (queryState.status !== 'success') {

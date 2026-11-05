@@ -2,7 +2,7 @@ import { View } from 'react-native'
 
 import { cn } from '@/utils/cn'
 
-import { IconName, UIcon } from './UIcon'
+import { type IconName, UIcon } from './UIcon'
 import { UText } from './UText'
 
 export const UEmpty = ({

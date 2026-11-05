@@ -167,7 +167,7 @@ export const NearbyScreen = () => {
       }
     }
 
-    zoom()
+    void zoom()
     const cam = camera.current
 
     return () => {
