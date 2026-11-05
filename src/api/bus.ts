@@ -98,7 +98,7 @@ const getOtobusumNeredeCredentials = async () => {
   return tokens
 }
 
-export const fetchBusLocationsUsingOtobusumNerede = async (
+const fetchBusLocationsUsingOtobusumNerede = async (
   code: string,
 ): Promise<BusLocationResponse> => {
   const tokens = await getOtobusumNeredeCredentials()
