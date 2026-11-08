@@ -35,7 +35,7 @@ const LineTimetables = () => {
     <UCarousel
       data={codes}
       keyExtractor={(item) => item}
-      ui={{ container: 'p-2 pt-0 gap-2', viewport: 'flex-1' }}
+      ui={{ container: 'p-2 pt-0 gap-2', viewport: 'flex-1 grow' }}
       renderItem={({ item }) => (
         <LineContext
           key={item}
