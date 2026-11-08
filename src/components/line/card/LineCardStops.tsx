@@ -191,7 +191,7 @@ export const LineCardStops = () => {
         )}
         ItemSeparatorComponent={() => (
           // <View className="absolute left-14.75 -bottom-1.5 h-3 bg-(--ui-border) w-0.5">
-          <View className="absolute -bottom-1.5 left-13.5 items-center justify-center opacity-50">
+          <View className="absolute -bottom-1.5 left-13.25 items-center justify-center opacity-50">
             <UIcon
               name="chevron-down"
               colorClassName="accent-muted"
