@@ -1,7 +1,7 @@
+import { LegendList } from '@legendapp/list/react-native'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLineNews, useLineRoutes, useLineTimetable } from '@/composables/query'
@@ -187,12 +187,57 @@ export const LineTimetable = ({ className }: LineTimetableProps) => {
         query={lineTimetableQuery}
         fetching={() => <SkeletonTimetable />}
       >
-        {hourEntries.length > 1 ? (
+        <LegendList
+          data={hourEntries}
+          renderItem={({ item: [hour, minutes], index }) => (
+            <View
+              key={hour}
+              className={cn(
+                'flex-row items-center shrink p-2 gap-2',
+                index % 2 !== 0 ? 'bg-muted' : false,
+              )}
+            >
+              <UText className="font-inter-medium bg-primary text-inverted h-full min-h-7 w-7 rounded-md text-center align-middle">
+                {hour}
+              </UText>
+
+              <View className="shrink flex-row flex-wrap items-center gap-2">
+                {minutes.map((min) => (
+                  <UText
+                    key={min}
+                    className="leading-tight"
+                    style={[
+                      cancelledTimes?.includes(`${hour}:${min}`) && {
+                        opacity: 0.5,
+                        textDecorationLine: 'line-through',
+                      },
+                    ]}
+                  >
+                    {min}
+                  </UText>
+                ))}
+              </View>
+            </View>
+          )}
+          keyExtractor={(item) => item[0]}
+          recycleItems
+          estimatedItemSize={44}
+          ListEmptyComponent={
+            <UEmpty
+              title={t('timetableEmptyRange')}
+              icon="clock-fading"
+              className="grow"
+            />
+          }
+          // getFixedItemSize={}
+        />
+
+        {/* {hourEntries.length > 1 ? (
           <ScrollView
             showsVerticalScrollIndicator={false}
             className="border-t-hairline border-muted overflow-y-auto"
           >
-            {hourEntries.map(([hour, minutes], index) => (
+            {hourEntries.map(([hour, minutes], index) => y
               <View
                 key={hour}
                 className={cn(
@@ -229,7 +274,7 @@ export const LineTimetable = ({ className }: LineTimetableProps) => {
             icon="clock-fading"
             className="grow"
           />
-        )}
+        )} */}
       </UQueryState>
     </View>
   )
