@@ -35,10 +35,7 @@ export const HomeScreen = () => {
 
       <MapOverlay>
         <MapButtons />
-        <LineCards
-          ui={{ viewport: 'flex-1' }}
-          className="grow"
-        />
+        <LineCards ui={{ viewport: 'flex-1 grow' }} />
       </MapOverlay>
     </View>
   )

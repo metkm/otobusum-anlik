@@ -142,7 +142,6 @@ export const UCarousel = <T,>({
       <Animated.View
         layout={LayoutAnimationTransition}
         className={cn(uiViewport(), props.ui?.viewport)}
-        {...props}
         onLayout={(event) => {
           'worklet'
           viewportWidth.set(event.nativeEvent.layout.width)

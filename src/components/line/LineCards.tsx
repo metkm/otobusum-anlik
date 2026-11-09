@@ -1,8 +1,5 @@
-import Animated from 'react-native-reanimated'
-
 import { useLineGroup, useMapPadding } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { LayoutAnimationTransition } from '@/constants/animation'
 import { cn } from '@/utils/cn'
 
 import { ThemeProvider } from '../ThemeProvider'
@@ -11,37 +8,28 @@ import { LineCard } from './card/LineCard'
 
 type LineCardsProps<T> = Omit<UCarouselProps<T>, 'data' | 'renderItem' | 'keyExtractor' | 'width'>
 
-export const LineCards = <T,>({ ui, className, ...props }: LineCardsProps<T>) => {
+export const LineCards = <T,>({ ui, ...props }: LineCardsProps<T>) => {
   const { codes } = useLineGroup()
   const { onLayout } = useMapPadding('lineCards', 'bottom')
 
-  if (codes.length < 1) {
-    return
-  }
-
   return (
-    <Animated.View
-      layout={LayoutAnimationTransition}
-      className={className}
-    >
-      <UCarousel
-        onLayout={onLayout}
-        data={codes}
-        renderItem={({ item }) => (
-          <LineContext value={item}>
-            <ThemeProvider>
-              <LineCard className="grow" />
-            </ThemeProvider>
-          </LineContext>
-        )}
-        ui={{
-          container: cn('gap-2 px-2 pb-2', ui?.container),
-          viewport: cn('w-screen', ui?.viewport),
-        }}
-        enabled={codes.length > 1}
-        keyExtractor={(item) => item}
-        {...props}
-      />
-    </Animated.View>
+    <UCarousel
+      onLayout={onLayout}
+      data={codes}
+      renderItem={({ item }) => (
+        <LineContext value={item}>
+          <ThemeProvider>
+            <LineCard className="grow" />
+          </ThemeProvider>
+        </LineContext>
+      )}
+      ui={{
+        container: cn('gap-2 px-2 pb-2', ui?.container),
+        viewport: cn('w-screen', ui?.viewport),
+      }}
+      enabled={codes.length > 1}
+      keyExtractor={(item) => item}
+      {...props}
+    />
   )
 }
