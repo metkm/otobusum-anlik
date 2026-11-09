@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
-import { UBadge, UButton, USheetHeader, UIcon, USheet, UText } from '@/components/u'
+import { UBadge, UButton, USheetHeader, USheet } from '@/components/u'
 import { useLine } from '@/composables'
 import { useLineBuses, useLineRoutes } from '@/composables/query'
 import { useLineStore } from '@/stores'
@@ -97,13 +97,11 @@ export const LineCardRoutes = () => {
 
   return (
     <View className="flex-row items-center gap-2 p-2">
-      <View className="flex-row items-center gap-1.5 p-2">
-        <UIcon
-          name="bus-front"
-          sizeClassName="size-4.5"
-        />
-        <UText className="font-inter-semibold text-sm">{buses.length}</UText>
-      </View>
+      <UBadge
+        icon="bus-front"
+        label={buses.length.toString()}
+        variant="soft"
+      />
 
       <UButton
         icon="repeat"
