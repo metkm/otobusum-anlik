@@ -153,3 +153,11 @@
 @utility border-b-hairline {
   border-bottom-width: hairlineWidth();
 }
+
+@utility bottom-safe-nav {
+  bottom: calc(var(--navigation-height) + env(safe-area-inset-bottom));
+}
+
+@utility bottom-safe-nav-offset-2 {
+  bottom: calc(var(--navigation-height) + var(--spacing) * 2);
+}

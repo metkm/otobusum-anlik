@@ -30,7 +30,8 @@ export const MapOverlay = ({ className, ...props }: ViewProps) => {
       entering={FadeIn}
       exiting={FadeOut}
       className={cn(
-        'absolute bottom-0 inset-x-0 pb-[calc(var(--navigation-height)+env(safe-area-inset-bottom))]',
+        'absolute bottom-safe-nav-offset-2',
+        // 'absolute bottom-0 inset-x-0 pb-[calc(var(--navigation-height)+env(safe-area-inset-bottom))]',
         heightClass,
         className,
       )}

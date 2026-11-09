@@ -150,7 +150,7 @@ export const MapButtons = (props: ViewProps) => {
         </AnimatedGestureHandlerRootView>
       )}
 
-      <AnimatedGestureHandlerRootView
+      {/* <AnimatedGestureHandlerRootView
         layout={LayoutAnimationTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
@@ -164,10 +164,10 @@ export const MapButtons = (props: ViewProps) => {
           variant="subtle"
           style={{ elevation: 1 }}
         />
-      </AnimatedGestureHandlerRootView>
+      </AnimatedGestureHandlerRootView> */}
 
       <MapButtonsChangeDirection />
-      <MapButtonsGroup />
+      {/* <MapButtonsGroup /> */}
     </Animated.View>
   )
 }
