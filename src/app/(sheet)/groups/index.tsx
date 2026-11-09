@@ -5,13 +5,13 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { type ScrollViewInstance, View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
-import Animated, { LinearTransition } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { UBadge, UButton, USheetHeader, UIcon, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { LineContext } from '@/composables/useLine'
-import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
+import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import { useLineStore } from '@/stores'
 import type { LineGroup } from '@/types/line'
 
@@ -84,7 +84,7 @@ const GroupItem = ({
       </UButton>
 
       <Animated.View
-        layout={LinearTransition}
+        layout={LayoutAnimationTransition}
         className="flex-row items-center p-2"
       >
         <Animated.View
@@ -171,7 +171,7 @@ export const GroupsScreen = () => {
           contentContainerClassName="p-2"
         >
           <Animated.View
-            layout={LinearTransition}
+            layout={LayoutAnimationTransition}
             className="gap-2"
           >
             {groups.map((group) => (
@@ -179,7 +179,7 @@ export const GroupsScreen = () => {
                 key={group.id}
                 exiting={ExitScaleOut}
                 entering={EnterScaleIn}
-                layout={LinearTransition}
+                layout={LayoutAnimationTransition}
               >
                 <GroupItem
                   group={group}

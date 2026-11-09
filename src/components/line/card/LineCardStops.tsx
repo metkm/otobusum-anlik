@@ -4,7 +4,6 @@ import { t } from 'i18next'
 import { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import {
-  LinearTransition,
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
@@ -21,6 +20,7 @@ import { COLLAPSED_STOPS_HEIGHT, EXPANDED_STOPS_HEIGHT } from '@/constants/linec
 import { useSettingsStore } from '@/stores'
 import type { Stop } from '@/types/bus'
 import { getClosestPoint } from '@/utils/getClosestPoint'
+import { LayoutAnimationTransition } from '@/constants/animation'
 
 const StopItem = ({
   item,
@@ -180,7 +180,7 @@ export const LineCardStops = () => {
       fetching={() => <SkeletonLineStops />}
     >
       <AnimatedLegendList
-        layout={LinearTransition}
+        layout={LayoutAnimationTransition}
         data={lineStopsQuery.data || []}
         renderItem={({ item, index }) => (
           <StopItem

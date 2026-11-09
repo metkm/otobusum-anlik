@@ -1,4 +1,4 @@
-import Animated, { LinearTransition } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 
 import { useLineGroup, useMapPadding } from '@/composables'
 import { LineContext } from '@/composables/useLine'
@@ -7,6 +7,7 @@ import { cn } from '@/utils/cn'
 import { ThemeProvider } from '../ThemeProvider'
 import { UCarousel, type UCarouselProps } from '../u/UCarousel'
 import { LineCard } from './card/LineCard'
+import { LayoutAnimationTransition } from '@/constants/animation'
 
 type LineCardsProps<T> = Omit<UCarouselProps<T>, 'data' | 'renderItem' | 'keyExtractor' | 'width'>
 
@@ -20,7 +21,7 @@ export const LineCards = <T,>({ ui, className, ...props }: LineCardsProps<T>) =>
 
   return (
     <Animated.View
-      layout={LinearTransition}
+      layout={LayoutAnimationTransition}
       className={className}
     >
       <UCarousel

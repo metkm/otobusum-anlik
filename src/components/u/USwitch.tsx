@@ -1,6 +1,6 @@
+import { LayoutAnimationTransition } from '@/constants/animation'
 import { useEffect } from 'react'
 import Animated, {
-  LinearTransition,
   interpolate,
   interpolateColor,
   useAnimatedStyle,
@@ -39,7 +39,7 @@ export const USwitch = ({ value }: { value: boolean }) => {
       style={containerStyle}
     >
       <Animated.View
-        layout={LinearTransition}
+        layout={LayoutAnimationTransition}
         className="bg-muted size-4 rounded-full"
         style={thumbStyle}
       />

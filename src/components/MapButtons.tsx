@@ -1,11 +1,11 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { type ViewProps } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import Animated, { createAnimatedComponent, LinearTransition } from 'react-native-reanimated'
+import Animated, { createAnimatedComponent } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLineGroup, useMap } from '@/composables'
-import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
+import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import { useLineStore, useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
@@ -40,7 +40,7 @@ export const MapButtons = (props: ViewProps) => {
 
   return (
     <Animated.View
-      layout={LinearTransition}
+      layout={LayoutAnimationTransition}
       className={cn(
         'p-2 gap-2 flex-wrap',
         hideMap && 'flex-row',
@@ -51,7 +51,7 @@ export const MapButtons = (props: ViewProps) => {
     >
       {(bearing !== 0 || pitch !== 0) && (
         <AnimatedGestureHandlerRootView
-          layout={LinearTransition}
+          layout={LayoutAnimationTransition}
           entering={EnterScaleIn}
           exiting={ExitScaleOut}
           style={{ display: 'flex' }}
@@ -80,7 +80,7 @@ export const MapButtons = (props: ViewProps) => {
 
       {!hideMap && (
         <AnimatedGestureHandlerRootView
-          layout={LinearTransition}
+          layout={LayoutAnimationTransition}
           entering={EnterScaleIn}
           exiting={ExitScaleOut}
           style={{ display: 'flex' }}
@@ -97,7 +97,7 @@ export const MapButtons = (props: ViewProps) => {
       )}
 
       <AnimatedGestureHandlerRootView
-        layout={LinearTransition}
+        layout={LayoutAnimationTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
         style={{ display: 'flex' }}
@@ -114,7 +114,7 @@ export const MapButtons = (props: ViewProps) => {
 
       {codes.length > 1 && (
         <AnimatedGestureHandlerRootView
-          layout={LinearTransition}
+          layout={LayoutAnimationTransition}
           entering={EnterScaleIn}
           exiting={ExitScaleOut}
           style={{ display: 'flex' }}
@@ -134,13 +134,13 @@ export const MapButtons = (props: ViewProps) => {
       )}
 
       <AnimatedGestureHandlerRootView
-        layout={LinearTransition}
+        layout={LayoutAnimationTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
         style={{ display: 'flex', maxWidth: '75%' }}
       >
         <AnimatedUButton
-          layout={LinearTransition}
+          layout={LayoutAnimationTransition}
           className="overflow-hidden"
           icon="component"
           color="neutral"

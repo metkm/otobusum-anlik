@@ -1,5 +1,5 @@
 import { View, type ViewProps } from 'react-native'
-import Animated, { LinearTransition } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useSettingsStore } from '@/stores'
@@ -9,6 +9,7 @@ import { LineCardMenu } from './LineCardMenu'
 import { LineCardName } from './LineCardName'
 import { LineCardRoutes } from './LineCardRoutes'
 import { LineCardStops } from './LineCardStops'
+import { LayoutAnimationTransition } from '@/constants/animation'
 
 export const LineCard = ({ style, className, ...props }: ViewProps) => {
   const showLineCardStops = useSettingsStore(useShallow((state) => state.lineCardShowStops))
@@ -16,7 +17,7 @@ export const LineCard = ({ style, className, ...props }: ViewProps) => {
 
   return (
     <Animated.View
-      layout={LinearTransition}
+      layout={LayoutAnimationTransition}
       className={cn(
         'bg-default border-hairline border-muted rounded-md overflow-hidden',
         className,

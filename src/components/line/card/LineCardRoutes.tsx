@@ -3,7 +3,6 @@ import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import Animated, { LinearTransition } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UBadge, UButton, USheetHeader, UIcon, USheet, UText } from '@/components/u'
@@ -97,10 +96,7 @@ export const LineCardRoutes = () => {
   })
 
   return (
-    <Animated.View
-      layout={LinearTransition}
-      className="flex-row items-center gap-2 p-2"
-    >
+    <View className="flex-row items-center gap-2 p-2">
       <View className="flex-row items-center gap-1.5 p-2">
         <UIcon
           name="bus-front"
@@ -159,6 +155,6 @@ export const LineCardRoutes = () => {
           />
         </USheet>
       )}
-    </Animated.View>
+    </View>
   )
 }
