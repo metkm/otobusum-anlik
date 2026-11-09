@@ -1,4 +1,3 @@
-import { LayoutAnimationTransition } from '@/constants/animation'
 import { useEffect } from 'react'
 import Animated, {
   interpolate,
@@ -8,6 +7,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import { useCSSVariable } from 'uniwind'
+
+import { LayoutAnimationTransition } from '@/constants/animation'
 
 export const USwitch = ({ value }: { value: boolean }) => {
   const progress = useSharedValue(value ? 1 : 0)

@@ -16,11 +16,11 @@ import { UButton, UEmpty, UIcon, UQueryState, UText } from '@/components/u'
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
 import { useMap } from '@/composables'
 import { useLineBuses, useLineStops } from '@/composables/query'
+import { LayoutAnimationTransition } from '@/constants/animation'
 import { COLLAPSED_STOPS_HEIGHT, EXPANDED_STOPS_HEIGHT } from '@/constants/linecard'
 import { useSettingsStore } from '@/stores'
 import type { Stop } from '@/types/bus'
 import { getClosestPoint } from '@/utils/getClosestPoint'
-import { LayoutAnimationTransition } from '@/constants/animation'
 
 const StopItem = ({
   item,

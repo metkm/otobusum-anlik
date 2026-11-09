@@ -9,11 +9,11 @@ import { useShallow } from 'zustand/react/shallow'
 import { UButton, USheetHeader, USheet, UText } from '@/components/u'
 import { useLine, useMap } from '@/composables'
 import { useLineRoutes, useLineNews } from '@/composables/query'
+import { LayoutAnimationTransition } from '@/constants/animation'
 import { useFilterStore, useLineStore, useSettingsStore, useThemeStore } from '@/stores'
 import { getLatLngBounds } from '@/utils/bounds'
 
 import { LineModalsColorPicker } from '../modals/ColorPicker'
-import { LayoutAnimationTransition } from '@/constants/animation'
 
 export const LineCardMenu = () => {
   const { code } = useLine()

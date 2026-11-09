@@ -2,6 +2,7 @@ import { View, type ViewProps } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
+import { LayoutAnimationTransition } from '@/constants/animation'
 import { useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
@@ -9,7 +10,6 @@ import { LineCardMenu } from './LineCardMenu'
 import { LineCardName } from './LineCardName'
 import { LineCardRoutes } from './LineCardRoutes'
 import { LineCardStops } from './LineCardStops'
-import { LayoutAnimationTransition } from '@/constants/animation'
 
 export const LineCard = ({ style, className, ...props }: ViewProps) => {
   const showLineCardStops = useSettingsStore(useShallow((state) => state.lineCardShowStops))

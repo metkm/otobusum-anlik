@@ -3,9 +3,9 @@ import type { ViewProps } from 'react-native'
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
+import { LayoutAnimationTransition } from '@/constants/animation'
 import { useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
-import { LayoutAnimationTransition } from '@/constants/animation'
 
 export const MapOverlay = ({ className, ...props }: ViewProps) => {
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
