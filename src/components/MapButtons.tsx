@@ -14,15 +14,69 @@ import { UButton } from './u/UButton'
 const AnimatedGestureHandlerRootView = createAnimatedComponent(GestureHandlerRootView)
 const AnimatedUButton = createAnimatedComponent(UButton)
 
+export const MapButtonsChangeDirection = () => {
+  const { codes } = useLineGroup()
+
+  if (codes.length < 2) {
+    return
+  }
+
+  const onPress = () => {
+    codes.forEach((code) => useLineStore.getState().changeRouteDirection(code))
+  }
+
+  return (
+    <AnimatedGestureHandlerRootView
+      layout={LayoutAnimationTransition}
+      entering={EnterScaleIn}
+      exiting={ExitScaleOut}
+      style={{ display: 'flex' }}
+    >
+      <UButton
+        icon="repeat"
+        color="neutral"
+        style={{ elevation: 2 }}
+        size="lg"
+        variant="subtle"
+        className="ml-auto flex"
+        onPress={onPress}
+      />
+    </AnimatedGestureHandlerRootView>
+  )
+}
+
+export const MapButtonsGroup = () => {
+  const { group } = useLineGroup()
+
+  return (
+    <AnimatedGestureHandlerRootView
+      layout={LayoutAnimationTransition}
+      entering={EnterScaleIn}
+      exiting={ExitScaleOut}
+      style={{ display: 'flex', maxWidth: '75%' }}
+    >
+      <AnimatedUButton
+        layout={LayoutAnimationTransition}
+        className="overflow-hidden"
+        icon="component"
+        color="neutral"
+        size="lg"
+        variant="subtle"
+        to={{ pathname: '(sheet)/groups/index' }}
+        label={group?.name}
+        style={{ elevation: 2 }}
+      />
+    </AnimatedGestureHandlerRootView>
+  )
+}
+
 export const MapButtons = (props: ViewProps) => {
   const { map, camera } = useMap()
-  const { group, codes } = useLineGroup()
   const navigation = useTrueSheetNavigation()
 
   const bearing = useSettingsStore(useShallow((state) => state.bearing))
   const pitch = useSettingsStore(useShallow((state) => state.pitch))
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
-  const changeRouteDirection = useLineStore(useShallow((state) => state.changeRouteDirection))
   const mapButtonsPlacement = useSettingsStore(useShallow((state) => state.mapButtonsPlacement))
 
   const queryArea = async () => {
@@ -112,45 +166,8 @@ export const MapButtons = (props: ViewProps) => {
         />
       </AnimatedGestureHandlerRootView>
 
-      {codes.length > 1 && (
-        <AnimatedGestureHandlerRootView
-          layout={LayoutAnimationTransition}
-          entering={EnterScaleIn}
-          exiting={ExitScaleOut}
-          style={{ display: 'flex' }}
-        >
-          <UButton
-            icon="repeat"
-            color="neutral"
-            style={{ elevation: 2 }}
-            size="lg"
-            variant="subtle"
-            className="ml-auto flex"
-            onPress={() => {
-              codes.forEach((code) => changeRouteDirection(code))
-            }}
-          />
-        </AnimatedGestureHandlerRootView>
-      )}
-
-      <AnimatedGestureHandlerRootView
-        layout={LayoutAnimationTransition}
-        entering={EnterScaleIn}
-        exiting={ExitScaleOut}
-        style={{ display: 'flex', maxWidth: '75%' }}
-      >
-        <AnimatedUButton
-          layout={LayoutAnimationTransition}
-          className="overflow-hidden"
-          icon="component"
-          color="neutral"
-          size="lg"
-          variant="subtle"
-          to={{ pathname: '(sheet)/groups/index' }}
-          label={group?.name}
-          style={{ elevation: 2 }}
-        />
-      </AnimatedGestureHandlerRootView>
+      <MapButtonsChangeDirection />
+      <MapButtonsGroup />
     </Animated.View>
   )
 }
