@@ -61,7 +61,6 @@ export const UCarousel = <T,>({
   const { viewport: uiViewport, container: uiContainer, item: uiItem } = ui()
 
   const snapPoints = useSharedValue<number[]>([])
-  const containerX = useSharedValue(0)
   const containerWidth = useSharedValue(0)
   const viewportWidth = useSharedValue(windowWidth)
   const slideWidth = useSharedValue(data.length > 1 ? 0.94 : 1)
@@ -153,7 +152,6 @@ export const UCarousel = <T,>({
           style={containerStyle}
           onLayout={({ nativeEvent }) => {
             'worklet'
-            containerX.set(nativeEvent.layout.x)
             containerWidth.set(nativeEvent.layout.width)
           }}
         >
@@ -169,7 +167,7 @@ export const UCarousel = <T,>({
                 'worklet'
                 const { x, width } = nativeEvent.layout
 
-                const snap = -(x + containerX.value) + alignCenter(viewportWidth.value, width)
+                const snap = -x + alignCenter(viewportWidth.value, width)
 
                 snapPoints.modify((current) => {
                   'worklet'
