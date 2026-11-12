@@ -8,7 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import { UButton, UInput, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
-import { GROUP_LINE_LIMIT } from '@/constants/app'
+import { GROUP_ITEM_TYPE_LIMIT } from '@/constants/app'
 import { useTransitStore } from '@/stores'
 
 export const GroupIdScreen = () => {
@@ -82,7 +82,7 @@ export const GroupIdScreen = () => {
       <View className="gap-2">
         <View className="flex-row items-center gap-2">
           <UText className="font-inter-medium ml-1">{t('addedLines')}</UText>
-          <UText className="font-inter-medium text-sm">{`(${group?.items.length} / ${GROUP_LINE_LIMIT})`}</UText>
+          <UText className="font-inter-medium text-sm">{`(${group?.items.length} / ${GROUP_ITEM_TYPE_LIMIT})`}</UText>
         </View>
 
         {group && group.items.length > 0 && (

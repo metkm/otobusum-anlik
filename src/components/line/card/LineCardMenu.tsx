@@ -24,7 +24,6 @@ export const LineCardMenu = () => {
 
   const toggleLineHidden = useFilterStore(useShallow((state) => state.toggleLineHidden))
   const isLineHidden = useFilterStore(useShallow((state) => state.hiddenLines.includes(code)))
-  // const deleteLine = useLineStore(useShallow((state) => state.deleteLine))
   const createTheme = useThemeStore(useShallow((state) => state.createTheme))
   const lineCardExpanded = useSettingsStore(useShallow((state) => state.lineCardExpanded))
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
@@ -137,7 +136,7 @@ export const LineCardMenu = () => {
           variant="soft"
           to={{
             params: {
-              addToGroup: code,
+              code,
             },
             pathname: '(sheet)/groups/index',
           }}

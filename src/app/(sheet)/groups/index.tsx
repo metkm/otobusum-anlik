@@ -6,11 +6,14 @@ import { type ScrollViewInstance, View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
 
+import { ThemeProvider } from '@/components/ThemeProvider'
 import { UBadge, UButton, USheetHeader, UIcon, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
+import { GroupItemContext } from '@/composables/useGroupItem'
 import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import { useTransitStore } from '@/stores'
 import { type GroupItem, type Group } from '@/stores/groups'
+import { cn } from '@/utils/cn'
 
 const GroupItem = ({
   group,
@@ -46,7 +49,10 @@ const GroupItem = ({
         onPress={handlePress}
       >
         <View
-          className={`${selected ? 'bg-primary' : 'bg-muted'} size-8 items-center justify-center rounded-md`}
+          className={cn(
+            'size-8 items-center justify-center rounded-md',
+            selected ? 'bg-primary' : 'bg-muted',
+          )}
         >
           {selected && (
             <UIcon
@@ -74,6 +80,7 @@ const GroupItem = ({
                   label={item.code}
                   variant="soft"
                   color={code === item.code ? 'primary' : 'neutral'}
+                  icon={item.type === 'line' ? 'bus-front' : 'map-pin'}
                 />
               ))
             )}
@@ -93,7 +100,7 @@ const GroupItem = ({
           {canDelete && (
             <UButton
               icon="trash-2"
-              // onPress={() => useLineStore.getState().deleteGroup(group.id)}
+              onPress={() => useTransitStore.getState().deleteGroup(group.id)}
               variant="ghost"
               color="neutral"
             />
@@ -132,7 +139,7 @@ export const GroupsScreen = () => {
           title={t('groups')}
           description={code ? t('addLineToGroup', { code }) : t('chooseActiveGroup')}
         >
-          {/* <LineContext value={addToGroup}>
+          <GroupItemContext value={code}>
             <ThemeProvider>
               <GestureHandlerRootView style={{ flexShrink: 0 }}>
                 <UButton
@@ -140,12 +147,12 @@ export const GroupsScreen = () => {
                   icon="plus-circle"
                   variant="soft"
                   onPress={() => {
-                    useLineStore.getState().createGroup()
+                    useTransitStore.getState().createGroup()
                   }}
                 />
               </GestureHandlerRootView>
             </ThemeProvider>
-          </LineContext> */}
+          </GroupItemContext>
         </USheetHeader>
       ),
       scrollableRef,
@@ -157,33 +164,37 @@ export const GroupsScreen = () => {
   }, [navigation, t, code])
 
   return (
-    <GestureHandlerRootView>
-      <ScrollView
-        ref={scrollableRef}
-        className="flex-1"
-        contentContainerClassName="p-2"
-      >
-        <Animated.View
-          layout={LayoutAnimationTransition}
-          className="gap-2"
-        >
-          {groups.map((group) => (
+    <GroupItemContext value={code}>
+      <ThemeProvider>
+        <GestureHandlerRootView>
+          <ScrollView
+            ref={scrollableRef}
+            className="flex-1"
+            contentContainerClassName="p-2"
+          >
             <Animated.View
-              key={group.id}
-              exiting={ExitScaleOut}
-              entering={EnterScaleIn}
               layout={LayoutAnimationTransition}
+              className="gap-2"
             >
-              <GroupItem
-                group={group}
-                canDelete={groups.length > 1}
-                selected={group.id === groupId}
-              />
+              {groups.map((group) => (
+                <Animated.View
+                  key={group.id}
+                  exiting={ExitScaleOut}
+                  entering={EnterScaleIn}
+                  layout={LayoutAnimationTransition}
+                >
+                  <GroupItem
+                    group={group}
+                    canDelete={groups.length > 1}
+                    selected={group.id === groupId}
+                  />
+                </Animated.View>
+              ))}
             </Animated.View>
-          ))}
-        </Animated.View>
-      </ScrollView>
-    </GestureHandlerRootView>
+          </ScrollView>
+        </GestureHandlerRootView>
+      </ThemeProvider>
+    </GroupItemContext>
   )
 }
 

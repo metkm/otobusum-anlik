@@ -8,6 +8,7 @@ import { useDebounce } from 'use-debounce'
 import { useShallow } from 'zustand/react/shallow'
 
 import { queryClient } from '@/api/client'
+import { ThemeProvider } from '@/components/ThemeProvider'
 import { UBadge, UButton, UEmpty, UInput, UQueryState, UText } from '@/components/u'
 import { useMap } from '@/composables'
 import {
@@ -17,6 +18,7 @@ import {
   useSearch,
 } from '@/composables/query'
 import { MIN_CHARACTER_LIMIT, isStop } from '@/composables/query/useSearch'
+import { GroupItemContext } from '@/composables/useGroupItem'
 import { useFilterStore, useTransitStore } from '@/stores'
 import type { Line, Stop } from '@/types/bus'
 import { getLatLngBounds } from '@/utils/bounds'
@@ -74,10 +76,6 @@ const RenderItemLine = ({ item }: { item: Line }) => {
 }
 
 const RenderItemStop = ({ item }: { item: Stop }) => (
-  // const addStopAndZoom = () => {
-
-  // }
-
   <View className="shrink flex-row items-center gap-2">
     <UButton
       variant="ghost"
@@ -180,13 +178,17 @@ export const SearchScreen = () => {
           <LegendList
             data={results}
             renderItem={({ item }) => {
-              console.log(item)
-
               if (isStop(item)) {
                 return <RenderItemStop item={item} />
               }
 
-              return <RenderItemLine item={item} />
+              return (
+                <GroupItemContext value={item.code}>
+                  <ThemeProvider>
+                    <RenderItemLine item={item} />
+                  </ThemeProvider>
+                </GroupItemContext>
+              )
             }}
             keyExtractor={(item) => item.id.toString()}
             className="flex-1"

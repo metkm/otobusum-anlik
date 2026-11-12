@@ -1,14 +1,13 @@
-import { useQuery } from '@tanstack/react-query'
+import { queryOptions, useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useFilterStore } from '@/stores'
 import type { StopWithBuses } from '@/types/bus'
+import type { City } from '@/types/city'
 
-export const useStop = (stopCode: string | number) => {
-  const city = useFilterStore(useShallow((state) => state.city))
-
-  const query = useQuery({
+export const stopQueryOptions = (stopCode: string | number, city: City) =>
+  queryOptions({
     meta: { persist: true },
     queryFn: () =>
       ky
@@ -21,6 +20,11 @@ export const useStop = (stopCode: string | number) => {
     queryKey: ['stop', stopCode, city],
     staleTime: 86_400_000,
   })
+
+export const useStop = (stopCode: string | number) => {
+  const city = useFilterStore(useShallow((state) => state.city))
+
+  const query = useQuery(stopQueryOptions(stopCode, city))
 
   return {
     query,

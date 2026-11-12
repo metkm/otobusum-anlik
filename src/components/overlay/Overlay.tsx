@@ -30,7 +30,7 @@ export const Overlay = ({ className, ...props }: ViewProps) => {
       entering={FadeIn}
       exiting={FadeOut}
       className={cn(
-        'absolute bottom-0 inset-x-0 pb-[calc(var(--navigation-height)+env(safe-area-inset-bottom))]',
+        'flex-1 absolute bottom-[calc(var(--navigation-height)+env(safe-area-inset-bottom))] inset-x-0',
         heightClass,
         className,
       )}

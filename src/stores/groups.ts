@@ -1,14 +1,18 @@
+import { randomUUID } from 'expo-crypto'
 import { t } from 'i18next'
-import { Alert } from 'react-native'
+import { Alert, ToastAndroid } from 'react-native'
 import { immer } from 'zustand/middleware/immer'
 
+import { GROUP_ITEM_TYPE_LIMIT } from '@/constants/app'
 import type { City } from '@/types/city'
 
 import { useFilterStore } from './filter'
 import { useThemeStore } from './theme'
 
+export type GroupItemType = 'line' | 'stop'
+
 export interface GroupItem {
-  type: 'line' | 'stop'
+  type: GroupItemType
   code: string
 }
 
@@ -26,6 +30,7 @@ export interface GroupsSlice {
   selectGroup: (groupId: string) => void
   updateGroupName: (id: string, name: string) => void
   deleteGroup: (id: string) => void
+  createGroup: () => void
 }
 
 export const createGroupsSlice = immer<GroupsSlice>((set, get) => ({
@@ -35,9 +40,42 @@ export const createGroupsSlice = immer<GroupsSlice>((set, get) => ({
       const grId = groupId ?? get().selectedGroup[city]
       const group = state.groups[city].find((x) => x.id === grId)
 
+      if (!group) {
+        return
+      }
+
+      const itemTypeCountInGroup = group.items.reduce(
+        (acc, curr) => (curr.type === item.type ? acc + 1 : acc),
+        0,
+      )
+
+      if (itemTypeCountInGroup >= GROUP_ITEM_TYPE_LIMIT) {
+        ToastAndroid.show(t('itemTypeLimitExceeded'), ToastAndroid.SHORT)
+        return
+      }
+
+      if (group.items.find((x) => x.code === item.code)) {
+        ToastAndroid.show(t('itemAlreadyInGroup'), ToastAndroid.SHORT)
+        return
+      }
+
       group?.items.push(item)
+      if (item.type === 'line') {
+        useThemeStore.getState().createTheme(item.code)
+      }
+      ToastAndroid.show(t('added', { code: item.code }), ToastAndroid.SHORT)
     })
   },
+  createGroup: () =>
+    set((state) => {
+      const { city } = useFilterStore.getState()
+      const uuid = randomUUID()
+      state.groups[city].push({
+        id: uuid,
+        items: [],
+        name: uuid,
+      })
+    }),
   deleteGroup: async (id) => {
     // oxlint-disable-next-line promise/avoid-new
     await new Promise<void>((resolve) => {

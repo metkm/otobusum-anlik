@@ -138,7 +138,8 @@ export const StopScreen = () => {
                       variant="soft"
                       to={{
                         params: {
-                          addToGroup: bus,
+                          code: bus,
+                          type: 'line',
                         },
                         pathname: '(sheet)/groups/index',
                       }}

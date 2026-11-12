@@ -4,16 +4,21 @@ import { LineCard } from '@/components/line/card/LineCard'
 import { StopCard } from '@/components/stop/StopCard'
 import { useLineGroup, useMapPadding } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'
-import type { GroupItem } from '@/stores/groups'
+import type { GroupItem, GroupItemType } from '@/stores/groups'
 import { cn } from '@/utils/cn'
 
+import { ThemeProvider } from '../ThemeProvider'
 import { UCarousel } from '../u'
 
-export const GroupCardItems = () => {
+interface GroupCardItemsProps {
+  filter?: GroupItemType
+}
+
+export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
   const { group } = useLineGroup()
   const { onLayout } = useMapPadding('overlayGroupItems', 'bottom')
 
-  const items = group?.items ?? []
+  const items = filter ? group?.items.filter((item) => item.type === filter) : group?.items
 
   const renderItem = ({ item }: { item: GroupItem }): ReactNode => {
     if (item.type === 'stop') {
@@ -26,14 +31,16 @@ export const GroupCardItems = () => {
 
     return (
       <GroupItemContext value={item.code}>
-        <LineCard />
+        <ThemeProvider>
+          <LineCard />
+        </ThemeProvider>
       </GroupItemContext>
     )
   }
 
   return (
     <UCarousel
-      data={items}
+      data={items ?? []}
       renderItem={renderItem}
       onLayout={onLayout}
       keyExtractor={(item) => item.code}

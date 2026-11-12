@@ -58,7 +58,7 @@ export const TimetableScreen = () => {
   return (
     <View className="mt-safe mx-safe mb-[calc(var(--navigation-height)+env(safe-area-inset-bottom))] flex-1 pt-2">
       <CarouselContext value={offset}>
-        <GroupCardItems />
+        <GroupCardItems filter="line" />
         <LineTimetables />
       </CarouselContext>
     </View>

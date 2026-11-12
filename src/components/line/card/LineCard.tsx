@@ -2,7 +2,7 @@ import { View, type ViewProps } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
-import { LayoutAnimationTransition } from '@/constants/animation'
+import { LayoutAnimationTransition, ExitScaleOut, EnterScaleIn } from '@/constants/animation'
 import { useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
@@ -23,6 +23,8 @@ export const LineCard = ({ style, className, ...props }: ViewProps) => {
         className,
       )}
       style={style}
+      exiting={ExitScaleOut}
+      entering={EnterScaleIn}
       {...props}
     >
       <View className="border-b-hairline border-muted flex-row items-center justify-between p-2">

@@ -276,7 +276,7 @@ export const NearbyScreen = () => {
                 <UButton
                   key={route.id}
                   to={{
-                    params: { addToGroup: route.line_code },
+                    params: { code: route.line_code, type: 'line' },
                     pathname: '(sheet)/groups/index',
                   }}
                   variant="ghost"

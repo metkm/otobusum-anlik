@@ -3,21 +3,13 @@ import { type LocationObject, getCurrentPositionAsync } from 'expo-location'
 import { t } from 'i18next'
 import { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import {
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useSharedValue,
-  withDelay,
-  withTiming,
-} from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton, UEmpty, UIcon, UQueryState, UText } from '@/components/u'
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
-import { useMap } from '@/composables'
+import { useMap, useCardListHeight } from '@/composables'
 import { useLineBuses, useLineStops } from '@/composables/query'
 import { LayoutAnimationTransition } from '@/constants/animation'
-import { COLLAPSED_STOPS_HEIGHT, EXPANDED_STOPS_HEIGHT } from '@/constants/linecard'
 import { useSettingsStore } from '@/stores'
 import type { Stop } from '@/types/bus'
 import { getClosestPoint } from '@/utils/getClosestPoint'
@@ -116,32 +108,10 @@ const StopItem = ({
 }
 
 export const LineCardStops = () => {
-  const expandStopsWhenScrolled = useSettingsStore(
-    useShallow((state) => state.expandStopsWhenScrolled),
-  )
   const showMyLocation = useSettingsStore(useShallow((state) => state.showMyLocation))
   const [location, setLocation] = useState<LocationObject>()
   const { query: lineStopsQuery } = useLineStops()
-  const containerHeight = useSharedValue(COLLAPSED_STOPS_HEIGHT)
-
-  const containerStyle = useAnimatedStyle(() => ({
-    height: containerHeight.value,
-  }))
-
-  const onScroll = useAnimatedScrollHandler({
-    onBeginDrag: () => {
-      if (!expandStopsWhenScrolled) {
-        return
-      }
-      containerHeight.set(EXPANDED_STOPS_HEIGHT)
-    },
-    onMomentumEnd: () => {
-      if (!expandStopsWhenScrolled && containerHeight.value !== EXPANDED_STOPS_HEIGHT) {
-        return
-      }
-      containerHeight.set(withDelay(1500, withTiming(COLLAPSED_STOPS_HEIGHT)))
-    },
-  })
+  const { style: containerStyle, onScroll } = useCardListHeight()
 
   useEffect(() => {
     if (!showMyLocation) {
