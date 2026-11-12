@@ -1,4 +1,3 @@
-import { LegendList } from '@legendapp/list/react-native'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { router, useLocalSearchParams } from 'expo-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -70,10 +69,10 @@ export const GroupIdScreen = () => {
 
   useEffect(() => {
     navigation.setOptions({
-      draggable: !isSorting,
       dismissible: !isSorting,
+      draggable: !isSorting,
     })
-  }, [isSorting])
+  }, [isSorting, navigation])
 
   return (
     <View className="gap-8 px-2 pt-8 pb-8">

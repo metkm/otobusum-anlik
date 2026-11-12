@@ -77,16 +77,6 @@ export const createGroupsSlice = immer<GroupsSlice>((set, get) => ({
         name: uuid,
       })
     }),
-  setGroupItems: (items, groupId) => {
-    set((state) => {
-      const { city } = useFilterStore.getState()
-      const group = state.groups[city].find((x) => x.id === groupId)
-
-      if (group) {
-        group.items = items
-      }
-    })
-  },
   deleteGroup: async (id) => {
     // oxlint-disable-next-line promise/avoid-new
     await new Promise<void>((resolve) => {
@@ -162,6 +152,16 @@ export const createGroupsSlice = immer<GroupsSlice>((set, get) => ({
   selectedGroup: {
     istanbul: 'a',
     izmir: 'a',
+  },
+  setGroupItems: (items, groupId) => {
+    set((state) => {
+      const { city } = useFilterStore.getState()
+      const group = state.groups[city].find((x) => x.id === groupId)
+
+      if (group) {
+        group.items = items
+      }
+    })
   },
   updateGroupName: (id, name) =>
     set((state) => {
