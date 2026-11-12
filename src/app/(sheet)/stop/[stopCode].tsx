@@ -113,6 +113,14 @@ export const StopScreen = () => {
                   block
                   className="flex-1"
                 />
+                <UButton
+                  label={t('addToGroup')}
+                  icon="circle-plus"
+                  to={{
+                    params: { code: stopCode, type: 'stop' },
+                    pathname: '(sheet)/groups/index',
+                  }}
+                />
               </View>
             </GestureHandlerRootView>
 
