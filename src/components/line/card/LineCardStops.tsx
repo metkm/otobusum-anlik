@@ -7,7 +7,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { UButton, UEmpty, UIcon, UQueryState, UText } from '@/components/u'
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
-import { useCardListHeight, useMap } from '@/composables'
+import { useExpandableCardHeight, useMap } from '@/composables'
 import { useLineBuses, useLineStops } from '@/composables/query'
 import { useSettingsStore } from '@/stores'
 import type { Stop } from '@/types/bus'
@@ -110,7 +110,7 @@ export const LineCardStops = () => {
   const showMyLocation = useSettingsStore(useShallow((state) => state.showMyLocation))
   const [location, setLocation] = useState<LocationObject>()
   const { query: lineStopsQuery } = useLineStops()
-  const { style, onScroll } = useCardListHeight()
+  const { onScroll } = useExpandableCardHeight()
 
   useEffect(() => {
     if (!showMyLocation) {
@@ -167,16 +167,13 @@ export const LineCardStops = () => {
             />
           </View>
         )}
-        className="border-b-hairline border-b-muted basis-0"
-        contentContainerClassName="py-1.5"
+        className="border-b-hairline border-b-muted flex-1"
         keyExtractor={(item) => item.id.toString()}
         scrollEventThrottle={16}
         getFixedItemSize={() => 48}
-        onScroll={onScroll}
-        // @ts-expect-error
-        style={style}
         recycleItems
         showsVerticalScrollIndicator={false}
+        onScroll={onScroll}
       />
     </UQueryState>
   )

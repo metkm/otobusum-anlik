@@ -1,4 +1,6 @@
-import '@/global.css'
+// @ts-expect-error
+import '../global.css'
+
 import { Sheet } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { NavigationBar } from 'expo-navigation-bar'

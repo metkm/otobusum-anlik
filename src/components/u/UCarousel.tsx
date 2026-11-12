@@ -3,7 +3,6 @@ import { useWindowDimensions, type ViewProps } from 'react-native'
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler'
 import Animated, {
   clamp,
-  LinearTransition,
   type SharedValue,
   useAnimatedReaction,
   useAnimatedStyle,
@@ -36,7 +35,9 @@ export interface UCarouselProps<T> extends ViewProps {
   enabled?: boolean
 }
 
-export const CarouselContext = createContext<SharedValue<number> | undefined>(undefined)
+export const CarouselContext = createContext<
+  { offset: SharedValue<number>; cardHeight: SharedValue<number> } | undefined
+>(undefined)
 
 const getClosestSnap = (offset: number, snaps: number[]) => {
   'worklet'
@@ -68,7 +69,7 @@ export const UCarousel = <T,>({
 
   const localOffset = useSharedValue(0)
 
-  const offset = carouselContext ?? localOffset
+  const offset = carouselContext?.offset ?? localOffset
   const offsetStart = useSharedValue(0)
 
   const offsetLimits = useDerivedValue(
@@ -140,7 +141,6 @@ export const UCarousel = <T,>({
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View
-        // layout={LinearTransition}
         className={cn(uiViewport(), props.ui?.viewport)}
         onLayout={(event) => {
           'worklet'
@@ -158,7 +158,7 @@ export const UCarousel = <T,>({
         >
           {data.map((item, index) => (
             <Animated.View
-              // layout={LinearTransition}
+              layout={LayoutAnimationTransition}
               exiting={ExitScaleOut}
               entering={EnterScaleIn}
               key={keyExtractor(item)}

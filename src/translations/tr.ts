@@ -58,6 +58,8 @@ export default {
   newGroupTitlePlaceholder: 'Yeni grup ismi',
   news: 'Haberler',
   next: 'Sıradaki',
+  noBusArrivalsToStop: 'Yaklaşan otobüs yok',
+  noBusArrivalsToStopDescription: 'Şu anda bu durağa yaklaşan otobüs bulunmuyor',
   noResults: 'Herhangi bir sonuç bulunamadı',
   noResultsAreaQuerySearch: 'Bu bölgede durak veya hat bulunamadı',
   noResultsDescription: 'Belki başka bir şey aramayı deneyebilirsin?',

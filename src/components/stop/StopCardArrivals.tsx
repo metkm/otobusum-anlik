@@ -3,13 +3,13 @@ import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import Animated from 'react-native-reanimated'
 
-import { useCardListHeight, useGroupItem } from '@/composables'
+import { useGroupItem, useExpandableCardHeight } from '@/composables'
 import { useStopArrivals } from '@/composables/query'
-import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
+import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
 import type { StopArrival } from '@/types/stop'
 
 import { ThemeProvider } from '../ThemeProvider'
-import { UBadge, UIcon, UQueryState, UText } from '../u'
+import { UBadge, UEmpty, UIcon, UQueryState, UText } from '../u'
 
 const StopCardArrivalsItem = ({ item }: { item: StopArrival }) => {
   const { t } = useTranslation()
@@ -76,9 +76,10 @@ const StopCardArrivalsItem = ({ item }: { item: StopArrival }) => {
 }
 
 export const StopCardArrivals = () => {
+  const { t } = useTranslation()
   const { code } = useGroupItem()
   const { query } = useStopArrivals(code)
-  const { onScroll, style } = useCardListHeight()
+  const { onScroll } = useExpandableCardHeight()
 
   return (
     <UQueryState
@@ -90,11 +91,18 @@ export const StopCardArrivals = () => {
         renderItem={({ item }) => <StopCardArrivalsItem item={item} />}
         keyExtractor={(item) => item.door_no}
         getFixedItemSize={() => 67}
-        className="basis-0"
         onScroll={onScroll}
-        // @ts-expect-error
-        style={style}
         recycleItems
+        className="flex-1"
+        contentContainerClassName="grow"
+        ListEmptyComponent={
+          <UEmpty
+            title={t('noBusArrivalsToStop')}
+            description={t('noBusArrivalsToStopDescription')}
+            icon="bus-front"
+            className="m-2 grow"
+          />
+        }
       />
     </UQueryState>
   )

@@ -172,7 +172,7 @@ export const SearchScreen = () => {
             title={t('noResults')}
             description={t('noResultsDescription')}
             icon="search"
-            className="mt-2 grow"
+            className="m-2 grow"
           />
         ) : (
           <LegendList

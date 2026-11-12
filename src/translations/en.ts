@@ -59,6 +59,8 @@ export default {
   newGroupTitlePlaceholder: 'New group name',
   news: 'News',
   next: 'Next',
+  noBusArrivalsToStop: 'No upcoming buses',
+  noBusArrivalsToStopDescription: 'There are no buses expected at this stop right now',
   noResults: 'No results found',
   noResultsAreaQuerySearch: 'No stops or lines found in this area',
   noResultsDescription: 'Maybe try for searching something else?',

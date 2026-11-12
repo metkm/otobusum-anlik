@@ -54,10 +54,11 @@ const LineTimetables = () => {
 
 export const TimetableScreen = () => {
   const offset = useSharedValue(0)
+  const cardHeight = useSharedValue(0)
 
   return (
     <View className="mt-safe mx-safe mb-[calc(var(--navigation-height)+env(safe-area-inset-bottom))] flex-1 pt-2">
-      <CarouselContext value={offset}>
+      <CarouselContext value={{ cardHeight, offset }}>
         <GroupCardItems filter="line" />
         <LineTimetables />
       </CarouselContext>

@@ -23,7 +23,7 @@ export default ({ config }: ConfigContext) =>
     },
     experiments: {
       reactCompiler: true,
-      typedRoutes: true,
+      // typedRoutes: true,
     },
     extra: {
       eas: {
