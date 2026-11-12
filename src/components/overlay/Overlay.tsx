@@ -7,7 +7,7 @@ import { LayoutAnimationTransition } from '@/constants/animation'
 import { useSettingsStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
-export const MapOverlay = ({ className, ...props }: ViewProps) => {
+export const Overlay = ({ className, ...props }: ViewProps) => {
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
   const lineCardExpanded = useSettingsStore(useShallow((state) => state.lineCardExpanded))
   const lineCardShowStops = useSettingsStore(useShallow((state) => state.lineCardShowStops))

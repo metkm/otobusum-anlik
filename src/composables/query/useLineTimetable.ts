@@ -6,12 +6,12 @@ import { MS_3_DAYS } from '@/constants/time'
 import { useFilterStore } from '@/stores'
 import type { Timetable } from '@/types/timetable'
 
-import { useLine } from '../useLine'
+import { useGroupItem } from '../useGroupItem'
 import { useLineRoutes } from './useLineRoutes'
 
 export const useLineTimetable = () => {
   const { direction } = useLineRoutes()
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const city = useFilterStore(useShallow((state) => state.city))
 
   const query = useQuery({

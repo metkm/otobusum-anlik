@@ -1,13 +1,15 @@
 import { Layer } from '@maplibre/maplibre-react-native'
 
-import { LineContext } from '@/composables/useLine'
+import { GroupItemContext } from '@/composables/useGroupItem'
 import { useLineGroup } from '@/composables/useLineGroup'
 
 import { ThemeProvider } from '../ThemeProvider'
 import { LineMarkerBuses, LineMarkerRoute, LineMarkerStops } from './marker'
 
 export const LineMarkers = () => {
-  const { codes } = useLineGroup()
+  const { group } = useLineGroup()
+
+  const items = group?.items.filter((item) => item.type === 'line') ?? []
 
   return (
     <>
@@ -32,7 +34,20 @@ export const LineMarkers = () => {
         afterId="stop-layer"
       />
 
-      {codes.map((code) => (
+      {items.map((item) => (
+        <GroupItemContext
+          key={item.code}
+          value={item.code}
+        >
+          <ThemeProvider value={item.code}>
+            <LineMarkerBuses />
+            <LineMarkerStops />
+            <LineMarkerRoute />
+          </ThemeProvider>
+        </GroupItemContext>
+      ))}
+
+      {/* {codes.map((code) => (
         <LineContext
           key={code}
           value={code}
@@ -43,7 +58,7 @@ export const LineMarkers = () => {
             <LineMarkerBuses />
           </ThemeProvider>
         </LineContext>
-      ))}
+      ))} */}
     </>
   )
 }

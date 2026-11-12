@@ -4,7 +4,7 @@ import type { Feature } from 'geojson'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine } from '@/composables'
+import { useGroupItem } from '@/composables'
 import { useLineStops } from '@/composables/query'
 import { useFilterStore } from '@/stores'
 
@@ -31,7 +31,7 @@ export const LineMarkerStopLayer = ({ isHidden, ...props }: StopLayerProps) => (
 )
 
 export const LineMarkerStops = () => {
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const { query: lineStopsQuery } = useLineStops()
 
   const primaryColor = useCSSVariable('--color-primary')?.toString()

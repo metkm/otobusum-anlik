@@ -6,11 +6,11 @@ import { MS_3_DAYS } from '@/constants/time'
 import { useFilterStore } from '@/stores'
 import type { Stop } from '@/types/bus'
 
-import { useLine } from '../useLine'
+import { useGroupItem } from '../useGroupItem'
 import { useLineRoutes } from './useLineRoutes'
 
 export const useLineStops = () => {
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const { direction } = useLineRoutes()
   const city = useFilterStore(useShallow((state) => state.city))
 

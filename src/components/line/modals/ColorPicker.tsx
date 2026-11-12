@@ -6,7 +6,7 @@ import ColorPicker, { type ColorFormatsObject, Panel3, Preview } from 'reanimate
 import { useCSSVariable, withUniwind } from 'uniwind'
 
 import { UButton } from '@/components/u'
-import { useLine } from '@/composables'
+import { useGroupItem } from '@/composables'
 import { useThemeStore } from '@/stores'
 
 const StyledColorPicker = withUniwind(ColorPicker)
@@ -14,7 +14,7 @@ const StyledPressable = withUniwind(Pressable)
 
 export const LineModalsColorPicker = () => {
   const [isVisible, setIsVisible] = useState(false)
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const primaryColor = useCSSVariable('--color-primary')?.toString()
 
   const onSelectColor = ({ hsl }: ColorFormatsObject) => {

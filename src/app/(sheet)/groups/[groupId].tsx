@@ -9,7 +9,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { UButton, UInput, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { GROUP_LINE_LIMIT } from '@/constants/app'
-import { useLineStore } from '@/stores'
+import { useTransitStore } from '@/stores'
 
 export const GroupIdScreen = () => {
   const navigation = useTrueSheetNavigation()
@@ -25,7 +25,7 @@ export const GroupIdScreen = () => {
       return
     }
 
-    useLineStore.getState().updateGroupName(group.id, name.current)
+    useTransitStore.getState().updateGroupName(group.id, name.current)
     inputRef.current?.clear()
   }, [group])
 
@@ -52,7 +52,7 @@ export const GroupIdScreen = () => {
                     return
                   }
 
-                  useLineStore.getState().deleteGroup(group.id)
+                  useTransitStore.getState().deleteGroup(group.id)
                   router.back()
                 }}
                 size="lg"
@@ -82,27 +82,27 @@ export const GroupIdScreen = () => {
       <View className="gap-2">
         <View className="flex-row items-center gap-2">
           <UText className="font-inter-medium ml-1">{t('addedLines')}</UText>
-          <UText className="font-inter-medium text-sm">{`(${group?.codes.length} / ${GROUP_LINE_LIMIT})`}</UText>
+          <UText className="font-inter-medium text-sm">{`(${group?.items.length} / ${GROUP_LINE_LIMIT})`}</UText>
         </View>
 
-        {group && group.codes.length > 0 && (
+        {group && group.items.length > 0 && (
           <LegendList
-            data={group.codes}
+            data={group.items}
             renderItem={({ item }) => (
               <GestureHandlerRootView style={{ flexShrink: 0 }}>
                 <UButton
                   icon="trash-2"
                   onPress={() => {
-                    useLineStore.getState().deleteLine(item, group.id)
+                    useTransitStore.getState().removeItemFromGroup(item.code, group.id)
                   }}
                   color="neutral"
                   variant="soft"
-                  label={item}
+                  label={item.code}
                 />
               </GestureHandlerRootView>
             )}
             contentContainerStyle={{ gap: 8 }}
-            keyExtractor={(item) => item}
+            keyExtractor={(item) => item.code}
             recycleItems
           />
         )}

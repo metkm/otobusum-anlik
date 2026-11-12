@@ -4,12 +4,12 @@ import { StatusBar } from 'expo-status-bar'
 import { View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
-import { LineCards } from '@/components/line/LineCards'
+import { GroupCardItems } from '@/components/group/GroupCardItems'
 import { LineMarkers } from '@/components/line/LineMarkers'
-import { Map } from '@/components/Map'
-import { MapButtons } from '@/components/MapButtons'
-import { MapOverlay } from '@/components/MapOverlay'
 import { MapTemporaryMarkers } from '@/components/MapTemporaryMarkers'
+import { Overlay } from '@/components/overlay/Overlay'
+import { OverlayMapButtons } from '@/components/overlay/OverlayMapButtons'
+import { UMap } from '@/components/u/Map'
 import { useMapStyle } from '@/composables/useMapStyle'
 import { useSettingsStore } from '@/stores'
 
@@ -25,18 +25,18 @@ export const HomeScreen = () => {
       {isFocused && <StatusBar style={mapScheme === 'dark' ? 'light' : 'dark'} />}
 
       {!hideMap && (
-        <Map>
+        <UMap>
           <LineMarkers />
           <MapTemporaryMarkers />
 
           {showMyLocation && <UserLocation heading />}
-        </Map>
+        </UMap>
       )}
 
-      <MapOverlay>
-        <MapButtons />
-        <LineCards ui={{ viewport: 'flex-1 grow' }} />
-      </MapOverlay>
+      <Overlay>
+        <OverlayMapButtons />
+        <GroupCardItems />
+      </Overlay>
     </View>
   )
 }

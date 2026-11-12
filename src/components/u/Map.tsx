@@ -12,7 +12,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-na
 
 import { useMapStyle, useMap } from '@/composables'
 
-import { useSettingsStore } from '../stores/settings'
+import { useSettingsStore } from '../../stores/settings'
 
 // So compiler is not upset
 const getInitialMapBounds = () => useSettingsStore.getState().initialMapBounds
@@ -22,7 +22,7 @@ interface MapProps extends Omit<_MapProps, 'mapStyle'> {
   cameraProps?: CameraProps
 }
 
-export const Map = ({ children, onDidFinishLoadingMap, ...props }: MapProps) => {
+export const UMap = ({ children, onDidFinishLoadingMap, ...props }: MapProps) => {
   const { camera, map } = useMap()
   const { style: mapStyle } = useMapStyle()
   const navigation = useTrueSheetNavigation()

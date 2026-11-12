@@ -6,9 +6,9 @@ import { View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UBadge, UButton, USheetHeader, USheet } from '@/components/u'
-import { useLine } from '@/composables'
+import { useGroupItem } from '@/composables'
 import { useLineBuses, useLineRoutes } from '@/composables/query'
-import { useLineStore } from '@/stores'
+import { useTransitStore } from '@/stores'
 import type { Route } from '@/types/route'
 
 const RouteItem = ({
@@ -20,8 +20,8 @@ const RouteItem = ({
   item: Route
   busCount: number
 }) => {
-  const setRoute = useLineStore(useShallow((state) => state.setRoute))
-  const { code } = useLine()
+  const setRoute = useTransitStore(useShallow((state) => state.setRoute))
+  const { code } = useGroupItem()
 
   const handlePress = () => {
     setRoute(code, item.code)
@@ -60,9 +60,9 @@ export const LineCardRoutes = () => {
   const routeSheet = useRef<TrueSheet>(null)
   const scrollableRef = useRef<LegendListRef>(null)
 
-  const changeRouteDirection = useLineStore(useShallow((state) => state.changeRouteDirection))
+  const changeRouteDirection = useTransitStore(useShallow((state) => state.changeRouteDirection))
   const { t } = useTranslation()
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const { query: routesQuery, route, routeCode, otherDirectionRoute } = useLineRoutes()
   const { buses, query: busesQuery } = useLineBuses()
 

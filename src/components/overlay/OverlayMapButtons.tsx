@@ -6,23 +6,23 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { useLineGroup, useMap } from '@/composables'
 import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
-import { useLineStore, useSettingsStore } from '@/stores'
+import { useSettingsStore, useTransitStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
-import { UButton } from './u/UButton'
+import { UButton } from '../u/UButton'
 
 const AnimatedGestureHandlerRootView = createAnimatedComponent(GestureHandlerRootView)
 const AnimatedUButton = createAnimatedComponent(UButton)
 
-export const MapButtonsChangeDirection = () => {
-  const { codes } = useLineGroup()
+export const OverlayMapButtonsChangeDirection = () => {
+  const { group } = useLineGroup()
 
-  if (codes.length < 2) {
+  if (!group || group.items.length < 2) {
     return
   }
 
   const onPress = () => {
-    codes.forEach((code) => useLineStore.getState().changeRouteDirection(code))
+    group.items.forEach((item) => useTransitStore.getState().changeRouteDirection(item.code))
   }
 
   return (
@@ -45,7 +45,7 @@ export const MapButtonsChangeDirection = () => {
   )
 }
 
-export const MapButtonsGroup = () => {
+export const OverlayMapButtonsGroup = () => {
   const { group } = useLineGroup()
 
   return (
@@ -70,7 +70,7 @@ export const MapButtonsGroup = () => {
   )
 }
 
-export const MapButtons = (props: ViewProps) => {
+export const OverlayMapButtons = (props: ViewProps) => {
   const { map, camera } = useMap()
   const navigation = useTrueSheetNavigation()
 
@@ -166,8 +166,8 @@ export const MapButtons = (props: ViewProps) => {
         />
       </AnimatedGestureHandlerRootView>
 
-      <MapButtonsChangeDirection />
-      <MapButtonsGroup />
+      <OverlayMapButtonsChangeDirection />
+      <OverlayMapButtonsGroup />
     </Animated.View>
   )
 }

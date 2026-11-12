@@ -10,10 +10,10 @@ import Animated from 'react-native-reanimated'
 import { useCSSVariable } from 'uniwind'
 
 import { LineMarkerStopLayer } from '@/components/line/marker/LineMarkerStops'
-import { Map } from '@/components/Map'
 import { MapProvider } from '@/components/MapProvider'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { UBadge, UActivityIndicator, UButton, UIcon, UQueryState, UText } from '@/components/u'
+import { UMap } from '@/components/u/Map'
 import { SkeletonStop } from '@/components/u/skeleton/SkeletonStop'
 import { useCountdown, useMap } from '@/composables'
 import { useStopArrivals, useStop } from '@/composables/query'
@@ -68,7 +68,7 @@ export const StopScreen = () => {
           <View className="gap-2">
             <View className="h-48 overflow-hidden rounded-md">
               <MapProvider>
-                <Map
+                <UMap
                   dragPan={false}
                   touchZoom={false}
                   doubleTapZoom={false}
@@ -95,7 +95,7 @@ export const StopScreen = () => {
                       afterId={undefined}
                     />
                   </GeoJSONSource>
-                </Map>
+                </UMap>
               </MapProvider>
             </View>
 
@@ -188,7 +188,7 @@ export const StopScreen = () => {
               />
 
               <View className="flex-1 gap-1">
-                <ThemeProvider code={arrival.line_code}>
+                <ThemeProvider value={arrival.line_code}>
                   <View className="flex-row items-center gap-2">
                     <UBadge label={arrival.line_code} />
 

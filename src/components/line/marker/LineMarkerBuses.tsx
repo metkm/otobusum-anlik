@@ -5,13 +5,13 @@ import type { Feature } from 'geojson'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine, useLineGroup } from '@/composables'
+import { useGroupItem, useLineGroup } from '@/composables'
 import { useLineBuses, useLineRoutes } from '@/composables/query'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerBuses = () => {
-  const { codes } = useLineGroup()
-  const { code } = useLine()
+  const { items } = useLineGroup()
+  const { code } = useGroupItem()
   const { routeCode } = useLineRoutes()
   const { query: lineBusesQuery, buses } = useLineBuses()
 
@@ -42,7 +42,7 @@ export const LineMarkerBuses = () => {
       type: 'Feature',
     }))
 
-  const minZoom = codes.length < 2 ? undefined : 8
+  const minZoom = items.length < 2 ? undefined : 8
 
   return (
     <>

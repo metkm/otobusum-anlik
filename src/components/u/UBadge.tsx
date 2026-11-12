@@ -51,7 +51,7 @@ const ui = tv({
     variant: 'solid',
   },
   slots: {
-    base: 'px-2.5 py-1.5 flex-row items-center gap-1 rounded-full',
+    base: 'px-2.5 py-1.5 flex-row items-center gap-1.5 rounded-full',
     icon: '',
     label: 'font-inter-semibold',
   },
@@ -63,7 +63,7 @@ const ui = tv({
     size: {
       lg: {
         base: 'px-3 py-2',
-        icon: 'size-5',
+        icon: 'size-4',
       },
       md: {
         base: 'px-3 py-1.5',

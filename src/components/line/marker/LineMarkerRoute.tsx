@@ -4,7 +4,7 @@ import type { Feature } from 'geojson'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine } from '@/composables'
+import { useGroupItem } from '@/composables'
 import { useLineRoutes } from '@/composables/query'
 import { useFilterStore } from '@/stores'
 
@@ -69,7 +69,7 @@ export const LineMarkerRouteLayer = ({
 )
 
 export const LineMarkerRoute = () => {
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const { route, direction } = useLineRoutes()
 
   const textColor = useCSSVariable('--text-color-inverted')?.toString()

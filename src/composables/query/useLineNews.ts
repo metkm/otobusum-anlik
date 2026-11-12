@@ -5,7 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { MS_30_MINUTES } from '@/constants/time'
 import { useFilterStore } from '@/stores'
 
-import { useLine } from '../useLine'
+import { useGroupItem } from '../useGroupItem'
 
 interface Announcement {
   HAT: string
@@ -19,7 +19,7 @@ const extractInnerContentXml = (key: string, content: string) =>
   content.split(`${key}>`).at(1)?.split(`</`).at(0)
 
 export const useLineNews = () => {
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const city = useFilterStore(useShallow((state) => state.city))
 
   const query = useQuery({
