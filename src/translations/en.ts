@@ -2,7 +2,7 @@ export default {
   addLineToGroup: 'Add {{code}} to group',
   addToGroup: 'Add to group',
   added: 'Added {{code}}',
-  addedLines: 'Added lines',
+  // addedLines: 'Added lines',
   announcements: 'Announcements',
   appTheme: 'App theme',
   areYouSure: 'Are you sure?',
@@ -97,4 +97,7 @@ export default {
   welcome: 'Welcome',
   workday: 'Workday',
   zoomStopOnMap: 'Zoom on map',
+  groupItemList: 'Lines and stops in this group',
+  groupItemListDescription: 'hold and drag to reorder',
+  groupName: 'Group name: {{name}}',
 }

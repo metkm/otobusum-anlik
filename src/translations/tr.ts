@@ -96,4 +96,7 @@ export default {
   welcome: 'Hoşgeldin',
   workday: 'Haftaiçi',
   zoomStopOnMap: 'Haritada yakınlaştır',
+  groupItemList: 'Bu gruptaki hatlar ve duraklar',
+  groupItemListDescription: 'yeniden sıralamak için basılı tutup sürükleyin',
+  groupName: 'Grup ismi: {{name}}',
 }

@@ -31,6 +31,7 @@ export interface GroupsSlice {
   updateGroupName: (id: string, name: string) => void
   deleteGroup: (id: string) => void
   createGroup: () => void
+  setGroupItems: (items: GroupItem[], groupId: string) => void
 }
 
 export const createGroupsSlice = immer<GroupsSlice>((set, get) => ({
@@ -76,6 +77,16 @@ export const createGroupsSlice = immer<GroupsSlice>((set, get) => ({
         name: uuid,
       })
     }),
+  setGroupItems: (items, groupId) => {
+    set((state) => {
+      const { city } = useFilterStore.getState()
+      const group = state.groups[city].find((x) => x.id === groupId)
+
+      if (group) {
+        group.items = items
+      }
+    })
+  },
   deleteGroup: async (id) => {
     // oxlint-disable-next-line promise/avoid-new
     await new Promise<void>((resolve) => {
@@ -114,12 +125,6 @@ export const createGroupsSlice = immer<GroupsSlice>((set, get) => ({
 
       useThemeStore.getState().deleteUnusedThemes(codes)
     })
-  },
-  getGroup: (groupId?: string) => {
-    const { city } = useFilterStore.getState()
-    const grId = groupId ?? get().selectedGroup[city]
-
-    return get().groups[city].find((x) => x.id === grId)
   },
   groups: {
     istanbul: [{ id: 'a', items: [], name: 'default' }],
