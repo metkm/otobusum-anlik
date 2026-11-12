@@ -3,6 +3,7 @@ import { useWindowDimensions, type ViewProps } from 'react-native'
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler'
 import Animated, {
   clamp,
+  LinearTransition,
   type SharedValue,
   useAnimatedReaction,
   useAnimatedStyle,
@@ -19,9 +20,9 @@ import { alignCenter, dampen } from '@/utils/math'
 const ui = tv({
   slots: {
     container: 'flex-row',
-    item: 'min-w-0 shrink-0 grow-0',
+    item: 'min-w-0 shrink-0',
     // item: 'min-w-0 shrink-0 grow-0 basis-[94%]',
-    viewport: 'flex-row overflow-hidden',
+    viewport: 'flex-row overflow-hidden shrink',
   },
 })
 
@@ -139,7 +140,7 @@ export const UCarousel = <T,>({
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View
-        layout={LayoutAnimationTransition}
+        // layout={LinearTransition}
         className={cn(uiViewport(), props.ui?.viewport)}
         onLayout={(event) => {
           'worklet'
@@ -157,7 +158,7 @@ export const UCarousel = <T,>({
         >
           {data.map((item, index) => (
             <Animated.View
-              layout={LayoutAnimationTransition}
+              // layout={LinearTransition}
               exiting={ExitScaleOut}
               entering={EnterScaleIn}
               key={keyExtractor(item)}

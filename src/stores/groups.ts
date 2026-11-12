@@ -132,9 +132,21 @@ export const createGroupsSlice = immer<GroupsSlice>((set, get) => ({
       const group = state.groups[city].find((x) => x.id === grId)
 
       const i = group?.items.findIndex((x) => x.code === code)
-      if (i !== undefined && i !== -1 && group) {
-        group.items.splice(i, 1)
+      if (i === undefined || i === -1 || !group) {
+        return
       }
+
+      group.items.splice(i, 1)
+      const groups = state.groups[city]
+
+      for (const group of groups) {
+        const found = group.items.find((x) => x.code === code)
+        if (found && group.id !== grId) {
+          return
+        }
+      }
+
+      useThemeStore.getState().deleteTheme(code)
     })
   },
   selectGroup: (groupId) =>

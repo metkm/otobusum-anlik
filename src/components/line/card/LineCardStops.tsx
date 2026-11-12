@@ -7,9 +7,8 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { UButton, UEmpty, UIcon, UQueryState, UText } from '@/components/u'
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
-import { useMap, useCardListHeight } from '@/composables'
+import { useCardListHeight, useMap } from '@/composables'
 import { useLineBuses, useLineStops } from '@/composables/query'
-import { LayoutAnimationTransition } from '@/constants/animation'
 import { useSettingsStore } from '@/stores'
 import type { Stop } from '@/types/bus'
 import { getClosestPoint } from '@/utils/getClosestPoint'
@@ -111,7 +110,7 @@ export const LineCardStops = () => {
   const showMyLocation = useSettingsStore(useShallow((state) => state.showMyLocation))
   const [location, setLocation] = useState<LocationObject>()
   const { query: lineStopsQuery } = useLineStops()
-  const { style: containerStyle, onScroll } = useCardListHeight()
+  const { style, onScroll } = useCardListHeight()
 
   useEffect(() => {
     if (!showMyLocation) {
@@ -150,7 +149,6 @@ export const LineCardStops = () => {
       fetching={() => <SkeletonLineStops />}
     >
       <AnimatedLegendList
-        layout={LayoutAnimationTransition}
         data={lineStopsQuery.data || []}
         renderItem={({ item, index }) => (
           <StopItem
@@ -169,14 +167,14 @@ export const LineCardStops = () => {
             />
           </View>
         )}
-        className="border-b-hairline border-b-muted"
+        className="border-b-hairline border-b-muted basis-0"
         contentContainerClassName="py-1.5"
-        // @ts-expect-error
-        style={containerStyle}
-        onScroll={onScroll}
         keyExtractor={(item) => item.id.toString()}
         scrollEventThrottle={16}
-        GetFixedItemSize={() => 48}
+        getFixedItemSize={() => 48}
+        onScroll={onScroll}
+        // @ts-expect-error
+        style={style}
         recycleItems
         showsVerticalScrollIndicator={false}
       />

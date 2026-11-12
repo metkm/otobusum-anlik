@@ -1,4 +1,4 @@
-import { View, type ViewProps } from 'react-native'
+import { type ViewProps } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -17,9 +17,9 @@ export const LineCard = ({ style, className, ...props }: ViewProps) => {
 
   return (
     <Animated.View
-      layout={LayoutAnimationTransition}
+      // layout={LayoutAnimationTransition}
       className={cn(
-        'bg-default border-hairline border-muted rounded-md overflow-hidden',
+        'bg-default border-hairline border-muted rounded-md overflow-hidden grow',
         className,
       )}
       style={style}
@@ -27,14 +27,19 @@ export const LineCard = ({ style, className, ...props }: ViewProps) => {
       entering={EnterScaleIn}
       {...props}
     >
-      <View className="border-b-hairline border-muted flex-row items-center justify-between p-2">
+      <Animated.View
+        // layout={LayoutAnimationTransition}
+        className="border-b-hairline border-muted flex-row items-center justify-between p-2"
+      >
         <LineCardName />
         <LineCardMenu />
-      </View>
+      </Animated.View>
 
       {(showLineCardStops || hideMap) && <LineCardStops />}
 
+      {/* <Animated.View layout={LayoutAnimationTransition}> */}
       <LineCardRoutes />
+      {/* </Animated.View> */}
     </Animated.View>
   )
 }

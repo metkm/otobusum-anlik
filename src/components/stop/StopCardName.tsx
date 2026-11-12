@@ -17,48 +17,37 @@ export const StopCardName = () => {
   const { remaining } = useCountdown(arrivalsQuery.dataUpdatedAt, MS_60_SECONDS)
 
   return (
-    <View className="grow flex-row items-start gap-2">
-      <View>
-        <UBadge
-          label={code}
-          variant="soft"
-          size="lg"
-          className="rounded-sm"
-          icon="map-pin"
-        />
+    <View className="shrink grow flex-row items-center gap-2">
+      <UBadge
+        label={stopQuery.data?.stop.name ?? code}
+        variant="soft"
+        size="lg"
+        className="rounded-sm"
+        icon="map-pin"
+      />
 
-        <Animated.View
-          key={arrivalsQuery.isFetching ? 'loading' : 'text'}
-          entering={FadeInDown}
-          exiting={FadeOutUp}
-          className="mt-1 shrink overflow-hidden"
-        >
-          <UQueryState
-            query={arrivalsQuery}
-            error={() => (
-              <UText className="text-error font-inter-medium text-sm">
-                {t('errorGettingBusLocations')}
-              </UText>
-            )}
-          >
-            <UText
-              className="text-muted font-inter-medium text-sm"
-              numberOfLines={1}
-            >
-              {t('updateCount', { count: remaining })}
+      <Animated.View
+        key={arrivalsQuery.isFetching ? 'loading' : 'text'}
+        entering={FadeInDown}
+        exiting={FadeOutUp}
+        className="shrink overflow-hidden"
+      >
+        <UQueryState
+          query={arrivalsQuery}
+          error={() => (
+            <UText className="text-error font-inter-medium text-sm">
+              {t('errorGettingBusLocations')}
             </UText>
-          </UQueryState>
-        </Animated.View>
-      </View>
-
-      <UQueryState query={stopQuery}>
-        <View>
-          <UText className="font-inter-medium leading-tight">{stopQuery.data?.stop.name}</UText>
-          <UText className="font-inter-medium text-muted text-sm leading-tight">
-            {stopQuery.data?.stop.province}
+          )}
+        >
+          <UText
+            className="text-muted font-inter-medium text-sm"
+            numberOfLines={1}
+          >
+            {t('updateCount', { count: remaining })}
           </UText>
-        </View>
-      </UQueryState>
+        </UQueryState>
+      </Animated.View>
     </View>
   )
 }

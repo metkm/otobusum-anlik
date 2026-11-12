@@ -9,10 +9,10 @@ import { StopCardName } from './StopCardName'
 
 export const StopCard = () => (
   <Animated.View
-    layout={LayoutAnimationTransition}
+    // layout={LayoutAnimationTransition}
     exiting={ExitScaleOut}
     entering={EnterScaleIn}
-    className="border-hairline border-muted bg-default overflow-hidden rounded-md"
+    className="border-hairline border-muted bg-default grow overflow-hidden rounded-md"
   >
     <View className="border-hairline border-muted flex-row items-center gap-2 border-b p-2">
       <StopCardName />

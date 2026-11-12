@@ -11,12 +11,14 @@ import { useCSSVariable } from 'uniwind'
 
 import { LineMarkerStopLayer } from '@/components/line/marker/LineMarkerStops'
 import { MapProvider } from '@/components/MapProvider'
+import { StopCardArrivals } from '@/components/stop/StopCardArrivals'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { UBadge, UActivityIndicator, UButton, UIcon, UQueryState, UText } from '@/components/u'
 import { UMap } from '@/components/u/Map'
 import { SkeletonStop } from '@/components/u/skeleton/SkeletonStop'
 import { useCountdown, useMap } from '@/composables'
 import { useStopArrivals, useStop } from '@/composables/query'
+import { GroupItemContext } from '@/composables/useGroupItem'
 import { EnterScaleIn, ExitScaleOut, ItemLayoutAnimation } from '@/constants/animation'
 
 export const StopScreen = () => {
@@ -152,7 +154,7 @@ export const StopScreen = () => {
         )}
       </UQueryState>
 
-      <UQueryState
+      {/* <UQueryState
         query={arrivalQuery}
         useIsLoading
       >
@@ -242,7 +244,11 @@ export const StopScreen = () => {
             </Animated.View>
           )}
         />
-      </UQueryState>
+      </UQueryState> */}
+
+      <GroupItemContext value={stopCode.toString()}>
+        <StopCardArrivals />
+      </GroupItemContext>
     </ScrollView>
   )
 }
