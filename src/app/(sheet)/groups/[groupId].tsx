@@ -6,7 +6,7 @@ import { View, type TextInputInstance } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Sortable from 'react-native-sortables'
 
-import { ThemeProvider } from '@/components/ThemeProvider'
+import { ThemeProvider } from '@/components/provider/ThemeProvider'
 import { UButton, UInput, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { useTransitStore } from '@/stores'

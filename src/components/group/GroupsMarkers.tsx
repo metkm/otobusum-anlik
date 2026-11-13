@@ -5,29 +5,28 @@ import { GroupItemContext } from '@/composables/useGroupItem'
 import { useFilterStore, useTransitStore } from '@/stores'
 import type { GroupItem } from '@/stores/groups'
 
-import { LineMarkers } from '../line/LineMarkers'
-import { StopMarker } from '../stop/marker/StopMarker'
+import { LineMarkers } from '../line/marker/LineMarkers'
+import { StopMarkers } from '../stop/marker/StopMarkers'
 
-const GroupMarkers = ({ items }: { items: GroupItem[] }) => {
-  const RenderItem = ({ item }: { item: GroupItem }) => {
-    if (item.type === 'line') {
-      return <LineMarkers code={item.code} />
-    }
-
-    return (
-      <GroupItemContext value={item.code}>
-        <StopMarker />
-      </GroupItemContext>
-    )
+const GroupMarkerItem = ({ item }: { item: GroupItem }) => {
+  if (item.type === 'line') {
+    return <LineMarkers code={item.code} />
   }
 
-  return items.map((item) => (
-    <RenderItem
+  return (
+    <GroupItemContext value={item.code}>
+      <StopMarkers />
+    </GroupItemContext>
+  )
+}
+
+const GroupMarkers = ({ items }: { items: GroupItem[] }) =>
+  items.map((item) => (
+    <GroupMarkerItem
       key={item.code}
       item={item}
     />
   ))
-}
 
 export const GroupsMarkers = () => {
   const city = useFilterStore(useShallow((state) => state.city))

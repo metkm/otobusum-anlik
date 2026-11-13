@@ -8,8 +8,8 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import { useCSSVariable } from 'uniwind'
 
 import { LineMarkerStopLayer } from '@/components/line/marker/LineMarkerStops'
-import { MapProvider } from '@/components/MapProvider'
-import { StopCardArrivals } from '@/components/stop/StopCardArrivals'
+import { MapProvider } from '@/components/provider/MapProvider'
+import { StopCardArrivals } from '@/components/stop/card/StopCardArrivals'
 import { UButton, UQueryState, UText } from '@/components/u'
 import { UMap } from '@/components/u/Map'
 import { SkeletonStop } from '@/components/u/skeleton/SkeletonStop'

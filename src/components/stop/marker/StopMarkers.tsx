@@ -5,7 +5,7 @@ import { LineMarkerStopLayer } from '@/components/line/marker/LineMarkerStops'
 import { useGroupItem } from '@/composables'
 import { useStop } from '@/composables/query'
 
-export const StopMarker = () => {
+export const StopMarkers = () => {
   const primaryColor = useCSSVariable('--color-primary')?.toString()
   const borderColor = useCSSVariable('--border-color-muted')?.toString()
 

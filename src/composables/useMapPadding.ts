@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import type { LayoutChangeEvent } from 'react-native'
 
-import type { Padding } from '@/components/MapProvider'
+import type { Padding } from '@/components/provider/MapProvider'
 
 import { useMap } from './useMap'
 

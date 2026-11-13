@@ -6,7 +6,7 @@ import { useCountdown, useGroupItem } from '@/composables'
 import { useStop, useStopArrivals } from '@/composables/query'
 import { MS_60_SECONDS } from '@/constants/time'
 
-import { UBadge, UQueryState, UText } from '../u'
+import { UBadge, UQueryState, UText } from '../../u'
 
 export const StopCardName = () => {
   const { t } = useTranslation()

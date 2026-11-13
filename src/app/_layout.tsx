@@ -12,7 +12,7 @@ import { SafeAreaListener } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
 import { persister, queryClient } from '@/api/client'
-import { MapProvider } from '@/components/MapProvider'
+import { MapProvider } from '@/components/provider/MapProvider'
 import { useColorScheme } from '@/composables'
 import { useSettingsStore } from '@/stores'
 import i18n from '@/translations/i18n'

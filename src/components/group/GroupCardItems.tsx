@@ -3,7 +3,7 @@ import Animated, { useSharedValue } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { LineCard } from '@/components/line/card/LineCard'
-import { StopCard } from '@/components/stop/StopCard'
+import { StopCard } from '@/components/stop/card/StopCard'
 import { useLineGroup, useMapPadding } from '@/composables'
 import { ExpandableCardContext } from '@/composables/useExpandableCard'
 import { GroupItemContext } from '@/composables/useGroupItem'
@@ -13,7 +13,7 @@ import { useSettingsStore } from '@/stores'
 import type { GroupItem, GroupItemType } from '@/stores/groups'
 import { cn } from '@/utils/cn'
 
-import { ThemeProvider } from '../ThemeProvider'
+import { ThemeProvider } from '../provider/ThemeProvider'
 import { UCarousel } from '../u'
 
 interface GroupCardItemsProps {

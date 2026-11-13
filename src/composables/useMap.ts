@@ -8,7 +8,7 @@ import type {
 } from '@maplibre/maplibre-react-native'
 import { createContext, use, type RefObject } from 'react'
 
-import type { Padding } from '@/components/MapProvider'
+import type { Padding } from '@/components/provider/MapProvider'
 import type { Point } from '@/types/point'
 
 interface FitBoundsOptionsProps extends CameraOptions, CameraAnimationOptions {}

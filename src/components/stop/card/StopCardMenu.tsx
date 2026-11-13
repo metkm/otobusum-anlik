@@ -8,7 +8,7 @@ import { useGroupItem, useMap } from '@/composables'
 import { stopQueryOptions } from '@/composables/query/useStop'
 import { useFilterStore, useTransitStore } from '@/stores'
 
-import { UButton, USheet } from '../u'
+import { UButton, USheet } from '@/components/u'
 
 export const StopCardMenu = () => {
   const { t } = useTranslation()

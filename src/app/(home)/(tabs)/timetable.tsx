@@ -4,7 +4,7 @@ import { useSharedValue } from 'react-native-reanimated'
 
 import { GroupCardItems } from '@/components/group/GroupCardItems'
 import { LineTimetable } from '@/components/line/LineTimetable'
-import { ThemeProvider } from '@/components/ThemeProvider'
+import { ThemeProvider } from '@/components/provider/ThemeProvider'
 import { UButton, UCarousel, CarouselContext, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'

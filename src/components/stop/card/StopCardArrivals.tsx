@@ -8,8 +8,8 @@ import { useStopArrivals } from '@/composables/query'
 import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import type { StopArrival } from '@/types/stop'
 
-import { ThemeProvider } from '../ThemeProvider'
-import { UBadge, UEmpty, UIcon, UQueryState, UText } from '../u'
+import { ThemeProvider } from '../../provider/ThemeProvider'
+import { UBadge, UEmpty, UIcon, UQueryState, UText } from '../../u'
 
 const StopCardArrivalsItem = ({ item }: { item: StopArrival }) => {
   const { t } = useTranslation()

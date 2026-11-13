@@ -8,7 +8,7 @@ import { useDebounce } from 'use-debounce'
 import { useShallow } from 'zustand/react/shallow'
 
 import { queryClient } from '@/api/client'
-import { ThemeProvider } from '@/components/ThemeProvider'
+import { ThemeProvider } from '@/components/provider/ThemeProvider'
 import { UBadge, UButton, UEmpty, UInput, UQueryState, UText } from '@/components/u'
 import { useMap } from '@/composables'
 import {

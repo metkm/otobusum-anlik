@@ -6,7 +6,7 @@ import { type ScrollViewInstance, View } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
 
-import { ThemeProvider } from '@/components/ThemeProvider'
+import { ThemeProvider } from '@/components/provider/ThemeProvider'
 import { UBadge, UButton, USheetHeader, UIcon, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'

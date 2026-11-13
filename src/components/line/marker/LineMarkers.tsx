@@ -1,7 +1,7 @@
 import { GroupItemContext } from '@/composables/useGroupItem'
 
-import { ThemeProvider } from '../ThemeProvider'
-import { LineMarkerBuses, LineMarkerRoute, LineMarkerStops } from './marker'
+import { LineMarkerBuses, LineMarkerRoute, LineMarkerStops } from '.'
+import { ThemeProvider } from '../../provider/ThemeProvider'
 
 export const LineMarkers = ({ code }: { code: string }) => (
   <GroupItemContext value={code}>
