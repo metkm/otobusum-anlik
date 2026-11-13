@@ -18,15 +18,12 @@ export const useExpandableCardHeight = () => {
   const localHeight = useSharedValue(0)
   const height = use(ExpandableCardContext) ?? localHeight
 
-  const expandStopsWhenScrolled = useSettingsStore(
-    useShallow((state) => state.expandStopsWhenScrolled),
-  )
-  const lineCardExpanded = useSettingsStore(useShallow((state) => state.lineCardExpanded))
-  const showLineCardStops = useSettingsStore(useShallow((state) => state.lineCardShowStops))
+  const cardExpandOnScroll = useSettingsStore(useShallow((state) => state.cardExpandOnScroll))
+  const cardExpanded = useSettingsStore(useShallow((state) => state.cardExpanded))
 
   useEffect(() => {
     const listener = useSettingsStore.subscribe(
-      (state) => state.lineCardExpanded,
+      (state) => state.cardExpanded,
       (expanded) => {
         height.set(expanded ? CARD_EXPANDED_HEIGHT : CARD_COLLAPSED_HEIGHT)
       },
@@ -37,14 +34,14 @@ export const useExpandableCardHeight = () => {
 
   const onScroll = useAnimatedScrollHandler({
     onBeginDrag: () => {
-      if (!expandStopsWhenScrolled) {
+      if (!cardExpandOnScroll) {
         return
       }
 
       height.set(CARD_EXPANDED_HEIGHT)
     },
     onMomentumEnd: () => {
-      if (lineCardExpanded || (!expandStopsWhenScrolled && height.value !== CARD_EXPANDED_HEIGHT)) {
+      if (cardExpanded || (!cardExpandOnScroll && height.value !== CARD_EXPANDED_HEIGHT)) {
         return
       }
 
@@ -56,5 +53,5 @@ export const useExpandableCardHeight = () => {
     minHeight: height.value,
   }))
 
-  return { height, onScroll, style: showLineCardStops ? style : undefined }
+  return { height, onScroll, style }
 }

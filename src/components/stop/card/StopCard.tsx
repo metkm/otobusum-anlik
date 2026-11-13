@@ -19,7 +19,7 @@ export const StopCard = () => {
       style={style}
       className="border-hairline border-muted bg-default grow overflow-hidden rounded-md"
     >
-      <View className="border-hairline border-muted flex-row items-center gap-2 border-b p-2">
+      <View className="border-b-hairline border-muted flex-row items-center gap-2 p-2">
         <StopCardName />
         <StopCardMenu />
       </View>

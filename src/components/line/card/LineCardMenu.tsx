@@ -25,7 +25,7 @@ export const LineCardMenu = () => {
   const toggleLineHidden = useFilterStore(useShallow((state) => state.toggleLineHidden))
   const isLineHidden = useFilterStore(useShallow((state) => state.hiddenLines.includes(code)))
   const createTheme = useThemeStore(useShallow((state) => state.createTheme))
-  const lineCardExpanded = useSettingsStore(useShallow((state) => state.lineCardExpanded))
+  const cardExpanded = useSettingsStore(useShallow((state) => state.cardExpanded))
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
 
   const menuSheet = useRef<TrueSheet>(null)
@@ -158,14 +158,14 @@ export const LineCardMenu = () => {
         </View>
 
         <UButton
-          label={t(lineCardExpanded ? 'shrink' : 'expand')}
-          icon={lineCardExpanded ? 'shrink' : 'expand'}
+          label={t(cardExpanded ? 'shrink' : 'expand')}
+          icon={cardExpanded ? 'shrink' : 'expand'}
           size="lg"
           block
           variant="soft"
           onPress={() => {
             useSettingsStore.setState((state) => {
-              state.lineCardExpanded = !state.lineCardExpanded
+              state.cardExpanded = !state.cardExpanded
             })
           }}
         />

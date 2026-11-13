@@ -19,11 +19,12 @@ export const LineCard = ({ className, ...props }: ViewProps) => {
 
   return (
     <Animated.View
-      // key={showLineCardStops.toString()}
+      key={showLineCardStops.toString()}
       layout={LayoutAnimationTransition}
       style={showLineCardStops ? style : undefined}
       className={cn(
-        'bg-default border-hairline border-muted rounded-md overflow-hidden grow',
+        'bg-default border-hairline border-muted rounded-md overflow-hidden',
+        showLineCardStops ? 'grow' : 'shrink',
         className,
       )}
       exiting={ExitScaleOut}

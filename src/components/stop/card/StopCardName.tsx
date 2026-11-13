@@ -17,7 +17,7 @@ export const StopCardName = () => {
   const { remaining } = useCountdown(arrivalsQuery.dataUpdatedAt, MS_60_SECONDS)
 
   return (
-    <View className="shrink grow flex-row items-center gap-2">
+    <View className="shrink grow flex-row flex-wrap items-center gap-2">
       <UBadge
         label={stopQuery.data?.stop.name ?? code}
         variant="soft"

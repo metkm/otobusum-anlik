@@ -59,7 +59,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
           keyExtractor={(item) => item.code}
           enabled={group?.items && group.items.length > 1}
           ui={{
-            container: cn('gap-2 px-2 pb-2'),
+            container: cn('gap-2 px-2 pb-2 items-end'),
             viewport: cn('w-screen', hideMap && 'grow'),
           }}
         />

@@ -105,7 +105,7 @@ export const GroupIdScreen = () => {
               }}
               renderItem={({ item }) => (
                 <ThemeProvider value={item.code}>
-                  <View className="flex-row items-center justify-between gap-2 p-2">
+                  <View className="bg-muted flex-row items-center justify-between gap-2 rounded-md p-2">
                     <View className="flex-row items-center gap-2">
                       <UIcon
                         name="menu"
@@ -131,8 +131,6 @@ export const GroupIdScreen = () => {
               )}
               keyExtractor={(item) => item.code}
               strategy="swap"
-              columnGap={8}
-              rowGap={8}
             />
           </GestureHandlerRootView>
         ) : (
