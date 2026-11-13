@@ -1,6 +1,7 @@
 import { AnimatedLegendList } from '@legendapp/list/reanimated'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
 
 import { useGroupItem, useExpandableCardHeight } from '@/composables'
@@ -9,7 +10,7 @@ import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constan
 import type { StopArrival } from '@/types/stop'
 
 import { ThemeProvider } from '../../provider/ThemeProvider'
-import { UBadge, UEmpty, UIcon, UQueryState, UText } from '../../u'
+import { UBadge, UButton, UEmpty, UIcon, UQueryState, UText } from '../../u'
 
 const StopCardArrivalsItem = ({ item }: { item: StopArrival }) => {
   const { t } = useTranslation()
@@ -20,8 +21,8 @@ const StopCardArrivalsItem = ({ item }: { item: StopArrival }) => {
       exiting={ExitScaleOut}
       entering={EnterScaleIn}
     >
-      <View className="flex-1 gap-1">
-        <ThemeProvider value={item.line_code}>
+      <ThemeProvider value={item.line_code}>
+        <View className="flex-1 gap-1">
           <View className="flex-row items-center gap-2">
             <UBadge
               label={item.line_code}
@@ -54,23 +55,34 @@ const StopCardArrivalsItem = ({ item }: { item: StopArrival }) => {
               colorClassName={item.features.bicycle_rack ? 'accent-primary' : 'accent-muted'}
             />
           </View>
-        </ThemeProvider>
 
-        <UText
-          className="font-inter-medium truncate text-sm"
-          numberOfLines={1}
-        >
-          {item.line_name}
-        </UText>
-      </View>
+          <UText
+            className="font-inter-medium truncate text-sm"
+            numberOfLines={1}
+          >
+            {item.line_name}
+          </UText>
+        </View>
 
-      <View className="ml-auto">
-        <UText className="font-inter-medium text-right">
-          {t('arrivingMinutes', { min: item.minutes_left })}
-        </UText>
+        <View className="ml-auto">
+          <UText className="font-inter-medium text-right">
+            {t('arrivingMinutes', { min: item.minutes_left })}
+          </UText>
 
-        <UText className="text-muted font-inter-medium text-sm">{t('arrivingIn')}</UText>
-      </View>
+          <UText className="text-muted font-inter-medium text-sm">{t('arrivingIn')}</UText>
+        </View>
+
+        <GestureHandlerRootView style={{ flexShrink: 1 }}>
+          <UButton
+            icon="plus-circle"
+            variant="soft"
+            to={{
+              params: { code: item.line_code, type: 'line' },
+              pathname: '(sheet)/groups/index',
+            }}
+          />
+        </GestureHandlerRootView>
+      </ThemeProvider>
     </Animated.View>
   )
 }
