@@ -1,21 +1,22 @@
-import { LegendList } from '@legendapp/list/react-native'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { router, useLocalSearchParams } from 'expo-router'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, type TextInputInstance } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import Sortable from 'react-native-sortables'
 
-import { UButton, UInput, UText } from '@/components/u'
+import { ThemeProvider } from '@/components/provider/ThemeProvider'
+import { UButton, UEmpty, UIcon, UInput, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
-import { GROUP_LINE_LIMIT } from '@/constants/app'
-import { useLineStore } from '@/stores'
+import { useTransitStore } from '@/stores'
 
 export const GroupIdScreen = () => {
   const navigation = useTrueSheetNavigation()
-  const params = useLocalSearchParams()
-  const { group, groups } = useLineGroup(params.groupId?.toString())
+  const { groupId } = useLocalSearchParams<{ groupId: string }>()
+  const { group, groups } = useLineGroup(groupId)
   const { t } = useTranslation()
+  const [isSorting, setIsSorting] = useState(false)
 
   const name = useRef('')
   const inputRef = useRef<TextInputInstance>(null)
@@ -25,7 +26,7 @@ export const GroupIdScreen = () => {
       return
     }
 
-    useLineStore.getState().updateGroupName(group.id, name.current)
+    useTransitStore.getState().updateGroupName(group.id, name.current)
     inputRef.current?.clear()
   }, [group])
 
@@ -52,7 +53,7 @@ export const GroupIdScreen = () => {
                     return
                   }
 
-                  useLineStore.getState().deleteGroup(group.id)
+                  useTransitStore.getState().deleteGroup(group.id)
                   router.back()
                 }}
                 size="lg"
@@ -66,10 +67,17 @@ export const GroupIdScreen = () => {
     })
   }, [group, groups.length, handleSave, navigation, t])
 
+  useEffect(() => {
+    navigation.setOptions({
+      dismissible: !isSorting,
+      draggable: !isSorting,
+    })
+  }, [isSorting, navigation])
+
   return (
-    <View className="gap-2 p-2 pt-8">
+    <View className="gap-8 px-2 pt-8 pb-8">
       <View className="gap-2">
-        <UText className="font-inter-medium ml-1">{group?.name}</UText>
+        <UText className="font-inter-medium ml-1">{t('groupName', { name: group?.name })}</UText>
         <UInput
           ref={inputRef}
           placeholder={t('newGroupTitlePlaceholder')}
@@ -79,32 +87,67 @@ export const GroupIdScreen = () => {
         />
       </View>
 
-      <View className="gap-2">
-        <View className="flex-row items-center gap-2">
-          <UText className="font-inter-medium ml-1">{t('addedLines')}</UText>
-          <UText className="font-inter-medium text-sm">{`(${group?.codes.length} / ${GROUP_LINE_LIMIT})`}</UText>
+      <View>
+        <View className="mb-1 ml-1">
+          <UText className="font-inter-medium">{t('groupItemList')}</UText>
+          <UText className="font-inter-medium text-muted text-sm">
+            {t('groupItemListDescription')}
+          </UText>
         </View>
+        {group && group.items.length > 0 ? (
+          <GestureHandlerRootView style={{ flexShrink: 0 }}>
+            <Sortable.Grid
+              data={group.items}
+              onDragStart={() => setIsSorting(true)}
+              onDragEnd={({ data }) => {
+                setIsSorting(false)
+                useTransitStore.getState().setGroupItems(data, groupId)
+              }}
+              renderItem={({ item }) => (
+                <ThemeProvider value={item.code}>
+                  <View className="bg-muted flex-row items-center justify-between gap-2 rounded-md p-2">
+                    <View className="flex-row items-center gap-2">
+                      <UIcon
+                        name="menu"
+                        sizeClassName="size-4"
+                        colorClassName="accent-muted"
+                      />
 
-        {group && group.codes.length > 0 && (
-          <LegendList
-            data={group.codes}
-            renderItem={({ item }) => (
-              <GestureHandlerRootView style={{ flexShrink: 0 }}>
-                <UButton
-                  icon="trash-2"
-                  onPress={() => {
-                    useLineStore.getState().deleteLine(item, group.id)
-                  }}
-                  color="neutral"
-                  variant="soft"
-                  label={item}
-                />
-              </GestureHandlerRootView>
-            )}
-            contentContainerStyle={{ gap: 8 }}
-            keyExtractor={(item) => item}
-            recycleItems
-          />
+                      <View className="flex-row items-center gap-2">
+                        <UIcon name={item.type === 'line' ? 'bus-front' : 'map-pin'} />
+                        <UText className="font-inter-medium text-sm">{item.code}</UText>
+                      </View>
+                    </View>
+
+                    <UButton
+                      icon="trash-2"
+                      variant="soft"
+                      onPress={() => {
+                        useTransitStore.getState().removeItemFromGroup(item.code, group.id)
+                      }}
+                    />
+                  </View>
+                </ThemeProvider>
+              )}
+              keyExtractor={(item) => item.code}
+              strategy="swap"
+            />
+          </GestureHandlerRootView>
+        ) : (
+          <UEmpty
+            title={t('emptyGroup')}
+            icon="bus-front"
+          >
+            <GestureHandlerRootView style={{ flexShrink: 0 }}>
+              <UButton
+                label={t('goToSearch')}
+                icon="search"
+                variant="soft"
+                color="neutral"
+                to={{ pathname: '/search' }}
+              />
+            </GestureHandlerRootView>
+          </UEmpty>
         )}
       </View>
     </View>

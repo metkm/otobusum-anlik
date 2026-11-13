@@ -8,7 +8,7 @@ import { useDebounce } from 'use-debounce'
 import { useShallow } from 'zustand/react/shallow'
 
 import { queryClient } from '@/api/client'
-import { ThemeProvider } from '@/components/ThemeProvider'
+import { ThemeProvider } from '@/components/provider/ThemeProvider'
 import { UBadge, UButton, UEmpty, UInput, UQueryState, UText } from '@/components/u'
 import { useMap } from '@/composables'
 import {
@@ -18,18 +18,18 @@ import {
   useSearch,
 } from '@/composables/query'
 import { MIN_CHARACTER_LIMIT, isStop } from '@/composables/query/useSearch'
-import { LineContext } from '@/composables/useLine'
-import { useFilterStore, useLineStore } from '@/stores'
+import { GroupItemContext } from '@/composables/useGroupItem'
+import { useFilterStore, useTransitStore } from '@/stores'
 import type { Line, Stop } from '@/types/bus'
 import { getLatLngBounds } from '@/utils/bounds'
 
 const RenderItemLine = ({ item }: { item: Line }) => {
-  const addLine = useLineStore(useShallow((state) => state.addLine))
+  const addItemToGroup = useTransitStore(useShallow((state) => state.addItemToGroup))
   const city = useFilterStore(useShallow((state) => state.city))
   const { fitBounds, easeTo } = useMap()
 
   const addLineAndZoom = async () => {
-    addLine(item.code)
+    addItemToGroup({ code: item.code, type: 'line' })
 
     const routes = await queryClient.query(routesQueryOptions(item.code, city))
     const path = routes.find((route) => route.code === getDefaultRouteCode(item.code))?.path
@@ -65,8 +65,8 @@ const RenderItemLine = ({ item }: { item: Line }) => {
       <UButton
         icon="circle-plus"
         to={{
-          params: { addToGroup: item.code },
-          pathname: '(sheet)/groups/index',
+          params: { code: item.code, type: 'line' },
+          pathname: '/(sheet)/groups',
         }}
         variant="soft"
         size="lg"
@@ -76,14 +76,27 @@ const RenderItemLine = ({ item }: { item: Line }) => {
 }
 
 const RenderItemStop = ({ item }: { item: Stop }) => (
-  <UButton
-    variant="ghost"
-    color="neutral"
-    label={item.name}
-    to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
-  >
-    <UBadge icon="map-pin" />
-  </UButton>
+  <View className="shrink flex-row items-center gap-2">
+    <UButton
+      variant="ghost"
+      color="neutral"
+      label={item.name}
+      to={{ params: { stopCode: item.code }, pathname: `/(sheet)/stop/[stopCode]` }}
+      className="flex-1"
+    >
+      <UBadge icon="map-pin" />
+    </UButton>
+
+    <UButton
+      icon="circle-plus"
+      to={{
+        params: { code: item.code, type: 'stop' },
+        pathname: '/(sheet)/groups',
+      }}
+      variant="soft"
+      size="lg"
+    />
+  </View>
 )
 
 export const SearchScreen = () => {
@@ -101,7 +114,6 @@ export const SearchScreen = () => {
   }
 
   const results = [...(searchQuery.data?.lines || []), ...(searchQuery.data?.stops || [])]
-
   const neededCharacterCount = MIN_CHARACTER_LIMIT - query.length + 1
 
   return (
@@ -160,7 +172,7 @@ export const SearchScreen = () => {
             title={t('noResults')}
             description={t('noResultsDescription')}
             icon="search"
-            className="mt-2 grow"
+            className="m-2 grow"
           />
         ) : (
           <LegendList
@@ -171,11 +183,11 @@ export const SearchScreen = () => {
               }
 
               return (
-                <LineContext value={item.code}>
+                <GroupItemContext value={item.code}>
                   <ThemeProvider>
                     <RenderItemLine item={item} />
                   </ThemeProvider>
-                </LineContext>
+                </GroupItemContext>
               )
             }}
             keyExtractor={(item) => item.id.toString()}

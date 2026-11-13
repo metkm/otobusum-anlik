@@ -1,94 +1,68 @@
-import { GeoJSONSource, type ImageEntry, Images, Layer } from '@maplibre/maplibre-react-native'
-import Lucide from '@react-native-vector-icons/lucide'
+import { GeoJSONSource, Images } from '@maplibre/maplibre-react-native'
+import { Lucide } from '@react-native-vector-icons/lucide'
 import { router } from 'expo-router'
-import type { Feature } from 'geojson'
+import type { GeoJSON, GeoJsonProperties, Geometry } from 'geojson'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
-import { useLine, useLineGroup } from '@/composables'
+import { MarkerBusLayer } from '@/components/marker/MarkerBusLayer'
+import { useGroupItem } from '@/composables'
 import { useLineBuses, useLineRoutes } from '@/composables/query'
 import { useFilterStore } from '@/stores'
 
 export const LineMarkerBuses = () => {
-  const { codes } = useLineGroup()
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const { routeCode } = useLineRoutes()
-  const { query: lineBusesQuery, buses } = useLineBuses()
+  const { buses } = useLineBuses()
 
-  const textColor = useCSSVariable('--text-color-inverted')?.toString()
-  const primaryColor = useCSSVariable('--color-primary')?.toString()
+  const backgroundColor = useCSSVariable('--color-primary')?.toString()
+  const accentColor = useCSSVariable('--text-color-inverted')?.toString()
 
   const isLineHidden = useFilterStore(useShallow((state) => state.hiddenLines.includes(code)))
 
-  if (!lineBusesQuery.data) {
+  if (buses.length < 1) {
     return
   }
 
-  const iconImage = `bus-${code}`
-  const images: Record<string, ImageEntry> = {}
-  images[iconImage] = Lucide.getImageSourceSync('bus-front', 20, textColor).uri
+  const data: GeoJSON<Geometry, GeoJsonProperties> = {
+    features: buses
+      .filter((x) => x.route_code === routeCode)
+      .map((bus) => ({
+        geometry: {
+          coordinates: [bus.lng, bus.lat],
+          type: 'Point',
+        },
+        properties: {
+          backgroundColor,
+          doorNo: bus.bus_id,
+        },
+        type: 'Feature',
+      })),
+    type: 'FeatureCollection',
+  }
 
-  const features: Feature[] = buses
-    .filter((bus) => bus.route_code === routeCode)
-    .map((bus) => ({
-      geometry: {
-        coordinates: [bus.lng, bus.lat],
-        type: 'Point',
-      },
-      properties: {
-        color: primaryColor,
-        doorNo: bus.bus_id,
-      },
-      type: 'Feature',
-    }))
-
-  const minZoom = codes.length < 2 ? undefined : 8
+  const iconName = `bus-front-${code}`
 
   return (
     <>
-      <Images images={images} />
+      <Images
+        images={{
+          [iconName]: Lucide.getImageSourceSync('bus-front', 20, accentColor).uri,
+        }}
+      />
 
       <GeoJSONSource
-        data={{
-          features,
-          type: 'FeatureCollection',
-        }}
+        data={data}
         onPress={(event) => {
           const doorNo = event.nativeEvent.features[0]?.properties?.doorNo
-          if (!doorNo) {
-            return
+          if (doorNo) {
+            router.navigate(`/bus-info/${doorNo}`)
           }
-          router.navigate(`/bus-info/${doorNo}`)
         }}
       >
-        <Layer
-          id={`bus-circle-${code}`}
-          type="circle"
-          paint={{
-            'circle-color': ['get', 'color'],
-            'circle-pitch-alignment': 'map',
-            'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 14, 16, 16],
-          }}
-          layout={{ visibility: isLineHidden ? 'none' : 'visible' }}
-          minzoom={minZoom}
-          afterId="buses-layer"
-        />
-
-        <Layer
-          type="symbol"
-          layout={{
-            'icon-allow-overlap': true,
-            'icon-image': iconImage,
-            'icon-pitch-alignment': 'map',
-            'icon-size': ['interpolate', ['linear'], ['zoom'], 10, 0.25, 16, 0.3],
-            visibility: isLineHidden ? 'none' : 'visible',
-          }}
-          paint={{
-            'icon-color-transition': { duration: 0 },
-            'icon-opacity-transition': { duration: 0 },
-          }}
-          afterId={`bus-circle-${code}`}
-          minzoom={minZoom}
+        <MarkerBusLayer
+          code={code}
+          isHidden={isLineHidden}
         />
       </GeoJSONSource>
     </>

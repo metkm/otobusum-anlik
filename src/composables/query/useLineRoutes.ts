@@ -2,13 +2,12 @@ import { queryOptions, useQuery } from '@tanstack/react-query'
 import ky from 'ky'
 import { useShallow } from 'zustand/react/shallow'
 
+import { useGroupItem } from '@/composables'
 import { MS_3_DAYS } from '@/constants/time'
-import { useFilterStore, useLineStore } from '@/stores'
+import { useFilterStore, useTransitStore } from '@/stores'
 import type { City } from '@/types/city'
 import type { RouteDirection } from '@/types/line'
 import type { Route } from '@/types/route'
-
-import { useLine } from '../useLine'
 
 export const routesQueryOptions = (code: string, city: City) =>
   queryOptions({
@@ -28,10 +27,10 @@ export const routesQueryOptions = (code: string, city: City) =>
 export const getDefaultRouteCode = (code: string) => `${code}_G_D0`
 
 export const useLineRoutes = () => {
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const city = useFilterStore(useShallow((state) => state.city))
   const routeCode =
-    useLineStore(useShallow((state) => state.routes[city][code])) ?? getDefaultRouteCode(code)
+    useTransitStore(useShallow((state) => state.routes[city][code])) ?? getDefaultRouteCode(code)
 
   const query = useQuery(routesQueryOptions(code, city))
 

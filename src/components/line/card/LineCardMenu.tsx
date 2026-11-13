@@ -7,16 +7,16 @@ import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton, USheetHeader, USheet, UText } from '@/components/u'
-import { useLine, useMap } from '@/composables'
+import { useMap, useGroupItem } from '@/composables'
 import { useLineRoutes, useLineNews } from '@/composables/query'
 import { LayoutAnimationTransition } from '@/constants/animation'
-import { useFilterStore, useLineStore, useSettingsStore, useThemeStore } from '@/stores'
+import { useFilterStore, useSettingsStore, useThemeStore, useTransitStore } from '@/stores'
 import { getLatLngBounds } from '@/utils/bounds'
 
 import { LineModalsColorPicker } from '../modals/ColorPicker'
 
 export const LineCardMenu = () => {
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const { news } = useLineNews()
   const { t } = useTranslation()
   const { fitBounds } = useMap()
@@ -24,9 +24,8 @@ export const LineCardMenu = () => {
 
   const toggleLineHidden = useFilterStore(useShallow((state) => state.toggleLineHidden))
   const isLineHidden = useFilterStore(useShallow((state) => state.hiddenLines.includes(code)))
-  const deleteLine = useLineStore(useShallow((state) => state.deleteLine))
   const createTheme = useThemeStore(useShallow((state) => state.createTheme))
-  const lineCardExpanded = useSettingsStore(useShallow((state) => state.lineCardExpanded))
+  const cardExpanded = useSettingsStore(useShallow((state) => state.cardExpanded))
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
 
   const menuSheet = useRef<TrueSheet>(null)
@@ -137,9 +136,10 @@ export const LineCardMenu = () => {
           variant="soft"
           to={{
             params: {
-              addToGroup: code,
+              code,
+              type: 'line',
             },
-            pathname: '(sheet)/groups/index',
+            pathname: '/(sheet)/groups',
           }}
         />
 
@@ -158,14 +158,14 @@ export const LineCardMenu = () => {
         </View>
 
         <UButton
-          label={t(lineCardExpanded ? 'shrink' : 'expand')}
-          icon={lineCardExpanded ? 'shrink' : 'expand'}
+          label={t(cardExpanded ? 'shrink' : 'expand')}
+          icon={cardExpanded ? 'shrink' : 'expand'}
           size="lg"
           block
           variant="soft"
           onPress={() => {
             useSettingsStore.setState((state) => {
-              state.lineCardExpanded = !state.lineCardExpanded
+              state.cardExpanded = !state.cardExpanded
             })
           }}
         />
@@ -173,7 +173,7 @@ export const LineCardMenu = () => {
         <UButton
           label={t('deleteLine')}
           icon="trash-2"
-          onPress={() => deleteLine(code)}
+          onPress={() => useTransitStore.getState().removeItemFromGroup(code)}
           size="lg"
           block
           variant="soft"

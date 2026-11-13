@@ -3,21 +3,27 @@ import { ScopedVariables } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useColorScheme } from '@/composables'
-import { LineContext } from '@/composables/useLine'
+import { GroupItemContext } from '@/composables/useGroupItem'
 import { useFilterStore, useThemeStore } from '@/stores'
 
-export const ThemeProvider = ({ code, children }: { code?: string; children?: ReactNode }) => {
+export const ThemeProvider = ({
+  value: _code,
+  children,
+}: {
+  value?: string
+  children?: ReactNode
+}) => {
   const city = useFilterStore(useShallow((state) => state.city))
   const themeStore = useThemeStore(useShallow((state) => state.themesByCity[city]))
 
-  const lineCode = code ?? use(LineContext)
+  const code = _code ?? use(GroupItemContext)
   const colorScheme = useColorScheme()
 
-  if (!lineCode) {
+  if (!code) {
     return children
   }
 
-  const theme = themeStore[lineCode]?.[colorScheme]
+  const theme = themeStore[code]?.[colorScheme]
 
   if (!theme) {
     return children

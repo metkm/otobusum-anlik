@@ -19,9 +19,9 @@ import { alignCenter, dampen } from '@/utils/math'
 const ui = tv({
   slots: {
     container: 'flex-row',
-    item: 'min-w-0 shrink-0 grow-0',
+    item: 'min-w-0 shrink-0',
     // item: 'min-w-0 shrink-0 grow-0 basis-[94%]',
-    viewport: 'flex-row overflow-hidden',
+    viewport: 'flex-row overflow-hidden shrink',
   },
 })
 
@@ -35,7 +35,9 @@ export interface UCarouselProps<T> extends ViewProps {
   enabled?: boolean
 }
 
-export const CarouselContext = createContext<SharedValue<number> | undefined>(undefined)
+export const CarouselContext = createContext<
+  { offset: SharedValue<number>; cardHeight: SharedValue<number> } | undefined
+>(undefined)
 
 const getClosestSnap = (offset: number, snaps: number[]) => {
   'worklet'
@@ -67,7 +69,7 @@ export const UCarousel = <T,>({
 
   const localOffset = useSharedValue(0)
 
-  const offset = carouselContext ?? localOffset
+  const offset = carouselContext?.offset ?? localOffset
   const offsetStart = useSharedValue(0)
 
   const offsetLimits = useDerivedValue(

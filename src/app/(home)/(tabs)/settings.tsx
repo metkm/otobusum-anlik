@@ -120,9 +120,7 @@ export const SettingsScreen = () => {
   const { t } = useTranslation()
 
   const mapButtonsPlacement = useSettingsStore(useShallow((state) => state.mapButtonsPlacement))
-  const expandStopsWhenScrolled = useSettingsStore(
-    useShallow((state) => state.expandStopsWhenScrolled),
-  )
+  const cardExpandOnScroll = useSettingsStore(useShallow((state) => state.cardExpandOnScroll))
 
   const showLineCardStops = useSettingsStore(useShallow((state) => state.lineCardShowStops))
 
@@ -195,9 +193,9 @@ export const SettingsScreen = () => {
     })
   }
 
-  const toggleExpandStopsWhenScrolled = () => {
+  const togglecardExpandOnScroll = () => {
     useSettingsStore.setState((state) => {
-      state.expandStopsWhenScrolled = !state.expandStopsWhenScrolled
+      state.cardExpandOnScroll = !state.cardExpandOnScroll
     })
   }
 
@@ -256,9 +254,9 @@ export const SettingsScreen = () => {
       />
 
       <ToggleSetting
-        label={t('expandStopsWhenScrolled')}
-        value={expandStopsWhenScrolled}
-        onPress={toggleExpandStopsWhenScrolled}
+        label={t('cardExpandOnScroll')}
+        value={cardExpandOnScroll}
+        onPress={togglecardExpandOnScroll}
       />
 
       <ToggleSetting

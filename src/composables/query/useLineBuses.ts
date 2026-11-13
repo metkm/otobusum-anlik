@@ -7,7 +7,7 @@ import { useFilterStore } from '@/stores'
 import type { City } from '@/types/city'
 import { getNextPollDelay } from '@/utils/query'
 
-import { useLine } from '../useLine'
+import { useGroupItem } from '../useGroupItem'
 import { useLineRoutes } from './useLineRoutes'
 
 export const busesQueryOptions = (code: string, city: City) =>
@@ -25,7 +25,7 @@ export const busesQueryOptions = (code: string, city: City) =>
   })
 
 export const useLineBuses = () => {
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const { routeCode } = useLineRoutes()
 
   const city = useFilterStore(useShallow((state) => state.city))

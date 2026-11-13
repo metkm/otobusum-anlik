@@ -3,11 +3,12 @@ import { View } from 'react-native'
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated'
 
 import { UBadge, UQueryState, UText } from '@/components/u'
-import { useCountdown, useLine } from '@/composables'
+import { useCountdown } from '@/composables'
 import { useLineBuses } from '@/composables/query'
+import { useGroupItem } from '@/composables/useGroupItem'
 
 export const LineCardName = () => {
-  const { code } = useLine()
+  const { code } = useGroupItem()
   const { query: lineBusesQuery } = useLineBuses()
 
   const duration = lineBusesQuery.data
@@ -24,6 +25,7 @@ export const LineCardName = () => {
         variant="soft"
         size="lg"
         className="rounded-sm"
+        icon="bus-front"
       />
 
       <Animated.View

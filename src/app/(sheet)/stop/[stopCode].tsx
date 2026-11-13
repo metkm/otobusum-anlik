@@ -1,4 +1,3 @@
-import { AnimatedLegendList } from '@legendapp/list/reanimated'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { Camera, GeoJSONSource } from '@maplibre/maplibre-react-native'
 import { useLocalSearchParams } from 'expo-router'
@@ -6,18 +5,18 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking, View, type ScrollViewInstance } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
-import Animated from 'react-native-reanimated'
 import { useCSSVariable } from 'uniwind'
 
-import { LineMarkerStopLayer } from '@/components/line/marker/LineMarkerStops'
-import { Map } from '@/components/Map'
-import { MapProvider } from '@/components/MapProvider'
-import { ThemeProvider } from '@/components/ThemeProvider'
-import { UBadge, UActivityIndicator, UButton, UIcon, UQueryState, UText } from '@/components/u'
+import { MarkerStopLayer } from '@/components/marker/MarkerStopLayer'
+import { MapProvider } from '@/components/provider/MapProvider'
+import { StopCardArrivals } from '@/components/stop/card/StopCardArrivals'
+import { UButton, UQueryState, UText } from '@/components/u'
+import { UMap } from '@/components/u/Map'
 import { SkeletonStop } from '@/components/u/skeleton/SkeletonStop'
 import { useCountdown, useMap } from '@/composables'
 import { useStopArrivals, useStop } from '@/composables/query'
-import { EnterScaleIn, ExitScaleOut, ItemLayoutAnimation } from '@/constants/animation'
+import { GroupItemContext } from '@/composables/useGroupItem'
+import { MS_60_SECONDS } from '@/constants/time'
 
 export const StopScreen = () => {
   const { t } = useTranslation()
@@ -26,12 +25,11 @@ export const StopScreen = () => {
   const navigation = useTrueSheetNavigation()
   const colorPrimary = useCSSVariable('--color-primary')?.toString()
 
-  const searchParams = useLocalSearchParams()
-  const stopCode = parseInt(searchParams.stopCode! as string)
+  const { stopCode } = useLocalSearchParams<{ stopCode: string }>()
 
   const { query: stopQuery } = useStop(stopCode)
   const { query: arrivalQuery } = useStopArrivals(stopCode)
-  const { remaining } = useCountdown(arrivalQuery.dataUpdatedAt, 60_000)
+  const { remaining } = useCountdown(arrivalQuery.dataUpdatedAt, MS_60_SECONDS)
 
   useEffect(() => {
     navigation.setOptions({
@@ -68,7 +66,7 @@ export const StopScreen = () => {
           <View className="gap-2">
             <View className="h-48 overflow-hidden rounded-md">
               <MapProvider>
-                <Map
+                <UMap
                   dragPan={false}
                   touchZoom={false}
                   doubleTapZoom={false}
@@ -85,17 +83,14 @@ export const StopScreen = () => {
                         type: 'Point',
                       },
                       properties: {
-                        color: colorPrimary,
+                        backgroundColor: colorPrimary,
                       },
                       type: 'Feature',
                     }}
                   >
-                    <LineMarkerStopLayer
-                      isHidden={false}
-                      afterId={undefined}
-                    />
+                    <MarkerStopLayer isHidden={false} />
                   </GeoJSONSource>
-                </Map>
+                </UMap>
               </MapProvider>
             </View>
 
@@ -114,6 +109,14 @@ export const StopScreen = () => {
                   icon="locate-fixed"
                   block
                   className="flex-1"
+                />
+                <UButton
+                  label={t('addToGroup')}
+                  icon="circle-plus"
+                  to={{
+                    params: { code: stopCode, type: 'stop' },
+                    pathname: '/(sheet)/groups',
+                  }}
                 />
               </View>
             </GestureHandlerRootView>
@@ -138,9 +141,10 @@ export const StopScreen = () => {
                       variant="soft"
                       to={{
                         params: {
-                          addToGroup: bus,
+                          code: bus,
+                          type: 'line',
                         },
-                        pathname: '(sheet)/groups/index',
+                        pathname: '/(sheet)/groups',
                       }}
                     />
                   ))}
@@ -151,97 +155,15 @@ export const StopScreen = () => {
         )}
       </UQueryState>
 
-      <UQueryState
-        query={arrivalQuery}
-        useIsLoading
-      >
-        {arrivalQuery.isEnabled && (
-          <View className="items-end">
-            <UQueryState
-              query={arrivalQuery}
-              fetching={() => <UActivityIndicator sizeClassName="size-4" />}
-            >
-              <UText className="text-muted font-inter-medium text-sm">
-                {t('updateCount', { count: remaining })}
-              </UText>
-            </UQueryState>
-          </View>
-        )}
-
-        <AnimatedLegendList
-          data={arrivalQuery.data?.data}
-          itemLayoutAnimation={ItemLayoutAnimation}
-          keyExtractor={(item) => item.door_no}
-          getFixedItemSize={() => 64.33}
-          style={{ flex: 1 }}
-          recycleItems
-          contentContainerStyle={{ gap: 8 }}
-          renderItem={({ item: arrival }) => (
-            <Animated.View
-              className="flex-row items-center gap-2 p-2"
-              exiting={ExitScaleOut}
-              entering={EnterScaleIn}
-            >
-              <UIcon
-                name="bus-front"
-                sizeClassName="size-6"
-              />
-
-              <View className="flex-1 gap-1">
-                <ThemeProvider code={arrival.line_code}>
-                  <View className="flex-row items-center gap-2">
-                    <UBadge label={arrival.line_code} />
-
-                    <UIcon
-                      name="accessibility"
-                      sizeClassName="size-4"
-                      colorClassName={arrival.features.accessible ? 'text-primary' : 'text-muted'}
-                    />
-                    <UIcon
-                      name="usb"
-                      sizeClassName="size-4"
-                      colorClassName={
-                        arrival.features.usb_available ? 'text-primary' : 'text-muted'
-                      }
-                    />
-                    <UIcon
-                      name="wifi"
-                      sizeClassName="size-4"
-                      colorClassName={
-                        arrival.features.wifi_available ? 'text-primary' : 'text-muted'
-                      }
-                    />
-                    <UIcon
-                      name="air-vent"
-                      sizeClassName="size-4"
-                      colorClassName={arrival.features.ac_active ? 'text-primary' : 'text-muted'}
-                    />
-                    <UIcon
-                      name="bike"
-                      sizeClassName="size-4"
-                      colorClassName={arrival.features.bicycle_rack ? 'text-primary' : 'text-muted'}
-                    />
-                  </View>
-                </ThemeProvider>
-
-                <UText
-                  className="truncate"
-                  numberOfLines={1}
-                >
-                  {arrival.line_name}
-                </UText>
-              </View>
-
-              <View className="ml-auto">
-                <UText className="font-inter-medium text-right">
-                  {t('arrivingMinutes', { min: arrival.minutes_left })}
-                </UText>
-                <UText className="text-muted font-inter-medium text-sm">{t('arrivingIn')}</UText>
-              </View>
-            </Animated.View>
-          )}
-        />
+      <UQueryState query={arrivalQuery}>
+        <UText className="text-muted font-inter-medium mr-2 ml-auto text-sm">
+          {t('updateCount', { count: remaining })}
+        </UText>
       </UQueryState>
+
+      <GroupItemContext value={stopCode.toString()}>
+        <StopCardArrivals />
+      </GroupItemContext>
     </ScrollView>
   )
 }

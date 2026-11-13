@@ -1,4 +1,4 @@
-import '@/global.css'
+import '../global.css'
 import { Sheet } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { NavigationBar } from 'expo-navigation-bar'
@@ -11,13 +11,21 @@ import { SafeAreaListener } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
 import { persister, queryClient } from '@/api/client'
-import { MapProvider } from '@/components/MapProvider'
+import { MapProvider } from '@/components/provider/MapProvider'
 import { useColorScheme } from '@/composables'
 import { useSettingsStore } from '@/stores'
 import i18n from '@/translations/i18n'
 
 export const unstable_settings = {
   anchor: '(home)',
+}
+
+// to make react compiler happy
+const setUniwindTheme = () => {
+  const storeColor = useSettingsStore.getState().colorScheme
+  if (storeColor) {
+    Uniwind.setTheme(storeColor)
+  }
 }
 
 const RootContent = () => {
@@ -36,10 +44,7 @@ const RootContent = () => {
     },
   }
 
-  const storeColor = useSettingsStore.getState().colorScheme
-  if (storeColor) {
-    Uniwind.setTheme(storeColor)
-  }
+  setUniwindTheme()
 
   return (
     <SafeAreaListener

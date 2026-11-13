@@ -1,0 +1,124 @@
+import { AnimatedLegendList } from '@legendapp/list/reanimated'
+import { useTranslation } from 'react-i18next'
+import { View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import Animated from 'react-native-reanimated'
+
+import { useGroupItem, useExpandableCardHeight } from '@/composables'
+import { useStopArrivals } from '@/composables/query'
+import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
+import type { StopArrival } from '@/types/stop'
+
+import { ThemeProvider } from '../../provider/ThemeProvider'
+import { UBadge, UButton, UEmpty, UIcon, UQueryState, UText } from '../../u'
+
+const StopCardArrivalsItem = ({ item }: { item: StopArrival }) => {
+  const { t } = useTranslation()
+
+  return (
+    <Animated.View
+      className="flex-row items-center gap-2 p-2"
+      exiting={ExitScaleOut}
+      entering={EnterScaleIn}
+    >
+      <ThemeProvider value={item.line_code}>
+        <View className="flex-1 gap-1">
+          <View className="flex-row items-center gap-2">
+            <UBadge
+              label={item.line_code}
+              icon="bus-front"
+            />
+
+            <UIcon
+              name="accessibility"
+              sizeClassName="size-4"
+              colorClassName={item.features.accessible ? 'accent-primary' : 'accent-muted'}
+            />
+            <UIcon
+              name="usb"
+              sizeClassName="size-4"
+              colorClassName={item.features.usb_available ? 'accent-primary' : 'accent-muted'}
+            />
+            <UIcon
+              name="wifi"
+              sizeClassName="size-4"
+              colorClassName={item.features.wifi_available ? 'accent-primary' : 'accent-muted'}
+            />
+            <UIcon
+              name="air-vent"
+              sizeClassName="size-4"
+              colorClassName={item.features.ac_active ? 'accent-primary' : 'accent-muted'}
+            />
+            <UIcon
+              name="bike"
+              sizeClassName="size-4"
+              colorClassName={item.features.bicycle_rack ? 'accent-primary' : 'accent-muted'}
+            />
+          </View>
+
+          <UText
+            className="font-inter-medium truncate text-sm"
+            numberOfLines={1}
+          >
+            {item.line_name}
+          </UText>
+        </View>
+
+        <View className="ml-auto">
+          <UText className="font-inter-medium text-right">
+            {t('arrivingMinutes', { min: item.minutes_left })}
+          </UText>
+
+          <UText className="text-muted font-inter-medium text-sm">{t('arrivingIn')}</UText>
+        </View>
+
+        <GestureHandlerRootView style={{ flexShrink: 1 }}>
+          <UButton
+            icon="plus-circle"
+            variant="soft"
+            to={{
+              params: { code: item.line_code, type: 'line' },
+              pathname: '/(sheet)/groups',
+            }}
+          />
+        </GestureHandlerRootView>
+      </ThemeProvider>
+    </Animated.View>
+  )
+}
+
+export const StopCardArrivals = () => {
+  const { t } = useTranslation()
+  const { code } = useGroupItem()
+  const { query } = useStopArrivals(code)
+  const { onScroll } = useExpandableCardHeight()
+
+  return (
+    <UQueryState
+      query={query}
+      useIsLoading
+    >
+      <AnimatedLegendList
+        // @ts-expect-error
+        layout={LayoutAnimationTransition}
+        itemLayoutAnimation={LayoutAnimationTransition}
+        data={query.data?.data}
+        renderItem={({ item }) => <StopCardArrivalsItem item={item} />}
+        keyExtractor={(item) => item.door_no}
+        getFixedItemSize={() => 67}
+        onScroll={onScroll}
+        recycleItems
+        className="flex-1"
+        contentContainerClassName="grow"
+        ListEmptyComponent={
+          <UEmpty
+            title={t('noBusArrivalsToStop')}
+            description={t('noBusArrivalsToStopDescription')}
+            icon="bus-front"
+            className="m-2 grow"
+          />
+        }
+      />
+    </UQueryState>
+  )
+}
