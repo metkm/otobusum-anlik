@@ -58,7 +58,9 @@ export const NearbyScreen = () => {
             type: 'LineString',
           },
           properties: {
-            backgroundColor: colors?.[index] ? hexFromArgb(colors[index].schemes.dark.primary) : undefined,
+            backgroundColor: colors?.[index]
+              ? hexFromArgb(colors[index].schemes.dark.primary)
+              : undefined,
             line_code: route.line_code,
           },
           type: 'Feature',

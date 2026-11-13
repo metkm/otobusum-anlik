@@ -1,8 +1,9 @@
 import { GeoJSONSource, Layer } from '@maplibre/maplibre-react-native'
 
 import { useTemporaryMarkerStore } from '@/stores/temporaryMarker'
-import { MarkerRouteLayer } from './marker/MarkerRouteLayer';
-import { MarkerStopLayer } from './marker/MarkerStopLayer';
+
+import { MarkerRouteLayer } from './marker/MarkerRouteLayer'
+import { MarkerStopLayer } from './marker/MarkerStopLayer'
 
 export const MapTemporaryMarkers = () => {
   const temporaryMarkerStore = useTemporaryMarkerStore()

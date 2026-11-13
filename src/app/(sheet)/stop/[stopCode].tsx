@@ -7,6 +7,7 @@ import { Linking, View, type ScrollViewInstance } from 'react-native'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 import { useCSSVariable } from 'uniwind'
 
+import { MarkerStopLayer } from '@/components/marker/MarkerStopLayer'
 import { MapProvider } from '@/components/provider/MapProvider'
 import { StopCardArrivals } from '@/components/stop/card/StopCardArrivals'
 import { UButton, UQueryState, UText } from '@/components/u'
@@ -15,7 +16,6 @@ import { SkeletonStop } from '@/components/u/skeleton/SkeletonStop'
 import { useCountdown, useMap } from '@/composables'
 import { useStopArrivals, useStop } from '@/composables/query'
 import { GroupItemContext } from '@/composables/useGroupItem'
-import { MarkerStopLayer } from '@/components/marker/MarkerStopLayer';
 
 export const StopScreen = () => {
   const { t } = useTranslation()
