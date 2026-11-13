@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated'
 
+import { UAnimatePresence } from '@/components/u/UAnimatePresence'
 import { useCountdown, useGroupItem } from '@/composables'
 import { useStop, useStopArrivals } from '@/composables/query'
 import { MS_60_SECONDS } from '@/constants/time'
@@ -26,12 +26,7 @@ export const StopCardName = () => {
         icon="map-pin"
       />
 
-      <Animated.View
-        key={arrivalsQuery.isFetching ? 'loading' : 'text'}
-        entering={FadeInDown}
-        exiting={FadeOutUp}
-        className="shrink overflow-hidden"
-      >
+      <UAnimatePresence key={arrivalsQuery.isFetching ? 'loading' : 'text'}>
         <UQueryState
           query={arrivalsQuery}
           error={() => (
@@ -47,7 +42,7 @@ export const StopCardName = () => {
             {t('updateCount', { count: remaining })}
           </UText>
         </UQueryState>
-      </Animated.View>
+      </UAnimatePresence>
     </View>
   )
 }

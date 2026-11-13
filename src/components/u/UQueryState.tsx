@@ -30,14 +30,7 @@ export const UQueryState = <T,>({
   }
 
   if (useIsLoading ? query.isLoading : query.isFetching) {
-    return (
-      fetching?.() ?? (
-        <UActivityIndicator
-          sizeClassName="size-4.5"
-          className="grow"
-        />
-      )
-    )
+    return fetching?.() ?? <UActivityIndicator sizeClassName="size-4.5" />
   }
 
   if (query.isError) {

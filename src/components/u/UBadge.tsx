@@ -51,9 +51,9 @@ const ui = tv({
     variant: 'solid',
   },
   slots: {
-    base: 'px-2.5 py-1.5 flex-row items-center gap-1.5 rounded-full',
+    base: 'px-2.5 py-1.5 flex-row items-center gap-1.5 rounded-full shrink',
     icon: '',
-    label: 'font-inter-semibold',
+    label: 'font-inter-semibold truncate shrink',
   },
   variants: {
     color: {
@@ -98,7 +98,14 @@ export const UBadge = ({ label, icon, color, variant, className, size }: UBadgeP
         />
       )}
 
-      {label && <UText className={uiLabel()}>{label}</UText>}
+      {label && (
+        <UText
+          className={uiLabel()}
+          numberOfLines={1}
+        >
+          {label}
+        </UText>
+      )}
     </View>
   )
 }

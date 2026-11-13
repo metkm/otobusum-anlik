@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated'
 
 import { UBadge, UQueryState, UText } from '@/components/u'
+import { UAnimatePresence } from '@/components/u/UAnimatePresence'
 import { useCountdown } from '@/composables'
 import { useLineBuses } from '@/composables/query'
 import { useGroupItem } from '@/composables/useGroupItem'
@@ -28,12 +28,7 @@ export const LineCardName = () => {
         icon="bus-front"
       />
 
-      <Animated.View
-        key={lineBusesQuery.isFetching ? 'loading' : 'text'}
-        entering={FadeInDown}
-        exiting={FadeOutUp}
-        className="shrink"
-      >
+      <UAnimatePresence key={lineBusesQuery.isFetching ? 'loading' : 'text'}>
         <UQueryState
           query={lineBusesQuery}
           error={() => (
@@ -49,7 +44,7 @@ export const LineCardName = () => {
             {t('updateCount', { count: remaining })}
           </UText>
         </UQueryState>
-      </Animated.View>
+      </UAnimatePresence>
     </View>
   )
 }
