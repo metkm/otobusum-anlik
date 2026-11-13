@@ -54,7 +54,7 @@ export const StopCardMenu = () => {
               code,
               type: 'stop',
             },
-            pathname: '(sheet)/groups/index',
+            pathname: '/(sheet)/groups',
           }}
         />
 
@@ -68,7 +68,7 @@ export const StopCardMenu = () => {
             params: {
               stopCode: code,
             },
-            pathname: '(sheet)/stop/[stopCode]',
+            pathname: '/(sheet)/stop/[stopCode]',
           }}
         />
 

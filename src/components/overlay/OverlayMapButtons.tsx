@@ -62,7 +62,7 @@ export const OverlayMapButtonsGroup = () => {
         color="neutral"
         size="lg"
         variant="subtle"
-        to={{ pathname: '(sheet)/groups/index' }}
+        to={{ pathname: '/(sheet)/groups' }}
         label={group?.name}
         style={{ elevation: 2 }}
       />
@@ -158,7 +158,7 @@ export const OverlayMapButtons = (props: ViewProps) => {
       >
         <UButton
           icon="search"
-          to={{ pathname: 'search' }}
+          to={{ pathname: '/search' }}
           size="lg"
           color="neutral"
           variant="subtle"

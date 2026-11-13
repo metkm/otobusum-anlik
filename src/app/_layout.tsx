@@ -1,4 +1,3 @@
-// @ts-expect-error
 import '../global.css'
 import { Sheet } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
@@ -21,6 +20,14 @@ export const unstable_settings = {
   anchor: '(home)',
 }
 
+// to make react compiler happy
+const setUniwindTheme = () => {
+  const storeColor = useSettingsStore.getState().colorScheme
+  if (storeColor) {
+    Uniwind.setTheme(storeColor)
+  }
+}
+
 const RootContent = () => {
   const backgroundColor = useCSSVariable('--ui-bg')?.toString()
   const spacing = useCSSVariable('--spacing') as number
@@ -37,10 +44,7 @@ const RootContent = () => {
     },
   }
 
-  const storeColor = useSettingsStore.getState().colorScheme
-  if (storeColor) {
-    Uniwind.setTheme(storeColor)
-  }
+  setUniwindTheme()
 
   return (
     <SafeAreaListener

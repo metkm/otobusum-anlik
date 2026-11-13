@@ -7,7 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Sortable from 'react-native-sortables'
 
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
-import { UButton, UInput, UText } from '@/components/u'
+import { UButton, UEmpty, UIcon, UInput, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { useTransitStore } from '@/stores'
 
@@ -87,42 +87,71 @@ export const GroupIdScreen = () => {
         />
       </View>
 
-      <GestureHandlerRootView style={{ flexShrink: 0 }}>
+      <View>
         <View className="mb-1 ml-1">
           <UText className="font-inter-medium">{t('groupItemList')}</UText>
           <UText className="font-inter-medium text-muted text-sm">
             {t('groupItemListDescription')}
           </UText>
         </View>
+        {group && group.items.length > 0 ? (
+          <GestureHandlerRootView style={{ flexShrink: 0 }}>
+            <Sortable.Grid
+              data={group.items}
+              onDragStart={() => setIsSorting(true)}
+              onDragEnd={({ data }) => {
+                setIsSorting(false)
+                useTransitStore.getState().setGroupItems(data, groupId)
+              }}
+              renderItem={({ item }) => (
+                <ThemeProvider value={item.code}>
+                  <View className="flex-row items-center justify-between gap-2 p-2">
+                    <View className="flex-row items-center gap-2">
+                      <UIcon
+                        name="menu"
+                        sizeClassName="size-4"
+                        colorClassName="accent-muted"
+                      />
 
-        {group && group.items.length > 0 && (
-          <Sortable.Grid
-            data={group.items}
-            onDragStart={() => setIsSorting(true)} // disables sheet panning
-            onDragEnd={({ data }) => {
-              setIsSorting(false)
-              useTransitStore.getState().setGroupItems(data, groupId)
-            }} // enables sheet panning
-            renderItem={({ item }) => (
-              <ThemeProvider value={item.code}>
-                <UButton
-                  label={item.code}
-                  icon={item.type === 'line' ? 'bus-front' : 'map-pin'}
-                  onPress={() => {
-                    useTransitStore.getState().removeItemFromGroup(item.code, group.id)
-                  }}
-                  variant="soft"
-                  trailingIcon="menu"
-                />
-              </ThemeProvider>
-            )}
-            keyExtractor={(item) => item.code}
-            strategy="swap"
-            columnGap={8}
-            rowGap={8}
-          />
+                      <View className="flex-row items-center gap-2">
+                        <UIcon name={item.type === 'line' ? 'bus-front' : 'map-pin'} />
+                        <UText className="font-inter-medium text-sm">{item.code}</UText>
+                      </View>
+                    </View>
+
+                    <UButton
+                      icon="trash-2"
+                      variant="soft"
+                      onPress={() => {
+                        useTransitStore.getState().removeItemFromGroup(item.code, group.id)
+                      }}
+                    />
+                  </View>
+                </ThemeProvider>
+              )}
+              keyExtractor={(item) => item.code}
+              strategy="swap"
+              columnGap={8}
+              rowGap={8}
+            />
+          </GestureHandlerRootView>
+        ) : (
+          <UEmpty
+            title={t('emptyGroup')}
+            icon="bus-front"
+          >
+            <GestureHandlerRootView style={{ flexShrink: 0 }}>
+              <UButton
+                label={t('goToSearch')}
+                icon="search"
+                variant="soft"
+                color="neutral"
+                to={{ pathname: '/search' }}
+              />
+            </GestureHandlerRootView>
+          </UEmpty>
         )}
-      </GestureHandlerRootView>
+      </View>
     </View>
   )
 }

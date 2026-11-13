@@ -139,7 +139,7 @@ export const LineCardMenu = () => {
               code,
               type: 'line',
             },
-            pathname: '(sheet)/groups/index',
+            pathname: '/(sheet)/groups',
           }}
         />
 

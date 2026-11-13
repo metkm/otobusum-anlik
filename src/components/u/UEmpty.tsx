@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { View } from 'react-native'
 
 import { cn } from '@/utils/cn'
@@ -10,11 +11,13 @@ export const UEmpty = ({
   icon,
   description,
   className,
+  children,
 }: {
   title: string
   icon?: IconName
   description?: string
   className?: string
+  children?: ReactNode
 }) => (
   <View className={cn('gap-2 items-center justify-center p-2 rounded-md bg-muted/15', className)}>
     {icon && (
@@ -28,5 +31,7 @@ export const UEmpty = ({
     <UText className="font-inter-medium">{title}</UText>
 
     {description && <UText className="text-muted text-sm">{description}</UText>}
+
+    {children}
   </View>
 )

@@ -5,7 +5,7 @@ import { useSharedValue } from 'react-native-reanimated'
 import { GroupCardItems } from '@/components/group/GroupCardItems'
 import { LineTimetable } from '@/components/line/LineTimetable'
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
-import { UButton, UCarousel, CarouselContext, UText } from '@/components/u'
+import { UButton, UCarousel, CarouselContext, UEmpty } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'
 
@@ -15,19 +15,18 @@ const LineTimetables = () => {
 
   if (items.length < 1) {
     return (
-      <View className="flex grow items-center justify-center gap-2 p-2">
-        <UText className="text-muted font-inter-medium max-w-xs text-center">
-          {t('timetableEmpty')}
-        </UText>
-
+      <UEmpty
+        title={t('timetableEmpty')}
+        className="m-2 grow"
+      >
         <UButton
           label={t('goToSearch')}
           icon="search"
           variant="soft"
           color="neutral"
-          to={{ pathname: 'search' }}
+          to={{ pathname: '/search' }}
         />
-      </View>
+      </UEmpty>
     )
   }
 

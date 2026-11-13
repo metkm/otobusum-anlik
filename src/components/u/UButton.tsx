@@ -1,4 +1,4 @@
-import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
+import { useRouter, type Href } from 'expo-router'
 import type { ComponentProps } from 'react'
 import { Touchable } from 'react-native-gesture-handler'
 import { type VariantProps } from 'tailwind-variants'
@@ -182,7 +182,7 @@ interface UButtonProps extends VariantProps<typeof ui>, TouchableProps {
   label?: string
   icon?: IconName
   trailingIcon?: IconName
-  to?: { pathname: string; params?: object }
+  to?: Href
   disabled?: boolean
   loading?: boolean
   labelClassName?: string
@@ -205,7 +205,7 @@ export const UButton = ({
   labelClassName,
   ...props
 }: UButtonProps) => {
-  const navigation = useTrueSheetNavigation()
+  const router = useRouter()
 
   const {
     base: uiBase,
@@ -218,7 +218,7 @@ export const UButton = ({
       return
     }
 
-    navigation.navigate(to.pathname, to.params)
+    router.push(to)
   }
 
   return (

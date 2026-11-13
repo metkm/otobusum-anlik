@@ -115,7 +115,7 @@ export const StopScreen = () => {
                   icon="circle-plus"
                   to={{
                     params: { code: stopCode, type: 'stop' },
-                    pathname: '(sheet)/groups/index',
+                    pathname: '/(sheet)/groups',
                   }}
                 />
               </View>
@@ -144,7 +144,7 @@ export const StopScreen = () => {
                           code: bus,
                           type: 'line',
                         },
-                        pathname: '(sheet)/groups/index',
+                        pathname: '/(sheet)/groups',
                       }}
                     />
                   ))}

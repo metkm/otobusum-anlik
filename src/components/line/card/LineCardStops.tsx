@@ -48,7 +48,7 @@ const StopItem = ({
     <View className="shrink flex-row items-center gap-2">
       <UButton
         className="flex-1"
-        to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
+        to={{ params: { stopCode: item.code }, pathname: `/(sheet)/stop/[stopCode]` }}
         variant="ghost"
         trailingIcon="chevron-right"
       >
@@ -97,7 +97,7 @@ const StopItem = ({
               params: {
                 doorNo: closestBus.bus_id,
               },
-              pathname: '(sheet)/bus-info/[doorNo]',
+              pathname: '/(sheet)/bus-info/[doorNo]',
             }}
             variant="soft"
           />

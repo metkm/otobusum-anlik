@@ -78,7 +78,7 @@ const StopCardArrivalsItem = ({ item }: { item: StopArrival }) => {
             variant="soft"
             to={{
               params: { code: item.line_code, type: 'line' },
-              pathname: '(sheet)/groups/index',
+              pathname: '/(sheet)/groups',
             }}
           />
         </GestureHandlerRootView>

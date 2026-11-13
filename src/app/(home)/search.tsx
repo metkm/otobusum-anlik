@@ -65,8 +65,8 @@ const RenderItemLine = ({ item }: { item: Line }) => {
       <UButton
         icon="circle-plus"
         to={{
-          params: item,
-          pathname: '(sheet)/groups/index',
+          params: { code: item.code, type: 'line' },
+          pathname: '/(sheet)/groups',
         }}
         variant="soft"
         size="lg"
@@ -81,7 +81,7 @@ const RenderItemStop = ({ item }: { item: Stop }) => (
       variant="ghost"
       color="neutral"
       label={item.name}
-      to={{ params: { stopCode: item.code }, pathname: `(sheet)/stop/[stopCode]` }}
+      to={{ params: { stopCode: item.code }, pathname: `/(sheet)/stop/[stopCode]` }}
       className="flex-1"
     >
       <UBadge icon="map-pin" />
@@ -91,7 +91,7 @@ const RenderItemStop = ({ item }: { item: Stop }) => (
       icon="circle-plus"
       to={{
         params: { code: item.code, type: 'stop' },
-        pathname: '(sheet)/groups/index',
+        pathname: '/(sheet)/groups',
       }}
       variant="soft"
       size="lg"
