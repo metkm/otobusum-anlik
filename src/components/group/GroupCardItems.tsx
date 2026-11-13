@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useSharedValue } from 'react-native-reanimated'
+import Animated, { useSharedValue } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { LineCard } from '@/components/line/card/LineCard'
@@ -7,6 +7,7 @@ import { StopCard } from '@/components/stop/StopCard'
 import { useLineGroup, useMapPadding } from '@/composables'
 import { ExpandableCardContext } from '@/composables/useExpandableCard'
 import { GroupItemContext } from '@/composables/useGroupItem'
+import { LayoutAnimationTransition } from '@/constants/animation'
 import { CARD_COLLAPSED_HEIGHT } from '@/constants/card'
 import { useSettingsStore } from '@/stores'
 import type { GroupItem, GroupItemType } from '@/stores/groups'
@@ -47,17 +48,19 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
 
   return (
     <ExpandableCardContext value={cardHeight}>
-      <UCarousel
-        data={items ?? []}
-        renderItem={renderItem}
-        onLayout={onLayout}
-        keyExtractor={(item) => item.code}
-        enabled={group?.items && group.items.length > 1}
-        ui={{
-          container: cn('gap-2 px-2 pb-2'),
-          viewport: cn('w-screen', hideMap && 'grow'),
-        }}
-      />
+      <Animated.View layout={LayoutAnimationTransition} className={cn(hideMap && 'grow')}>
+        <UCarousel
+          data={items ?? []}
+          renderItem={renderItem}
+          onLayout={onLayout}
+          keyExtractor={(item) => item.code}
+          enabled={group?.items && group.items.length > 1}
+          ui={{
+            container: cn('gap-2 px-2 pb-2'),
+            viewport: cn('w-screen', hideMap && 'grow'),
+          }}
+        />
+      </Animated.View>
     </ExpandableCardContext>
   )
 }

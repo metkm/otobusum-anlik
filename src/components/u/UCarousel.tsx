@@ -141,6 +141,7 @@ export const UCarousel = <T,>({
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View
+        layout={LayoutAnimationTransition}
         className={cn(uiViewport(), props.ui?.viewport)}
         onLayout={(event) => {
           'worklet'

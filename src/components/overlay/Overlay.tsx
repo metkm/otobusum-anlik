@@ -16,7 +16,7 @@ export const Overlay = ({ className, ...props }: ViewProps) => {
       entering={FadeIn}
       exiting={FadeOut}
       className={cn(
-        'absolute inset-x-0 justify-end top-safe px-safe bottom-[calc(var(--navigation-height)+env(safe-area-inset-bottom))]',
+        'absolute inset-x-0 top-safe px-safe bottom-[calc(var(--navigation-height)+env(safe-area-inset-bottom))]',
         className,
       )}
       pointerEvents="box-none"

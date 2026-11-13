@@ -5,7 +5,7 @@ import Animated from 'react-native-reanimated'
 
 import { useGroupItem, useExpandableCardHeight } from '@/composables'
 import { useStopArrivals } from '@/composables/query'
-import { EnterScaleIn, ExitScaleOut } from '@/constants/animation'
+import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import type { StopArrival } from '@/types/stop'
 
 import { ThemeProvider } from '../ThemeProvider'
@@ -87,6 +87,9 @@ export const StopCardArrivals = () => {
       useIsLoading
     >
       <AnimatedLegendList
+        // @ts-expect-error
+        layout={LayoutAnimationTransition}
+        itemLayoutAnimation={LayoutAnimationTransition}
         data={query.data?.data}
         renderItem={({ item }) => <StopCardArrivalsItem item={item} />}
         keyExtractor={(item) => item.door_no}

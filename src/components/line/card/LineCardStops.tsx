@@ -9,6 +9,7 @@ import { UButton, UEmpty, UIcon, UQueryState, UText } from '@/components/u'
 import { SkeletonLineStops } from '@/components/u/skeleton/SkeletonLineStops'
 import { useExpandableCardHeight, useMap } from '@/composables'
 import { useLineBuses, useLineStops } from '@/composables/query'
+import { LayoutAnimationTransition } from '@/constants/animation'
 import { useSettingsStore } from '@/stores'
 import type { Stop } from '@/types/bus'
 import { getClosestPoint } from '@/utils/getClosestPoint'
@@ -149,6 +150,8 @@ export const LineCardStops = () => {
       fetching={() => <SkeletonLineStops />}
     >
       <AnimatedLegendList
+        // @ts-expect-error
+        layout={LayoutAnimationTransition}
         data={lineStopsQuery.data || []}
         renderItem={({ item, index }) => (
           <StopItem

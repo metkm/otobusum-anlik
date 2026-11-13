@@ -96,7 +96,7 @@ export const OverlayMapButtons = (props: ViewProps) => {
     <Animated.View
       layout={LayoutAnimationTransition}
       className={cn(
-        'p-2 gap-2 flex-wrap',
+        'p-2 gap-2 flex-wrap mt-auto',
         hideMap && 'flex-row',
         mapButtonsPlacement === 'left' ? 'mr-auto items-start' : 'ml-auto items-end justify-end',
       )}

@@ -6,7 +6,7 @@ import { SkeletonPulse } from './SkeletonPulse'
 
 export const SkeletonLineStops = () => (
   <View
-    className="overflow-hidden px-2 py-1.5"
+    className="overflow-hidden px-2 py-1.5 flex-1"
     style={{ height: CARD_COLLAPSED_HEIGHT }}
   >
     {[1, 2, 3].map((i) => (

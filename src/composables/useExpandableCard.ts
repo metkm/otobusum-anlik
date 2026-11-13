@@ -9,7 +9,6 @@ import {
 } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
-import { BezierEasing } from '@/constants/animation'
 import { CARD_EXPANDED_HEIGHT, CARD_COLLAPSED_HEIGHT } from '@/constants/card'
 import { useSettingsStore } from '@/stores'
 
@@ -22,18 +21,14 @@ export const useExpandableCardHeight = () => {
   const expandStopsWhenScrolled = useSettingsStore(
     useShallow((state) => state.expandStopsWhenScrolled),
   )
+  const lineCardExpanded = useSettingsStore(useShallow((state) => state.lineCardExpanded))
   const showLineCardStops = useSettingsStore(useShallow((state) => state.lineCardShowStops))
 
   useEffect(() => {
     const listener = useSettingsStore.subscribe(
       (state) => state.lineCardExpanded,
       (expanded) => {
-        height.set(
-          withTiming(expanded ? CARD_EXPANDED_HEIGHT : CARD_COLLAPSED_HEIGHT, {
-            duration: 300,
-            easing: BezierEasing,
-          }),
-        )
+        height.set(expanded ? CARD_EXPANDED_HEIGHT : CARD_COLLAPSED_HEIGHT)
       },
     )
 
@@ -46,14 +41,14 @@ export const useExpandableCardHeight = () => {
         return
       }
 
-      height.set(withTiming(CARD_EXPANDED_HEIGHT))
+      height.set(CARD_EXPANDED_HEIGHT)
     },
     onMomentumEnd: () => {
-      if (!expandStopsWhenScrolled && height.value !== CARD_EXPANDED_HEIGHT) {
+      if (lineCardExpanded || (!expandStopsWhenScrolled && height.value !== CARD_EXPANDED_HEIGHT)) {
         return
       }
 
-      height.set(withDelay(1500, withTiming(CARD_COLLAPSED_HEIGHT)))
+      height.set(withDelay(1500, withTiming(CARD_COLLAPSED_HEIGHT, { duration: 0 })))
     },
   })
 
