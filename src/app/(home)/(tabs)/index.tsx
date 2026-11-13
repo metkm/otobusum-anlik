@@ -5,7 +5,7 @@ import { View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
 import { GroupCardItems } from '@/components/group/GroupCardItems'
-import { LineMarkers } from '@/components/line/LineMarkers'
+import { GroupsMarkers } from '@/components/group/GroupsMarkers'
 import { MapTemporaryMarkers } from '@/components/MapTemporaryMarkers'
 import { Overlay } from '@/components/overlay/Overlay'
 import { OverlayMapButtons } from '@/components/overlay/OverlayMapButtons'
@@ -26,8 +26,8 @@ export const HomeScreen = () => {
 
       {!hideMap && (
         <UMap>
-          <LineMarkers />
           <MapTemporaryMarkers />
+          <GroupsMarkers />
 
           {showMyLocation && <UserLocation heading />}
         </UMap>
