@@ -1,7 +1,7 @@
 import { GeoJSONSource } from '@maplibre/maplibre-react-native'
 import { useCSSVariable } from 'uniwind'
 
-import { LineMarkerStopLayer } from '@/components/line/marker/LineMarkerStops'
+import { MarkerStopLayer } from '@/components/marker/MarkerStopLayer'
 import { useGroupItem } from '@/composables'
 import { useStop } from '@/composables/query'
 
@@ -24,13 +24,13 @@ export const StopMarkers = () => {
           type: 'Point',
         },
         properties: {
+          backgroundColor: primaryColor,
           borderColor,
-          color: primaryColor,
         },
         type: 'Feature',
       }}
     >
-      <LineMarkerStopLayer />
+      <MarkerStopLayer />
     </GeoJSONSource>
   )
 }

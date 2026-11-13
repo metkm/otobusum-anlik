@@ -58,7 +58,7 @@ export const NearbyScreen = () => {
             type: 'LineString',
           },
           properties: {
-            color: colors?.[index] ? hexFromArgb(colors[index].schemes.dark.primary) : undefined,
+            backgroundColor: colors?.[index] ? hexFromArgb(colors[index].schemes.dark.primary) : undefined,
             line_code: route.line_code,
           },
           type: 'Feature',
@@ -77,7 +77,7 @@ export const NearbyScreen = () => {
             type: 'Point',
           },
           properties: {
-            color: primaryColor,
+            backgroundColor: primaryColor,
           },
           type: 'Feature',
         })) || [],
@@ -97,7 +97,7 @@ export const NearbyScreen = () => {
             type: 'Polygon',
           },
           properties: {
-            color: primaryColor,
+            backgroundColor: primaryColor,
           },
           type: 'Feature',
         },
@@ -123,7 +123,7 @@ export const NearbyScreen = () => {
     id: 'area-polygon-border',
     layerProps: {
       paint: {
-        'line-color': ['get', 'color'],
+        'line-color': ['get', 'backgroundColor'],
         'line-dasharray': [8, 2],
         'line-width': 2,
       },

@@ -42,7 +42,7 @@ export default {
   groupName: 'Group name: {{name}}',
   groups: 'Groups',
   hideMap: 'Hide map',
-  itemAlreadyInGroup: 'This stop or line is already in the groupr',
+  itemAlreadyInGroup: 'This stop or line is already in the group',
   itemTypeLimitExceeded: 'A group can contain a maximum of 4 stops and 4 lines',
   left: 'Left',
   liberty: 'Liberty',

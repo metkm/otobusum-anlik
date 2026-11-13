@@ -137,6 +137,7 @@ export const LineCardMenu = () => {
           to={{
             params: {
               code,
+              type: 'line'
             },
             pathname: '(sheet)/groups/index',
           }}

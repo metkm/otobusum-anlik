@@ -35,7 +35,7 @@ const GroupItem = ({
     navigation.navigate('(home)')
 
     if (code) {
-      useTransitStore.getState().addItemToGroup({ code, type })
+      useTransitStore.getState().addItemToGroup({ code, type }, group.id)
     } else {
       useTransitStore.getState().selectGroup(group.id)
     }

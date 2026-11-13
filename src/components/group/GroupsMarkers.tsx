@@ -5,12 +5,21 @@ import { GroupItemContext } from '@/composables/useGroupItem'
 import { useFilterStore, useTransitStore } from '@/stores'
 import type { GroupItem } from '@/stores/groups'
 
-import { LineMarkers } from '../line/marker/LineMarkers'
+import { LineMarkerBuses, LineMarkerRoute, LineMarkerStops } from '../line/marker'
+import { ThemeProvider } from '../provider/ThemeProvider'
 import { StopMarkers } from '../stop/marker/StopMarkers'
 
 const GroupMarkerItem = ({ item }: { item: GroupItem }) => {
   if (item.type === 'line') {
-    return <LineMarkers code={item.code} />
+    return (
+      <GroupItemContext value={item.code}>
+        <ThemeProvider>
+          <LineMarkerBuses />
+          <LineMarkerStops />
+          <LineMarkerRoute />
+        </ThemeProvider>
+      </GroupItemContext>
+    )
   }
 
   return (
