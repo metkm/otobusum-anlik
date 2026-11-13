@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import { useSharedValue } from 'react-native-reanimated'
+import Animated, { useSharedValue } from 'react-native-reanimated'
 
 import { GroupCardItems } from '@/components/group/GroupCardItems'
 import { LineTimetable } from '@/components/line/LineTimetable'
@@ -8,6 +8,7 @@ import { ThemeProvider } from '@/components/provider/ThemeProvider'
 import { UButton, UCarousel, CarouselContext, UEmpty } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'
+import { LayoutAnimationTransition } from '@/constants/animation'
 
 const LineTimetables = () => {
   const { items } = useLineGroup()
@@ -33,21 +34,26 @@ const LineTimetables = () => {
   const codes = items.filter((x) => x.type === 'line')
 
   return (
-    <UCarousel
-      data={codes}
-      keyExtractor={(item) => item.code}
-      ui={{ container: 'p-2 pt-0 gap-2', viewport: 'flex-1 grow' }}
-      renderItem={({ item }) => (
-        <GroupItemContext
-          key={item.code}
-          value={item.code}
-        >
-          <ThemeProvider>
-            <LineTimetable className="flex-1" />
-          </ThemeProvider>
-        </GroupItemContext>
-      )}
-    />
+    <Animated.View
+      layout={LayoutAnimationTransition}
+      className="grow"
+    >
+      <UCarousel
+        data={codes}
+        keyExtractor={(item) => item.code}
+        ui={{ container: 'p-2 pt-0 gap-2', viewport: 'flex-1 grow' }}
+        renderItem={({ item }) => (
+          <GroupItemContext
+            key={item.code}
+            value={item.code}
+          >
+            <ThemeProvider>
+              <LineTimetable className="flex-1" />
+            </ThemeProvider>
+          </GroupItemContext>
+        )}
+      />
+    </Animated.View>
   )
 }
 

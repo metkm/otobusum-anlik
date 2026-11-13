@@ -1,10 +1,12 @@
-import { LegendList } from '@legendapp/list/react-native'
+import { AnimatedLegendList } from '@legendapp/list/reanimated'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
+import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLineNews, useLineRoutes, useLineTimetable } from '@/composables/query'
+import { LayoutAnimationTransition } from '@/constants/animation'
 import { useFilterStore } from '@/stores'
 import type { City } from '@/types/city'
 import type { Time } from '@/types/timetable'
@@ -154,8 +156,8 @@ export const LineTimetable = ({ className }: LineTimetableProps) => {
   }
 
   return (
-    // <View className="bg-default border-hairline border-muted overflow-hidden rounded-md"></View>
-    <View
+    <Animated.View
+      layout={LayoutAnimationTransition}
       className={cn(
         'bg-default border-hairline border-muted rounded-md overflow-hidden',
         className,
@@ -187,7 +189,9 @@ export const LineTimetable = ({ className }: LineTimetableProps) => {
         query={lineTimetableQuery}
         fetching={() => <SkeletonTimetable />}
       >
-        <LegendList
+        <AnimatedLegendList
+          // @ts-expect-error
+          layout={LayoutAnimationTransition}
           data={hourEntries}
           renderItem={({ item: [hour, minutes], index }) => (
             <View
@@ -229,53 +233,8 @@ export const LineTimetable = ({ className }: LineTimetableProps) => {
               className="grow"
             />
           }
-          // getFixedItemSize={}
         />
-
-        {/* {hourEntries.length > 1 ? (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            className="border-t-hairline border-muted overflow-y-auto"
-          >
-            {hourEntries.map(([hour, minutes], index) => y
-              <View
-                key={hour}
-                className={cn(
-                  'flex-row items-center shrink p-2 gap-2',
-                  index % 2 !== 0 ? 'bg-muted' : false,
-                )}
-              >
-                <UText className="font-inter-medium bg-primary text-inverted h-full min-h-7 w-7 rounded-md text-center align-middle">
-                  {hour}
-                </UText>
-
-                <View className="shrink flex-row flex-wrap items-center gap-2">
-                  {minutes.map((min) => (
-                    <UText
-                      key={min}
-                      className="leading-tight"
-                      style={[
-                        cancelledTimes?.includes(`${hour}:${min}`) && {
-                          opacity: 0.5,
-                          textDecorationLine: 'line-through',
-                        },
-                      ]}
-                    >
-                      {min}
-                    </UText>
-                  ))}
-                </View>
-              </View>
-            ))}
-          </ScrollView>
-        ) : (
-          <UEmpty
-            title={t('timetableEmptyRange')}
-            icon="clock-fading"
-            className="grow"
-          />
-        )} */}
       </UQueryState>
-    </View>
+    </Animated.View>
   )
 }
