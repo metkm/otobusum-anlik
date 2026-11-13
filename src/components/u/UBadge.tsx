@@ -51,9 +51,9 @@ const ui = tv({
     variant: 'solid',
   },
   slots: {
-    base: 'px-2.5 py-1.5 flex-row items-center gap-1.5 rounded-full shrink',
+    base: 'px-2.5 py-1.5 flex-row items-center gap-1.5 rounded-full',
     icon: '',
-    label: 'font-inter-semibold truncate shrink',
+    label: 'font-inter-semibold shrink',
   },
   variants: {
     color: {
