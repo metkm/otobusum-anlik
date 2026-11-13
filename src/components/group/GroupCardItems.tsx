@@ -48,7 +48,10 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
 
   return (
     <ExpandableCardContext value={cardHeight}>
-      <Animated.View layout={LayoutAnimationTransition} className={cn(hideMap && 'grow')}>
+      <Animated.View
+        layout={LayoutAnimationTransition}
+        className={cn(hideMap && 'grow')}
+      >
         <UCarousel
           data={items ?? []}
           renderItem={renderItem}
