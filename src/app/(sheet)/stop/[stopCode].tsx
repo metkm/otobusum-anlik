@@ -16,6 +16,7 @@ import { SkeletonStop } from '@/components/u/skeleton/SkeletonStop'
 import { useCountdown, useMap } from '@/composables'
 import { useStopArrivals, useStop } from '@/composables/query'
 import { GroupItemContext } from '@/composables/useGroupItem'
+import { MS_60_SECONDS } from '@/constants/time'
 
 export const StopScreen = () => {
   const { t } = useTranslation()
@@ -24,12 +25,11 @@ export const StopScreen = () => {
   const navigation = useTrueSheetNavigation()
   const colorPrimary = useCSSVariable('--color-primary')?.toString()
 
-  const searchParams = useLocalSearchParams()
-  const stopCode = parseInt(searchParams.stopCode! as string)
+  const { stopCode } = useLocalSearchParams<{ stopCode: string }>()
 
   const { query: stopQuery } = useStop(stopCode)
   const { query: arrivalQuery } = useStopArrivals(stopCode)
-  const { remaining } = useCountdown(arrivalQuery.dataUpdatedAt, 60_000)
+  const { remaining } = useCountdown(arrivalQuery.dataUpdatedAt, MS_60_SECONDS)
 
   useEffect(() => {
     navigation.setOptions({
@@ -155,9 +155,11 @@ export const StopScreen = () => {
         )}
       </UQueryState>
 
-      <UText className="text-muted font-inter-medium mr-2 ml-auto text-sm">
-        {t('updateCount', { count: remaining })}
-      </UText>
+      <UQueryState query={arrivalQuery}>
+        <UText className="text-muted font-inter-medium mr-2 ml-auto text-sm">
+          {t('updateCount', { count: remaining })}
+        </UText>
+      </UQueryState>
 
       <GroupItemContext value={stopCode.toString()}>
         <StopCardArrivals />

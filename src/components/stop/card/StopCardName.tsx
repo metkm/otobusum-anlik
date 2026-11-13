@@ -12,8 +12,8 @@ export const StopCardName = () => {
   const { t } = useTranslation()
   const { code } = useGroupItem()
 
-  const { query: arrivalsQuery } = useStopArrivals(code)
   const { query: stopQuery } = useStop(code)
+  const { query: arrivalsQuery } = useStopArrivals(code)
   const { remaining } = useCountdown(arrivalsQuery.dataUpdatedAt, MS_60_SECONDS)
 
   return (

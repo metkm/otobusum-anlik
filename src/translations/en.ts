@@ -83,6 +83,7 @@ export default {
   showTraffic: 'Show traffic information on the map',
   shrink: 'Shrink',
   speed: 'Speed',
+  stopDetails: 'Stop details',
   stops: 'Stops',
   sunday: 'Sunday',
   system: 'System',

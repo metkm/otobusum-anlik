@@ -59,6 +59,20 @@ export const StopCardMenu = () => {
         />
 
         <UButton
+          label={t('stopDetails')}
+          icon="arrow-up-right"
+          variant="soft"
+          block
+          size="lg"
+          to={{
+            params: {
+              stopCode: code,
+            },
+            pathname: '(sheet)/stop/[stopCode]',
+          }}
+        />
+
+        <UButton
           label={t('deleteLine')}
           icon="trash-2"
           onPress={() => useTransitStore.getState().removeItemFromGroup(code)}

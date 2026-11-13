@@ -82,6 +82,7 @@ export default {
   showTraffic: 'Haritada trafik bilgisini göster',
   shrink: 'Küçült',
   speed: 'Hız',
+  stopDetails: 'Durak detayları',
   stops: 'Duraklar',
   sunday: 'Pazar',
   system: 'Sistem',
