@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import Animated, { useSharedValue } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 
 import { GroupCardItems } from '@/components/group/GroupCardItems'
 import { LineTimetable } from '@/components/line/LineTimetable'
+import { CarouselProvider } from '@/components/provider/CarouselProvider'
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
-import { UButton, UCarousel, CarouselContext, UEmpty } from '@/components/u'
+import { UButton, UCarousel, UEmpty } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'
 import { LayoutAnimationTransition } from '@/constants/animation'
@@ -57,18 +58,13 @@ const LineTimetables = () => {
   )
 }
 
-export const TimetableScreen = () => {
-  const offset = useSharedValue(0)
-  const cardHeight = useSharedValue(0)
-
-  return (
-    <View className="mt-safe mx-safe mb-[calc(var(--navigation-height)+env(safe-area-inset-bottom))] flex-1 pt-2">
-      <CarouselContext value={{ cardHeight, offset }}>
-        <GroupCardItems filter="line" />
-        <LineTimetables />
-      </CarouselContext>
-    </View>
-  )
-}
+export const TimetableScreen = () => (
+  <View className="mt-safe mx-safe mb-[calc(var(--navigation-height)+env(safe-area-inset-bottom))] flex-1 pt-2">
+    <CarouselProvider>
+      <GroupCardItems filter="line" />
+      <LineTimetables />
+    </CarouselProvider>
+  </View>
+)
 
 export default TimetableScreen

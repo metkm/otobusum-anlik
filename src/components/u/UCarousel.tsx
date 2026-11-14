@@ -1,9 +1,8 @@
-import { createContext, type ReactNode, use, useEffect } from 'react'
+import { type ReactNode, use, useEffect } from 'react'
 import { useWindowDimensions, type ViewProps } from 'react-native'
 import { GestureDetector, usePanGesture } from 'react-native-gesture-handler'
 import Animated, {
   clamp,
-  type SharedValue,
   useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
@@ -15,6 +14,8 @@ import Animated, {
 import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import { cn, tv } from '@/utils/cn'
 import { alignCenter, dampen } from '@/utils/math'
+
+import { CarouselContext } from '../provider/CarouselProvider'
 
 const ui = tv({
   slots: {
@@ -34,10 +35,6 @@ export interface UCarouselProps<T> extends ViewProps {
   }
   enabled?: boolean
 }
-
-export const CarouselContext = createContext<
-  { offset: SharedValue<number>; cardHeight: SharedValue<number> } | undefined
->(undefined)
 
 const getClosestSnap = (offset: number, snaps: number[]) => {
   'worklet'
@@ -62,14 +59,16 @@ export const UCarousel = <T,>({
   const { width: windowWidth } = useWindowDimensions()
   const { viewport: uiViewport, container: uiContainer, item: uiItem } = ui()
 
-  const snapPoints = useSharedValue<number[]>([])
   const containerWidth = useSharedValue(0)
   const viewportWidth = useSharedValue(windowWidth)
   const slideWidth = useSharedValue(data.length > 1 ? 0.94 : 1)
 
   const localOffset = useSharedValue(0)
+  const localSnapPoints = useSharedValue<number[]>([])
 
   const offset = carouselContext?.offset ?? localOffset
+  const snapPoints = carouselContext?.snapPoints ?? localSnapPoints
+
   const offsetStart = useSharedValue(0)
 
   const offsetLimits = useDerivedValue(
