@@ -9,6 +9,7 @@ import { GroupsMarkers } from '@/components/group/GroupsMarkers'
 import { MapTemporaryMarkers } from '@/components/MapTemporaryMarkers'
 import { Overlay } from '@/components/overlay/Overlay'
 import { OverlayMapButtons } from '@/components/overlay/OverlayMapButtons'
+import { CarouselProvider } from '@/components/provider/CarouselProvider'
 import { UMap } from '@/components/u/Map'
 import { useMapStyle } from '@/composables/useMapStyle'
 import { useSettingsStore } from '@/stores'
@@ -34,8 +35,10 @@ export const HomeScreen = () => {
       )}
 
       <Overlay>
-        <OverlayMapButtons />
-        <GroupCardItems />
+        <CarouselProvider>
+          <OverlayMapButtons />
+          <GroupCardItems />
+        </CarouselProvider>
       </Overlay>
     </View>
   )

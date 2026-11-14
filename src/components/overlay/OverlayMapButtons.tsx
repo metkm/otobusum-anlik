@@ -5,6 +5,7 @@ import Animated, { createAnimatedComponent } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLineGroup, useMap } from '@/composables'
+import { useGroupItemColorCarouselOffset } from '@/composables/useGropItemColorCarouselOffset'
 import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import { useSettingsStore, useTransitStore } from '@/stores'
 import { cn } from '@/utils/cn'
@@ -16,6 +17,7 @@ const AnimatedUButton = createAnimatedComponent(UButton)
 
 export const OverlayMapButtonsChangeDirection = () => {
   const { group } = useLineGroup()
+  const { style } = useGroupItemColorCarouselOffset()
 
   if (!group || group.items.length < 2) {
     return
@@ -32,10 +34,10 @@ export const OverlayMapButtonsChangeDirection = () => {
       exiting={ExitScaleOut}
       style={{ display: 'flex' }}
     >
-      <UButton
+      <AnimatedUButton
         icon="repeat"
         color="neutral"
-        style={{ elevation: 2 }}
+        style={{ elevation: 1, ...style }}
         size="lg"
         variant="subtle"
         className="ml-auto flex"
@@ -47,6 +49,7 @@ export const OverlayMapButtonsChangeDirection = () => {
 
 export const OverlayMapButtonsGroup = () => {
   const { group } = useLineGroup()
+  const { style } = useGroupItemColorCarouselOffset()
 
   return (
     <AnimatedGestureHandlerRootView
@@ -64,7 +67,7 @@ export const OverlayMapButtonsGroup = () => {
         variant="subtle"
         to={{ pathname: '/(sheet)/groups' }}
         label={group?.name}
-        style={{ elevation: 2 }}
+        style={{ elevation: 1, ...style }}
       />
     </AnimatedGestureHandlerRootView>
   )
@@ -72,6 +75,7 @@ export const OverlayMapButtonsGroup = () => {
 
 export const OverlayMapButtons = (props: ViewProps) => {
   const { map, camera } = useMap()
+  const { style } = useGroupItemColorCarouselOffset()
   const navigation = useTrueSheetNavigation()
 
   const bearing = useSettingsStore(useShallow((state) => state.bearing))
@@ -110,12 +114,12 @@ export const OverlayMapButtons = (props: ViewProps) => {
           exiting={ExitScaleOut}
           style={{ display: 'flex' }}
         >
-          <UButton
+          <AnimatedUButton
             icon="compass"
             size="lg"
             color="neutral"
             variant="subtle"
-            style={{ elevation: 1 }}
+            style={{ elevation: 1, ...style }}
             onPress={async () => {
               const center = await map.current?.getCenter()
               if (!center) {
@@ -139,13 +143,13 @@ export const OverlayMapButtons = (props: ViewProps) => {
           exiting={ExitScaleOut}
           style={{ display: 'flex' }}
         >
-          <UButton
+          <AnimatedUButton
             icon="radar"
             onPress={queryArea}
             size="lg"
             color="neutral"
             variant="subtle"
-            style={{ elevation: 1 }}
+            style={{ elevation: 1, ...style }}
           />
         </AnimatedGestureHandlerRootView>
       )}
@@ -156,13 +160,13 @@ export const OverlayMapButtons = (props: ViewProps) => {
         exiting={ExitScaleOut}
         style={{ display: 'flex' }}
       >
-        <UButton
+        <AnimatedUButton
           icon="search"
           to={{ pathname: '/search' }}
           size="lg"
           color="neutral"
           variant="subtle"
-          style={{ elevation: 1 }}
+          style={{ elevation: 1, ...style }}
         />
       </AnimatedGestureHandlerRootView>
 
