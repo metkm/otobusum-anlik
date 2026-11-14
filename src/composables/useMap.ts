@@ -1,33 +1,6 @@
-import type {
-  CameraAnimationOptions,
-  CameraCenterOptions,
-  CameraOptions,
-  CameraRef,
-  LngLatBounds,
-  MapRef,
-} from '@maplibre/maplibre-react-native'
-import { createContext, use, type RefObject } from 'react'
+import { use } from 'react'
 
-import type { Padding } from '@/components/provider/MapProvider'
-import type { Point } from '@/types/point'
-
-interface FitBoundsOptionsProps extends CameraOptions, CameraAnimationOptions {}
-
-interface EaseToOptionsProps extends CameraCenterOptions, CameraOptions, CameraAnimationOptions {}
-
-export interface MapContextInstance {
-  map: RefObject<MapRef | null>
-  camera: RefObject<CameraRef | null>
-
-  fitBounds: (bounds: LngLatBounds, options?: FitBoundsOptionsProps) => void
-  easeTo: (easeTo: Point, options?: EaseToOptionsProps) => void
-
-  registerPadding: (id: string, edge: keyof Padding, value: number) => void
-  unRegisterPadding: (id: string) => void
-  getPadding: () => Padding
-}
-
-export const MapContext = createContext<MapContextInstance | undefined>(undefined)
+import { MapContext } from '@/components/provider/MapProvider'
 
 export const useMap = () => {
   const context = use(MapContext)

@@ -1,9 +1,16 @@
-import type { CameraRef, MapRef } from '@maplibre/maplibre-react-native'
+import type {
+  CameraAnimationOptions,
+  CameraCenterOptions,
+  CameraOptions,
+  CameraRef,
+  LngLatBounds,
+  MapRef,
+} from '@maplibre/maplibre-react-native'
 import deepmerge from 'deepmerge'
-import { useCallback, useMemo, useRef } from 'react'
+import { createContext, useCallback, useMemo, useRef, type RefObject } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { MapContext, type MapContextInstance } from '@/composables/useMap'
+import type { Point } from '@/types/point'
 
 export interface Padding {
   top: number
@@ -17,6 +24,23 @@ interface PaddingContribution {
   edge: keyof Padding
   value: number
 }
+
+interface FitBoundsOptionsProps extends CameraOptions, CameraAnimationOptions {}
+interface EaseToOptionsProps extends CameraCenterOptions, CameraOptions, CameraAnimationOptions {}
+
+export interface MapContextInstance {
+  map: RefObject<MapRef | null>
+  camera: RefObject<CameraRef | null>
+
+  fitBounds: (bounds: LngLatBounds, options?: FitBoundsOptionsProps) => void
+  easeTo: (easeTo: Point, options?: EaseToOptionsProps) => void
+
+  registerPadding: (id: string, edge: keyof Padding, value: number) => void
+  unRegisterPadding: (id: string) => void
+  getPadding: () => Padding
+}
+
+export const MapContext = createContext<MapContextInstance | undefined>(undefined)
 
 export const MapProvider = ({ children }: { children: React.ReactNode }) => {
   const map = useRef<MapRef>(null)
