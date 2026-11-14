@@ -39,8 +39,7 @@ export interface UCarouselProps<T> extends ViewProps {
 const getClosestSnap = (offset: number, snaps: number[]) => {
   'worklet'
   return snaps.reduce(
-    (closest, snap) =>
-      Math.abs(snap - offset) < Math.abs(closest - offset) ? snap : closest,
+    (closest, snap) => (Math.abs(snap - offset) < Math.abs(closest - offset) ? snap : closest),
     snaps[0] ?? 0,
   )
 }
