@@ -1,22 +1,20 @@
-import { createContext, use, useEffect } from 'react'
+import { use, useEffect } from 'react'
 import {
   useAnimatedScrollHandler,
   useAnimatedStyle,
   withTiming,
   withDelay,
-  type SharedValue,
   useSharedValue,
 } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
+import { CarouselCardHeightContext } from '@/components/provider/CarouselCardHeightProvider'
 import { CARD_EXPANDED_HEIGHT, CARD_COLLAPSED_HEIGHT } from '@/constants/card'
 import { useSettingsStore } from '@/stores'
 
-export const ExpandableCardContext = createContext<SharedValue<number> | undefined>(undefined)
-
 export const useExpandableCardHeight = () => {
   const localHeight = useSharedValue(0)
-  const height = use(ExpandableCardContext) ?? localHeight
+  const height = use(CarouselCardHeightContext) ?? localHeight
 
   const cardExpandOnScroll = useSettingsStore(useShallow((state) => state.cardExpandOnScroll))
   const cardExpanded = useSettingsStore(useShallow((state) => state.cardExpanded))

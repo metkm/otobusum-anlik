@@ -28,7 +28,7 @@ interface PaddingContribution {
 interface FitBoundsOptionsProps extends CameraOptions, CameraAnimationOptions {}
 interface EaseToOptionsProps extends CameraCenterOptions, CameraOptions, CameraAnimationOptions {}
 
-export interface MapContextInstance {
+export interface MapContext {
   map: RefObject<MapRef | null>
   camera: RefObject<CameraRef | null>
 
@@ -40,7 +40,7 @@ export interface MapContextInstance {
   getPadding: () => Padding
 }
 
-export const MapContext = createContext<MapContextInstance | undefined>(undefined)
+export const MapContext = createContext<MapContext | undefined>(undefined)
 
 export const MapProvider = ({ children }: { children: React.ReactNode }) => {
   const map = useRef<MapRef>(null)
@@ -81,7 +81,7 @@ export const MapProvider = ({ children }: { children: React.ReactNode }) => {
     return result
   }, [paddingRef, insets.bottom, insets.left, insets.right, insets.top])
 
-  const value = useMemo<MapContextInstance>(
+  const value = useMemo<MapContext>(
     () => ({
       camera,
       easeTo: (center, options) => {

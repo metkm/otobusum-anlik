@@ -1,18 +1,17 @@
 import type { ReactNode } from 'react'
-import Animated, { useSharedValue } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { LineCard } from '@/components/line/card/LineCard'
 import { StopCard } from '@/components/stop/card/StopCard'
 import { useLineGroup, useMapPadding } from '@/composables'
-import { ExpandableCardContext } from '@/composables/useExpandableCard'
 import { GroupItemContext } from '@/composables/useGroupItem'
 import { LayoutAnimationTransition } from '@/constants/animation'
-import { CARD_COLLAPSED_HEIGHT } from '@/constants/card'
 import { useSettingsStore } from '@/stores'
 import type { GroupItem, GroupItemType } from '@/stores/groups'
 import { cn } from '@/utils/cn'
 
+import { CarouselCardHeightProvider } from '../provider/CarouselCardHeightProvider'
 import { ThemeProvider } from '../provider/ThemeProvider'
 import { UCarousel } from '../u'
 
@@ -23,7 +22,6 @@ interface GroupCardItemsProps {
 export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
   const { group } = useLineGroup()
   const { onLayout } = useMapPadding('overlayGroupItems', 'bottom')
-  const cardHeight = useSharedValue(CARD_COLLAPSED_HEIGHT)
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
 
   const items = filter ? group?.items.filter((item) => item.type === filter) : group?.items
@@ -47,7 +45,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
   }
 
   return (
-    <ExpandableCardContext value={cardHeight}>
+    <CarouselCardHeightProvider>
       <Animated.View
         layout={LayoutAnimationTransition}
         className={cn(hideMap && 'grow')}
@@ -64,6 +62,6 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
           }}
         />
       </Animated.View>
-    </ExpandableCardContext>
+    </CarouselCardHeightProvider>
   )
 }
