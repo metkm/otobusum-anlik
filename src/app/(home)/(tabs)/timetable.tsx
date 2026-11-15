@@ -42,7 +42,7 @@ const LineTimetables = () => {
       <UCarousel
         data={codes}
         keyExtractor={(item) => item.code}
-        ui={{ container: 'p-2 pt-0 gap-2', viewport: 'flex-1 grow' }}
+        ui={{ container: 'px-2 gap-2', viewport: 'flex-1 grow' }}
         renderItem={({ item }) => (
           <GroupItemContext
             key={item.code}
@@ -59,7 +59,7 @@ const LineTimetables = () => {
 }
 
 export const TimetableScreen = () => (
-  <View className="mt-safe mx-safe pb-nav flex-1 pt-2">
+  <View className="pt-safe px-safe pb-nav flex-1">
     <CarouselProvider>
       <GroupCardItems filter="line" />
       <LineTimetables />

@@ -5,7 +5,7 @@ import Animated, { createAnimatedComponent } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLineGroup, useMap } from '@/composables'
-import { useGroupItemColorCarouselOffset } from '@/composables/useGropItemColorCarouselOffset'
+import { useGroupItemColorCarouselOffset } from '@/composables/useGroupItemColorCarouselOffset'
 import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import { useSettingsStore, useTransitStore } from '@/stores'
 import { cn } from '@/utils/cn'
@@ -171,7 +171,7 @@ export const OverlayMapButtons = (props: ViewProps) => {
       </AnimatedGestureHandlerRootView> */}
 
       <OverlayMapButtonsChangeDirection />
-      <OverlayMapButtonsGroup />
+      {/* <OverlayMapButtonsGroup /> */}
     </Animated.View>
   )
 }

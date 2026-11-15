@@ -5,6 +5,7 @@ import {
   useDerivedValue,
   useSharedValue,
 } from 'react-native-reanimated'
+import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/shallow'
 
 import { CarouselContext } from '@/components/provider/CarouselProvider'
@@ -14,6 +15,11 @@ import { useColorScheme } from './useColorScheme'
 
 export const useGroupItemColorCarouselOffset = () => {
   const carouselContext = use(CarouselContext)
+  const [defaultBgDefault, defaultBgMuted, defaultBorderMuted] = useCSSVariable([
+    '--background-color-default',
+    '--background-color-muted',
+    '--border-color-muted',
+  ]) as [string, string, string]
 
   const offsetLocal = useSharedValue(0)
   const offset = carouselContext?.offset ?? offsetLocal
@@ -27,8 +33,8 @@ export const useGroupItemColorCarouselOffset = () => {
   )
 
   const bg = schemes.map((scheme) => scheme['ui-bg'])
-  // const border = schemes.map((scheme) => scheme['ui-border-muted'])
-  const bgMuted = schemes.map((scheme) => `${scheme['ui-primary']}1A`)
+  const borderMuted = schemes.map((scheme) => scheme['ui-border-muted'])
+  const bgSoft = schemes.map((scheme) => `${scheme['ui-primary']}1A`)
 
   const points = useDerivedValue(
     () =>
@@ -41,24 +47,33 @@ export const useGroupItemColorCarouselOffset = () => {
   const offsetAbs = useDerivedValue(() => Math.abs(offset.value))
 
   const backgroundColor = useDerivedValue(() => {
-    if (points.value.length < 1) {
-      return bg[0] ?? 'transparent'
+    if (points.value.length < 2) {
+      return bg[0] ?? defaultBgDefault?.toString()
     }
 
     return interpolateColor(offsetAbs.value, points.value, bg, 'HSV')
   })
 
   const backgroundColorSoft = useDerivedValue(() => {
-    if (points.value.length < 1) {
-      return bg[0] ?? 'transparent'
+    if (points.value.length < 2) {
+      return bgSoft[0] ?? defaultBgMuted?.toString()
     }
 
-    return interpolateColor(offsetAbs.value, points.value, bgMuted, 'HSV')
+    return interpolateColor(offsetAbs.value, points.value, bgSoft, 'HSV')
+  })
+
+  const borderColor = useDerivedValue(() => {
+    if (points.value.length < 2) {
+      return borderMuted[0] ?? defaultBorderMuted?.toString()
+    }
+
+    return interpolateColor(offsetAbs.value, points.value, borderMuted, 'HSV')
   })
 
   return {
     backgroundColor,
     backgroundColorSoft,
+    borderColor,
     offset,
   }
 }

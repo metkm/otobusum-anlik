@@ -9,12 +9,16 @@ import { type ComponentProps } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { Touchable } from 'react-native-gesture-handler'
-import Animated, { createAnimatedComponent, useAnimatedStyle } from 'react-native-reanimated'
+import Animated, {
+  createAnimatedComponent,
+  useAnimatedStyle,
+  withTiming,
+} from 'react-native-reanimated'
 import { Uniwind, useCSSVariable, useUniwind, withUniwind } from 'uniwind'
 
 import { UIcon, UText } from '@/components/u'
 import { useMapPadding } from '@/composables'
-import { useGroupItemColorCarouselOffset } from '@/composables/useGropItemColorCarouselOffset'
+import { useGroupItemColorCarouselOffset } from '@/composables/useGroupItemColorCarouselOffset'
 import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import { cn } from '@/utils/cn'
 
@@ -59,7 +63,6 @@ const screens = [
 
 const StyledIonicons = withUniwind(Ionicons)
 const StyledTouchable = withUniwind(Touchable)
-const AnimatedUText = createAnimatedComponent(UText)
 const AnimatedTouchable = createAnimatedComponent(StyledTouchable)
 
 const PressTrigger = ({
@@ -73,7 +76,7 @@ const PressTrigger = ({
   isFocused?: boolean
   onPress: () => void
 }) => {
-  const { backgroundColorSoft } = useGroupItemColorCarouselOffset()
+  const { backgroundColorSoft, borderColor } = useGroupItemColorCarouselOffset()
 
   let label = ''
   if (options?.tabBarLabel) {
@@ -83,7 +86,8 @@ const PressTrigger = ({
   }
 
   const style = useAnimatedStyle(() => ({
-    backgroundColor: isFocused ? backgroundColorSoft.value : 'transparent',
+    backgroundColor: !isFocused ? withTiming('transparent') : backgroundColorSoft.value,
+    borderColor: borderColor.value,
   }))
 
   return (
@@ -103,37 +107,45 @@ const PressTrigger = ({
       />
 
       {isFocused && (
-        <AnimatedUText
+        <Animated.View
           exiting={ExitScaleOut}
           entering={EnterScaleIn}
-          className="font-inter-medium text-sm"
         >
-          {label}
-        </AnimatedUText>
+          <UText className="font-inter-medium text-sm">{label}</UText>
+        </Animated.View>
       )}
     </AnimatedTouchable>
   )
 }
 
-export const CustomTabBar = ({ descriptors, emitter, state, navigateToTab }: BottomTabBarProps) => {
+export const CustomTabBar = ({
+  descriptors,
+  emitter,
+  state,
+  insets,
+  navigateToTab,
+}: BottomTabBarProps) => {
   const navigation = useTrueSheetNavigation()
-  const { backgroundColor } = useGroupItemColorCarouselOffset()
+  const { backgroundColor, borderColor } = useGroupItemColorCarouselOffset()
 
   const { onLayout } = useMapPadding('navigationTabs', 'bottom')
   const { theme } = useUniwind()
 
   return (
-    <View className="bottom-safe-offset-2 absolute inset-x-2 flex-row items-center justify-between gap-2">
+    <View
+      className="absolute inset-x-2 flex-row justify-center gap-2 py-2"
+      onLayout={(event) => {
+        Uniwind.updateCSSVariables(theme, {
+          '--navigation-height': event.nativeEvent.layout.height,
+        })
+        onLayout(event)
+      }}
+      style={{ bottom: insets.bottom }}
+    >
       <Animated.View
         layout={LayoutAnimationTransition}
-        className="border-hairline border-accented flex-row gap-2 rounded-full p-1"
-        onLayout={(event) => {
-          Uniwind.updateCSSVariables(theme, {
-            '--navigation-height': event.nativeEvent.layout.height,
-          })
-          onLayout(event)
-        }}
-        style={{ backgroundColor }}
+        className="border-hairline border-accented flex-row rounded-full p-1"
+        style={{ backgroundColor, borderColor }}
       >
         {state.routes.map(({ key }, index) => (
           <PressTrigger
