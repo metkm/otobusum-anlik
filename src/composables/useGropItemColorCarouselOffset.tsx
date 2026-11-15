@@ -1,5 +1,10 @@
 import { use } from 'react'
-import { interpolateColor, useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
+import {
+  interpolateColor,
+  // useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+} from 'react-native-reanimated'
 import { useShallow } from 'zustand/shallow'
 
 import { CarouselContext } from '@/components/provider/CarouselProvider'
@@ -21,32 +26,39 @@ export const useGroupItemColorCarouselOffset = () => {
     ),
   )
 
-  const backgroundColors = schemes.map((scheme) => scheme['ui-bg'])
-  const borderColors = schemes.map((scheme) => scheme['ui-border-muted'])
+  const bg = schemes.map((scheme) => scheme['ui-bg'])
+  // const border = schemes.map((scheme) => scheme['ui-border-muted'])
+  const bgMuted = schemes.map((scheme) => `${scheme['ui-primary']}1A`)
 
-  console.log(backgroundColors)
-  const style = useAnimatedStyle(() => {
-    if (carouselContext?.snapPoints && carouselContext.snapPoints.value.length < 1) {
-      return {}
-    }
-
-    const points =
+  const points = useDerivedValue(
+    () =>
       carouselContext?.snapPoints.value.map((point) => {
         'worklet'
         return Math.abs(point)
-      }) ?? []
+      }) ?? [],
+  )
 
-    const _offset = Math.abs(offset.value)
-    console.log(_offset, points)
+  const offsetAbs = useDerivedValue(() => Math.abs(offset.value))
 
-    return {
-      backgroundColor: interpolateColor(_offset, points, backgroundColors, 'LAB', { gamma: 1 }),
-      borderColor: interpolateColor(_offset, points, borderColors, 'LAB', { gamma: 1 }),
+  const backgroundColor = useDerivedValue(() => {
+    if (points.value.length < 1) {
+      return bg[0] ?? 'transparent'
     }
+
+    return interpolateColor(offsetAbs.value, points.value, bg, 'HSV')
+  })
+
+  const backgroundColorSoft = useDerivedValue(() => {
+    if (points.value.length < 1) {
+      return bg[0] ?? 'transparent'
+    }
+
+    return interpolateColor(offsetAbs.value, points.value, bgMuted, 'HSV')
   })
 
   return {
+    backgroundColor,
+    backgroundColorSoft,
     offset,
-    style,
   }
 }

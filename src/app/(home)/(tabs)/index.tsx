@@ -35,10 +35,8 @@ export const HomeScreen = () => {
       )}
 
       <Overlay>
-        <CarouselProvider>
-          <OverlayMapButtons />
-          <GroupCardItems />
-        </CarouselProvider>
+        <OverlayMapButtons />
+        <GroupCardItems />
       </Overlay>
     </View>
   )

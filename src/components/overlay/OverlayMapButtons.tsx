@@ -17,7 +17,7 @@ const AnimatedUButton = createAnimatedComponent(UButton)
 
 export const OverlayMapButtonsChangeDirection = () => {
   const { group } = useLineGroup()
-  const { style } = useGroupItemColorCarouselOffset()
+  const { backgroundColor } = useGroupItemColorCarouselOffset()
 
   if (!group || group.items.length < 2) {
     return
@@ -37,7 +37,7 @@ export const OverlayMapButtonsChangeDirection = () => {
       <AnimatedUButton
         icon="repeat"
         color="neutral"
-        style={{ elevation: 1, ...style }}
+        style={{ backgroundColor, elevation: 1 }}
         size="lg"
         variant="subtle"
         className="ml-auto flex"
@@ -49,7 +49,7 @@ export const OverlayMapButtonsChangeDirection = () => {
 
 export const OverlayMapButtonsGroup = () => {
   const { group } = useLineGroup()
-  const { style } = useGroupItemColorCarouselOffset()
+  const { backgroundColor } = useGroupItemColorCarouselOffset()
 
   return (
     <AnimatedGestureHandlerRootView
@@ -67,7 +67,7 @@ export const OverlayMapButtonsGroup = () => {
         variant="subtle"
         to={{ pathname: '/(sheet)/groups' }}
         label={group?.name}
-        style={{ elevation: 1, ...style }}
+        style={{ backgroundColor, elevation: 1 }}
       />
     </AnimatedGestureHandlerRootView>
   )
@@ -75,7 +75,7 @@ export const OverlayMapButtonsGroup = () => {
 
 export const OverlayMapButtons = (props: ViewProps) => {
   const { map, camera } = useMap()
-  const { style } = useGroupItemColorCarouselOffset()
+  const { backgroundColor } = useGroupItemColorCarouselOffset()
   const navigation = useTrueSheetNavigation()
 
   const bearing = useSettingsStore(useShallow((state) => state.bearing))
@@ -119,7 +119,7 @@ export const OverlayMapButtons = (props: ViewProps) => {
             size="lg"
             color="neutral"
             variant="subtle"
-            style={{ elevation: 1, ...style }}
+            style={{ backgroundColor, elevation: 1 }}
             onPress={async () => {
               const center = await map.current?.getCenter()
               if (!center) {
@@ -149,12 +149,12 @@ export const OverlayMapButtons = (props: ViewProps) => {
             size="lg"
             color="neutral"
             variant="subtle"
-            style={{ elevation: 1, ...style }}
+            style={{ backgroundColor, elevation: 1 }}
           />
         </AnimatedGestureHandlerRootView>
       )}
 
-      <AnimatedGestureHandlerRootView
+      {/* <AnimatedGestureHandlerRootView
         layout={LayoutAnimationTransition}
         entering={EnterScaleIn}
         exiting={ExitScaleOut}
@@ -168,7 +168,7 @@ export const OverlayMapButtons = (props: ViewProps) => {
           variant="subtle"
           style={{ elevation: 1, ...style }}
         />
-      </AnimatedGestureHandlerRootView>
+      </AnimatedGestureHandlerRootView> */}
 
       <OverlayMapButtonsChangeDirection />
       <OverlayMapButtonsGroup />
