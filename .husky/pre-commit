@@ -1,2 +1,2 @@
 npm run fmt
-npm run lint -- --fix
+npm run lint -- --fix --type-aware

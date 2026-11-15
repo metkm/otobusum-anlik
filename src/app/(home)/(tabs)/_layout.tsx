@@ -89,8 +89,9 @@ export const TabsLayout = () => {
               <UButton
                 key={key}
                 label={label}
-                className="pb-safe-offset-2 flex-1 flex-col gap-0"
+                className="flex-1 flex-col gap-0"
                 labelClassName="text-shadow-white dark:text-shadow-black text-shadow-lg"
+                style={{ paddingBottom: insets.bottom }}
                 variant="ghost"
                 color="neutral"
                 block

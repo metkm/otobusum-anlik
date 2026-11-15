@@ -4,7 +4,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { LineCard } from '@/components/line/card/LineCard'
 import { StopCard } from '@/components/stop/card/StopCard'
-import { useLineGroup, useMapPadding } from '@/composables'
+import { useExpandableCardHeight, useLineGroup, useMapPadding } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'
 import { LayoutAnimationTransition } from '@/constants/animation'
 import { useSettingsStore } from '@/stores'
@@ -13,7 +13,10 @@ import { cn } from '@/utils/cn'
 
 import { CarouselCardHeightProvider } from '../provider/CarouselCardHeightProvider'
 import { ThemeProvider } from '../provider/ThemeProvider'
-import { UCarousel } from '../u'
+import { UCarousel, UEmpty, UText } from '../u'
+import { useWindowDimensions } from 'react-native';
+import { LegendList } from '@legendapp/list/react-native';
+import { AnimatedLegendList } from '@legendapp/list/reanimated';
 
 interface GroupCardItemsProps {
   filter?: GroupItemType
@@ -21,6 +24,7 @@ interface GroupCardItemsProps {
 
 export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
   const { group } = useLineGroup()
+  const { width } = useWindowDimensions()
   const { onLayout } = useMapPadding('overlayGroupItems', 'bottom')
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
 
@@ -35,6 +39,8 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
       )
     }
 
+    // return <UText>Test</UText>
+
     return (
       <GroupItemContext value={item.code}>
         <ThemeProvider>
@@ -46,11 +52,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
 
   return (
     <CarouselCardHeightProvider>
-      <Animated.View
-        layout={LayoutAnimationTransition}
-        className={cn(hideMap && 'grow')}
-      >
-        <UCarousel
+        {/* <UCarousel
           data={items ?? []}
           renderItem={renderItem}
           onLayout={onLayout}
@@ -60,8 +62,18 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
             container: cn('gap-2 px-2 pb-2 items-end'),
             viewport: cn('w-screen', hideMap && 'grow'),
           }}
+        /> */}
+
+        <AnimatedLegendList
+          data={items}
+          renderItem={renderItem}
+          recycleItems
+          keyExtractor={item => item.code}
+          contentContainerStyle={{ gap: 8, paddingBottom: 8, paddingHorizontal: 8 }}
+          horizontal
+          ListEmptyComponent={<UEmpty title="Empty group" />}
+          nestedScrollEnabled
         />
-      </Animated.View>
     </CarouselCardHeightProvider>
   )
 }

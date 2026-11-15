@@ -1,4 +1,4 @@
-import { type ViewProps, View } from 'react-native'
+import { type ViewProps, useWindowDimensions, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -16,15 +16,16 @@ export const LineCard = ({ className, ...props }: ViewProps) => {
   const showLineCardStops = useSettingsStore(useShallow((state) => state.lineCardShowStops))
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
   const { style } = useExpandableCardHeight()
+  const { width } = useWindowDimensions()
 
   return (
     <Animated.View
       key={showLineCardStops.toString()}
       layout={LayoutAnimationTransition}
-      style={showLineCardStops ? style : undefined}
+      style={[showLineCardStops ? style : undefined, { width: width * 0.94 }]}
       className={cn(
         'bg-default border-hairline border-muted rounded-md overflow-hidden',
-        showLineCardStops ? 'grow' : 'shrink',
+        // showLineCardStops ? 'grow' : 'shrink',
         className,
       )}
       exiting={ExitScaleOut}

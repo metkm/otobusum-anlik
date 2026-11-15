@@ -171,11 +171,13 @@ export const LineCardStops = () => {
           </View>
         )}
         className="border-b-hairline border-b-muted flex-1"
+        contentContainerStyle={{ flex: 1 }}
         keyExtractor={(item) => item.id.toString()}
         scrollEventThrottle={16}
         getFixedItemSize={() => 48}
         recycleItems
         showsVerticalScrollIndicator={false}
+        drawDistance={0}
         onScroll={onScroll}
       />
     </UQueryState>

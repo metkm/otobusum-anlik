@@ -11,7 +11,7 @@ export const UAnimatePresence = ({
 }: {
   children: ReactNode
   className?: string
-} & ViewProps) => (
+} & ViewProps ) => (
   <View className={cn('overflow-hidden shrink', className)}>
     <Animated.View
       entering={FadeInDown}
