@@ -1,8 +1,7 @@
 import { Layer } from '@maplibre/maplibre-react-native'
-import { useShallow } from 'zustand/shallow'
 
+import { useLineGroup } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'
-import { useFilterStore, useTransitStore } from '@/stores'
 import type { GroupItem } from '@/stores/groups'
 
 import { LineMarkerBuses, LineMarkerRoute, LineMarkerStops } from '../line/marker'
@@ -29,17 +28,8 @@ const GroupMarkerItem = ({ item }: { item: GroupItem }) => {
   )
 }
 
-const GroupMarkers = ({ items }: { items: GroupItem[] }) =>
-  items.map((item) => (
-    <GroupMarkerItem
-      key={item.code}
-      item={item}
-    />
-  ))
-
 export const GroupsMarkers = () => {
-  const city = useFilterStore(useShallow((state) => state.city))
-  const groups = useTransitStore(useShallow((state) => state.groups[city]))
+  const { items } = useLineGroup()
 
   return (
     <>
@@ -64,10 +54,10 @@ export const GroupsMarkers = () => {
         afterId="stop-layer"
       />
 
-      {groups.map((group) => (
-        <GroupMarkers
-          key={group.id}
-          items={group.items}
+      {items.map((item) => (
+        <GroupMarkerItem
+          key={item.code}
+          item={item}
         />
       ))}
     </>
