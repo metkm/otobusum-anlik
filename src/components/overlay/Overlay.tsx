@@ -15,10 +15,7 @@ export const Overlay = ({ className, ...props }: ViewProps) => {
     <Animated.View
       entering={FadeIn}
       exiting={FadeOut}
-      className={cn(
-        'absolute inset-x-0 top-safe px-safe pb-2 bottom-safe-nav',
-        className,
-      )}
+      className={cn('absolute inset-x-0 top-safe px-safe pb-2 bottom-safe-nav', className)}
       pointerEvents="box-none"
       {...props}
     />

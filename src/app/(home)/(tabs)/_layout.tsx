@@ -82,11 +82,9 @@ const PressTrigger = ({
     }
   }
 
-  const style = useAnimatedStyle(() => (
-    {
-      backgroundColor: isFocused ? (backgroundColorSoft.value) : 'transparent'
-    }
-  ))
+  const style = useAnimatedStyle(() => ({
+    backgroundColor: isFocused ? backgroundColorSoft.value : 'transparent',
+  }))
 
   return (
     <AnimatedTouchable
@@ -104,7 +102,15 @@ const PressTrigger = ({
         size={20}
       />
 
-      {isFocused && <AnimatedUText exiting={ExitScaleOut} entering={EnterScaleIn} className="font-inter-medium text-sm">{label}</AnimatedUText>}
+      {isFocused && (
+        <AnimatedUText
+          exiting={ExitScaleOut}
+          entering={EnterScaleIn}
+          className="font-inter-medium text-sm"
+        >
+          {label}
+        </AnimatedUText>
+      )}
     </AnimatedTouchable>
   )
 }
