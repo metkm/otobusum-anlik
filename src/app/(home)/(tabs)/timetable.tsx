@@ -37,7 +37,7 @@ const LineTimetables = () => {
   return (
     <Animated.View
       layout={LayoutAnimationTransition}
-      className="grow"
+      className="grow pt-2"
     >
       <UCarousel
         data={codes}
@@ -59,7 +59,7 @@ const LineTimetables = () => {
 }
 
 export const TimetableScreen = () => (
-  <View className="mt-safe mx-safe mb-[calc(var(--navigation-height)+env(safe-area-inset-bottom))] flex-1 pt-2">
+  <View className="mt-safe mx-safe pb-nav flex-1 pt-2">
     <CarouselProvider>
       <GroupCardItems filter="line" />
       <LineTimetables />

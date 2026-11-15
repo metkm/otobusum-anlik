@@ -154,10 +154,10 @@
   border-bottom-width: hairlineWidth();
 }
 
-@utility bottom-safe-nav {
-  bottom: calc(var(--navigation-height) + env(safe-area-inset-bottom));
+@utility pb-nav {
+  padding-bottom: calc(var(--navigation-height) + env(safe-area-inset-bottom));
 }
 
-@utility bottom-safe-nav-offset-2 {
-  bottom: calc(var(--navigation-height) + var(--spacing) * 2);
+@utility pb-nav-offset-2 {
+  padding-bottom: calc(var(--navigation-height) + var(--spacing) * 2);
 }
