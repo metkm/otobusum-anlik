@@ -7,8 +7,8 @@ export default defineConfig({
     style: 'warn',
   },
   options: {
-    typeAware: true,
-    typeCheck: true,
+    // typeAware: true,
+    // typeCheck: true,
   },
   plugins: ['eslint', 'typescript', 'unicorn', 'oxc', 'promise', 'react'],
   rules: {

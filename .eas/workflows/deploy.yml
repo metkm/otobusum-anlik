@@ -39,12 +39,12 @@ jobs:
     type: submit
     params:
       build_id: ${{ needs.build_android.outputs.build_id }}
-  # publish_android_update:
-  #   name: Publish Android update
-  #   needs:
-  #     - get_android_build
-  #   if: ${{ needs.get_android_build.outputs.build_id }}
-  #   type: update
-  #   params:
-  #     branch: production
-  #     platform: android
+  publish_android_update:
+    name: Publish Android update
+    needs:
+      - get_android_build
+    if: ${{ needs.get_android_build.outputs.build_id }}
+    type: update
+    params:
+      branch: production
+      platform: android
