@@ -119,7 +119,9 @@ export const LineCardMenu = () => {
               </View>
             )}
             keyExtractor={(item) => `${item.HATKODU}-${item.GUNCELLEME_SAATI}-${item.MESAJ}`}
-            ItemSeparatorComponent={() => <View className="h-hairline w-full bg-(--border-color-muted)" />}
+            ItemSeparatorComponent={() => (
+              <View className="h-hairline w-full bg-(--border-color-muted)" />
+            )}
             className="flex-1"
             recycleItems
           />
