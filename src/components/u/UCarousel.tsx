@@ -62,6 +62,8 @@ export const UCarousel = <T,>({
   const containerWidth = useSharedValue(0)
   const viewportWidth = useSharedValue(windowWidth)
   const slideWidth = useSharedValue(data.length > 1 ? 0.94 : 1)
+  const offsetStart = useSharedValue(0)
+  const keys = useSharedValue(data.map(keyExtractor))
 
   const localOffset = useSharedValue(0)
   const localSnapPoints = useSharedValue<number[]>([])
@@ -69,11 +71,19 @@ export const UCarousel = <T,>({
   const offset = carouselContext?.offset ?? localOffset
   const snapPoints = carouselContext?.snapPoints ?? localSnapPoints
 
-  const offsetStart = useSharedValue(0)
+  const slideLayouts = useSharedValue<Record<string, { x: number; width: number }>>({})
 
   const offsetLimits = useDerivedValue(
     () => [-(containerWidth.value - viewportWidth.value), 0] satisfies [number, number],
   )
+
+  useEffect(() => {
+    keys.set(data.map(keyExtractor))
+  }, [data, keyExtractor, keys])
+
+  useEffect(() => {
+    slideWidth.set(data.length > 1 ? 0.94 : 1)
+  }, [data.length, slideWidth])
 
   const snapToCard = () => {
     'worklet'
@@ -114,9 +124,21 @@ export const UCarousel = <T,>({
     },
   })
 
-  useEffect(() => {
-    slideWidth.set(data.length > 1 ? 0.94 : 1)
-  }, [data.length, slideWidth])
+  useDerivedValue(() => {
+    const layouts = slideLayouts.value
+
+    const points = keys.value.flatMap((key) => {
+      const layout = layouts[key]
+
+      if (!layout) {
+        return []
+      }
+
+      return [-layout.x + alignCenter(viewportWidth.value, layout.width)]
+    })
+
+    snapPoints.set(points)
+  })
 
   const containerStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: offset.value }],
@@ -156,7 +178,7 @@ export const UCarousel = <T,>({
             containerWidth.set(nativeEvent.layout.width)
           }}
         >
-          {data.map((item, index) => (
+          {data.map((item) => (
             <Animated.View
               layout={LayoutAnimationTransition}
               exiting={ExitScaleOut}
@@ -168,11 +190,12 @@ export const UCarousel = <T,>({
                 'worklet'
                 const { x, width } = nativeEvent.layout
 
-                const snap = -x + alignCenter(viewportWidth.value, width)
+                // const snap = -x + alignCenter(viewportWidth.value, width)
+                const key = keyExtractor(item)
 
-                snapPoints.modify((current) => {
+                slideLayouts.modify((current) => {
                   'worklet'
-                  current[index] = snap
+                  current[key] = { width, x }
                   return current
                 })
               }}
