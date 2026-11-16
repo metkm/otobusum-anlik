@@ -31,33 +31,42 @@ const GroupItem = ({ group, selected }: { group: Group; selected?: boolean }) =>
     }
   }
 
+  const variant = selected ? 'soft' : 'ghost'
+  const color = selected ? 'primary' : 'neutral'
+
   return (
     <View className="flex-row gap-2">
       <UButton
-        variant={selected ? 'soft' : 'ghost'}
+        variant={variant}
         className="flex-1 items-center gap-2"
         onPress={handlePress}
+        color={color}
       >
         <View className="flex-1 shrink gap-1">
-          <UText
-            className="font-inter-medium shrink truncate"
+          <UButton.Text
             numberOfLines={1}
+            className="shrink"
           >
             {group.name}
-          </UText>
+          </UButton.Text>
 
           <View className="flex-row flex-wrap gap-1">
             {group.items.length < 1 ? (
               <UText className="font-inter-medium text-muted text-sm">{t('emptyGroup')}</UText>
             ) : (
               group.items.map((item) => (
-                <UBadge
+                <ThemeProvider
+                  value={selected ? item.code : undefined}
                   key={item.code}
-                  label={item.code}
-                  variant="soft"
-                  color={code === item.code ? 'primary' : 'neutral'}
-                  icon={item.type === 'line' ? 'bus-front' : 'map-pin'}
-                />
+                >
+                  <UBadge
+                    label={item.code}
+                    variant="soft"
+                    // oxlint-disable-next-line no-nested-ternary
+                    color={code ? 'primary' : (selected ? 'primary' : 'neutral')}
+                    icon={item.type === 'line' ? 'bus-front' : 'map-pin'}
+                  />
+                </ThemeProvider>
               ))
             )}
           </View>
@@ -66,7 +75,7 @@ const GroupItem = ({ group, selected }: { group: Group; selected?: boolean }) =>
 
       <UButton
         icon="chevron-right"
-        variant={selected ? 'soft' : 'ghost'}
+        variant={variant}
         to={{ params: { groupId: group.id }, pathname: '/(sheet)/groups/[groupId]' }}
       />
     </View>

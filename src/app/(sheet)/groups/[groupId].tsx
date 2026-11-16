@@ -7,9 +7,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Sortable from 'react-native-sortables'
 
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
-import { UButton, UEmpty, UIcon, UInput, UText } from '@/components/u'
+import { UBadge, UButton, UEmpty, UIcon, UInput, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { useTransitStore } from '@/stores'
+import { GROUP_ITEM_TYPE_LIMIT } from '@/constants/app';
 
 export const GroupIdScreen = () => {
   const navigation = useTrueSheetNavigation()
@@ -75,6 +76,16 @@ export const GroupIdScreen = () => {
     })
   }, [isSorting, navigation])
 
+    let lineCount = 0
+    let stopCount = 0
+    for (const item of group?.items ?? []) {
+      if (item.type === 'line') {
+        lineCount++
+      } else if (item.type === 'stop') {
+        stopCount++
+      }
+    }
+
   return (
     <View className="gap-8 px-2 pt-8 pb-8">
       <View>
@@ -91,12 +102,31 @@ export const GroupIdScreen = () => {
       </View>
 
       <View>
-        <View className="mb-1 ml-1">
-          <UText className="font-inter-medium">{t('groupItemList')}</UText>
-          <UText className="font-inter-medium text-muted text-sm">
-            {t('groupItemListDescription')}
-          </UText>
+        <View className="mb-1 ml-1 flex-row gap-2 justify-between flex-wrap">
+          <View>
+            <UText className="font-inter-medium">{t('groupItemList')}</UText>
+            <UText className="font-inter-medium text-muted text-sm">
+              {t('groupItemListDescription')}
+            </UText>
+          </View>
+
+          <View className="flex-row gap-2 items-center">
+            <UBadge
+              icon="bus-front"
+              variant="soft"
+              color="neutral"
+              label={`${lineCount}/${GROUP_ITEM_TYPE_LIMIT}`}
+             />
+
+            <UBadge
+              icon="map-pin"
+              variant="soft"
+              color="neutral"
+              label={`${stopCount}/${GROUP_ITEM_TYPE_LIMIT}`}
+             />
+          </View>
         </View>
+
         {group && group.items.length > 0 ? (
           <GestureHandlerRootView style={{ flexShrink: 0 }}>
             <Sortable.Grid

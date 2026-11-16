@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { View } from 'react-native'
 import { type VariantProps } from 'tailwind-variants'
 
@@ -44,6 +45,42 @@ const ui = tv({
       color: 'primary',
       variant: 'subtle',
     },
+    {
+      className: {
+        base: 'bg-transparent',
+        icon: 'accent-primary',
+        label: 'text-primary'
+      },
+      color: 'primary',
+      variant: 'ghost'
+    },
+    {
+      className: {
+        base: 'bg-transparent',
+        icon: 'accent-default',
+        label: 'text-default'
+      },
+      color: 'neutral',
+      variant: 'ghost'
+    },
+    {
+      className: {
+        base: 'bg-transparent border-hairline border-primary',
+        icon: 'accent-primary',
+        label: 'text-primary'
+      },
+      color: 'primary',
+      variant: 'outline'
+    },
+    {
+      className: {
+        base: 'bg-transparent border-hairline border-muted',
+        icon: 'accent-neutral-default',
+        label: 'text-neutral-default'
+      },
+      color: 'neutral',
+      variant: 'outline'
+    }
   ],
   defaultVariants: {
     color: 'primary',
@@ -58,7 +95,7 @@ const ui = tv({
   variants: {
     color: {
       neutral: '',
-      primary: '',
+      primary: ''
     },
     size: {
       lg: {
@@ -72,9 +109,11 @@ const ui = tv({
       },
     },
     variant: {
+      ghost: '',
+      outline: '',
       soft: '',
       solid: '',
-      subtle: '',
+      subtle: ''
     },
   },
 })
@@ -83,9 +122,10 @@ interface UBadgeProps extends VariantProps<typeof ui> {
   label?: string
   icon?: IconName
   className?: string
+  children?: ReactNode
 }
 
-export const UBadge = ({ label, icon, color, variant, className, size }: UBadgeProps) => {
+export const UBadge = ({ label, icon, color, variant, className, size, children }: UBadgeProps) => {
   const { base: uiBase, label: uiLabel, icon: uiIcon } = ui({ color, size, variant })
 
   return (
@@ -106,6 +146,8 @@ export const UBadge = ({ label, icon, color, variant, className, size }: UBadgeP
           {label}
         </UText>
       )}
+
+      {children}
     </View>
   )
 }

@@ -1,5 +1,5 @@
 import { useRouter, type Href } from 'expo-router'
-import type { ComponentProps } from 'react'
+import { createContext, use, type ComponentProps } from 'react'
 import { Touchable } from 'react-native-gesture-handler'
 import { type VariantProps } from 'tailwind-variants'
 import { withUniwind } from 'uniwind'
@@ -194,6 +194,12 @@ interface UButtonProps extends VariantProps<typeof ui>, TouchableProps {
   labelClassName?: string
 }
 
+interface ButtonContext {
+  labelClassName: string
+}
+
+const ButtonContext = createContext<ButtonContext | undefined>(undefined)
+
 export const UButton = ({
   label,
   className,
@@ -228,42 +234,59 @@ export const UButton = ({
   }
 
   return (
-    <StyledTouchable
-      className={cn(uiBase(), className)}
-      onPress={handlePress}
-      style={style}
-      underlayColor="black"
-      animationDuration={0}
-      androidRipple={{}}
-      disabled={disabled}
-      {...props}
-    >
-      <Icon
-        colorClassName={uiIcon()}
-        sizeClassName={uiIcon()}
-        icon={icon}
-        loading={loading}
-      />
-
-      {children}
-
-      {label && (
-        <UText
-          className={cn(uiLabel(), labelClassName)}
-          numberOfLines={1}
-        >
-          {label}
-        </UText>
-      )}
-
-      {trailingIcon && (
-        <UIcon
-          name={trailingIcon}
-          sizeClassName={uiIcon()}
+    <ButtonContext value={{ labelClassName: uiLabel() }}>
+      <StyledTouchable
+        className={cn(uiBase(), className)}
+        onPress={handlePress}
+        style={style}
+        underlayColor="black"
+        animationDuration={0}
+        androidRipple={{}}
+        disabled={disabled}
+        {...props}
+      >
+        <Icon
           colorClassName={uiIcon()}
-          className="ml-auto"
+          sizeClassName={uiIcon()}
+          icon={icon}
+          loading={loading}
         />
-      )}
-    </StyledTouchable>
+
+        {children}
+
+        {label && (
+          <UText
+            className={cn(uiLabel(), labelClassName)}
+            numberOfLines={1}
+          >
+            {label}
+          </UText>
+        )}
+
+        {trailingIcon && (
+          <UIcon
+            name={trailingIcon}
+            sizeClassName={uiIcon()}
+            colorClassName={uiIcon()}
+            className="ml-auto"
+          />
+        )}
+      </StyledTouchable>
+    </ButtonContext>
   )
 }
+
+const ButtonText = ({ className, children, ...props }: ComponentProps<typeof UText>) => {
+  const context = use(ButtonContext)
+
+  return (
+    <UText
+      className={cn(context?.labelClassName, className)}
+      {...props}
+    >
+      {children}
+    </UText>
+  )
+}
+
+UButton.Text = ButtonText
