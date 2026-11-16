@@ -7,19 +7,13 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import Animated from 'react-native-reanimated'
 
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
-import { UBadge, UButton,  UText } from '@/components/u'
+import { UBadge, UButton, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import { useTransitStore } from '@/stores'
 import { type GroupItem, type Group } from '@/stores/groups'
 
-const GroupItem = ({
-  group,
-  selected,
-}: {
-  group: Group
-  selected?: boolean
-}) => {
+const GroupItem = ({ group, selected }: { group: Group; selected?: boolean }) => {
   const { t } = useTranslation()
   const { code, type } = useLocalSearchParams<{
     code: GroupItem['code']
@@ -124,7 +118,7 @@ export const GroupsScreen = () => {
           showsVerticalScrollIndicator={false}
         >
           {code && (
-            <View className="flex-row items-center justify-center gap-2 mb-2">
+            <View className="mb-2 flex-row items-center justify-center gap-2">
               <UBadge
                 label={code}
                 icon={type === 'line' ? 'bus-front' : 'map-pin'}

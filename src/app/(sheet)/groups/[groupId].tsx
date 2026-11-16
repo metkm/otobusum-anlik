@@ -78,7 +78,7 @@ export const GroupIdScreen = () => {
   return (
     <View className="gap-8 px-2 pt-8 pb-8">
       <View>
-        <UText className="text-muted font-inter-medium text-sm ml-1">{t('groupName')}</UText>
+        <UText className="text-muted font-inter-medium ml-1 text-sm">{t('groupName')}</UText>
         <UText className="font-inter-medium mb-2 ml-1">{group?.name}</UText>
 
         <UInput
