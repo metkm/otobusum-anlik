@@ -9,8 +9,8 @@ import Sortable from 'react-native-sortables'
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
 import { UBadge, UButton, UEmpty, UIcon, UInput, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
+import { GROUP_ITEM_TYPE_LIMIT } from '@/constants/app'
 import { useTransitStore } from '@/stores'
-import { GROUP_ITEM_TYPE_LIMIT } from '@/constants/app';
 
 export const GroupIdScreen = () => {
   const navigation = useTrueSheetNavigation()
@@ -76,15 +76,15 @@ export const GroupIdScreen = () => {
     })
   }, [isSorting, navigation])
 
-    let lineCount = 0
-    let stopCount = 0
-    for (const item of group?.items ?? []) {
-      if (item.type === 'line') {
-        lineCount++
-      } else if (item.type === 'stop') {
-        stopCount++
-      }
+  let lineCount = 0
+  let stopCount = 0
+  for (const item of group?.items ?? []) {
+    if (item.type === 'line') {
+      lineCount++
+    } else if (item.type === 'stop') {
+      stopCount++
     }
+  }
 
   return (
     <View className="gap-8 px-2 pt-8 pb-8">
@@ -102,7 +102,7 @@ export const GroupIdScreen = () => {
       </View>
 
       <View>
-        <View className="mb-1 ml-1 flex-row gap-2 justify-between flex-wrap">
+        <View className="mb-1 ml-1 flex-row flex-wrap justify-between gap-2">
           <View>
             <UText className="font-inter-medium">{t('groupItemList')}</UText>
             <UText className="font-inter-medium text-muted text-sm">
@@ -110,20 +110,20 @@ export const GroupIdScreen = () => {
             </UText>
           </View>
 
-          <View className="flex-row gap-2 items-center">
+          <View className="flex-row items-center gap-2">
             <UBadge
               icon="bus-front"
               variant="soft"
               color="neutral"
               label={`${lineCount}/${GROUP_ITEM_TYPE_LIMIT}`}
-             />
+            />
 
             <UBadge
               icon="map-pin"
               variant="soft"
               color="neutral"
               label={`${stopCount}/${GROUP_ITEM_TYPE_LIMIT}`}
-             />
+            />
           </View>
         </View>
 

@@ -63,7 +63,7 @@ const GroupItem = ({ group, selected }: { group: Group; selected?: boolean }) =>
                     label={item.code}
                     variant="soft"
                     // oxlint-disable-next-line no-nested-ternary
-                    color={code ? 'primary' : (selected ? 'primary' : 'neutral')}
+                    color={code ? 'primary' : selected ? 'primary' : 'neutral'}
                     icon={item.type === 'line' ? 'bus-front' : 'map-pin'}
                   />
                 </ThemeProvider>

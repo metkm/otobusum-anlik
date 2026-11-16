@@ -49,38 +49,38 @@ const ui = tv({
       className: {
         base: 'bg-transparent',
         icon: 'accent-primary',
-        label: 'text-primary'
+        label: 'text-primary',
       },
       color: 'primary',
-      variant: 'ghost'
+      variant: 'ghost',
     },
     {
       className: {
         base: 'bg-transparent',
         icon: 'accent-default',
-        label: 'text-default'
+        label: 'text-default',
       },
       color: 'neutral',
-      variant: 'ghost'
+      variant: 'ghost',
     },
     {
       className: {
         base: 'bg-transparent border-hairline border-primary',
         icon: 'accent-primary',
-        label: 'text-primary'
+        label: 'text-primary',
       },
       color: 'primary',
-      variant: 'outline'
+      variant: 'outline',
     },
     {
       className: {
         base: 'bg-transparent border-hairline border-muted',
         icon: 'accent-neutral-default',
-        label: 'text-neutral-default'
+        label: 'text-neutral-default',
       },
       color: 'neutral',
-      variant: 'outline'
-    }
+      variant: 'outline',
+    },
   ],
   defaultVariants: {
     color: 'primary',
@@ -95,7 +95,7 @@ const ui = tv({
   variants: {
     color: {
       neutral: '',
-      primary: ''
+      primary: '',
     },
     size: {
       lg: {
@@ -113,7 +113,7 @@ const ui = tv({
       outline: '',
       soft: '',
       solid: '',
-      subtle: ''
+      subtle: '',
     },
   },
 })
