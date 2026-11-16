@@ -6,7 +6,7 @@ import { View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
-import { UButton, USheetHeader, USheet, UText } from '@/components/u'
+import { UButton, USheetHeader, USheet, UText, UBadge } from '@/components/u'
 import { useMap, useGroupItem } from '@/composables'
 import { useLineRoutes, useLineNews } from '@/composables/query'
 import { LayoutAnimationTransition } from '@/constants/animation'
@@ -97,26 +97,29 @@ export const LineCardMenu = () => {
           scrollableRef={scrollableRef}
           style={{ flex: 1 }}
           detents={['auto']}
-          header={
-            <USheetHeader
-              title="News"
-              icon="newspaper"
-            />
-          }
         >
           <LegendList
             ref={scrollableRef}
             data={news}
             renderItem={({ item }) => (
-              <View className="gap-1 p-2">
-                <UText className="text-muted font-inter-medium text-sm">{item.HATKODU}</UText>
+              <View className="flex-col gap-2 p-2">
+                <View className="flex-row items-center justify-center gap-2">
+                  <UBadge
+                    label={item.HATKODU}
+                    className="self-start"
+                    variant="soft"
+                  />
+
+                  <UText className="text-muted font-inter-medium text-sm">
+                    {item.GUNCELLEME_SAATI}
+                  </UText>
+                </View>
+
                 <UText>{item.MESAJ}</UText>
-                <UText className="text-muted font-inter-medium text-sm">
-                  {item.GUNCELLEME_SAATI}
-                </UText>
               </View>
             )}
             keyExtractor={(item) => `${item.HATKODU}-${item.GUNCELLEME_SAATI}-${item.MESAJ}`}
+            ItemSeparatorComponent={() => <View className="h-hairline w-full bg-(--border-color-muted)" />}
             className="flex-1"
             recycleItems
           />
