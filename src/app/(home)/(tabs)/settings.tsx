@@ -110,7 +110,7 @@ export const OptionPicker = <T,>({
 }
 
 const SettingsSectionTitle = ({ icon, title }: { icon: IconName; title: string }) => (
-  <View className="bg-muted -mx-2 flex-row items-center gap-2 p-2 px-5">
+  <View className="flex-row items-center gap-2 p-2 px-2.5">
     <UIcon name={icon} />
     <UText className="font-inter-semibold">{title}</UText>
   </View>
@@ -205,7 +205,7 @@ export const SettingsScreen = () => {
 
   return (
     <ScrollView
-      contentContainerClassName="gap-2 p-2 pt-safe pb-nav-offset-2"
+      contentContainerClassName="gap-2 pt-safe-offset-2 pb-nav-offset-2"
       showsVerticalScrollIndicator={false}
     >
       <SettingsSectionTitle
@@ -247,6 +247,8 @@ export const SettingsScreen = () => {
           })
         }}
       />
+
+      <View className="h-hairline bg-muted" />
 
       <SettingsSectionTitle
         title={t('settings')}
@@ -291,6 +293,8 @@ export const SettingsScreen = () => {
           })
         }}
       />
+
+      <View className="h-hairline bg-muted" />
 
       <SettingsSectionTitle
         title={t('other')}

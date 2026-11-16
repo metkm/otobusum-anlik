@@ -142,6 +142,10 @@
   --navigation-height: 56.3px;
 }
 
+@utility h-hairline {
+  height: hairlineWidth();
+}
+
 @utility border-hairline {
   border-width: hairlineWidth();
 }
