@@ -32,7 +32,7 @@ const BusInfo = () => {
   const { query } = useLineBusInfo(doorNo)
 
   return (
-    <View className="flex-row flex-wrap items-center gap-2 px-2 pt-5 pb-2">
+    <View className="flex-row flex-wrap items-center gap-2 px-2 pt-9 pb-2">
       <BusInfoItem
         label={t('doorNo')}
         value={doorNo}

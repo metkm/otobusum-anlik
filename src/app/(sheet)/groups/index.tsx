@@ -7,22 +7,18 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import Animated from 'react-native-reanimated'
 
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
-import { UBadge, UButton, USheetHeader, UIcon, UText } from '@/components/u'
+import { UBadge, UButton,  UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
-import { GroupItemContext } from '@/composables/useGroupItem'
 import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import { useTransitStore } from '@/stores'
 import { type GroupItem, type Group } from '@/stores/groups'
-import { cn } from '@/utils/cn'
 
 const GroupItem = ({
   group,
   selected,
-  canDelete,
 }: {
   group: Group
   selected?: boolean
-  canDelete?: boolean
 }) => {
   const { t } = useTranslation()
   const { code, type } = useLocalSearchParams<{
@@ -42,26 +38,12 @@ const GroupItem = ({
   }
 
   return (
-    <View className="flex-row">
+    <View className="flex-row gap-2">
       <UButton
-        variant="ghost"
+        variant={selected ? 'soft' : 'ghost'}
         className="flex-1 items-center gap-2"
         onPress={handlePress}
       >
-        <View
-          className={cn(
-            'size-8 items-center justify-center rounded-md',
-            selected ? 'bg-primary' : 'bg-muted',
-          )}
-        >
-          {selected && (
-            <UIcon
-              name="check"
-              colorClassName="accent-inverted"
-            />
-          )}
-        </View>
-
         <View className="flex-1 shrink gap-1">
           <UText
             className="font-inter-medium shrink truncate"
@@ -72,7 +54,7 @@ const GroupItem = ({
 
           <View className="flex-row flex-wrap gap-1">
             {group.items.length < 1 ? (
-              <UText className="font-inter-medium text-muted h-6 text-sm">{t('emptyGroup')}</UText>
+              <UText className="font-inter-medium text-muted text-sm">{t('emptyGroup')}</UText>
             ) : (
               group.items.map((item) => (
                 <UBadge
@@ -88,113 +70,89 @@ const GroupItem = ({
         </View>
       </UButton>
 
-      <Animated.View
-        layout={LayoutAnimationTransition}
-        className="flex-row items-center p-2"
-      >
-        <Animated.View
-          exiting={ExitScaleOut}
-          entering={EnterScaleIn}
-          className="flex-row items-stretch"
-        >
-          {canDelete && (
-            <UButton
-              icon="trash-2"
-              onPress={() => useTransitStore.getState().deleteGroup(group.id)}
-              variant="ghost"
-              color="neutral"
-            />
-          )}
-        </Animated.View>
-
-        <UButton
-          icon="edit-3"
-          variant="ghost"
-          color="neutral"
-          to={{
-            params: {
-              groupId: group.id,
-            },
-            pathname: '/(sheet)/groups/[groupId]',
-          }}
-        />
-      </Animated.View>
+      <UButton
+        icon="chevron-right"
+        variant={selected ? 'soft' : 'ghost'}
+        to={{ params: { groupId: group.id }, pathname: '/(sheet)/groups/[groupId]' }}
+      />
     </View>
   )
 }
 
 export const GroupsScreen = () => {
   const { t } = useTranslation()
-  const { code } = useLocalSearchParams<{ type: GroupItem['type']; code: GroupItem['code'] }>()
+  const { code, type } = useLocalSearchParams<{
+    type: GroupItem['type']
+    code: GroupItem['code']
+  }>()
   const { groups, groupId } = useLineGroup()
 
   const scrollableRef = useRef<ScrollViewInstance>(null)
   const navigation = useTrueSheetNavigation()
 
   useEffect(() => {
-    const options = {
-      header: (
-        <USheetHeader
-          icon="component"
-          title={t('groups')}
-          description={code ? t('addLineToGroup', { code }) : t('chooseActiveGroup')}
-        >
-          <GroupItemContext value={code}>
-            <ThemeProvider>
-              <GestureHandlerRootView style={{ flexShrink: 0 }}>
-                <UButton
-                  label={t('newGroup')}
-                  icon="plus-circle"
-                  variant="soft"
-                  onPress={() => {
-                    useTransitStore.getState().createGroup()
-                  }}
-                />
-              </GestureHandlerRootView>
-            </ThemeProvider>
-          </GroupItemContext>
-        </USheetHeader>
-      ),
-      scrollableRef,
-    }
-
     navigation.setOptions({
-      ...options,
+      footer: (
+        <ThemeProvider value={code}>
+          <GestureHandlerRootView style={{ alignSelf: 'flex-end' }}>
+            <UButton
+              icon="plus-circle"
+              size="xl"
+              variant="soft"
+              onPress={() => {
+                useTransitStore.getState().createGroup()
+              }}
+              className="mr-2 mb-2"
+            />
+          </GestureHandlerRootView>
+        </ThemeProvider>
+      ),
+      footerOptions: {
+        position: 'absolute',
+      },
+      scrollableRef,
     })
-  }, [navigation, t, code])
+  }, [navigation, code])
 
   return (
-    <GroupItemContext value={code}>
-      <ThemeProvider>
-        <GestureHandlerRootView>
-          <ScrollView
-            ref={scrollableRef}
-            className="flex-1"
-            contentContainerClassName="p-2"
-          >
-            <Animated.View
-              layout={LayoutAnimationTransition}
-              className="gap-2"
-            >
-              {groups.map((group) => (
-                <Animated.View
-                  key={group.id}
-                  exiting={ExitScaleOut}
-                  entering={EnterScaleIn}
-                  layout={LayoutAnimationTransition}
-                >
-                  <GroupItem
-                    group={group}
-                    canDelete={groups.length > 1}
-                    selected={group.id === groupId}
-                  />
-                </Animated.View>
-              ))}
-            </Animated.View>
-          </ScrollView>
-        </GestureHandlerRootView>
-      </ThemeProvider>
-    </GroupItemContext>
+    <ThemeProvider value={code}>
+      <GestureHandlerRootView>
+        <ScrollView
+          ref={scrollableRef}
+          className="flex-1"
+          contentContainerClassName="pt-9 pb-2 px-2"
+          showsVerticalScrollIndicator={false}
+        >
+          {code && (
+            <View className="flex-row items-center justify-center gap-2 mb-2">
+              <UBadge
+                label={code}
+                icon={type === 'line' ? 'bus-front' : 'map-pin'}
+              />
+              <UText className="font-inter-medium text-muted text-sm">
+                {t('addToGroup', { code })}
+              </UText>
+            </View>
+          )}
+
+          <Animated.View layout={LayoutAnimationTransition}>
+            {groups.map((group) => (
+              <Animated.View
+                key={group.id}
+                exiting={ExitScaleOut}
+                entering={EnterScaleIn}
+                layout={LayoutAnimationTransition}
+              >
+                <GroupItem
+                  group={group}
+                  selected={group.id === groupId}
+                />
+              </Animated.View>
+            ))}
+          </Animated.View>
+        </ScrollView>
+      </GestureHandlerRootView>
+    </ThemeProvider>
   )
 }
 

@@ -1,11 +1,10 @@
 import { LegendList, type LegendListRef } from '@legendapp/list/react-native'
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
-import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
 
-import { UBadge, UButton, USheetHeader, USheet } from '@/components/u'
+import { UBadge, UButton, USheet } from '@/components/u'
 import { useGroupItem } from '@/composables'
 import { useLineBuses, useLineRoutes } from '@/composables/query'
 import { useTransitStore } from '@/stores'
@@ -61,7 +60,6 @@ export const LineCardRoutes = () => {
   const scrollableRef = useRef<LegendListRef>(null)
 
   const changeRouteDirection = useTransitStore(useShallow((state) => state.changeRouteDirection))
-  const { t } = useTranslation()
   const { code } = useGroupItem()
   const { query: routesQuery, route, routeCode, otherDirectionRoute } = useLineRoutes()
   const { buses, query: busesQuery } = useLineBuses()
@@ -127,13 +125,6 @@ export const LineCardRoutes = () => {
         <USheet
           ref={routeSheet}
           scrollableRef={scrollableRef}
-          header={
-            <USheetHeader
-              icon="route"
-              title={t('routes')}
-              description={t('routeCount', { count: sortedRoutes.length })}
-            />
-          }
         >
           <LegendList
             ref={scrollableRef}
@@ -147,8 +138,8 @@ export const LineCardRoutes = () => {
             )}
             extraData={routeCode}
             keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={{ gap: 8, padding: 8 }}
-            getFixedItemSize={() => 62 + 8}
+            contentContainerClassName="px-2"
+            getFixedItemSize={() => 74.3}
             recycleItems
           />
         </USheet>

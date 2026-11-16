@@ -6,7 +6,7 @@ import { View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
-import { UButton, USheetHeader, USheet, UText, UBadge } from '@/components/u'
+import { UButton, USheet, UText, UBadge } from '@/components/u'
 import { useMap, useGroupItem } from '@/composables'
 import { useLineRoutes, useLineNews } from '@/composables/query'
 import { LayoutAnimationTransition } from '@/constants/animation'
@@ -95,7 +95,6 @@ export const LineCardMenu = () => {
         <USheet
           ref={announcementsSheet}
           scrollableRef={scrollableRef}
-          style={{ flex: 1 }}
           detents={['auto']}
         >
           <LegendList
@@ -103,7 +102,7 @@ export const LineCardMenu = () => {
             data={news}
             renderItem={({ item }) => (
               <View className="flex-col gap-2 p-2">
-                <View className="flex-row items-center justify-center gap-2">
+                <View className="flex-row items-center gap-2">
                   <UBadge
                     label={item.HATKODU}
                     className="self-start"
@@ -119,9 +118,6 @@ export const LineCardMenu = () => {
               </View>
             )}
             keyExtractor={(item) => `${item.HATKODU}-${item.GUNCELLEME_SAATI}-${item.MESAJ}`}
-            ItemSeparatorComponent={() => (
-              <View className="h-hairline w-full bg-(--border-color-muted)" />
-            )}
             className="flex-1"
             recycleItems
           />
@@ -131,7 +127,7 @@ export const LineCardMenu = () => {
       <USheet
         ref={menuSheet}
         detents={['auto']}
-        contentContainerClassName="px-2 gap-2"
+        contentContainerClassName="gap-2 px-2"
       >
         <UButton
           label={t('addToGroup')}

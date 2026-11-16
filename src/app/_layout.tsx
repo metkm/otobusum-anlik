@@ -29,8 +29,7 @@ const setUniwindTheme = () => {
 }
 
 const RootContent = () => {
-  const backgroundColor = useCSSVariable('--ui-bg')?.toString()
-  const spacing = useCSSVariable('--spacing') as number
+  const backgroundColor = useCSSVariable('--background-color-default')?.toString()
   const colorScheme = useColorScheme()
 
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
@@ -59,7 +58,6 @@ const RootContent = () => {
           <Sheet
             screenOptions={{
               backgroundColor,
-              grabberOptions: { topMargin: spacing * 2 },
               style: { flex: 1 },
             }}
           >

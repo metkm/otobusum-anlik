@@ -20,7 +20,6 @@ export const USheet = ({ ref, contentContainerClassName, children, ...props }: U
     <TrueSheet
       ref={ref}
       backgroundColor={backgroundColor}
-      detents={[0.5, 0.8]}
       style={{ flex: 1 }}
       grabberOptions={{
         color: backgroundColorAccented,
@@ -28,7 +27,7 @@ export const USheet = ({ ref, contentContainerClassName, children, ...props }: U
       {...props}
     >
       <StyledGestureHandlerRootView
-        className={cn('flex-1 pb-2', props.header ? 'p-0' : 'pt-7', contentContainerClassName)}
+        className={cn('flex-1 pb-2', props.header ? 'p-0' : 'pt-9', contentContainerClassName)}
       >
         {children}
       </StyledGestureHandlerRootView>

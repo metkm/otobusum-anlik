@@ -82,6 +82,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-error/15',
+        icon: 'accent-error',
         label: 'text-error',
       },
       color: 'error',
@@ -90,6 +91,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-transparent',
+        icon: 'accent-error',
         label: 'text-error',
       },
       color: 'error',
@@ -136,6 +138,10 @@ const ui = tv({
       md: {
         base: 'p-2.5',
         icon: 'size-4',
+      },
+      xl: {
+        base: 'p-4',
+        icon: 'size-4.5',
       },
     },
     variant: {

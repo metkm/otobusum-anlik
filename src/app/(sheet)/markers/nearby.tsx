@@ -16,7 +16,6 @@ import {
   UButton,
   UActivityIndicator,
   UEmpty,
-  USheetHeader,
   UHeader,
   UQueryState,
   UText,
@@ -182,17 +181,15 @@ export const NearbyScreen = () => {
   useEffect(() => {
     navigation.setOptions({
       header: (
-        <USheetHeader>
-          <GestureHandlerRootView style={{ flexShrink: 0 }}>
-            <UButton
-              icon="x"
-              variant="soft"
-              color="neutral"
-              className="ml-auto"
-              onPress={() => router.back()}
-            />
-          </GestureHandlerRootView>
-        </USheetHeader>
+        <GestureHandlerRootView style={{ flexShrink: 0 }}>
+          <UButton
+            icon="x"
+            variant="soft"
+            color="neutral"
+            className="m-2 ml-auto"
+            onPress={() => router.back()}
+          />
+        </GestureHandlerRootView>
       ),
       scrollableRef,
     })
