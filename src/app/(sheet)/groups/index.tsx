@@ -1,5 +1,5 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { type ScrollViewInstance, View } from 'react-native'
@@ -19,16 +19,18 @@ const GroupItem = ({ group, selected }: { group: Group; selected?: boolean }) =>
     code: GroupItem['code']
     type: GroupItem['type']
   }>()
-  const navigation = useTrueSheetNavigation()
+  const router = useRouter()
 
   const handlePress = () => {
-    navigation.navigate('(home)')
+    router.navigate('/(home)/(tabs)')
 
-    if (code) {
-      useTransitStore.getState().addItemToGroup({ code, type }, group.id)
-    } else {
-      useTransitStore.getState().selectGroup(group.id)
-    }
+    requestIdleCallback(() => {
+      if (code) {
+        useTransitStore.getState().addItemToGroup({ code, type }, group.id)
+      } else {
+        useTransitStore.getState().selectGroup(group.id)
+      }
+    })
   }
 
   const variant = selected ? 'soft' : 'ghost'

@@ -107,6 +107,7 @@ export const TabsLayout = () => {
           })}
         </View>
       )}
+      activityEnabled
     >
       {screens.map((screen) => (
         <Tabs.Screen
