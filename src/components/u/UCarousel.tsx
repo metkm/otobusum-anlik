@@ -1,19 +1,16 @@
 import { type ReactNode, use, useEffect } from 'react'
 import { useWindowDimensions, type ViewProps } from 'react-native'
-import { GestureDetector, usePanGesture } from 'react-native-gesture-handler'
+import { GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
-  clamp,
-  useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
-  withDecay,
-  withSpring,
 } from 'react-native-reanimated'
 
+import { useCarouselGesture } from '@/composables/useCarouselGesture'
 import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import { cn, tv } from '@/utils/cn'
-import { alignCenter, dampen } from '@/utils/math'
+import { alignCenter } from '@/utils/math'
 
 import { CarouselContext } from '../provider/CarouselProvider'
 
@@ -36,14 +33,6 @@ export interface UCarouselProps<T> extends ViewProps {
   enabled?: boolean
 }
 
-const getClosestSnap = (offset: number, snaps: number[]) => {
-  'worklet'
-  return snaps.reduce(
-    (closest, snap) => (Math.abs(snap - offset) < Math.abs(closest - offset) ? snap : closest),
-    snaps[0] ?? 0,
-  )
-}
-
 export const UCarousel = <T,>({
   data,
   renderItem,
@@ -61,80 +50,36 @@ export const UCarousel = <T,>({
 
   const containerWidth = useSharedValue(0)
   const viewportWidth = useSharedValue(windowWidth)
-  const slideWidth = useSharedValue(data.length > 1 ? 0.94 : 1)
-  const offsetStart = useSharedValue(0)
-  const keys = useSharedValue(data.map(keyExtractor))
-
-  const localOffset = useSharedValue(0)
   const localSnapPoints = useSharedValue<number[]>([])
 
-  const offset = carouselContext?.offset ?? localOffset
+  const keys = useSharedValue(data.map(keyExtractor))
   const snapPoints = carouselContext?.snapPoints ?? localSnapPoints
+
+  const { gesture, offset } = useCarouselGesture({
+    containerWidth,
+    enabled,
+    snapPoints,
+    viewportWidth,
+  })
 
   const slideLayouts = useSharedValue<Record<string, { x: number; width: number }>>({})
 
-  const offsetLimits = useDerivedValue(
-    () => [-(containerWidth.value - viewportWidth.value), 0] satisfies [number, number],
-  )
+  const slideWidthModifier = useSharedValue(() => data.length > 1 ? 0.94 : 1)
+  const slideWidth = useSharedValue(() => viewportWidth.value * slideWidthModifier.value - 16)
 
   useEffect(() => {
     keys.set(data.map(keyExtractor))
   }, [data, keyExtractor, keys])
 
-  useEffect(() => {
-    slideWidth.set(data.length > 1 ? 0.94 : 1)
-  }, [data.length, slideWidth])
-
-  const snapToCard = () => {
-    'worklet'
-
-    const snap = getClosestSnap(offset.value, snapPoints.value)
-    const clamped = clamp(snap, -(containerWidth.value - viewportWidth.value), 0)
-
-    offset.set(withSpring(clamped))
-  }
-
-  const gesture = usePanGesture({
-    activeOffsetX: [-25, 25],
-    enabled,
-    onActivate: () => {
-      offsetStart.set(offset.value)
-    },
-    onDeactivate: ({ canceled, velocityX }) => {
-      if (canceled) {
-        return
-      }
-
-      if (offset.value < offsetLimits.value[0] || offset.value > offsetLimits.value[1]) {
-        snapToCard()
-        return
-      }
-
-      offset.set(withDecay({ clamp: offsetLimits.value, velocity: velocityX }, snapToCard))
-    },
-    onUpdate: ({ translationX }) => {
-      let newOffset = offsetStart.value + translationX
-
-      if (newOffset < offsetLimits.value[0] || newOffset > offsetLimits.value[1]) {
-        const modifier = translationX > 0 ? 1 : -1
-        newOffset = offsetStart.value + dampen(Math.abs(translationX)) * modifier
-      }
-
-      offset.set(newOffset)
-    },
-  })
-
   useDerivedValue(() => {
-    const layouts = slideLayouts.value
-
     const points = keys.value.flatMap((key) => {
-      const layout = layouts[key]
-
-      if (!layout) {
-        return []
+      'worklet'
+      const layout = slideLayouts.value[key]
+      if (layout) {
+        return [-layout.x + alignCenter(viewportWidth.value, layout.width)]
       }
 
-      return [-layout.x + alignCenter(viewportWidth.value, layout.width)]
+      return []
     })
 
     snapPoints.set(points)
@@ -147,17 +92,8 @@ export const UCarousel = <T,>({
   // have to do this because using flexBasis is buggy. It doesn't update the value when it changes
   // https://github.com/react/react-native/issues/58294
   const slideStyle = useAnimatedStyle(() => ({
-    width: viewportWidth.value * slideWidth.value - 16,
+    width: slideWidth.value,
   }))
-
-  useAnimatedReaction(
-    () => containerWidth.value,
-    (current, previous) => {
-      if (previous && current < previous) {
-        snapToCard()
-      }
-    },
-  )
 
   return (
     <GestureDetector gesture={gesture}>

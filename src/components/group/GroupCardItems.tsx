@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
