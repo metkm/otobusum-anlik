@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useAnimatedReaction, useDerivedValue, type SharedValue } from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
+import { useAnimatedReaction, useDerivedValue, type SharedValue } from 'react-native-reanimated'
+import { scheduleOnRN } from 'react-native-worklets'
 
 interface CarouselVirtualizationOptions<T> {
   data: T[]
@@ -19,7 +19,7 @@ export const useCarouselVirtualization = <T>({
   itemWidth,
   offset,
   viewportWidth,
-  drawDistance
+  drawDistance,
 }: CarouselVirtualizationOptions<T>) => {
   const [displayedItems, setDisplayedItems] = useState<VisibleRange>([0, initialRenderCount])
 
@@ -32,7 +32,7 @@ export const useCarouselVirtualization = <T>({
 
     return [
       Math.max(0, offsetIndex.value - drawDistance),
-      Math.min(data.length, offsetIndex.value + viewportWidth.value / itemWidth + drawDistance)
+      Math.min(data.length, offsetIndex.value + viewportWidth.value / itemWidth + drawDistance),
     ]
   })
 
@@ -50,7 +50,7 @@ export const useCarouselVirtualization = <T>({
       }
 
       scheduleOnRN(updateDisplayedItems, current)
-    }
+    },
   )
 
   return {

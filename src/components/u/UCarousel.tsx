@@ -60,7 +60,7 @@ export const UCarousel = <T,>({
     initialRenderCount,
     itemWidth,
     offset,
-    viewportWidth
+    viewportWidth,
   })
 
   const containerStyle = useAnimatedStyle(() => ({
