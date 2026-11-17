@@ -60,7 +60,6 @@ export const UMap = ({ children, onDidFinishLoadingMap, ...props }: MapProps) =>
           })
         }}
         style={{ flex: 1 }}
-        preferredFramesPerSecond={60}
         {...props}
         mapStyle={mapStyle}
       >
