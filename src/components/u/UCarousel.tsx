@@ -64,7 +64,7 @@ export const UCarousel = <T,>({
 
   const slideLayouts = useSharedValue<Record<string, { x: number; width: number }>>({})
 
-  const slideWidthModifier = useSharedValue(() => data.length > 1 ? 0.94 : 1)
+  const slideWidthModifier = useSharedValue(() => (data.length > 1 ? 0.94 : 1))
   const slideWidth = useSharedValue(() => viewportWidth.value * slideWidthModifier.value - 16)
 
   useEffect(() => {
