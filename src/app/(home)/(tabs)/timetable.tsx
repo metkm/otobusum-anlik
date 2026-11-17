@@ -1,3 +1,5 @@
+// Note: This component is not used anymore for now. Maybe it can be worked later but there needs to be some virtualization
+
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 import Animated from 'react-native-reanimated'

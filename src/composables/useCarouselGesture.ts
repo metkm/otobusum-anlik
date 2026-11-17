@@ -14,7 +14,7 @@ import { CarouselContext } from '@/components/provider/CarouselProvider'
 import { dampen } from '@/utils/math'
 
 interface CarouselGestureOptions {
-  containerWidth: SharedValue<number>
+  containerWidth: number
   viewportWidth: SharedValue<number>
   snapPoints: SharedValue<number[]>
   enabled?: boolean
@@ -43,14 +43,14 @@ export const useCarouselGesture = ({
   const offsetStart = useSharedValue(0)
 
   const limits = useDerivedValue(
-    () => [-(containerWidth.value - viewportWidth.value), 0] satisfies [number, number],
+    () => [-(containerWidth - viewportWidth.value), 0] satisfies [number, number],
   )
 
   const snap = () => {
     'worklet'
 
     const snap = getClosestSnap(offset.value, snapPoints.value)
-    const clamped = clamp(snap, -(containerWidth.value - viewportWidth.value), 0)
+    const clamped = clamp(snap, -(containerWidth - viewportWidth.value), 0)
 
     offset.set(withSpring(clamped))
   }
@@ -86,7 +86,7 @@ export const useCarouselGesture = ({
   })
 
   useAnimatedReaction(
-    () => containerWidth.value,
+    () => containerWidth,
     (current, previous) => {
       if (previous && current < previous) {
         snap()
