@@ -16,8 +16,8 @@ import { alignCenter, dampen } from '@/utils/math'
 interface CarouselGestureOptions {
   containerWidth: number
   viewportWidth: SharedValue<number>
-  dataLength: number,
-  itemWidth: number,
+  dataLength: number
+  itemWidth: number
   enabled?: boolean
 }
 

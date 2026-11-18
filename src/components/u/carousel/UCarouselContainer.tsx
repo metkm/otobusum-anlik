@@ -1,9 +1,6 @@
 import type { ReactNode } from 'react'
 import { GestureDetector } from 'react-native-gesture-handler'
-import Animated, {
-  useAnimatedStyle,
-  type SharedValue,
-} from 'react-native-reanimated'
+import Animated, { useAnimatedStyle, type SharedValue } from 'react-native-reanimated'
 
 import { useCarouselGesture } from '@/composables/useCarouselGesture'
 import { useCarouselState } from '@/composables/useCarouselState'
