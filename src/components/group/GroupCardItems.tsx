@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react'
-import { useWindowDimensions } from 'react-native'
+import { Dimensions } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -23,14 +23,14 @@ interface GroupCardItemsProps {
 export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
   const { group } = useLineGroup()
   // const { onLayout } = useMapPadding('overlayGroupItems', 'bottom')
-  const { width: windowWidth } = useWindowDimensions()
+  // const { width: windowWidth } = useWindowDimensions()
 
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
 
   const items = (filter ? group?.items.filter((item) => item.type === filter) : group?.items) ?? []
 
   const cardWidthModifier = items.length > 1 ? 0.94 : 1
-  const cardWidth = windowWidth * cardWidthModifier
+  const cardWidth = Dimensions.get('window').width * cardWidthModifier
 
   const cardStyle = {
     width: cardWidth,

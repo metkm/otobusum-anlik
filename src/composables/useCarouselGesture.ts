@@ -1,4 +1,3 @@
-import { use } from 'react'
 import { usePanGesture } from 'react-native-gesture-handler'
 import {
   clamp,
@@ -10,13 +9,15 @@ import {
   type SharedValue,
 } from 'react-native-reanimated'
 
-import { CarouselContext } from '@/components/provider/CarouselProvider'
-import { dampen } from '@/utils/math'
+import { alignCenter, dampen } from '@/utils/math'
+
+// import { useCarouselState } from './useCarouselState'
 
 interface CarouselGestureOptions {
   containerWidth: number
   viewportWidth: SharedValue<number>
-  snapPoints: SharedValue<number[]>
+  dataLength: number,
+  itemWidth: number,
   enabled?: boolean
 }
 
@@ -31,25 +32,31 @@ const getClosestSnap = (offset: number, snaps: number[]) => {
 export const useCarouselGesture = ({
   containerWidth,
   viewportWidth,
-  snapPoints,
+  dataLength,
+  itemWidth,
   enabled = true,
 }: CarouselGestureOptions) => {
-  'worklet'
-  const carouselContext = use(CarouselContext)
+  'use no memo'
 
-  const localOffset = useSharedValue(0)
-  const offset = carouselContext?.offset ?? localOffset
+  // const { itemDimensions } = useCarouselState()
 
+  const offset = useSharedValue(0)
   const offsetStart = useSharedValue(0)
 
-  const limits = useDerivedValue(
-    () => [-(containerWidth - viewportWidth.value), 0] satisfies [number, number],
-  )
+  const limits = useDerivedValue<[number, number]>(() => [
+    -(containerWidth - viewportWidth.value),
+    0,
+  ])
 
   const snap = () => {
     'worklet'
 
-    const snap = getClosestSnap(offset.value, snapPoints.value)
+    const points = Array.from({ length: dataLength }, (_, index) => {
+      'worklet'
+      return -(index * itemWidth) + alignCenter(viewportWidth.value, itemWidth)
+    })
+
+    const snap = getClosestSnap(offset.value, points)
     const clamped = clamp(snap, -(containerWidth - viewportWidth.value), 0)
 
     offset.set(withSpring(clamped))

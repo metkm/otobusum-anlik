@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 import { GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
   useAnimatedStyle,
-  useDerivedValue,
   type SharedValue,
 } from 'react-native-reanimated'
 
@@ -39,11 +38,10 @@ export const UCarouselContainer = <T,>({
 
   const containerWidth = itemSize * data.length
 
-  const snapPoints = useDerivedValue<number[]>(() => [])
-
   const { gesture, offset } = useCarouselGesture({
     containerWidth,
-    snapPoints,
+    dataLength: data.length,
+    itemWidth: itemSize,
     viewportWidth,
   })
 
@@ -63,7 +61,6 @@ export const UCarouselContainer = <T,>({
         return x.height
       }),
     ),
-    // transform: [{ translateX: offset.value }],
     width: containerWidth,
   }))
 
@@ -83,7 +80,9 @@ export const UCarouselContainer = <T,>({
             <UCarouselItem
               key={keyExtractor(item)}
               className={itemClassName}
+              offset={offset}
               index={index}
+              itemSize={itemSize}
             >
               {renderItem({ item })}
             </UCarouselItem>

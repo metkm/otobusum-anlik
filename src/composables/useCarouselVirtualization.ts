@@ -23,16 +23,24 @@ export const useCarouselVirtualization = ({
 }: CarouselVirtualizationOptions) => {
   const [displayedItems, setDisplayedItems] = useState<VisibleRange>([0, initialRenderCount])
 
-  const offsetIndex = useDerivedValue(() => Math.floor(-offset.value / itemWidth))
+  const offsetIndex = useDerivedValue(() => -offset.value / itemWidth)
+  const visibleItem = useDerivedValue(() => viewportWidth.value / itemWidth)
 
   const range = useDerivedValue<VisibleRange>(() => {
-    if (viewportWidth.value <= 0) {
+    if (dataLength <= 0) {
       return [0, 0]
     }
 
+    if (viewportWidth.value <= 0) {
+      return [0, initialRenderCount]
+    }
+
     return [
-      Math.max(0, offsetIndex.value - drawDistance),
-      Math.min(dataLength, offsetIndex.value + viewportWidth.value / itemWidth + drawDistance),
+      Math.max(0, Math.floor(offsetIndex.value) - drawDistance - Math.floor(visibleItem.value)),
+      Math.min(
+        dataLength,
+        Math.ceil(offsetIndex.value) + drawDistance + Math.ceil(visibleItem.value),
+      ),
     ]
   })
 
@@ -49,7 +57,6 @@ export const useCarouselVirtualization = ({
         return
       }
 
-      console.log(current)
       scheduleOnRN(updateDisplayedItems, current)
     },
   )
