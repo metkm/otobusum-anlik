@@ -1,14 +1,10 @@
 import type { ReactNode } from 'react'
-import { GestureDetector } from 'react-native-gesture-handler'
-import Animated, {
-  useAnimatedStyle,
-  useDerivedValue,
-  useSharedValue,
-} from 'react-native-reanimated'
+import Animated, { useSharedValue } from 'react-native-reanimated'
 
-import { useCarouselGesture } from '@/composables/useCarouselGesture'
-import { useCarouselVirtualization } from '@/composables/useCarouselVirtualization'
 import { cn, tv } from '@/utils/cn'
+
+import { CarouselStateProvider } from '../../provider/CarouselStateProvider'
+import { UCarouselContainer } from './UCarouselContainer'
 
 const ui = tv({
   slots: {
@@ -43,33 +39,8 @@ export const UCarousel = <T,>({
 
   const viewportWidth = useSharedValue(0)
 
-  const itemWidth = getFixedItemSize()
-  const containerWidth = itemWidth * data.length
-
-  const snapPoints = useDerivedValue<number[]>(() => [])
-
-  const { gesture, offset } = useCarouselGesture({
-    containerWidth,
-    snapPoints,
-    viewportWidth,
-  })
-
-  const { displayedItems } = useCarouselVirtualization({
-    data,
-    drawDistance,
-    initialRenderCount,
-    itemWidth,
-    offset,
-    viewportWidth,
-  })
-
-  const containerStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: offset.value }],
-    width: containerWidth,
-  }))
-
   return (
-    <GestureDetector gesture={gesture}>
+    <CarouselStateProvider>
       <Animated.View
         className={cn(uiViewport(), _ui?.viewport)}
         onLayout={({ nativeEvent }) => {
@@ -77,28 +48,19 @@ export const UCarousel = <T,>({
           viewportWidth.value = nativeEvent.layout.width
         }}
       >
-        <Animated.View
+        <UCarouselContainer
+          data={data}
+          drawDistance={drawDistance}
+          initialRenderCount={initialRenderCount}
+          itemSize={getFixedItemSize()}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
           className={cn(uiContainer(), _ui?.container)}
-          style={containerStyle}
-        >
-          {data.map((item, index) => {
-            const isInRange = index >= displayedItems[0] && index < displayedItems[1]
-            if (!isInRange) {
-              return
-            }
-
-            return (
-              <Animated.View
-                key={keyExtractor(item)}
-                className={cn(uiItem(), _ui?.item)}
-              >
-                {renderItem({ item })}
-              </Animated.View>
-            )
-          })}
-        </Animated.View>
+          itemClassName={cn(uiItem(), _ui?.item)}
+          viewportWidth={viewportWidth}
+        />
       </Animated.View>
-    </GestureDetector>
+    </CarouselStateProvider>
   )
 }
 

@@ -1,7 +1,7 @@
 export { UActivityIndicator } from './UActivityIndicator'
 export { UBadge } from './UBadge'
 export { UButton } from './UButton'
-export { UCarousel } from './UCarousel'
+export { UCarousel } from './carousel/UCarousel'
 export { UEmpty } from './UEmpty'
 export { UHeader } from './UHeader'
 export type { IconName } from './UIcon'
