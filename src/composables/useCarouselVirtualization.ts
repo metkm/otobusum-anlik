@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Dimensions } from 'react-native'
 import { useAnimatedReaction, useDerivedValue, type SharedValue } from 'react-native-reanimated'
 import { scheduleOnRN } from 'react-native-worklets'
@@ -90,20 +90,16 @@ export const useCarouselVirtualization = <T>({
         return
       }
 
+      if (previous[0] === 0 && previous[1] === 0) {
+        scheduleOnRN(setDisplayItems, initialRange)
+        return
+      }
+
       scheduleOnRN(updateDisplayItems, current)
     },
   )
 
-  const lastRender = useRef<{ data: unknown[] }>({ data })
-
-  // oxlint-disable-next-line react/refs
-  const dataChanged = lastRender.current.data !== data
-
-  const items = dataChanged ? initialRange : displayItems
-
-  useEffect(() => {
-    lastRender.current.data = data
-  })
+  const items = displayItems
 
   return {
     displayedItems: items,

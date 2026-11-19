@@ -66,6 +66,7 @@ export const UCarouselContainer = <T,>({
     viewportWidth,
   })
 
+  // every item mounts its width and height but we remove the unused ones here
   useEffect(() => {
     const validKeys = new Set(data.map(keyExtractor))
 
