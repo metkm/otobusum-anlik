@@ -5,7 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { LineCard } from '@/components/line/card/LineCard'
 import { StopCard } from '@/components/stop/card/StopCard'
-import { useLineGroup } from '@/composables'
+import { useLineGroup, useMapPadding } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'
 import { LayoutAnimationTransition } from '@/constants/animation'
 import { useSettingsStore } from '@/stores'
@@ -22,15 +22,14 @@ interface GroupCardItemsProps {
 
 export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
   const { group } = useLineGroup()
-  // const { onLayout } = useMapPadding('overlayGroupItems', 'bottom')
-  // const { width: windowWidth } = useWindowDimensions()
+  const { onLayout } = useMapPadding('overlayGroupItems', 'bottom')
 
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
 
   const items = (filter ? group?.items.filter((item) => item.type === filter) : group?.items) ?? []
 
-  const cardWidthModifier = items.length > 1 ? 0.9 : 1
-  const cardWidth = Dimensions.get('window').width * cardWidthModifier
+  const cardWidthModifier = items.length > 1 ? 0.94 : 1
+  const cardWidth = Dimensions.get('window').width * cardWidthModifier - 16
 
   const cardStyle = {
     width: cardWidth,
@@ -65,6 +64,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
         className={cn(hideMap && 'grow')}
       >
         <UCarousel
+          onLayout={onLayout}
           data={items ?? []}
           renderItem={renderItem}
           keyExtractor={(item) => item.code}

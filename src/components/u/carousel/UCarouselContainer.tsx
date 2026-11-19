@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
   useAnimatedStyle,
@@ -66,16 +66,28 @@ export const UCarouselContainer = <T,>({
     viewportWidth,
   })
 
-  const containerStyle = useAnimatedStyle(() => ({
-    height: Math.max(
-      ...Object.values(itemDimensions.value).map((x) => {
-        'worklet'
-        return x.height
-      }),
-    ),
-    // paddingHorizontal,
-    width: containerWidth,
-  }))
+  useEffect(() => {
+    const validKeys = new Set(data.map(keyExtractor))
+
+    itemDimensions.modify((current) => {
+      'worklet'
+
+      return Object.fromEntries(Object.entries(current).filter(([key]) => validKeys.has(key)))
+    })
+  }, [data, keyExtractor, itemDimensions])
+
+  const containerStyle = useAnimatedStyle(() => {
+    let height = 0
+
+    for (const item of Object.values(itemDimensions.value)) {
+      height = Math.max(height, item.height)
+    }
+
+    return {
+      height,
+      width: containerWidth,
+    }
+  })
 
   return (
     <GestureDetector gesture={gesture}>
@@ -89,15 +101,18 @@ export const UCarouselContainer = <T,>({
             return
           }
 
+          const key = keyExtractor(item)
+
           return (
             <UCarouselItem
-              key={keyExtractor(item)}
+              key={key}
               className={itemClassName}
               offset={offset}
               index={index}
               itemSize={itemSize}
               gap={gap}
               transformExtraOffset={paddingHorizontal}
+              itemKey={key}
             >
               {renderItem({ item })}
             </UCarouselItem>

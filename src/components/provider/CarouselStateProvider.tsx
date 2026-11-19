@@ -4,11 +4,9 @@ import { useSharedValue, type SharedValue } from 'react-native-reanimated'
 export interface ItemDimension {
   width: number
   height: number
-  x: number
-  y: number
 }
 
-export type ItemDimensions = Record<number, ItemDimension>
+export type ItemDimensions = Record<string, ItemDimension>
 
 interface CarouselStateContext {
   itemDimensions: SharedValue<ItemDimensions>

@@ -12,6 +12,7 @@ interface UCarouselItemProps {
   itemSize: number
   gap: number
   transformExtraOffset: number
+  itemKey: string
 }
 
 export const UCarouselItem = ({
@@ -22,20 +23,9 @@ export const UCarouselItem = ({
   itemSize,
   gap,
   transformExtraOffset,
+  itemKey,
 }: UCarouselItemProps) => {
   const { itemDimensions } = useCarouselState()
-
-  //  this causes weird glitches when you navigate back to the page
-  // useEffect(
-  //   () => () => {
-  //     itemDimensions.modify((current) => {
-  //       'worklet'
-  //       delete current[index]
-  //       return current
-  //     })
-  //   },
-  //   [index, itemDimensions],
-  // )
 
   const style = useAnimatedStyle(() => ({
     position: 'absolute',
@@ -49,16 +39,16 @@ export const UCarouselItem = ({
 
     itemDimensions.modify((current) => {
       'worklet'
-      current[index] = layout
+      current[itemKey] = { height: layout.height, width: layout.width }
       return current
     })
   }
 
   return (
     <Animated.View
-      className={className}
-      style={style}
       onLayout={onLayout}
+      style={style}
+      className={className}
     >
       {children}
     </Animated.View>
