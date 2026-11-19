@@ -74,7 +74,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
             viewport: cn('w-screen', hideMap && 'grow'),
           }}
           initialRenderCount={2}
-          drawDistance={0}
+          drawDistance={1}
         />
 
         {/* <FlatList

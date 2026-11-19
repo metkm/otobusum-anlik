@@ -1,4 +1,5 @@
-import { useEffect, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
+import type { LayoutChangeEvent } from 'react-native'
 import Animated, { useAnimatedStyle, type SharedValue } from 'react-native-reanimated'
 
 import { useCarouselState } from '@/composables/useCarouselState'
@@ -20,33 +21,38 @@ export const UCarouselItem = ({
 }: UCarouselItemProps) => {
   const { itemDimensions } = useCarouselState()
 
-  useEffect(
-    () => () => {
-      itemDimensions.modify((current) => {
-        'worklet'
-        delete current[index]
-        return current
-      })
-    },
-    [index, itemDimensions],
-  )
+  //  this causes weird glitches when you navigate back to the page
+  // useEffect(
+  //   () => () => {
+  //     itemDimensions.modify((current) => {
+  //       'worklet'
+  //       delete current[index]
+  //       return current
+  //     })
+  //   },
+  //   [index, itemDimensions],
+  // )
 
   const style = useAnimatedStyle(() => ({
     position: 'absolute',
     transform: [{ translateX: offset.value + index * itemSize }],
   }))
 
+  const onLayout = (event: LayoutChangeEvent) => {
+    const { layout } = event.nativeEvent
+
+    itemDimensions.modify((current) => {
+      'worklet'
+      current[index] = layout
+      return current
+    })
+  }
+
   return (
     <Animated.View
       className={className}
       style={style}
-      onLayout={({ nativeEvent }) => {
-        itemDimensions.modify((current) => {
-          'worklet'
-          current[index] = nativeEvent.layout
-          return current
-        })
-      }}
+      onLayout={onLayout}
     >
       {children}
     </Animated.View>

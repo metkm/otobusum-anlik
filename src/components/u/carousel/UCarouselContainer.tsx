@@ -43,7 +43,7 @@ export const UCarouselContainer = <T,>({
   })
 
   const { displayedItems } = useCarouselVirtualization({
-    dataLength: data.length,
+    data,
     drawDistance,
     initialRenderCount,
     itemWidth: itemSize,

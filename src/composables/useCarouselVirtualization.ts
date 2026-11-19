@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Dimensions } from 'react-native'
 import { useAnimatedReaction, useDerivedValue, type SharedValue } from 'react-native-reanimated'
 import { scheduleOnRN } from 'react-native-worklets'
 
-interface CarouselVirtualizationOptions {
-  dataLength: number
+interface CarouselVirtualizationOptions<T> {
+  data: T[]
   initialRenderCount: number
   itemWidth: number
   drawDistance: number
@@ -13,40 +14,68 @@ interface CarouselVirtualizationOptions {
 
 type VisibleRange = [number, number]
 
-export const useCarouselVirtualization = ({
+export const getVisibleRange = ({
   dataLength,
+  viewportWidth,
+  offsetIndex,
+  visibleItemCount,
+  drawDistance = 0,
+}: {
+  dataLength: number
+  viewportWidth: number
+  offsetIndex: number
+  visibleItemCount: number
+  drawDistance?: number
+}): VisibleRange => {
+  'worklet'
+
+  if (dataLength <= 0) {
+    return [0, 0]
+  }
+
+  if (viewportWidth <= 0) {
+    return [0, viewportWidth]
+  }
+
+  return [
+    Math.max(0, Math.floor(offsetIndex) - drawDistance - Math.floor(visibleItemCount)),
+    Math.min(dataLength, Math.ceil(offsetIndex) + drawDistance + Math.ceil(visibleItemCount)),
+  ]
+}
+
+export const useCarouselVirtualization = <T>({
+  data,
   initialRenderCount,
   itemWidth,
   offset,
   viewportWidth,
   drawDistance,
-}: CarouselVirtualizationOptions) => {
-  const [displayedItems, setDisplayedItems] = useState<VisibleRange>([0, initialRenderCount])
-
+}: CarouselVirtualizationOptions<T>) => {
   const offsetIndex = useDerivedValue(() => -offset.value / itemWidth)
-  const visibleItem = useDerivedValue(() => viewportWidth.value / itemWidth)
+  const visibleItemCount = useDerivedValue(() => viewportWidth.value / itemWidth)
 
-  const range = useDerivedValue<VisibleRange>(() => {
-    if (dataLength <= 0) {
-      return [0, 0]
-    }
+  const range = useDerivedValue(() => 
+    getVisibleRange({
+      dataLength: data.length,
+      drawDistance,
+      offsetIndex: offsetIndex.value,
+      viewportWidth: viewportWidth.value,
+      visibleItemCount: visibleItemCount.value,
+    })
+  )
 
-    if (viewportWidth.value <= 0) {
-      return [0, initialRenderCount]
-    }
-
-    return [
-      Math.max(0, Math.floor(offsetIndex.value) - drawDistance - Math.floor(visibleItem.value)),
-      Math.min(
-        dataLength,
-        Math.ceil(offsetIndex.value) + drawDistance + Math.ceil(visibleItem.value),
-      ),
-    ]
+  const initialRange = getVisibleRange({
+    dataLength: data.length,
+    offsetIndex: 0,
+    viewportWidth: Dimensions.get('screen').width,
+    visibleItemCount: initialRenderCount,
   })
 
-  const updateDisplayedItems = (range: VisibleRange) => {
+  const [displayItems, setDisplayItems] = useState(initialRange)
+
+  const updateDisplayItems = (range: VisibleRange) => {
     requestIdleCallback(() => {
-      setDisplayedItems(range)
+      setDisplayItems(range)
     })
   }
 
@@ -57,12 +86,23 @@ export const useCarouselVirtualization = ({
         return
       }
 
-      scheduleOnRN(updateDisplayedItems, current)
+      scheduleOnRN(updateDisplayItems, current)
     },
   )
 
+  const lastRender = useRef<{ data: unknown[] }>({ data })
+
+  // oxlint-disable-next-line react/refs
+  const dataChanged = lastRender.current.data !== data
+
+  const items = dataChanged ? initialRange : displayItems
+  
+  useEffect(() => {
+    lastRender.current.data = data
+  })
+
   return {
-    displayedItems,
-    range,
+    displayedItems: items,
+    range: [],
   }
 }
