@@ -58,6 +58,7 @@ export const UCarousel = <T,>({
           className={cn(uiContainer(), _ui?.container)}
           itemClassName={cn(uiItem(), _ui?.item)}
           viewportWidth={viewportWidth}
+          contentContainerStyle={{ gap: 8, paddingHorizontal: 8 }}
         />
       </Animated.View>
     </CarouselStateProvider>

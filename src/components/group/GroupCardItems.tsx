@@ -29,7 +29,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
 
   const items = (filter ? group?.items.filter((item) => item.type === filter) : group?.items) ?? []
 
-  const cardWidthModifier = items.length > 1 ? 0.94 : 1
+  const cardWidthModifier = items.length > 1 ? 0.9 : 1
   const cardWidth = Dimensions.get('window').width * cardWidthModifier
 
   const cardStyle = {

@@ -82,6 +82,10 @@ export const useCarouselVirtualization = <T>({
   useAnimatedReaction(
     () => range.value,
     (current, previous) => {
+      if (!previous) {
+        return
+      }
+
       if (current[0] === previous?.[0] && current[1] === previous[1]) {
         return
       }

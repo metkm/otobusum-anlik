@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react'
 import { GestureDetector } from 'react-native-gesture-handler'
-import Animated, { useAnimatedStyle, type SharedValue } from 'react-native-reanimated'
+import Animated, {
+  useAnimatedStyle,
+  type SharedValue,
+  type StyleProps,
+} from 'react-native-reanimated'
 
 import { useCarouselGesture } from '@/composables/useCarouselGesture'
 import { useCarouselState } from '@/composables/useCarouselState'
@@ -16,6 +20,7 @@ interface UCarouselContainerProps<T> {
   drawDistance: number
   initialRenderCount: number
   viewportWidth: SharedValue<number>
+  contentContainerStyle?: StyleProps
   keyExtractor: (item: T) => string
   renderItem: (props: { item: T }) => ReactNode
 }
@@ -28,17 +33,27 @@ export const UCarouselContainer = <T,>({
   initialRenderCount,
   viewportWidth,
   itemClassName,
+  contentContainerStyle,
   keyExtractor,
   renderItem,
 }: UCarouselContainerProps<T>) => {
   const { itemDimensions } = useCarouselState()
 
-  const containerWidth = itemSize * data.length
+  const gap =
+    typeof contentContainerStyle?.gap === 'undefined' ? 0 : Number(contentContainerStyle.gap)
+  const paddingHorizontal =
+    typeof contentContainerStyle?.paddingHorizontal === 'undefined'
+      ? 0
+      : Number(contentContainerStyle.paddingHorizontal)
+
+  const containerWidth = itemSize * data.length + gap * (data.length - 1) + paddingHorizontal * 2
 
   const { gesture, offset } = useCarouselGesture({
     containerWidth,
     dataLength: data.length,
+    gap,
     itemWidth: itemSize,
+    paddingStart: paddingHorizontal,
     viewportWidth,
   })
 
@@ -58,6 +73,7 @@ export const UCarouselContainer = <T,>({
         return x.height
       }),
     ),
+    // paddingHorizontal,
     width: containerWidth,
   }))
 
@@ -80,6 +96,8 @@ export const UCarouselContainer = <T,>({
               offset={offset}
               index={index}
               itemSize={itemSize}
+              gap={gap}
+              transformExtraOffset={paddingHorizontal}
             >
               {renderItem({ item })}
             </UCarouselItem>

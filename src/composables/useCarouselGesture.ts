@@ -1,3 +1,4 @@
+import { use } from 'react'
 import { usePanGesture } from 'react-native-gesture-handler'
 import {
   clamp,
@@ -9,9 +10,8 @@ import {
   type SharedValue,
 } from 'react-native-reanimated'
 
+import { CarouselContext } from '@/components/provider/CarouselProvider'
 import { alignCenter, dampen } from '@/utils/math'
-
-// import { useCarouselState } from './useCarouselState'
 
 interface CarouselGestureOptions {
   containerWidth: number
@@ -19,6 +19,8 @@ interface CarouselGestureOptions {
   dataLength: number
   itemWidth: number
   enabled?: boolean
+  gap: number
+  paddingStart: number
 }
 
 const getClosestSnap = (offset: number, snaps: number[]) => {
@@ -34,13 +36,17 @@ export const useCarouselGesture = ({
   viewportWidth,
   dataLength,
   itemWidth,
+  gap,
+  paddingStart,
   enabled = true,
 }: CarouselGestureOptions) => {
   'use no memo'
 
-  // const { itemDimensions } = useCarouselState()
+  const ctx = use(CarouselContext)
 
-  const offset = useSharedValue(0)
+  const localOffset = useSharedValue(0)
+  const offset = ctx?.offset ?? localOffset
+
   const offsetStart = useSharedValue(0)
 
   const limits = useDerivedValue<[number, number]>(() => [
@@ -53,7 +59,9 @@ export const useCarouselGesture = ({
 
     const points = Array.from({ length: dataLength }, (_, index) => {
       'worklet'
-      return -(index * itemWidth) + alignCenter(viewportWidth.value, itemWidth)
+
+      const offsetFromStart = index * itemWidth + index * gap + paddingStart
+      return -offsetFromStart + alignCenter(viewportWidth.value, itemWidth)
     })
 
     const snap = getClosestSnap(offset.value, points)

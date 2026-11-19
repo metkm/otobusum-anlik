@@ -1,7 +1,7 @@
 // Note: This component is not used anymore for now. Maybe it can be worked later but there needs to be some virtualization
 
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Dimensions, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 import { GroupCardItems } from '@/components/group/GroupCardItems'
@@ -16,6 +16,9 @@ import { LayoutAnimationTransition } from '@/constants/animation'
 const LineTimetables = () => {
   const { items } = useLineGroup()
   const { t } = useTranslation()
+
+  const cardWidthModifier = items.length > 1 ? 0.94 : 1
+  const cardWidth = Dimensions.get('window').width * cardWidthModifier
 
   if (items.length < 1) {
     return (
@@ -55,6 +58,9 @@ const LineTimetables = () => {
             </ThemeProvider>
           </GroupItemContext>
         )}
+        initialRenderCount={2}
+        drawDistance={1}
+        getFixedItemSize={() => cardWidth}
       />
     </Animated.View>
   )

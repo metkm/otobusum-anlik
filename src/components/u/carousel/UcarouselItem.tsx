@@ -10,6 +10,8 @@ interface UCarouselItemProps {
   children: ReactNode
   offset: SharedValue<number>
   itemSize: number
+  gap: number
+  transformExtraOffset: number
 }
 
 export const UCarouselItem = ({
@@ -18,6 +20,8 @@ export const UCarouselItem = ({
   children,
   offset,
   itemSize,
+  gap,
+  transformExtraOffset,
 }: UCarouselItemProps) => {
   const { itemDimensions } = useCarouselState()
 
@@ -35,7 +39,9 @@ export const UCarouselItem = ({
 
   const style = useAnimatedStyle(() => ({
     position: 'absolute',
-    transform: [{ translateX: offset.value + index * itemSize }],
+    transform: [
+      { translateX: offset.value + index * itemSize + index * gap + transformExtraOffset },
+    ],
   }))
 
   const onLayout = (event: LayoutChangeEvent) => {
