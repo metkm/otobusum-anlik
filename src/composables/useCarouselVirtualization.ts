@@ -54,14 +54,14 @@ export const useCarouselVirtualization = <T>({
   const offsetIndex = useDerivedValue(() => -offset.value / itemWidth)
   const visibleItemCount = useDerivedValue(() => viewportWidth.value / itemWidth)
 
-  const range = useDerivedValue(() => 
+  const range = useDerivedValue(() =>
     getVisibleRange({
       dataLength: data.length,
       drawDistance,
       offsetIndex: offsetIndex.value,
       viewportWidth: viewportWidth.value,
       visibleItemCount: visibleItemCount.value,
-    })
+    }),
   )
 
   const initialRange = getVisibleRange({
@@ -96,7 +96,7 @@ export const useCarouselVirtualization = <T>({
   const dataChanged = lastRender.current.data !== data
 
   const items = dataChanged ? initialRange : displayItems
-  
+
   useEffect(() => {
     lastRender.current.data = data
   })
