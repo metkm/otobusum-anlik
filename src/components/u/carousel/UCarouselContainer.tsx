@@ -9,6 +9,7 @@ import Animated, {
 import { useCarouselGesture } from '@/composables/useCarouselGesture'
 import { useCarouselState } from '@/composables/useCarouselState'
 import { useCarouselVirtualization } from '@/composables/useCarouselVirtualization'
+import { LayoutAnimationTransition } from '@/constants/animation'
 
 import type { RenderItem } from './UCarousel'
 import { UCarouselItem } from './UcarouselItem'
@@ -87,13 +88,13 @@ export const UCarouselContainer = <T,>({
 
     return {
       height: itemsMaxHeight || '100%',
-      // width: containerWidth,
     }
   })
 
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View
+        layout={LayoutAnimationTransition}
         className={className}
         style={containerStyle}
       >

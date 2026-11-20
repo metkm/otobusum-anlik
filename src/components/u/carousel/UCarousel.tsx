@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import Animated, { useSharedValue } from 'react-native-reanimated'
 
+import { LayoutAnimationTransition } from '@/constants/animation'
 import type { OnLayoutFunction } from '@/types/shared'
 import { cn, tv } from '@/utils/cn'
 
@@ -47,6 +48,7 @@ export const UCarousel = <T,>({
   return (
     <CarouselStateProvider>
       <Animated.View
+        layout={LayoutAnimationTransition}
         className={cn(uiViewport(), _ui?.viewport)}
         onLayout={(event) => {
           viewportWidth.value = event.nativeEvent.layout.width
