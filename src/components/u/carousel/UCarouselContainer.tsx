@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react'
+import { useEffect } from 'react'
 import { GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
   useAnimatedStyle,
@@ -10,6 +10,7 @@ import { useCarouselGesture } from '@/composables/useCarouselGesture'
 import { useCarouselState } from '@/composables/useCarouselState'
 import { useCarouselVirtualization } from '@/composables/useCarouselVirtualization'
 
+import type { RenderItem } from './UCarousel'
 import { UCarouselItem } from './UcarouselItem'
 
 interface UCarouselContainerProps<T> {
@@ -22,7 +23,7 @@ interface UCarouselContainerProps<T> {
   viewportWidth: SharedValue<number>
   contentContainerStyle?: StyleProps
   keyExtractor: (item: T) => string
-  renderItem: (props: { item: T }) => ReactNode
+  renderItem: RenderItem<T>
 }
 
 export const UCarouselContainer = <T,>({
@@ -78,15 +79,15 @@ export const UCarouselContainer = <T,>({
   }, [data, keyExtractor, itemDimensions])
 
   const containerStyle = useAnimatedStyle(() => {
-    let height = 0
+    let itemsMaxHeight = 0
 
     for (const item of Object.values(itemDimensions.value)) {
-      height = Math.max(height, item.height)
+      itemsMaxHeight = Math.max(itemsMaxHeight, item.height)
     }
 
     return {
-      height,
-      width: containerWidth,
+      height: itemsMaxHeight || '100%',
+      // width: containerWidth,
     }
   })
 
@@ -114,9 +115,9 @@ export const UCarouselContainer = <T,>({
               gap={gap}
               transformExtraOffset={paddingHorizontal}
               itemKey={key}
-            >
-              {renderItem({ item })}
-            </UCarouselItem>
+              item={item}
+              renderItem={renderItem}
+            />
           )
         })}
       </Animated.View>

@@ -1,4 +1,3 @@
-import { type ReactNode } from 'react'
 import { Dimensions } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
@@ -15,6 +14,7 @@ import { cn } from '@/utils/cn'
 import { CarouselCardHeightProvider } from '../provider/CarouselCardHeightProvider'
 import { ThemeProvider } from '../provider/ThemeProvider'
 import { UCarousel } from '../u'
+import type { RenderItem as CarouselRenderItem } from '../u/carousel/UCarousel'
 
 interface GroupCardItemsProps {
   filter?: GroupItemType
@@ -35,12 +35,12 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
     width: cardWidth,
   }
 
-  const renderItem = ({ item }: { item: GroupItem }): ReactNode => {
+  const renderItem: CarouselRenderItem<GroupItem> = ({ item }, onLayout) => {
     if (item.type === 'stop') {
       return (
         <GroupItemContext value={item.code}>
           <Animated.View style={cardStyle}>
-            <StopCard />
+            <StopCard onLayout={onLayout} />
           </Animated.View>
         </GroupItemContext>
       )
@@ -50,7 +50,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
       <GroupItemContext value={item.code}>
         <ThemeProvider>
           <Animated.View style={cardStyle}>
-            <LineCard />
+            <LineCard onLayout={onLayout} />
           </Animated.View>
         </ThemeProvider>
       </GroupItemContext>
@@ -76,23 +76,6 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
           initialRenderCount={2}
           drawDistance={1}
         />
-
-        {/* <FlatList
-          data={items ?? []}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.code}
-          className="w-screen"
-          contentContainerClassName="px-2 gap-2"
-          windowSize={1}
-          initialNumToRender={1}
-          onLayout={onLayout}
-          horizontal
-          pagingEnabled
-          snapToAlignment="center"
-          getItemLayout={(_, index) => ({ index, length: cardWidth, offset: index * cardWidth })}
-          maxToRenderPerBatch={2}
-          showsHorizontalScrollIndicator={false}
-        /> */}
       </Animated.View>
     </CarouselCardHeightProvider>
   )

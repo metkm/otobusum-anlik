@@ -1,40 +1,50 @@
-import { type ReactNode } from 'react'
 import type { LayoutChangeEvent } from 'react-native'
 import Animated, { useAnimatedStyle, type SharedValue } from 'react-native-reanimated'
 
 import { useCarouselState } from '@/composables/useCarouselState'
 
-interface UCarouselItemProps {
+import type { RenderItem } from './UCarousel'
+
+interface UCarouselItemProps<T> {
   className?: string
   index: number
-  children: ReactNode
   offset: SharedValue<number>
   itemSize: number
   gap: number
   transformExtraOffset: number
   itemKey: string
+  item: T
+  renderItem: RenderItem<T>
 }
 
-export const UCarouselItem = ({
+export const UCarouselItem = <T,>({
   className,
   index,
-  children,
   offset,
   itemSize,
   gap,
   transformExtraOffset,
   itemKey,
-}: UCarouselItemProps) => {
+  renderItem,
+  item,
+}: UCarouselItemProps<T>) => {
   const { itemDimensions } = useCarouselState()
 
-  const style = useAnimatedStyle(() => ({
-    position: 'absolute',
-    transform: [
-      { translateX: offset.value + index * itemSize + index * gap + transformExtraOffset },
-    ],
-  }))
+  const style = useAnimatedStyle(() => {
+    const dimensions = itemDimensions.value[itemKey]
 
-  const onLayout = (event: LayoutChangeEvent) => {
+    return {
+      minHeight: dimensions?.height || '100%',
+      // maxHeight: '100%',
+      position: 'absolute',
+      transform: [
+        { translateX: offset.value + index * itemSize + index * gap + transformExtraOffset },
+      ],
+      width: itemSize || dimensions?.width || '100%',
+    }
+  })
+
+  const registerLayout = (event: LayoutChangeEvent) => {
     const { layout } = event.nativeEvent
 
     itemDimensions.modify((current) => {
@@ -46,11 +56,10 @@ export const UCarouselItem = ({
 
   return (
     <Animated.View
-      onLayout={onLayout}
       style={style}
       className={className}
     >
-      {children}
+      {renderItem({ item }, registerLayout)}
     </Animated.View>
   )
 }

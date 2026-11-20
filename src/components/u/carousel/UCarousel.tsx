@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
-import type { LayoutChangeEvent } from 'react-native'
 import Animated, { useSharedValue } from 'react-native-reanimated'
 
+import type { OnLayoutFunction } from '@/types/shared'
 import { cn, tv } from '@/utils/cn'
 
 import { CarouselStateProvider } from '../../provider/CarouselStateProvider'
@@ -9,15 +9,17 @@ import { UCarouselContainer } from './UCarouselContainer'
 
 const ui = tv({
   slots: {
-    container: 'flex-row',
-    item: 'min-w-0 shrink-0',
-    viewport: 'flex-row overflow-hidden shrink',
+    container: 'flex-row h-full w-full',
+    item: '',
+    viewport: '',
   },
 })
 
+export type RenderItem<T> = (props: { item: T }, onLayout: OnLayoutFunction) => ReactNode
+
 export interface UCarouselProps<T> {
   data: T[]
-  renderItem: (props: { item: T }) => ReactNode
+  renderItem: RenderItem<T>
   keyExtractor: (item: T) => string
   getFixedItemSize: () => number
   ui?: {
@@ -25,7 +27,7 @@ export interface UCarouselProps<T> {
   }
   initialRenderCount: number
   drawDistance: number
-  onLayout?: (event: LayoutChangeEvent) => void
+  onLayout?: OnLayoutFunction
 }
 
 export const UCarousel = <T,>({
