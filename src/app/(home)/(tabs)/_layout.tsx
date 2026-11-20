@@ -51,7 +51,7 @@ export const TabsLayout = () => {
 
   return (
     <Tabs
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ animation: 'shift', headerShown: false }}
       tabBar={({ descriptors, emitter, state, navigateToTab }) => (
         <View
           className="absolute bottom-0 flex-row bg-linear-to-t from-white/90 via-white/45 to-transparent dark:from-black/90 dark:via-black/85"
