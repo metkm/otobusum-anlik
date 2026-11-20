@@ -34,18 +34,8 @@ export const UCarouselItem = <T,>({
   const style = useAnimatedStyle(() => {
     const dimensions = itemDimensions.value[itemKey]
 
-    // if (dimensions?.height === 0) {
-    //   return {
-    //     flex: 1,
-    //     // position: 'absolute'
-    //   }
-    // }
-
     return {
-      // bottom: 0,
-      // height: dimensions?.height,
       position: 'absolute',
-      // top: 0,
       transform: [
         { translateX: offset.value + index * itemSize + index * gap + transformExtraOffset },
       ],
@@ -59,7 +49,6 @@ export const UCarouselItem = <T,>({
     itemDimensions.modify((current) => {
       'worklet'
       current[itemKey] = { height: layout.height, width: layout.width }
-      console.log(layout, itemKey)
       return current
     })
   }

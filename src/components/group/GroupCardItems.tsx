@@ -36,7 +36,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
         <GroupItemContext value={item.code}>
           <StopCard
             onLayout={onLayout}
-            className={growClass}
+            // className={growClass}
           />
         </GroupItemContext>
       )
@@ -47,7 +47,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
         <ThemeProvider>
           <LineCard
             onLayout={onLayout}
-            className={growClass}
+            // className={growClass}
           />
         </ThemeProvider>
       </GroupItemContext>

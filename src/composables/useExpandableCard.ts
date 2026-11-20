@@ -16,7 +16,6 @@ export const useExpandableCardHeight = () => {
   const localHeight = useSharedValue(0)
   const height = use(CarouselCardHeightContext) ?? localHeight
 
-  const showLineCardStops = useSettingsStore(useShallow((state) => state.lineCardShowStops))
   const cardExpandOnScroll = useSettingsStore(useShallow((state) => state.cardExpandOnScroll))
   const cardExpanded = useSettingsStore(useShallow((state) => state.cardExpanded))
 
@@ -48,13 +47,9 @@ export const useExpandableCardHeight = () => {
     },
   })
 
-  const style = useAnimatedStyle(() =>
-    showLineCardStops
-      ? {
-          height: height.value,
-        }
-      : {},
-  )
+  const style = useAnimatedStyle(() => ({
+    height: height.value
+  }))
 
   return { height, onScroll, style }
 }
