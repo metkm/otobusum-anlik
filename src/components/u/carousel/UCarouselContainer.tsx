@@ -87,7 +87,8 @@ export const UCarouselContainer = <T,>({
     }
 
     return {
-      height: itemsMaxHeight || '100%',
+      height: itemsMaxHeight,
+      // height: itemsMaxHeight || '100%',
     }
   })
 
