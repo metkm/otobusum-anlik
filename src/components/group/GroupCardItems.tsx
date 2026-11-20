@@ -34,10 +34,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
     if (item.type === 'stop') {
       return (
         <GroupItemContext value={item.code}>
-          <StopCard
-            onLayout={onLayout}
-            // className={growClass}
-          />
+          <StopCard onLayout={onLayout} />
         </GroupItemContext>
       )
     }
@@ -45,10 +42,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
     return (
       <GroupItemContext value={item.code}>
         <ThemeProvider>
-          <LineCard
-            onLayout={onLayout}
-            // className={growClass}
-          />
+          <LineCard onLayout={onLayout} />
         </ThemeProvider>
       </GroupItemContext>
     )
@@ -67,8 +61,6 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
           item: hideMap ? 'top-0 bottom-0' : undefined,
           viewport: growClass,
         }}
-        // ui={{ container: 'flex-1 pl-2 bg-green-400', item: 'top-0 bottom-0 max-h-full bg-amber-400 overflow-hidden', viewport: 'flex-1' }}
-        // ui={{ container: growClass, item: hideMap?'bottom-0 top-0' : undefined, viewport: 'grow' }}
         initialRenderCount={2}
         drawDistance={1}
       />
