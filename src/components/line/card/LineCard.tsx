@@ -28,7 +28,7 @@ export const LineCard = ({ className, onLayout }: LineCardProps) => {
       onLayout={onLayout}
       key={showLineCardStops.toString()}
       layout={LayoutAnimationTransition}
-      style={showLineCardStops ? style : undefined}
+      style={showLineCardStops ? style : undefined} // have to give style like this because it doesn't update
       className={cn(
         'bg-default border-hairline border-muted rounded-md overflow-hidden',
         !showLineCardStops && 'shrink',
