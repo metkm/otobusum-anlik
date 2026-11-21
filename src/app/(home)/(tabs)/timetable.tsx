@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
-import Animated from 'react-native-reanimated'
+import { Dimensions, View } from 'react-native'
 
 import { GroupCardItems } from '@/components/group/GroupCardItems'
 import { LineTimetable } from '@/components/line/LineTimetable'
@@ -9,11 +8,13 @@ import { ThemeProvider } from '@/components/provider/ThemeProvider'
 import { UButton, UCarousel, UEmpty } from '@/components/u'
 import { useLineGroup } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'
-import { LayoutAnimationTransition } from '@/constants/animation'
 
 const LineTimetables = () => {
   const { items } = useLineGroup()
   const { t } = useTranslation()
+
+  const cardWidthModifier = items.length > 1 ? 0.94 : 1
+  const cardWidth = Dimensions.get('window').width * cardWidthModifier - 16
 
   if (items.length < 1) {
     return (
@@ -35,33 +36,36 @@ const LineTimetables = () => {
   const codes = items.filter((x) => x.type === 'line')
 
   return (
-    <Animated.View
-      layout={LayoutAnimationTransition}
-      className="grow"
-    >
-      <UCarousel
-        data={codes}
-        keyExtractor={(item) => item.code}
-        ui={{ container: 'gap-2 px-2 pt-2', viewport: 'flex-1 grow' }}
-        renderItem={({ item }) => (
-          <GroupItemContext
-            key={item.code}
-            value={item.code}
-          >
-            <ThemeProvider>
-              <LineTimetable className="flex-1" />
-            </ThemeProvider>
-          </GroupItemContext>
-        )}
-      />
-    </Animated.View>
+    <UCarousel
+      data={codes}
+      keyExtractor={(item) => item.code}
+      renderItem={({ item }, onLayout) => (
+        <GroupItemContext
+          key={item.code}
+          value={item.code}
+        >
+          <ThemeProvider>
+            <LineTimetable onLayout={onLayout} />
+          </ThemeProvider>
+        </GroupItemContext>
+      )}
+      ui={{ container: 'flex-1', item: 'top-0 bottom-0', viewport: 'flex-1 mt-2' }}
+      initialRenderCount={2}
+      drawDistance={8}
+      getFixedItemSize={() => cardWidth}
+      enabled={items.length > 1}
+    />
   )
 }
 
 export const TimetableScreen = () => (
   <View className="pt-safe-offset-2 pb-nav-offset-2 px-safe grow">
     <CarouselProvider>
-      <GroupCardItems filter="line" />
+      <GroupCardItems
+        filter="line"
+        drawDistance={8}
+      />
+
       <LineTimetables />
     </CarouselProvider>
   </View>

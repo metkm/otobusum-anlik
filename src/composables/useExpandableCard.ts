@@ -48,7 +48,7 @@ export const useExpandableCardHeight = () => {
   })
 
   const style = useAnimatedStyle(() => ({
-    minHeight: height.value,
+    height: height.value,
   }))
 
   return { height, onScroll, style }
