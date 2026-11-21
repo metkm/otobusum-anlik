@@ -198,7 +198,7 @@ export const TabsLayout = () => {
 
   return (
     <Tabs
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ animation: 'shift', headerShown: false }}
       tabBar={(props) => <CustomTabBar {...props} />}
     >
       {screens.map((screen) => (

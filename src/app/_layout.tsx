@@ -60,10 +60,10 @@ const RootContent = () => {
             <Sheet
               screenOptions={{
                 backgroundColor,
-                style: { flex: 1 },
+                style: { flex: 1 }
               }}
             >
-              <Sheet.Screen name="(home)" />
+              <Sheet.Screen name="(home)/(tabs)" />
 
               <Sheet.Screen
                 name="(sheet)/groups/index"
