@@ -18,7 +18,7 @@ import { useSettingsStore } from '@/stores'
 import i18n from '@/translations/i18n'
 
 export const unstable_settings = {
-  anchor: '(home)',
+  anchor: '(home)/(tabs)',
 }
 
 // to make react compiler happy
