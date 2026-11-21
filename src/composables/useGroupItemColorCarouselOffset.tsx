@@ -1,23 +1,20 @@
-import { use } from 'react'
-import { interpolateColor, useDerivedValue, useSharedValue } from 'react-native-reanimated'
+import { interpolateColor, useDerivedValue } from 'react-native-reanimated'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/shallow'
 
-import { CarouselContext } from '@/components/provider/CarouselProvider'
 import { useFilterStore, useThemeStore } from '@/stores'
 
+import { useCarousel } from './useCarousel'
 import { useColorScheme } from './useColorScheme'
 
 export const useGroupItemColorCarouselOffset = () => {
-  const carouselContext = use(CarouselContext)
   const [defaultBgDefault, defaultBgMuted, defaultBorderMuted] = useCSSVariable([
     '--background-color-default',
     '--background-color-muted',
     '--border-color-muted',
   ]) as [string, string, string]
 
-  const offsetLocal = useSharedValue(0)
-  const offset = carouselContext?.offset ?? offsetLocal
+  const { offset, snapPoints } = useCarousel()
   const colorScheme = useColorScheme()
 
   const city = useFilterStore(useShallow((state) => state.city))
@@ -35,7 +32,7 @@ export const useGroupItemColorCarouselOffset = () => {
 
   const colors = useDerivedValue(() => {
     const matching =
-      carouselContext?.snapPoints.value.flatMap((point, index) => {
+      snapPoints.value.flatMap((point, index) => {
         'worklet'
         const scheme = schemes.at(index)
 

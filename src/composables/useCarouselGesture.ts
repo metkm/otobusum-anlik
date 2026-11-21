@@ -42,7 +42,7 @@ export const useCarouselGesture = ({
 }: CarouselGestureOptions) => {
   'use no memo'
 
-  const { offset } = useCarousel()
+  const { offset, snapPoints } = useCarousel()
   const offsetStart = useSharedValue(0)
 
   const limits = useDerivedValue<[number, number]>(() => [
@@ -50,9 +50,7 @@ export const useCarouselGesture = ({
     0,
   ])
 
-  const snap = () => {
-    'worklet'
-
+  useDerivedValue(() => {
     const points = Array.from({ length: dataLength }, (_, index) => {
       'worklet'
 
@@ -60,7 +58,13 @@ export const useCarouselGesture = ({
       return -offsetFromStart + alignCenter(viewportWidth.value, itemWidth)
     })
 
-    const snap = getClosestSnap(offset.value, points)
+    snapPoints.set(points)
+  })
+
+  const snap = () => {
+    'worklet'
+
+    const snap = getClosestSnap(offset.value, snapPoints.value)
     const clamped = clamp(snap, -(containerWidth - viewportWidth.value), 0)
 
     offset.set(withSpring(clamped))
