@@ -15,11 +15,11 @@
 
 // Metro.config.js
 
-const { getDefaultConfig } = require('expo/metro-config')
-const { withBoostConfig } = require('react-native-boost/metro')
-const { withUniwindConfig } = require('uniwind/metro')
+import { getDefaultConfig } from 'expo/metro-config'
+import { withBoostConfig } from 'react-native-boost/metro'
+import { withUniwindConfig } from 'uniwind/metro'
 
-module.exports = withBoostConfig(
+export default withBoostConfig(
   withUniwindConfig(getDefaultConfig(__dirname), {
     cssEntryFile: './src/global.css',
     dtsFile: './src/uniwind-types.d.ts',

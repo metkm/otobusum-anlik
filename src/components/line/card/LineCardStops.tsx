@@ -176,6 +176,7 @@ export const LineCardStops = () => {
         getFixedItemSize={() => 48}
         recycleItems
         showsVerticalScrollIndicator={false}
+        drawDistance={0}
         onScroll={onScroll}
       />
     </UQueryState>

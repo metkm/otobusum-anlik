@@ -1,6 +1,6 @@
 import type { TrueSheet } from '@lodev09/react-native-true-sheet'
+import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons'
 import Constants from 'expo-constants'
-import { Image } from 'expo-image'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking, View } from 'react-native'
@@ -14,7 +14,12 @@ import type { MapStyle } from '@/constants/mapStyles'
 import { useFilterStore, useSettingsStore } from '@/stores'
 import type { City } from '@/types/city'
 
-const StyledImage = withUniwind(Image)
+const StyledMaterialDesignIcons = withUniwind(MaterialDesignIcons, {
+  color: {
+    fromClassName: 'colorClassName',
+    styleProperty: 'accentColor',
+  },
+})
 
 const ToggleSetting = ({
   label,
@@ -110,7 +115,7 @@ export const OptionPicker = <T,>({
 }
 
 const SettingsSectionTitle = ({ icon, title }: { icon: IconName; title: string }) => (
-  <View className="bg-muted -mx-2 flex-row items-center gap-2 p-2 px-5">
+  <View className="flex-row items-center gap-2 p-2 px-2.5">
     <UIcon name={icon} />
     <UText className="font-inter-semibold">{title}</UText>
   </View>
@@ -205,7 +210,7 @@ export const SettingsScreen = () => {
 
   return (
     <ScrollView
-      contentContainerClassName="gap-2 p-2 pt-safe pb-nav-offset-2"
+      contentContainerClassName="gap-2 pt-safe-offset-2 pb-nav-offset-2"
       showsVerticalScrollIndicator={false}
     >
       <SettingsSectionTitle
@@ -247,6 +252,8 @@ export const SettingsScreen = () => {
           })
         }}
       />
+
+      <View className="h-hairline bg-muted" />
 
       <SettingsSectionTitle
         title={t('settings')}
@@ -292,6 +299,8 @@ export const SettingsScreen = () => {
         }}
       />
 
+      <View className="h-hairline bg-muted" />
+
       <SettingsSectionTitle
         title={t('other')}
         icon="settings-2"
@@ -324,17 +333,17 @@ export const SettingsScreen = () => {
       <UButton
         variant="soft"
         color="neutral"
-        className="ml-auto"
+        className="mr-auto ml-2"
         onPress={() => Linking.openURL('https://github.com/metkm/otobusum-anlik')}
       >
-        <StyledImage
-          source={require('@/assets/icons/github.svg')}
-          className="size-12"
-          tintColorClassName="accent-(--ui-text)"
+        <StyledMaterialDesignIcons
+          name="github"
+          size={24}
+          colorClassName="accent-default"
         />
       </UButton>
 
-      <UText className="text-muted font-inter-medium mr-2 ml-auto text-sm">
+      <UText className="text-muted font-inter-medium ml-2 text-sm">
         {`${t('version')} ${Constants.expoConfig?.version}`}
       </UText>
     </ScrollView>

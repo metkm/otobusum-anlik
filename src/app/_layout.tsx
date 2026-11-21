@@ -30,8 +30,7 @@ const setUniwindTheme = () => {
 }
 
 const RootContent = () => {
-  const backgroundColor = useCSSVariable('--ui-bg')?.toString()
-  const spacing = useCSSVariable('--spacing') as number
+  const backgroundColor = useCSSVariable('--background-color-default')?.toString()
   const colorScheme = useColorScheme()
 
   const baseTheme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
@@ -58,14 +57,14 @@ const RootContent = () => {
           <MapProvider>
             <NavigationBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
 
-            <Sheet
-              screenOptions={{
-                backgroundColor,
-                grabberOptions: { topMargin: spacing * 2 },
-                style: { flex: 1 },
-              }}
-            >
-              <Sheet.Screen name="(home)" />
+          <Sheet
+            screenOptions={{
+              backgroundColor,
+              style: { flex: 1 },
+            }}
+            activityEnabled
+          >
+            <Sheet.Screen name="(home)" />
 
               <Sheet.Screen
                 name="(sheet)/groups/index"

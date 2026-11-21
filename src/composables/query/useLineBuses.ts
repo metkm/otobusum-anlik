@@ -12,6 +12,7 @@ import { useLineRoutes } from './useLineRoutes'
 
 export const busesQueryOptions = (code: string, city: City) =>
   queryOptions({
+    enabled: !__DEV__,
     queryFn: async () => {
       const data = await fetchBusLocations(code, city)
       return {

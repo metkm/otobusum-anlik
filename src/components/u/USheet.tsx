@@ -14,22 +14,20 @@ interface USheetProps extends TrueSheetProps {
 
 export const USheet = ({ ref, contentContainerClassName, children, ...props }: USheetProps) => {
   const backgroundColor = useCSSVariable('--background-color-default')?.toString()
-  const spacing = useCSSVariable('--spacing') as number
+  const backgroundColorAccented = useCSSVariable('--background-color-accented')?.toString()
 
   return (
     <TrueSheet
       ref={ref}
       backgroundColor={backgroundColor}
-      detents={[0.5, 0.8]}
       style={{ flex: 1 }}
       grabberOptions={{
-        adaptive: true,
-        topMargin: spacing * 2,
+        color: backgroundColorAccented,
       }}
       {...props}
     >
       <StyledGestureHandlerRootView
-        className={cn('flex-1 pb-2', props.header ? 'p-0' : 'pt-5', contentContainerClassName)}
+        className={cn('flex-1 pb-2', props.header ? 'p-0' : 'pt-9', contentContainerClassName)}
       >
         {children}
       </StyledGestureHandlerRootView>

@@ -43,14 +43,3 @@ export const UHeader = ({ icon, title, description, children, className }: UHead
     {children}
   </View>
 )
-
-export const USheetHeader = ({ icon, title, description, children }: UHeaderProps) => (
-  <UHeader
-    icon={icon}
-    title={title}
-    description={description}
-    className="pt-5"
-  >
-    {children}
-  </UHeader>
-)

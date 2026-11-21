@@ -7,8 +7,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Sortable from 'react-native-sortables'
 
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
-import { UButton, UEmpty, UIcon, UInput, UText } from '@/components/u'
+import { UBadge, UButton, UEmpty, UIcon, UInput, UText } from '@/components/u'
 import { useLineGroup } from '@/composables'
+import { GROUP_ITEM_TYPE_LIMIT } from '@/constants/app'
 import { useTransitStore } from '@/stores'
 
 export const GroupIdScreen = () => {
@@ -58,6 +59,7 @@ export const GroupIdScreen = () => {
                 }}
                 size="lg"
                 variant="soft"
+                color="error"
                 block
               />
             )}
@@ -74,10 +76,22 @@ export const GroupIdScreen = () => {
     })
   }, [isSorting, navigation])
 
+  let lineCount = 0
+  let stopCount = 0
+  for (const item of group?.items ?? []) {
+    if (item.type === 'line') {
+      lineCount++
+    } else if (item.type === 'stop') {
+      stopCount++
+    }
+  }
+
   return (
     <View className="gap-8 px-2 pt-8 pb-8">
-      <View className="gap-2">
-        <UText className="font-inter-medium ml-1">{t('groupName', { name: group?.name })}</UText>
+      <View>
+        <UText className="text-muted font-inter-medium ml-1 text-sm">{t('groupName')}</UText>
+        <UText className="font-inter-medium mb-2 ml-1">{group?.name}</UText>
+
         <UInput
           ref={inputRef}
           placeholder={t('newGroupTitlePlaceholder')}
@@ -88,12 +102,31 @@ export const GroupIdScreen = () => {
       </View>
 
       <View>
-        <View className="mb-1 ml-1">
-          <UText className="font-inter-medium">{t('groupItemList')}</UText>
-          <UText className="font-inter-medium text-muted text-sm">
-            {t('groupItemListDescription')}
-          </UText>
+        <View className="mb-1 ml-1 flex-row flex-wrap justify-between gap-2">
+          <View>
+            <UText className="font-inter-medium">{t('groupItemList')}</UText>
+            <UText className="font-inter-medium text-muted text-sm">
+              {t('groupItemListDescription')}
+            </UText>
+          </View>
+
+          <View className="flex-row items-center gap-2">
+            <UBadge
+              icon="bus-front"
+              variant="soft"
+              color="neutral"
+              label={`${lineCount}/${GROUP_ITEM_TYPE_LIMIT}`}
+            />
+
+            <UBadge
+              icon="map-pin"
+              variant="soft"
+              color="neutral"
+              label={`${stopCount}/${GROUP_ITEM_TYPE_LIMIT}`}
+            />
+          </View>
         </View>
+
         {group && group.items.length > 0 ? (
           <GestureHandlerRootView style={{ flexShrink: 0 }}>
             <Sortable.Grid
