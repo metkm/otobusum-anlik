@@ -62,7 +62,6 @@ const RootContent = () => {
                 backgroundColor,
                 style: { flex: 1 },
               }}
-              activityEnabled
             >
               <Sheet.Screen name="(home)" />
 
