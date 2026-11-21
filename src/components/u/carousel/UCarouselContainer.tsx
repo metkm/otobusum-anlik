@@ -59,7 +59,7 @@ export const UCarouselContainer = <T,>({
     viewportWidth,
   })
 
-  const { displayedItems } = useCarouselVirtualization({
+  const { displayItems } = useCarouselVirtualization({
     data,
     drawDistance,
     initialRenderCount,
@@ -100,7 +100,7 @@ export const UCarouselContainer = <T,>({
         style={containerStyle}
       >
         {data.map((item, index) => {
-          const isInRange = index >= displayedItems[0] && index < displayedItems[1]
+          const isInRange = index >= displayItems[0] && index < displayItems[1]
           if (!isInRange) {
             return
           }

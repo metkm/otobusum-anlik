@@ -82,16 +82,11 @@ export const useCarouselVirtualization = <T>({
   useAnimatedReaction(
     () => range.value,
     (current, previous) => {
-      if (!previous) {
+      if (viewportWidth.value === 0) {
         return
       }
 
-      if (current[0] === previous?.[0] && current[1] === previous[1]) {
-        return
-      }
-
-      if (previous[0] === 0 && previous[1] === 0) {
-        scheduleOnRN(setDisplayItems, initialRange)
+      if (previous && current[0] === previous[0] && current[1] === previous[1]) {
         return
       }
 
@@ -99,10 +94,9 @@ export const useCarouselVirtualization = <T>({
     },
   )
 
-  const items = displayItems
+  console.log('rerender', displayItems)
 
   return {
-    displayedItems: items,
-    range: [],
+    displayItems,
   }
 }

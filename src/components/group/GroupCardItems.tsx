@@ -15,9 +15,10 @@ import type { RenderItem as CarouselRenderItem } from '../u/carousel/UCarousel'
 
 interface GroupCardItemsProps {
   filter?: GroupItemType
+  drawDistance?: number
 }
 
-export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
+export const GroupCardItems = ({ filter, drawDistance }: GroupCardItemsProps) => {
   const { group } = useLineGroup()
   const { onLayout } = useMapPadding('overlayGroupItems', 'bottom')
 
@@ -62,7 +63,7 @@ export const GroupCardItems = ({ filter }: GroupCardItemsProps) => {
           viewport: growClass,
         }}
         initialRenderCount={2}
-        drawDistance={1}
+        drawDistance={drawDistance ?? 1}
       />
     </CarouselCardHeightProvider>
   )

@@ -51,7 +51,7 @@ const LineTimetables = () => {
       )}
       ui={{ container: 'flex-1', item: 'top-0 bottom-0', viewport: 'flex-1 mt-2' }}
       initialRenderCount={2}
-      drawDistance={1}
+      drawDistance={8}
       getFixedItemSize={() => cardWidth}
     />
   )
@@ -60,7 +60,10 @@ const LineTimetables = () => {
 export const TimetableScreen = () => (
   <View className="pt-safe-offset-2 pb-nav-offset-2 px-safe grow">
     <CarouselProvider>
-      <GroupCardItems filter="line" />
+      <GroupCardItems
+        filter="line"
+        drawDistance={8}
+      />
       <LineTimetables />
     </CarouselProvider>
   </View>
