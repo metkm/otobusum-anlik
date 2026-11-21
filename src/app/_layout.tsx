@@ -57,14 +57,14 @@ const RootContent = () => {
           <MapProvider>
             <NavigationBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
 
-          <Sheet
-            screenOptions={{
-              backgroundColor,
-              style: { flex: 1 },
-            }}
-            activityEnabled
-          >
-            <Sheet.Screen name="(home)" />
+            <Sheet
+              screenOptions={{
+                backgroundColor,
+                style: { flex: 1 },
+              }}
+              activityEnabled
+            >
+              <Sheet.Screen name="(home)" />
 
               <Sheet.Screen
                 name="(sheet)/groups/index"
