@@ -193,7 +193,7 @@ export const SearchScreen = () => {
             keyExtractor={(item) => item.id.toString()}
             className="flex-1"
             contentContainerStyle={{ gap: 8, padding: 8 }}
-            contentContainerClassName="pb-nav"
+            contentContainerClassName="pb-nav-offset-2"
             recycleItems
           />
         )}
