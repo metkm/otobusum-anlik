@@ -11,13 +11,16 @@ import {
 } from 'react-native-reanimated'
 
 import { CarouselContext } from '@/components/provider/CarouselProvider'
-import { dampen } from '@/utils/math'
+import { alignCenter, dampen } from '@/utils/math'
 
 interface CarouselGestureOptions {
-  containerWidth: SharedValue<number>
+  containerWidth: number
   viewportWidth: SharedValue<number>
-  snapPoints: SharedValue<number[]>
+  dataLength: number
+  itemWidth: number
   enabled?: boolean
+  gap: number
+  paddingStart: number
 }
 
 const getClosestSnap = (offset: number, snaps: number[]) => {
@@ -31,26 +34,38 @@ const getClosestSnap = (offset: number, snaps: number[]) => {
 export const useCarouselGesture = ({
   containerWidth,
   viewportWidth,
-  snapPoints,
+  dataLength,
+  itemWidth,
+  gap,
+  paddingStart,
   enabled = true,
 }: CarouselGestureOptions) => {
-  'worklet'
-  const carouselContext = use(CarouselContext)
+  'use no memo'
+
+  const ctx = use(CarouselContext)
 
   const localOffset = useSharedValue(0)
-  const offset = carouselContext?.offset ?? localOffset
+  const offset = ctx?.offset ?? localOffset
 
   const offsetStart = useSharedValue(0)
 
-  const limits = useDerivedValue(
-    () => [-(containerWidth.value - viewportWidth.value), 0] satisfies [number, number],
-  )
+  const limits = useDerivedValue<[number, number]>(() => [
+    -(containerWidth - viewportWidth.value),
+    0,
+  ])
 
   const snap = () => {
     'worklet'
 
-    const snap = getClosestSnap(offset.value, snapPoints.value)
-    const clamped = clamp(snap, -(containerWidth.value - viewportWidth.value), 0)
+    const points = Array.from({ length: dataLength }, (_, index) => {
+      'worklet'
+
+      const offsetFromStart = index * itemWidth + index * gap + paddingStart
+      return -offsetFromStart + alignCenter(viewportWidth.value, itemWidth)
+    })
+
+    const snap = getClosestSnap(offset.value, points)
+    const clamped = clamp(snap, -(containerWidth - viewportWidth.value), 0)
 
     offset.set(withSpring(clamped))
   }
@@ -86,7 +101,7 @@ export const useCarouselGesture = ({
   })
 
   useAnimatedReaction(
-    () => containerWidth.value,
+    () => containerWidth,
     (current, previous) => {
       if (previous && current < previous) {
         snap()

@@ -158,10 +158,6 @@
   border-bottom-width: hairlineWidth();
 }
 
-@utility pb-nav {
-  padding-bottom: calc(var(--navigation-height) + env(safe-area-inset-bottom));
-}
-
 @utility pb-nav-offset-2 {
   padding-bottom: calc(var(--navigation-height) + var(--spacing) * 2);
 }

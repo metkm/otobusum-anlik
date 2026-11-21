@@ -9,6 +9,7 @@ import { useLineNews, useLineRoutes, useLineTimetable } from '@/composables/quer
 import { LayoutAnimationTransition } from '@/constants/animation'
 import { useFilterStore } from '@/stores'
 import type { City } from '@/types/city'
+import type { OnLayoutFunction } from '@/types/shared'
 import type { Time } from '@/types/timetable'
 import { cn } from '@/utils/cn'
 import { groupDeparturesByHour } from '@/utils/groupDepartures'
@@ -33,9 +34,10 @@ const nowDay = now.getDay()
 
 interface LineTimetableProps {
   className?: string
+  onLayout?: OnLayoutFunction
 }
 
-export const LineTimetable = ({ className }: LineTimetableProps) => {
+export const LineTimetable = ({ className, onLayout }: LineTimetableProps) => {
   const { t } = useTranslation()
 
   const city = useFilterStore(useShallow((state) => state.city))
@@ -157,9 +159,9 @@ export const LineTimetable = ({ className }: LineTimetableProps) => {
 
   return (
     <Animated.View
-      layout={LayoutAnimationTransition}
+      onLayout={onLayout}
       className={cn(
-        'bg-default border-hairline border-muted rounded-md overflow-hidden',
+        'bg-default border-hairline border-muted rounded-md overflow-hidden grow',
         className,
       )}
     >
@@ -233,6 +235,7 @@ export const LineTimetable = ({ className }: LineTimetableProps) => {
               className="grow"
             />
           }
+          className="flex-1"
         />
       </UQueryState>
     </Animated.View>

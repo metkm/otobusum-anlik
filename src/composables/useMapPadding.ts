@@ -1,15 +1,15 @@
 import { useCallback, useEffect } from 'react'
-import type { LayoutChangeEvent } from 'react-native'
 
 import type { Padding } from '@/components/provider/MapProvider'
+import type { OnLayoutFunction } from '@/types/shared'
 
 import { useMap } from './useMap'
 
 export const useMapPadding = (id: string, edge: keyof Padding) => {
   const { registerPadding, unRegisterPadding } = useMap()
 
-  const onLayout = useCallback(
-    (event: LayoutChangeEvent) => {
+  const onLayout = useCallback<OnLayoutFunction>(
+    (event) => {
       const { width, height } = event.nativeEvent.layout
 
       const value = edge === 'top' || edge === 'bottom' ? height : width
