@@ -29,6 +29,7 @@ export interface UCarouselProps<T> {
   initialRenderCount: number
   drawDistance: number
   onLayout?: OnLayoutFunction
+  enabled?: boolean
 }
 
 export const UCarousel = <T,>({
@@ -39,6 +40,7 @@ export const UCarousel = <T,>({
   initialRenderCount,
   drawDistance,
   onLayout,
+  enabled,
   ui: _ui,
 }: UCarouselProps<T>) => {
   const { viewport: uiViewport, container: uiContainer, item: uiItem } = ui()
@@ -66,6 +68,7 @@ export const UCarousel = <T,>({
           itemClassName={cn(uiItem(), _ui?.item)}
           viewportWidth={viewportWidth}
           contentContainerStyle={{ gap: 8, paddingHorizontal: 8 }}
+          enabled={enabled}
         />
       </Animated.View>
     </CarouselStateProvider>

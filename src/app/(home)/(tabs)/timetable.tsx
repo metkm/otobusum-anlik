@@ -53,6 +53,7 @@ const LineTimetables = () => {
       initialRenderCount={2}
       drawDistance={8}
       getFixedItemSize={() => cardWidth}
+      enabled={items.length > 1}
     />
   )
 }
@@ -64,6 +65,7 @@ export const TimetableScreen = () => (
         filter="line"
         drawDistance={8}
       />
+
       <LineTimetables />
     </CarouselProvider>
   </View>

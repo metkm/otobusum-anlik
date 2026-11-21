@@ -25,6 +25,7 @@ interface UCarouselContainerProps<T> {
   contentContainerStyle?: StyleProps
   keyExtractor: (item: T) => string
   renderItem: RenderItem<T>
+  enabled?: boolean
 }
 
 export const UCarouselContainer = <T,>({
@@ -38,6 +39,7 @@ export const UCarouselContainer = <T,>({
   contentContainerStyle,
   keyExtractor,
   renderItem,
+  enabled = true
 }: UCarouselContainerProps<T>) => {
   const { itemDimensions } = useCarouselState()
 
@@ -53,10 +55,11 @@ export const UCarouselContainer = <T,>({
   const { gesture, offset } = useCarouselGesture({
     containerWidth,
     dataLength: data.length,
+    enabled,
     gap,
     itemWidth: itemSize,
     paddingStart: paddingHorizontal,
-    viewportWidth,
+    viewportWidth
   })
 
   const { displayItems } = useCarouselVirtualization({

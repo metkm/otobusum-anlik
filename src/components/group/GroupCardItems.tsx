@@ -64,6 +64,7 @@ export const GroupCardItems = ({ filter, drawDistance, shouldGrow }: GroupCardIt
         }}
         initialRenderCount={2}
         drawDistance={drawDistance ?? 1}
+        enabled={items.length > 1}
       />
     </CarouselCardHeightProvider>
   )
