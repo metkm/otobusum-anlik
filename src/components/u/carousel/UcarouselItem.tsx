@@ -1,10 +1,10 @@
 import type { LayoutChangeEvent } from 'react-native'
 import Animated, { useAnimatedStyle, type SharedValue } from 'react-native-reanimated'
 
-import { useCarouselState } from '@/composables/useCarouselState'
 import { LayoutAnimationTransition } from '@/constants/animation'
 
 import type { RenderItem } from './UCarousel'
+import type { ItemDimensions } from './UCarouselContainer'
 
 interface UCarouselItemProps<T> {
   className?: string
@@ -16,6 +16,7 @@ interface UCarouselItemProps<T> {
   itemKey: string
   item: T
   renderItem: RenderItem<T>
+  itemDimensions: SharedValue<ItemDimensions>
 }
 
 export const UCarouselItem = <T,>({
@@ -28,9 +29,8 @@ export const UCarouselItem = <T,>({
   itemKey,
   renderItem,
   item,
+  itemDimensions,
 }: UCarouselItemProps<T>) => {
-  const { itemDimensions } = useCarouselState()
-
   const style = useAnimatedStyle(() => {
     const dimensions = itemDimensions.value[itemKey]
 

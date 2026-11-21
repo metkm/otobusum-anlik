@@ -176,7 +176,7 @@ export const NearbyScreen = () => {
         cam?.fitBounds(initialBounds.current, { duration: 750 })
       }
     }
-  }, [polygonCollection?.features, map.current, fitBounds, camera, insets.bottom])
+  }, [polygonCollection?.features, map, fitBounds, camera, insets.bottom])
 
   useEffect(() => {
     navigation.setOptions({
