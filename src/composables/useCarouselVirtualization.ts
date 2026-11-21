@@ -94,8 +94,6 @@ export const useCarouselVirtualization = <T>({
     },
   )
 
-  console.log('rerender', displayItems)
-
   return {
     displayItems,
   }

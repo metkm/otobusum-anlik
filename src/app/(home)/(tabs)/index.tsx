@@ -39,7 +39,7 @@ export const HomeScreen = () => {
 
       <Overlay>
         <OverlayMapButtons />
-        <GroupCardItems />
+        <GroupCardItems shouldGrow={hideMap} />
       </Overlay>
     </View>
   )

@@ -16,20 +16,18 @@ import type { RenderItem as CarouselRenderItem } from '../u/carousel/UCarousel'
 interface GroupCardItemsProps {
   filter?: GroupItemType
   drawDistance?: number
+  shouldGrow?: boolean
 }
 
-export const GroupCardItems = ({ filter, drawDistance }: GroupCardItemsProps) => {
+export const GroupCardItems = ({ filter, drawDistance, shouldGrow }: GroupCardItemsProps) => {
   const { group } = useLineGroup()
   const { onLayout } = useMapPadding('overlayGroupItems', 'bottom')
-
   const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
 
   const items = (filter ? group?.items.filter((item) => item.type === filter) : group?.items) ?? []
 
   const cardWidthModifier = items.length > 1 ? 0.94 : 1
   const cardWidth = Dimensions.get('window').width * cardWidthModifier - 16
-
-  const growClass = hideMap ? 'flex-1' : undefined
 
   const renderItem: CarouselRenderItem<GroupItem> = ({ item }, onLayout) => {
     if (item.type === 'stop') {
@@ -48,6 +46,8 @@ export const GroupCardItems = ({ filter, drawDistance }: GroupCardItemsProps) =>
       </GroupItemContext>
     )
   }
+
+  const growClass = shouldGrow ? 'flex-1' : undefined
 
   return (
     <CarouselCardHeightProvider>
