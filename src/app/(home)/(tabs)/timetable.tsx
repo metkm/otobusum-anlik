@@ -3,9 +3,9 @@ import { Dimensions, View } from 'react-native'
 
 import { GroupCardItems } from '@/components/group/GroupCardItems'
 import { LineTimetable } from '@/components/line/LineTimetable'
-import { CarouselProvider } from '@/components/provider/CarouselProvider'
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
 import { UButton, UCarousel, UEmpty } from '@/components/u'
+import { UCarouselRoot } from '@/components/u/carousel/UCarousel'
 import { useLineGroup } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'
 
@@ -60,14 +60,14 @@ const LineTimetables = () => {
 
 export const TimetableScreen = () => (
   <View className="pt-safe-offset-2 pb-nav-offset-2 px-safe grow">
-    <CarouselProvider>
+    <UCarouselRoot>
       <GroupCardItems
         filter="line"
         drawDistance={8}
       />
 
       <LineTimetables />
-    </CarouselProvider>
+    </UCarouselRoot>
   </View>
 )
 

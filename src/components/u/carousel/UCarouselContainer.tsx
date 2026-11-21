@@ -2,13 +2,12 @@ import { useEffect } from 'react'
 import { GestureDetector } from 'react-native-gesture-handler'
 import Animated, {
   useAnimatedStyle,
+  useSharedValue,
   type SharedValue,
   type StyleProps,
 } from 'react-native-reanimated'
 
-import { useCarouselGesture } from '@/composables/useCarouselGesture'
-import { useCarouselState } from '@/composables/useCarouselState'
-import { useCarouselVirtualization } from '@/composables/useCarouselVirtualization'
+import { useCarouselVirtualization, useCarouselGesture } from '@/composables'
 import { LayoutAnimationTransition } from '@/constants/animation'
 
 import type { RenderItem } from './UCarousel'
@@ -28,6 +27,13 @@ interface UCarouselContainerProps<T> {
   enabled?: boolean
 }
 
+export interface ItemDimension {
+  width: number
+  height: number
+}
+
+export type ItemDimensions = Record<string, ItemDimension>
+
 export const UCarouselContainer = <T,>({
   data,
   className,
@@ -41,8 +47,6 @@ export const UCarouselContainer = <T,>({
   renderItem,
   enabled = true,
 }: UCarouselContainerProps<T>) => {
-  const { itemDimensions } = useCarouselState()
-
   const gap =
     typeof contentContainerStyle?.gap === 'undefined' ? 0 : Number(contentContainerStyle.gap)
   const paddingHorizontal =
@@ -51,6 +55,8 @@ export const UCarouselContainer = <T,>({
       : Number(contentContainerStyle.paddingHorizontal)
 
   const containerWidth = itemSize * data.length + gap * (data.length - 1) + paddingHorizontal * 2
+
+  const itemDimensions = useSharedValue<ItemDimensions>({})
 
   const { gesture, offset } = useCarouselGesture({
     containerWidth,
@@ -122,6 +128,7 @@ export const UCarouselContainer = <T,>({
               itemKey={key}
               item={item}
               renderItem={renderItem}
+              itemDimensions={itemDimensions}
             />
           )
         })}

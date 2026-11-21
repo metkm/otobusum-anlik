@@ -1,11 +1,11 @@
-import type { ReactNode } from 'react'
+import { use, type ReactNode } from 'react'
 import Animated, { useSharedValue } from 'react-native-reanimated'
 
+import { CarouselContext, CarouselProvider } from '@/components/provider/CarouselProvider'
 import { LayoutAnimationTransition } from '@/constants/animation'
 import type { OnLayoutFunction } from '@/types/shared'
 import { cn, tv } from '@/utils/cn'
 
-import { CarouselStateProvider } from '../../provider/CarouselStateProvider'
 import { UCarouselContainer } from './UCarouselContainer'
 
 const ui = tv({
@@ -32,6 +32,16 @@ export interface UCarouselProps<T> {
   enabled?: boolean
 }
 
+export const UCarouselRoot = ({ children }: { children: ReactNode }) => {
+  const context = use(CarouselContext)
+
+  if (context) {
+    return children
+  }
+
+  return <CarouselProvider>{children}</CarouselProvider>
+}
+
 export const UCarousel = <T,>({
   data,
   renderItem,
@@ -48,7 +58,7 @@ export const UCarousel = <T,>({
   const viewportWidth = useSharedValue(0)
 
   return (
-    <CarouselStateProvider>
+    <UCarouselRoot>
       <Animated.View
         layout={LayoutAnimationTransition}
         className={cn(uiViewport(), _ui?.viewport)}
@@ -71,6 +81,6 @@ export const UCarousel = <T,>({
           enabled={enabled}
         />
       </Animated.View>
-    </CarouselStateProvider>
+    </UCarouselRoot>
   )
 }

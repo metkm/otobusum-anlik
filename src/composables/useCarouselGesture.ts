@@ -1,4 +1,3 @@
-import { use } from 'react'
 import { usePanGesture } from 'react-native-gesture-handler'
 import {
   clamp,
@@ -10,8 +9,9 @@ import {
   type SharedValue,
 } from 'react-native-reanimated'
 
-import { CarouselContext } from '@/components/provider/CarouselProvider'
 import { alignCenter, dampen } from '@/utils/math'
+
+import { useCarousel } from './useCarousel'
 
 interface CarouselGestureOptions {
   containerWidth: number
@@ -42,11 +42,7 @@ export const useCarouselGesture = ({
 }: CarouselGestureOptions) => {
   'use no memo'
 
-  const ctx = use(CarouselContext)
-
-  const localOffset = useSharedValue(0)
-  const offset = ctx?.offset ?? localOffset
-
+  const { offset } = useCarousel()
   const offsetStart = useSharedValue(0)
 
   const limits = useDerivedValue<[number, number]>(() => [
