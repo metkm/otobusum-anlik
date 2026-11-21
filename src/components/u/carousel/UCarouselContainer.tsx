@@ -39,7 +39,7 @@ export const UCarouselContainer = <T,>({
   contentContainerStyle,
   keyExtractor,
   renderItem,
-  enabled = true
+  enabled = true,
 }: UCarouselContainerProps<T>) => {
   const { itemDimensions } = useCarouselState()
 
@@ -59,7 +59,7 @@ export const UCarouselContainer = <T,>({
     gap,
     itemWidth: itemSize,
     paddingStart: paddingHorizontal,
-    viewportWidth
+    viewportWidth,
   })
 
   const { displayItems } = useCarouselVirtualization({
