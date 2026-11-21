@@ -140,6 +140,13 @@ export const GroupsScreen = () => {
             </View>
           )}
 
+          <UBadge
+            label={t('groups')}
+            icon="component"
+            color="neutral"
+            className="mb-2"
+          />
+
           <Animated.View layout={LayoutAnimationTransition}>
             {groups.map((group) => (
               <Animated.View

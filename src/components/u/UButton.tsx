@@ -153,37 +153,6 @@ const ui = tv({
   },
 })
 
-const Icon = ({
-  colorClassName,
-  sizeClassName,
-  loading,
-  icon,
-}: {
-  icon?: IconName
-  colorClassName: string
-  sizeClassName: string
-  loading?: boolean
-}) => {
-  if (loading) {
-    return (
-      <UActivityIndicator
-        colorClassName={colorClassName}
-        sizeClassName={sizeClassName}
-      />
-    )
-  }
-
-  if (icon) {
-    return (
-      <UIcon
-        name={icon}
-        sizeClassName={sizeClassName}
-        colorClassName={colorClassName}
-      />
-    )
-  }
-}
-
 interface UButtonProps extends VariantProps<typeof ui>, TouchableProps {
   label?: string
   icon?: IconName
@@ -191,14 +160,14 @@ interface UButtonProps extends VariantProps<typeof ui>, TouchableProps {
   to?: Href
   disabled?: boolean
   loading?: boolean
-  labelClassName?: string
 }
 
 interface ButtonContext {
   labelClassName: string
+  iconClassName: string
 }
 
-const ButtonContext = createContext<ButtonContext | undefined>(undefined)
+const UButtonContext = createContext<ButtonContext | undefined>(undefined)
 
 export const UButton = ({
   label,
@@ -214,7 +183,6 @@ export const UButton = ({
   style,
   disabled,
   loading,
-  labelClassName,
   ...props
 }: UButtonProps) => {
   const router = useRouter()
@@ -233,8 +201,26 @@ export const UButton = ({
     router.push(to)
   }
 
+  const content = () => {
+    if (children) {
+      return children
+    }
+
+    if (label) {
+      return (
+        <UText
+          className={uiLabel()}
+          numberOfLines={1}
+        >
+          {label}
+        </UText>
+      )
+    }
+  }
+
   return (
-    <ButtonContext value={{ labelClassName: uiLabel() }}>
+    // oxlint-disable-next-line react/jsx-no-constructed-context-values
+    <UButtonContext value={{ iconClassName: uiIcon(), labelClassName: uiLabel() }}>
       <StyledTouchable
         className={cn(uiBase(), className)}
         onPress={handlePress}
@@ -245,23 +231,22 @@ export const UButton = ({
         disabled={disabled}
         {...props}
       >
-        <Icon
-          colorClassName={uiIcon()}
-          sizeClassName={uiIcon()}
-          icon={icon}
-          loading={loading}
-        />
-
-        {children}
-
-        {label && (
-          <UText
-            className={cn(uiLabel(), labelClassName)}
-            numberOfLines={1}
-          >
-            {label}
-          </UText>
+        {loading ? (
+          <UActivityIndicator
+            colorClassName={uiIcon()}
+            sizeClassName={uiIcon()}
+          />
+        ) : (
+          icon && (
+            <UIcon
+              name={icon}
+              sizeClassName={uiIcon()}
+              colorClassName={uiIcon()}
+            />
+          )
         )}
+
+        {content()}
 
         {trailingIcon && (
           <UIcon
@@ -272,21 +257,33 @@ export const UButton = ({
           />
         )}
       </StyledTouchable>
-    </ButtonContext>
+    </UButtonContext>
   )
 }
 
-const ButtonText = ({ className, children, ...props }: ComponentProps<typeof UText>) => {
-  const context = use(ButtonContext)
+const UButtonText = ({ className, ...props }: ComponentProps<typeof UText>) => {
+  const context = use(UButtonContext)
 
   return (
     <UText
       className={cn(context?.labelClassName, className)}
+      numberOfLines={1}
       {...props}
-    >
-      {children}
-    </UText>
+    />
   )
 }
 
-UButton.Text = ButtonText
+const UButtonIcon = (props: ComponentProps<typeof UIcon>) => {
+  const context = use(UButtonContext)
+
+  return (
+    <UIcon
+      sizeClassName={context?.iconClassName}
+      colorClassName={context?.iconClassName}
+      {...props}
+    />
+  )
+}
+
+UButton.Text = UButtonText
+UButton.Icon = UButtonIcon

@@ -59,7 +59,10 @@ const RenderItemLine = ({ item }: { item: Line }) => {
         onPress={addLineAndZoom}
         className="flex-1"
       >
-        <UBadge label={item.code} />
+        <View className="flex-row items-center gap-2">
+          <UBadge label={item.code} />
+          <UButton.Text>{item.name}</UButton.Text>
+        </View>
       </UButton>
 
       <UButton

@@ -31,14 +31,15 @@ const ToggleSetting = ({
   onPress: () => void
 }) => (
   <UButton
-    label={label}
     color="neutral"
     variant="ghost"
     size="lg"
     onPress={onPress}
-    className="flex-row-reverse justify-between"
   >
-    <USwitch value={value} />
+    <View className="flex-1 flex-row items-center justify-between">
+      <UButton.Text>{label}</UButton.Text>
+      <USwitch value={value} />
+    </View>
   </UButton>
 )
 

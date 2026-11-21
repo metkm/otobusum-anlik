@@ -1,21 +1,21 @@
+import type { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { t } from 'i18next'
-import { useState } from 'react'
-import { Modal, View } from 'react-native'
-import { GestureHandlerRootView, Pressable } from 'react-native-gesture-handler'
-import ColorPicker, { type ColorFormatsObject, Panel3, Preview } from 'reanimated-color-picker'
+import { useRef } from 'react'
+import { View } from 'react-native'
+import ColorPicker, { type ColorFormatsObject, Panel2, Preview } from 'reanimated-color-picker'
 import { useCSSVariable, withUniwind } from 'uniwind'
 
-import { UButton } from '@/components/u'
+import { UBadge, UButton, USheet } from '@/components/u'
 import { useGroupItem } from '@/composables'
 import { useThemeStore } from '@/stores'
 
 const StyledColorPicker = withUniwind(ColorPicker)
-const StyledPressable = withUniwind(Pressable)
 
 export const LineModalsColorPicker = () => {
-  const [isVisible, setIsVisible] = useState(false)
   const { code } = useGroupItem()
   const primaryColor = useCSSVariable('--color-primary')?.toString()
+
+  const colorPickerRef = useRef<TrueSheet>(null)
 
   const onSelectColor = ({ hsl }: ColorFormatsObject) => {
     const [_h, _s, _l] = hsl.match(/\d+/g) as [string, string, string]
@@ -24,47 +24,57 @@ export const LineModalsColorPicker = () => {
     useThemeStore.getState().createTheme(code, true, _hsl)
   }
 
-  const close = () => {
-    setIsVisible(false)
-  }
-
   return (
     <>
       <UButton
-        label={t('colorPicker')}
-        onPress={() => setIsVisible(true)}
+        onPress={() => void colorPickerRef.current?.present()}
         size="lg"
         variant="soft"
       >
-        <View className="bg-primary size-4 rounded-md" />
+        <View className="flex-row items-center gap-2">
+          <View className="bg-primary size-4 rounded-md" />
+          <UButton.Text>{t('colorPicker')}</UButton.Text>
+        </View>
       </UButton>
 
-      <Modal
-        visible={isVisible}
-        onRequestClose={close}
-        transparent
+      <USheet
+        ref={colorPickerRef}
+        detents={['auto']}
       >
-        <GestureHandlerRootView>
-          <StyledPressable
-            onPress={close}
-            className="flex-1 items-center justify-center bg-black/50"
+        <View className="mx-auto w-full max-w-xs gap-2">
+          <StyledColorPicker
+            className="mx-auto w-full gap-2"
+            onCompleteJS={onSelectColor}
+            value={primaryColor}
           >
-            <View className="bg-default w-full max-w-xs rounded-md p-4">
-              <StyledColorPicker
-                className="gap-2"
-                onCompleteJS={onSelectColor}
-                value={primaryColor}
-              >
-                <Preview
-                  hideInitialColor
-                  textStyle={{ fontFamily: 'Inter-Medium', fontWeight: 'medium' }}
-                />
-                <Panel3 />
-              </StyledColorPicker>
-            </View>
-          </StyledPressable>
-        </GestureHandlerRootView>
-      </Modal>
+            <Preview
+              hideInitialColor
+              textStyle={{ fontFamily: 'Inter-Medium', fontWeight: 'medium' }}
+            />
+
+            <Panel2 />
+          </StyledColorPicker>
+
+          <View className="flex-row justify-center gap-2">
+            <UBadge
+              icon="bus-front"
+              label={code}
+            />
+
+            <UBadge
+              variant="soft"
+              icon="bus-front"
+              label={code}
+            />
+
+            <UBadge
+              variant="ghost"
+              icon="bus-front"
+              label={code}
+            />
+          </View>
+        </View>
+      </USheet>
     </>
   )
 }

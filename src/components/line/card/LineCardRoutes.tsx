@@ -1,5 +1,6 @@
 import { LegendList, type LegendListRef } from '@legendapp/list/react-native'
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
+import { t } from 'i18next'
 import { useRef } from 'react'
 import { View } from 'react-native'
 import { useShallow } from 'zustand/react/shallow'
@@ -27,28 +28,35 @@ const RouteItem = ({
     void TrueSheet.dismissAll()
   }
 
-  const variant = isSelected ? 'soft' : 'ghost'
   const badgeVariant = isSelected ? 'soft' : 'outline'
+  const variant = isSelected ? 'soft' : 'ghost'
   const color = isSelected ? 'primary' : 'neutral'
+
+  const [from, to] = item.name.split('-')
 
   return (
     <UButton
       label={item.name}
       onPress={handlePress}
-      className="flex-col items-start justify-start"
       variant={variant}
       color={color}
     >
-      <View className="flex-row justify-center gap-2">
+      <View className="grow flex-row items-center justify-between gap-2">
+        <View>
+          <View className="flex-row items-center">
+            <UButton.Text>{from}</UButton.Text>
+            <UButton.Icon name="arrow-right" />
+            <UButton.Text>{to}</UButton.Text>
+          </View>
+
+          <UButton.Text className="text-xs opacity-75">
+            {item.code.split('_').slice(1).join('_')}
+          </UButton.Text>
+        </View>
+
         <UBadge
           icon="bus-front"
           label={busCount.toString()}
-          variant={badgeVariant}
-          color={color}
-        />
-
-        <UBadge
-          label={item.code.split('_').slice(1).join('_')}
           variant={badgeVariant}
           color={color}
         />
@@ -62,6 +70,7 @@ export const LineCardRoutes = () => {
   const scrollableRef = useRef<LegendListRef>(null)
 
   const changeRouteDirection = useTransitStore(useShallow((state) => state.changeRouteDirection))
+
   const { code } = useGroupItem()
   const { query: routesQuery, route, routeCode, otherDirectionRoute } = useLineRoutes()
   const { buses, query: busesQuery } = useLineBuses()
@@ -128,6 +137,13 @@ export const LineCardRoutes = () => {
           ref={routeSheet}
           scrollableRef={scrollableRef}
         >
+          <UBadge
+            label={t('routes')}
+            icon="route"
+            variant="ghost"
+            className="mr-auto mb-2 ml-2"
+          />
+
           <LegendList
             ref={scrollableRef}
             data={sortedRoutes}
@@ -141,7 +157,7 @@ export const LineCardRoutes = () => {
             extraData={routeCode}
             keyExtractor={(item) => item.id.toString()}
             contentContainerClassName="px-2"
-            getFixedItemSize={() => 74.3}
+            getFixedItemSize={() => 48.6}
             recycleItems
           />
         </USheet>

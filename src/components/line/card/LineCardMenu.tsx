@@ -97,6 +97,14 @@ export const LineCardMenu = () => {
           scrollableRef={scrollableRef}
           detents={['auto']}
         >
+          <UBadge
+            label={t('news')}
+            icon="newspaper"
+            variant="ghost"
+            color="neutral"
+            className="mr-auto mb-2 ml-2"
+          />
+
           <LegendList
             ref={scrollableRef}
             data={news}
