@@ -16,9 +16,7 @@ import {
   UButton,
   UActivityIndicator,
   UEmpty,
-  UHeader,
   UQueryState,
-  UText,
 } from '@/components/u'
 import { useMapCollection, useMap } from '@/composables'
 import { useTransitNearby } from '@/composables/query'
@@ -225,13 +223,7 @@ export const NearbyScreen = () => {
           {query.data && query.data.stops.length > 0 && (
             <View className="gap-2">
               <TrueSheetPeek>
-                <UHeader
-                  icon="map-pin"
-                  title={t('stops')}
-                  description={t('nearbyStops')}
-                >
-                  <UText>{query.data.stops.length}</UText>
-                </UHeader>
+                <UBadge label={t('stops')} icon="map-pin" variant="ghost" color="neutral" />
               </TrueSheetPeek>
 
               {query.data.stops.map((stop) => (
@@ -243,7 +235,8 @@ export const NearbyScreen = () => {
                   color="neutral"
                   trailingIcon="chevron-right"
                 >
-                  <UBadge icon="map-pin" />
+                  <UBadge icon="map-pin"  />
+                  <UButton.Text>{stop.name}</UButton.Text>
                 </UButton>
               ))}
             </View>
@@ -253,22 +246,10 @@ export const NearbyScreen = () => {
             <View className="gap-2">
               {query.data.stops.length === 0 ? (
                 <TrueSheetPeek>
-                  <UHeader
-                    icon="route"
-                    title={t('routes')}
-                    description={t('routesPassingThisPoint')}
-                  >
-                    <UText>{query.data.routes.length}</UText>
-                  </UHeader>
+                  <UBadge label={t('routes')} icon="route" variant="ghost" color="neutral" />
                 </TrueSheetPeek>
               ) : (
-                <UHeader
-                  icon="route"
-                  title={t('routes')}
-                  description={t('routesPassingThisPoint')}
-                >
-                  <UText>{query.data.routes.length}</UText>
-                </UHeader>
+                <UBadge label={t('routes')} icon="route" variant="ghost" color="neutral" />
               )}
 
               {query.data.routes.map((route, index) => (
@@ -280,25 +261,23 @@ export const NearbyScreen = () => {
                   }}
                   variant="ghost"
                   color="neutral"
-                  trailingIcon="arrow-right"
+                  trailingIcon="chevron-right"
                 >
                   <View className="shrink flex-row items-center gap-2">
                     <ScopedVariables
                       variables={{
-                        '--color-primary': colors
-                          ? hexFromArgb(colors[index]!.schemes.dark.primary)
-                          : '',
+                        '--color-primary': colors?.at(index)?.schemes.dark.primary ?? ''
                       }}
                     >
                       <UBadge label={route.line_code} />
                     </ScopedVariables>
 
-                    <UText
+                    <UButton.Text
                       className="font-inter-medium shrink text-sm"
                       numberOfLines={1}
                     >
                       {route.name}
-                    </UText>
+                    </UButton.Text>
                   </View>
                 </UButton>
               ))}

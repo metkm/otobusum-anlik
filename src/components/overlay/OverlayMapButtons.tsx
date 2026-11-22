@@ -97,7 +97,7 @@ export const OverlayMapButtons = (props: ViewProps) => {
       {...props}
     >
       {(bearing !== 0 || pitch !== 0) && (
-        <UNativeGestureHandlerRootView>
+        <UNativeGestureHandlerRootView className="shrink-0">
           <AnimatedUButton
             icon="compass"
             size="lg"
