@@ -13,7 +13,7 @@ import { LayoutAnimationTransition } from '@/constants/animation'
 import { useFilterStore, useSettingsStore, useThemeStore, useTransitStore } from '@/stores'
 import { getLatLngBounds } from '@/utils/bounds'
 
-import { LineModalsColorPicker } from '../modals/ColorPicker'
+import { LineColorPicker } from '../LineColorPicker'
 
 export const LineCardMenu = () => {
   const { code } = useGroupItem()
@@ -163,7 +163,7 @@ export const LineCardMenu = () => {
             className="grow"
           />
 
-          <LineModalsColorPicker />
+          <LineColorPicker />
         </View>
 
         <UButton

@@ -11,7 +11,7 @@ import { useThemeStore } from '@/stores'
 
 const StyledColorPicker = withUniwind(ColorPicker)
 
-export const LineModalsColorPicker = () => {
+export const LineColorPicker = () => {
   const { code } = useGroupItem()
   const primaryColor = useCSSVariable('--color-primary')?.toString()
 
