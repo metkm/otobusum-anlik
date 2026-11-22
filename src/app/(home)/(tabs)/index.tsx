@@ -10,7 +10,7 @@ import { GroupsMarkers } from '@/components/group/GroupsMarkers'
 import { MapTemporaryMarkers } from '@/components/MapTemporaryMarkers'
 import { Overlay } from '@/components/overlay/Overlay'
 import { OverlayMapButtons } from '@/components/overlay/OverlayMapButtons'
-import { UMap } from '@/components/u/Map'
+import { UMap } from '@/components/u/UMap'
 import { useMapStyle } from '@/composables/useMapStyle'
 import { useSettingsStore } from '@/stores'
 
