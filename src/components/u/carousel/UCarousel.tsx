@@ -11,8 +11,9 @@ import { UCarouselContainer } from './UCarouselContainer'
 const ui = tv({
   slots: {
     container: 'flex-row h-full w-full',
-    item: '',
+    item: 'inset-y-0 justify-end',
     viewport: '',
+    // viewport: 'flex-row items-end',
   },
 })
 

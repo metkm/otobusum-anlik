@@ -139,7 +139,7 @@
   --color-primary: var(--ui-primary);
   --color-error: var(--ui-error);
 
-  --navigation-height: 56.3px;
+  --navigation-height: 69.6px;
 }
 
 @utility h-hairline {
@@ -159,5 +159,5 @@
 }
 
 @utility pb-nav-offset-2 {
-  padding-bottom: calc(var(--navigation-height) + var(--spacing) * 2);
+  padding-bottom: calc(var(--navigation-height)+ env(safe-area-inset-bottom));
 }

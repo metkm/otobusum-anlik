@@ -1,48 +1,27 @@
-import { useEffect } from 'react'
-import Animated, {
-  interpolate,
-  interpolateColor,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { useCSSVariable } from 'uniwind'
 
 import { LayoutAnimationTransition } from '@/constants/animation'
 
 export const USwitch = ({ value }: { value: boolean }) => {
-  const progress = useSharedValue(value ? 1 : 0)
-
-  const [primary, background] = useCSSVariable(['--ui-primary', '--ui-bg-accented']) as [
-    string,
-    string,
-  ]
-
-  useEffect(() => {
-    progress.set(withTiming(value ? 1 : 0, { duration: 100 }))
-  }, [value, progress])
-
-  const thumbStyle = useAnimatedStyle(() => ({
-    transform: [
-      {
-        translateX: interpolate(progress.value, [0, 1], [0, 16]),
-      },
-    ],
-  }))
-
-  const containerStyle = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(progress.value, [0, 1], [background, primary]),
-  }))
+  const [primary, background] = useCSSVariable([
+    '--color-primary',
+    '--background-color-accented',
+  ]) as [string, string]
 
   return (
     <Animated.View
-      className="bg-accented flex w-9 shrink-0 rounded-full p-0.5"
-      style={containerStyle}
+      className="flex w-9 shrink-0 rounded-full p-0.5"
+      style={{
+        backgroundColor: value ? primary : background,
+        transitionDuration: 150,
+        transitionProperty: 'backgroundColor',
+      }}
     >
       <Animated.View
+        data-state={value}
         layout={LayoutAnimationTransition}
-        className="bg-muted size-4 rounded-full"
-        style={thumbStyle}
+        className="bg-muted size-4 rounded-full data-state:self-end"
       />
     </Animated.View>
   )

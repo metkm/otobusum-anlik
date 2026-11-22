@@ -2,6 +2,7 @@ import { UserLocation } from '@maplibre/maplibre-react-native'
 import { useFocusEffect } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { View } from 'react-native'
+import { LayoutAnimationConfig } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { GroupCardItems } from '@/components/group/GroupCardItems'
@@ -37,10 +38,12 @@ export const HomeScreen = () => {
         </UMap>
       )}
 
-      <Overlay>
-        <OverlayMapButtons />
-        <GroupCardItems shouldGrow={hideMap} />
-      </Overlay>
+      <LayoutAnimationConfig skipEntering>
+        <Overlay>
+          <OverlayMapButtons />
+          <GroupCardItems shouldGrow={hideMap} />
+        </Overlay>
+      </LayoutAnimationConfig>
     </View>
   )
 }

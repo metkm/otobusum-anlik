@@ -1,4 +1,4 @@
-import { AnimatedLegendList } from '@legendapp/list/reanimated'
+import { LegendList } from '@legendapp/list/react-native'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
@@ -6,7 +6,6 @@ import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLineNews, useLineRoutes, useLineTimetable } from '@/composables/query'
-import { LayoutAnimationTransition } from '@/constants/animation'
 import { useFilterStore } from '@/stores'
 import type { City } from '@/types/city'
 import type { OnLayoutFunction } from '@/types/shared'
@@ -191,9 +190,7 @@ export const LineTimetable = ({ className, onLayout }: LineTimetableProps) => {
         query={lineTimetableQuery}
         fetching={() => <SkeletonTimetable />}
       >
-        <AnimatedLegendList
-          // @ts-expect-error
-          layout={LayoutAnimationTransition}
+        <LegendList
           data={hourEntries}
           renderItem={({ item: [hour, minutes], index }) => (
             <View

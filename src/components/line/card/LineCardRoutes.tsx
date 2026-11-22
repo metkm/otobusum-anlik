@@ -1,7 +1,10 @@
 import { LegendList, type LegendListRef } from '@legendapp/list/react-native'
 import { TrueSheet } from '@lodev09/react-native-true-sheet'
+import { t } from 'i18next'
 import { useRef } from 'react'
 import { View } from 'react-native'
+import { Path, Svg } from 'react-native-svg'
+import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UBadge, UButton, USheet } from '@/components/u'
@@ -9,6 +12,10 @@ import { useGroupItem } from '@/composables'
 import { useLineBuses, useLineRoutes } from '@/composables/query'
 import { useTransitStore } from '@/stores'
 import type { Route } from '@/types/route'
+import { latLngToSvgPath } from '@/utils/latLngToSvgPath'
+
+const ROUTE_PATH_WIDTH = 82
+const ROUTE_PATH_HEIGHT = 52
 
 const RouteItem = ({
   isSelected,
@@ -21,25 +28,42 @@ const RouteItem = ({
 }) => {
   const setRoute = useTransitStore(useShallow((state) => state.setRoute))
   const { code } = useGroupItem()
+  const colorPrimary = useCSSVariable('--color-primary')
 
   const handlePress = () => {
     setRoute(code, item.code)
     void TrueSheet.dismissAll()
   }
 
-  const variant = isSelected ? 'soft' : 'ghost'
   const badgeVariant = isSelected ? 'soft' : 'outline'
+  const variant = isSelected ? 'soft' : 'ghost'
   const color = isSelected ? 'primary' : 'neutral'
+
+  const [from, to] = item.name.split('-')
+
+  const d = item.path ? latLngToSvgPath(item.path, ROUTE_PATH_WIDTH, ROUTE_PATH_HEIGHT) : ''
 
   return (
     <UButton
       label={item.name}
       onPress={handlePress}
-      className="flex-col items-start justify-start"
       variant={variant}
       color={color}
+      className="shrink"
     >
-      <View className="flex-row justify-center gap-2">
+      <View className="shrink grow flex-row items-center justify-between gap-2">
+        <View className="shrink">
+          <View className="flex-row items-center">
+            <UButton.Text>{from}</UButton.Text>
+            <UButton.Icon name="arrow-right" />
+            <UButton.Text>{to}</UButton.Text>
+          </View>
+
+          <UButton.Text className="text-xs opacity-75">
+            {item.code.split('_').slice(1).join('_')}
+          </UButton.Text>
+        </View>
+
         <UBadge
           icon="bus-front"
           label={busCount.toString()}
@@ -47,11 +71,16 @@ const RouteItem = ({
           color={color}
         />
 
-        <UBadge
-          label={item.code.split('_').slice(1).join('_')}
-          variant={badgeVariant}
-          color={color}
-        />
+        <Svg
+          width={ROUTE_PATH_WIDTH}
+          height={ROUTE_PATH_HEIGHT}
+        >
+          <Path
+            d={d}
+            stroke={colorPrimary}
+            fill="transparent"
+          />
+        </Svg>
       </View>
     </UButton>
   )
@@ -62,6 +91,7 @@ export const LineCardRoutes = () => {
   const scrollableRef = useRef<LegendListRef>(null)
 
   const changeRouteDirection = useTransitStore(useShallow((state) => state.changeRouteDirection))
+
   const { code } = useGroupItem()
   const { query: routesQuery, route, routeCode, otherDirectionRoute } = useLineRoutes()
   const { buses, query: busesQuery } = useLineBuses()
@@ -128,6 +158,13 @@ export const LineCardRoutes = () => {
           ref={routeSheet}
           scrollableRef={scrollableRef}
         >
+          <UBadge
+            label={t('routes')}
+            icon="route"
+            variant="ghost"
+            className="mr-auto mb-2 ml-2"
+          />
+
           <LegendList
             ref={scrollableRef}
             data={sortedRoutes}
@@ -141,7 +178,7 @@ export const LineCardRoutes = () => {
             extraData={routeCode}
             keyExtractor={(item) => item.id.toString()}
             contentContainerClassName="px-2"
-            getFixedItemSize={() => 74.3}
+            getFixedItemSize={() => 72}
             recycleItems
           />
         </USheet>

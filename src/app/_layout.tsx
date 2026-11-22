@@ -11,13 +11,14 @@ import { SafeAreaListener } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
 import { persister, queryClient } from '@/api/client'
+import { CarouselProvider } from '@/components/provider/CarouselProvider'
 import { MapProvider } from '@/components/provider/MapProvider'
 import { useColorScheme } from '@/composables'
 import { useSettingsStore } from '@/stores'
 import i18n from '@/translations/i18n'
 
 export const unstable_settings = {
-  anchor: '(home)',
+  anchor: '(home)/(tabs)',
 }
 
 // to make react compiler happy
@@ -52,35 +53,36 @@ const RootContent = () => {
       }}
     >
       <ThemeProvider value={theme}>
-        <MapProvider>
-          <NavigationBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+        <CarouselProvider>
+          <MapProvider>
+            <NavigationBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
 
-          <Sheet
-            screenOptions={{
-              backgroundColor,
-              style: { flex: 1 },
-            }}
-            activityEnabled
-          >
-            <Sheet.Screen name="(home)" />
+            <Sheet
+              screenOptions={{
+                backgroundColor,
+                style: { flex: 1 },
+              }}
+            >
+              <Sheet.Screen name="(home)/(tabs)" />
 
-            <Sheet.Screen
-              name="(sheet)/groups/index"
-              options={{ detents: ['auto'] }}
-            />
-            <Sheet.Screen
-              name="(sheet)/groups/[groupId]"
-              options={{ detents: ['auto'] }}
-            />
+              <Sheet.Screen
+                name="(sheet)/groups/index"
+                options={{ detents: ['auto'] }}
+              />
+              <Sheet.Screen
+                name="(sheet)/groups/[groupId]"
+                options={{ detents: ['auto'] }}
+              />
 
-            <Sheet.Screen name="(sheet)/bus-info/[doorNo]" />
-            <Sheet.Screen name="(sheet)/stop/[stopCode]" />
-            <Sheet.Screen
-              name="(sheet)/markers/nearby"
-              options={{ detents: [0.5, 0.8], dimmed: false }}
-            />
-          </Sheet>
-        </MapProvider>
+              <Sheet.Screen name="(sheet)/bus-info/[doorNo]" />
+              <Sheet.Screen name="(sheet)/stop/[stopCode]" />
+              <Sheet.Screen
+                name="(sheet)/markers/nearby"
+                options={{ detents: [0.5, 0.8], dimmed: false }}
+              />
+            </Sheet>
+          </MapProvider>
+        </CarouselProvider>
       </ThemeProvider>
     </SafeAreaListener>
   )

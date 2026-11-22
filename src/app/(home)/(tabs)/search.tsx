@@ -59,7 +59,10 @@ const RenderItemLine = ({ item }: { item: Line }) => {
         onPress={addLineAndZoom}
         className="flex-1"
       >
-        <UBadge label={item.code} />
+        <View className="flex-row items-center gap-2">
+          <UBadge label={item.code} />
+          <UButton.Text>{item.name}</UButton.Text>
+        </View>
       </UButton>
 
       <UButton
@@ -117,7 +120,7 @@ export const SearchScreen = () => {
   const neededCharacterCount = MIN_CHARACTER_LIMIT - query.length + 1
 
   return (
-    <View className="m-safe grow">
+    <View className="pt-safe flex-1">
       <View className="mx-2 mt-2 flex-row gap-2">
         <UButton
           icon="arrow-left"
@@ -193,6 +196,7 @@ export const SearchScreen = () => {
             keyExtractor={(item) => item.id.toString()}
             className="flex-1"
             contentContainerStyle={{ gap: 8, padding: 8 }}
+            contentContainerClassName="pb-nav-offset-2"
             recycleItems
           />
         )}

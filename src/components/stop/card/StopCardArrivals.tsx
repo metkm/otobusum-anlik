@@ -99,8 +99,6 @@ export const StopCardArrivals = () => {
       useIsLoading
     >
       <AnimatedLegendList
-        // @ts-expect-error
-        layout={LayoutAnimationTransition}
         itemLayoutAnimation={LayoutAnimationTransition}
         data={query.data?.data}
         renderItem={({ item }) => <StopCardArrivalsItem item={item} />}

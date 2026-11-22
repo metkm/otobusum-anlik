@@ -2,7 +2,6 @@ import { View } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 import { useExpandableCardHeight } from '@/composables'
-import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import type { OnLayoutFunction } from '@/types/shared'
 import { cn } from '@/utils/cn'
 
@@ -21,9 +20,6 @@ export const StopCard = ({ onLayout, className }: StopCardProps) => {
   return (
     <Animated.View
       onLayout={onLayout}
-      layout={LayoutAnimationTransition}
-      exiting={ExitScaleOut}
-      entering={EnterScaleIn}
       style={style}
       className={cn(
         'border-hairline border-muted bg-default grow overflow-hidden rounded-md',

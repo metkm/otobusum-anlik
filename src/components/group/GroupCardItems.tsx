@@ -1,11 +1,9 @@
 import { Dimensions } from 'react-native'
-import { useShallow } from 'zustand/react/shallow'
 
 import { LineCard } from '@/components/line/card/LineCard'
 import { StopCard } from '@/components/stop/card/StopCard'
 import { useLineGroup, useMapPadding } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'
-import { useSettingsStore } from '@/stores'
 import type { GroupItem, GroupItemType } from '@/stores/groups'
 
 import { CarouselCardHeightProvider } from '../provider/CarouselCardHeightProvider'
@@ -22,7 +20,6 @@ interface GroupCardItemsProps {
 export const GroupCardItems = ({ filter, drawDistance, shouldGrow }: GroupCardItemsProps) => {
   const { group } = useLineGroup()
   const { onLayout } = useMapPadding('overlayGroupItems', 'bottom')
-  const hideMap = useSettingsStore(useShallow((state) => state.hideMap))
 
   const items = (filter ? group?.items.filter((item) => item.type === filter) : group?.items) ?? []
 
@@ -59,7 +56,6 @@ export const GroupCardItems = ({ filter, drawDistance, shouldGrow }: GroupCardIt
         getFixedItemSize={() => cardWidth}
         ui={{
           container: growClass,
-          item: hideMap ? 'top-0 bottom-0' : undefined,
           viewport: growClass,
         }}
         initialRenderCount={2}
