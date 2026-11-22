@@ -60,6 +60,7 @@ export const UMap = ({ children, onDidFinishLoadingMap, ...props }: MapProps) =>
           })
         }}
         style={{ flex: 1 }}
+        androidView="texture"
         {...props}
         mapStyle={mapStyle}
       >
