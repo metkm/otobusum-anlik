@@ -3,6 +3,8 @@ import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { t } from 'i18next'
 import { useRef } from 'react'
 import { View } from 'react-native'
+import { Path, Svg } from 'react-native-svg'
+import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UBadge, UButton, USheet } from '@/components/u'
@@ -10,6 +12,10 @@ import { useGroupItem } from '@/composables'
 import { useLineBuses, useLineRoutes } from '@/composables/query'
 import { useTransitStore } from '@/stores'
 import type { Route } from '@/types/route'
+import { latLngToSvgPath } from '@/utils/latLngToSvgPath'
+
+const ROUTE_PATH_WIDTH = 82
+const ROUTE_PATH_HEIGHT = 52
 
 const RouteItem = ({
   isSelected,
@@ -22,6 +28,7 @@ const RouteItem = ({
 }) => {
   const setRoute = useTransitStore(useShallow((state) => state.setRoute))
   const { code } = useGroupItem()
+  const colorPrimary = useCSSVariable('--color-primary')
 
   const handlePress = () => {
     setRoute(code, item.code)
@@ -34,15 +41,19 @@ const RouteItem = ({
 
   const [from, to] = item.name.split('-')
 
+  const d = item.path ? latLngToSvgPath(item.path, ROUTE_PATH_WIDTH, ROUTE_PATH_HEIGHT) : ''
+
   return (
     <UButton
       label={item.name}
       onPress={handlePress}
       variant={variant}
       color={color}
+      onLayout={({ nativeEvent }) => console.log(nativeEvent.layout.height)}
+      className="shrink"
     >
-      <View className="grow flex-row items-center justify-between gap-2">
-        <View>
+      <View className="shrink grow flex-row items-center justify-between gap-2">
+        <View className="shrink">
           <View className="flex-row items-center">
             <UButton.Text>{from}</UButton.Text>
             <UButton.Icon name="arrow-right" />
@@ -60,6 +71,17 @@ const RouteItem = ({
           variant={badgeVariant}
           color={color}
         />
+
+        <Svg
+          width={ROUTE_PATH_WIDTH}
+          height={ROUTE_PATH_HEIGHT}
+        >
+          <Path
+            d={d}
+            stroke={colorPrimary}
+            fill="transparent"
+          />
+        </Svg>
       </View>
     </UButton>
   )
@@ -157,7 +179,7 @@ export const LineCardRoutes = () => {
             extraData={routeCode}
             keyExtractor={(item) => item.id.toString()}
             contentContainerClassName="px-2"
-            getFixedItemSize={() => 48.6}
+            getFixedItemSize={() => 72}
             recycleItems
           />
         </USheet>
