@@ -16,11 +16,10 @@ import Animated, {
 } from 'react-native-reanimated'
 import { Uniwind, useCSSVariable, useUniwind, withUniwind } from 'uniwind'
 
-import { UIcon, UText } from '@/components/u'
+import { UIcon } from '@/components/u'
 import { useMapPadding } from '@/composables'
 import { useGroupItemColorCarouselOffset } from '@/composables/useGroupItemColorCarouselOffset'
-import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
-import { cn } from '@/utils/cn'
+import { LayoutAnimationTransition } from '@/constants/animation'
 
 type IconName = ComponentProps<typeof Ionicons>['name']
 
@@ -67,7 +66,7 @@ const AnimatedTouchable = createAnimatedComponent(StyledTouchable)
 
 const PressTrigger = ({
   index,
-  options,
+  // options,
   isFocused,
   onPress,
 }: {
@@ -78,12 +77,12 @@ const PressTrigger = ({
 }) => {
   const { backgroundColorSoft, borderColor } = useGroupItemColorCarouselOffset()
 
-  let label = ''
-  if (options?.tabBarLabel) {
-    if (typeof options.tabBarLabel === 'string') {
-      label = options.tabBarLabel
-    }
-  }
+  // let label = ''
+  // if (options?.tabBarLabel) {
+  //   if (typeof options.tabBarLabel === 'string') {
+  //     label = options.tabBarLabel
+  //   }
+  // }
 
   const style = useAnimatedStyle(() => ({
     backgroundColor: !isFocused ? withTiming('transparent') : backgroundColorSoft.value,
@@ -97,7 +96,7 @@ const PressTrigger = ({
       animationDuration={0}
       androidRipple={{}}
       onPress={onPress}
-      className={cn('flex-row items-center gap-2 p-3 rounded-full overflow-hidden')}
+      className="flex-1 flex-row items-center justify-center gap-2 overflow-hidden rounded-full p-3"
       style={style}
     >
       <StyledIonicons
@@ -106,14 +105,14 @@ const PressTrigger = ({
         size={20}
       />
 
-      {isFocused && (
+      {/* {isFocused && (
         <Animated.View
           exiting={ExitScaleOut}
           entering={EnterScaleIn}
         >
           <UText className="font-inter-medium text-sm">{label}</UText>
         </Animated.View>
-      )}
+      )} */}
     </AnimatedTouchable>
   )
 }
@@ -144,7 +143,7 @@ export const CustomTabBar = ({
     >
       <Animated.View
         layout={LayoutAnimationTransition}
-        className="border-hairline border-accented flex-row rounded-full p-1"
+        className="border-hairline border-accented flex-1 flex-row rounded-full p-1"
         style={{ backgroundColor, borderColor }}
       >
         {state.routes.map(({ key }, index) => (
@@ -168,7 +167,6 @@ export const CustomTabBar = ({
       </Animated.View>
 
       <Animated.View
-        layout={LayoutAnimationTransition}
         className="bg-default border-hairline border-accented shrink overflow-hidden rounded-full p-1"
         style={{ backgroundColor }}
       >

@@ -1,18 +1,18 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { type ViewProps } from 'react-native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Animated, { createAnimatedComponent } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLineGroup, useMap } from '@/composables'
 import { useGroupItemColorCarouselOffset } from '@/composables/useGroupItemColorCarouselOffset'
-import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
+import { LayoutAnimationTransition } from '@/constants/animation'
 import { useSettingsStore, useTransitStore } from '@/stores'
 import { cn } from '@/utils/cn'
 
+import { UNativeGestureHandlerRootView } from '../u/native/UNativeGestureHandlerRootView'
 import { UButton } from '../u/UButton'
 
-const AnimatedGestureHandlerRootView = createAnimatedComponent(GestureHandlerRootView)
+// const AnimatedGestureHandlerRootView = createAnimatedComponent(GestureHandlerRootView)
 const AnimatedUButton = createAnimatedComponent(UButton)
 
 export const OverlayMapButtonsChangeDirection = () => {
@@ -28,12 +28,7 @@ export const OverlayMapButtonsChangeDirection = () => {
   }
 
   return (
-    <AnimatedGestureHandlerRootView
-      layout={LayoutAnimationTransition}
-      entering={EnterScaleIn}
-      exiting={ExitScaleOut}
-      style={{ display: 'flex' }}
-    >
+    <UNativeGestureHandlerRootView className="shrink-0">
       <AnimatedUButton
         icon="repeat"
         color="neutral"
@@ -43,35 +38,29 @@ export const OverlayMapButtonsChangeDirection = () => {
         className="ml-auto flex"
         onPress={onPress}
       />
-    </AnimatedGestureHandlerRootView>
+    </UNativeGestureHandlerRootView>
   )
 }
 
-export const OverlayMapButtonsGroup = () => {
-  const { group } = useLineGroup()
-  const { backgroundColor } = useGroupItemColorCarouselOffset()
+// export const OverlayMapButtonsGroup = () => {
+//   const { group } = useLineGroup()
+//   const { backgroundColor } = useGroupItemColorCarouselOffset()
 
-  return (
-    <AnimatedGestureHandlerRootView
-      layout={LayoutAnimationTransition}
-      entering={EnterScaleIn}
-      exiting={ExitScaleOut}
-      style={{ display: 'flex', maxWidth: '75%' }}
-    >
-      <AnimatedUButton
-        layout={LayoutAnimationTransition}
-        className="overflow-hidden"
-        icon="component"
-        color="neutral"
-        size="lg"
-        variant="subtle"
-        to={{ pathname: '/(sheet)/groups' }}
-        label={group?.name}
-        style={{ backgroundColor, elevation: 1 }}
-      />
-    </AnimatedGestureHandlerRootView>
-  )
-}
+//   return (
+//     <UNativeGestureHandlerRootView className="max-w-lg">
+//       <AnimatedUButton
+//         className="overflow-hidden"
+//         icon="component"
+//         color="neutral"
+//         size="lg"
+//         variant="subtle"
+//         to={{ pathname: '/(sheet)/groups' }}
+//         label={group?.name}
+//         style={{ backgroundColor, elevation: 1 }}
+//       />
+//     </UNativeGestureHandlerRootView>
+//   )
+// }
 
 export const OverlayMapButtons = (props: ViewProps) => {
   const { map, camera } = useMap()
@@ -100,7 +89,7 @@ export const OverlayMapButtons = (props: ViewProps) => {
     <Animated.View
       layout={LayoutAnimationTransition}
       className={cn(
-        'p-2 gap-2 flex-wrap mt-auto',
+        'gap-2 flex-wrap p-2 mt-auto',
         hideMap && 'flex-row',
         mapButtonsPlacement === 'left' ? 'mr-auto items-start' : 'ml-auto items-end justify-end',
       )}
@@ -108,12 +97,7 @@ export const OverlayMapButtons = (props: ViewProps) => {
       {...props}
     >
       {(bearing !== 0 || pitch !== 0) && (
-        <AnimatedGestureHandlerRootView
-          layout={LayoutAnimationTransition}
-          entering={EnterScaleIn}
-          exiting={ExitScaleOut}
-          style={{ display: 'flex' }}
-        >
+        <UNativeGestureHandlerRootView>
           <AnimatedUButton
             icon="compass"
             size="lg"
@@ -133,16 +117,11 @@ export const OverlayMapButtons = (props: ViewProps) => {
               })
             }}
           />
-        </AnimatedGestureHandlerRootView>
+        </UNativeGestureHandlerRootView>
       )}
 
       {!hideMap && (
-        <AnimatedGestureHandlerRootView
-          layout={LayoutAnimationTransition}
-          entering={EnterScaleIn}
-          exiting={ExitScaleOut}
-          style={{ display: 'flex' }}
-        >
+        <UNativeGestureHandlerRootView className="shrink-0">
           <AnimatedUButton
             icon="radar"
             onPress={queryArea}
@@ -151,27 +130,10 @@ export const OverlayMapButtons = (props: ViewProps) => {
             variant="subtle"
             style={{ backgroundColor, elevation: 1 }}
           />
-        </AnimatedGestureHandlerRootView>
+        </UNativeGestureHandlerRootView>
       )}
 
-      {/* <AnimatedGestureHandlerRootView
-        layout={LayoutAnimationTransition}
-        entering={EnterScaleIn}
-        exiting={ExitScaleOut}
-        style={{ display: 'flex' }}
-      >
-        <AnimatedUButton
-          icon="search"
-          to={{ pathname: '/search' }}
-          size="lg"
-          color="neutral"
-          variant="subtle"
-          style={{ elevation: 1, ...style }}
-        />
-      </AnimatedGestureHandlerRootView> */}
-
       <OverlayMapButtonsChangeDirection />
-      {/* <OverlayMapButtonsGroup /> */}
     </Animated.View>
   )
 }

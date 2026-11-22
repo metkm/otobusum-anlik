@@ -3,13 +3,11 @@ import type { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import Animated from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { UButton, USheet, UText, UBadge } from '@/components/u'
 import { useMap, useGroupItem } from '@/composables'
 import { useLineRoutes, useLineNews } from '@/composables/query'
-import { LayoutAnimationTransition } from '@/constants/animation'
 import { useFilterStore, useSettingsStore, useThemeStore, useTransitStore } from '@/stores'
 import { getLatLngBounds } from '@/utils/bounds'
 
@@ -52,10 +50,7 @@ export const LineCardMenu = () => {
   }
 
   return (
-    <Animated.View
-      layout={LayoutAnimationTransition}
-      className="flex-row"
-    >
+    <View className="flex-row">
       {!hideMap && (
         <>
           <UButton
@@ -188,6 +183,6 @@ export const LineCardMenu = () => {
           variant="soft"
         />
       </USheet>
-    </Animated.View>
+    </View>
   )
 }
