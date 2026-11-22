@@ -14,6 +14,7 @@ import { cn } from '@/utils/cn'
 import { groupDeparturesByHour } from '@/utils/groupDepartures'
 import { toAscii } from '@/utils/toAscii'
 
+import { UBadge } from '../u'
 import { SkeletonTimetable } from '../u/skeleton/SkeletonTimetable'
 import { UButton } from '../u/UButton'
 import { UEmpty } from '../u/UEmpty'
@@ -165,11 +166,13 @@ export const LineTimetable = ({ className, onLayout }: LineTimetableProps) => {
       )}
     >
       <View className="m-2 mb-0">
-        <UText className="text-muted">{routeCode}</UText>
+        <UBadge
+          label={routeCode}
+          icon="bus-front"
+          variant="soft"
+        />
 
-        {route?.name && (
-          <UText className="font-inter-medium text-lg leading-tight">{route.name}</UText>
-        )}
+        {route?.name && <UText className="font-inter-medium leading-tight">{route.name}</UText>}
       </View>
 
       <View className="m-2 flex-row gap-2">
