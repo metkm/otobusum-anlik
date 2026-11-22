@@ -42,25 +42,25 @@ export const OverlayMapButtonsChangeDirection = () => {
   )
 }
 
-// export const OverlayMapButtonsGroup = () => {
-//   const { group } = useLineGroup()
-//   const { backgroundColor } = useGroupItemColorCarouselOffset()
+export const OverlayMapButtonsGroup = () => {
+  const { group } = useLineGroup()
+  const { backgroundColor } = useGroupItemColorCarouselOffset()
 
-//   return (
-//     <UNativeGestureHandlerRootView className="max-w-lg">
-//       <AnimatedUButton
-//         className="overflow-hidden"
-//         icon="component"
-//         color="neutral"
-//         size="lg"
-//         variant="subtle"
-//         to={{ pathname: '/(sheet)/groups' }}
-//         label={group?.name}
-//         style={{ backgroundColor, elevation: 1 }}
-//       />
-//     </UNativeGestureHandlerRootView>
-//   )
-// }
+  return (
+    <UNativeGestureHandlerRootView className="max-w-lg shrink-0">
+      <AnimatedUButton
+        className="overflow-hidden"
+        icon="component"
+        color="neutral"
+        size="lg"
+        variant="subtle"
+        to={{ pathname: '/(sheet)/groups' }}
+        label={group?.name}
+        style={{ backgroundColor, elevation: 1 }}
+      />
+    </UNativeGestureHandlerRootView>
+  )
+}
 
 export const OverlayMapButtons = (props: ViewProps) => {
   const { map, camera } = useMap()
@@ -134,6 +134,7 @@ export const OverlayMapButtons = (props: ViewProps) => {
       )}
 
       <OverlayMapButtonsChangeDirection />
+      <OverlayMapButtonsGroup />
     </Animated.View>
   )
 }

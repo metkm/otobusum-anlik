@@ -96,7 +96,7 @@ const PressTrigger = ({
       animationDuration={0}
       androidRipple={{}}
       onPress={onPress}
-      className="flex-1 flex-row items-center justify-center gap-2 overflow-hidden rounded-full p-3"
+      className="flex-1 flex-row items-center justify-center gap-2 overflow-hidden rounded-full p-2"
       style={style}
     >
       <StyledIonicons
@@ -124,7 +124,6 @@ export const CustomTabBar = ({
   insets,
   navigateToTab,
 }: BottomTabBarProps) => {
-  const navigation = useTrueSheetNavigation()
   const { backgroundColor, borderColor } = useGroupItemColorCarouselOffset()
 
   const { onLayout } = useMapPadding('navigationTabs', 'bottom')
@@ -166,7 +165,7 @@ export const CustomTabBar = ({
         ))}
       </Animated.View>
 
-      <Animated.View
+      {/* <Animated.View
         className="bg-default border-hairline border-accented shrink overflow-hidden rounded-full p-1"
         style={{ backgroundColor }}
       >
@@ -185,7 +184,7 @@ export const CustomTabBar = ({
             colorClassName="accent-default"
           />
         </AnimatedTouchable>
-      </Animated.View>
+      </Animated.View> */}
     </View>
   )
 }
