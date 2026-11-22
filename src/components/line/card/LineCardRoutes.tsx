@@ -49,7 +49,6 @@ const RouteItem = ({
       onPress={handlePress}
       variant={variant}
       color={color}
-      onLayout={({ nativeEvent }) => console.log(nativeEvent.layout.height)}
       className="shrink"
     >
       <View className="shrink grow flex-row items-center justify-between gap-2">
