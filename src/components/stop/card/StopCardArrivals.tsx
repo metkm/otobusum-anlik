@@ -106,6 +106,8 @@ export const StopCardArrivals = () => {
         getFixedItemSize={() => 67}
         onScroll={onScroll}
         recycleItems
+        showsVerticalScrollIndicator={false}
+        drawDistance={0}
         ListEmptyComponent={
           <UEmpty
             title={t('noBusArrivalsToStop')}
