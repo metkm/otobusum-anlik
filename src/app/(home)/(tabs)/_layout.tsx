@@ -1,4 +1,3 @@
-import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { Tabs, type Href } from 'expo-router'
 import type {
@@ -77,13 +76,6 @@ const PressTrigger = ({
 }) => {
   const { backgroundColorSoft, borderColor } = useGroupItemColorCarouselOffset()
 
-  // let label = ''
-  // if (options?.tabBarLabel) {
-  //   if (typeof options.tabBarLabel === 'string') {
-  //     label = options.tabBarLabel
-  //   }
-  // }
-
   const style = useAnimatedStyle(() => ({
     backgroundColor: !isFocused ? withTiming('transparent') : backgroundColorSoft.value,
     borderColor: borderColor.value,
@@ -104,15 +96,6 @@ const PressTrigger = ({
         colorClassName="accent-default"
         size={20}
       />
-
-      {/* {isFocused && (
-        <Animated.View
-          exiting={ExitScaleOut}
-          entering={EnterScaleIn}
-        >
-          <UText className="font-inter-medium text-sm">{label}</UText>
-        </Animated.View>
-      )} */}
     </AnimatedTouchable>
   )
 }
@@ -131,19 +114,18 @@ export const CustomTabBar = ({
 
   return (
     <View
-      className="absolute inset-x-2 flex-row justify-center gap-2 py-2"
+      className="absolute bottom-0 flex-row justify-center gap-2"
       onLayout={(event) => {
         Uniwind.updateCSSVariables(theme, {
           '--navigation-height': event.nativeEvent.layout.height,
         })
         onLayout(event)
       }}
-      style={{ bottom: insets.bottom }}
     >
       <Animated.View
         layout={LayoutAnimationTransition}
-        className="border-hairline border-accented flex-1 flex-row rounded-full p-1"
-        style={{ backgroundColor, borderColor }}
+        className="flex-row grow p-1.5 rounded-t-md"
+        style={{ backgroundColor, borderColor, paddingBottom: insets.bottom }}
       >
         {state.routes.map(({ key }, index) => (
           <PressTrigger
@@ -164,27 +146,6 @@ export const CustomTabBar = ({
           />
         ))}
       </Animated.View>
-
-      {/* <Animated.View
-        className="bg-default border-hairline border-accented shrink overflow-hidden rounded-full p-1"
-        style={{ backgroundColor }}
-      >
-        <AnimatedTouchable
-          underlayColor="black"
-          animationDuration={0}
-          androidRipple={{}}
-          onPress={() => {
-            navigation.navigate('(sheet)/groups/index')
-          }}
-          className="shrink flex-row items-center gap-2 overflow-hidden rounded-full p-3"
-        >
-          <UIcon
-            name="component"
-            sizeClassName="size-5"
-            colorClassName="accent-default"
-          />
-        </AnimatedTouchable>
-      </Animated.View> */}
     </View>
   )
 }
