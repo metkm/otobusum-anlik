@@ -59,8 +59,8 @@ const RenderItemLine = ({ item }: { item: Line }) => {
         onPress={addLineAndZoom}
         className="flex-1"
       >
-          <UBadge label={item.code} />
-          <UButton.Text>{item.name}</UButton.Text>
+        <UBadge label={item.code} />
+        <UButton.Text>{item.name}</UButton.Text>
       </UButton>
 
       <UButton
