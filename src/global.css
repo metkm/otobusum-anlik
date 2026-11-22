@@ -162,3 +162,7 @@
 @utility pb-nav-offset-2 {
   padding-bottom: calc(var(--navigation-height) + var(--spacing) * 2);
 }
+
+@utility pb-nav {
+  padding-bottom: calc(var(--navigation-height));
+}

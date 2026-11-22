@@ -13,7 +13,7 @@ import { CARD_EXPANDED_HEIGHT, CARD_COLLAPSED_HEIGHT } from '@/constants/card'
 import { useSettingsStore } from '@/stores'
 
 export const useExpandableCardHeight = () => {
-  const localHeight = useSharedValue(0)
+  const localHeight = useSharedValue(CARD_COLLAPSED_HEIGHT)
   const height = use(CarouselCardHeightContext) ?? localHeight
 
   const cardExpandOnScroll = useSettingsStore(useShallow((state) => state.cardExpandOnScroll))

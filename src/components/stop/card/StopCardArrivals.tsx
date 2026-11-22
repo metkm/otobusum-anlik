@@ -106,8 +106,6 @@ export const StopCardArrivals = () => {
         getFixedItemSize={() => 67}
         onScroll={onScroll}
         recycleItems
-        className="flex-1"
-        contentContainerClassName="grow"
         ListEmptyComponent={
           <UEmpty
             title={t('noBusArrivalsToStop')}
