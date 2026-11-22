@@ -15,7 +15,6 @@ import Animated, {
 } from 'react-native-reanimated'
 import { Uniwind, useCSSVariable, useUniwind, withUniwind } from 'uniwind'
 
-import { UIcon } from '@/components/u'
 import { useMapPadding } from '@/composables'
 import { useGroupItemColorCarouselOffset } from '@/composables/useGroupItemColorCarouselOffset'
 import { LayoutAnimationTransition } from '@/constants/animation'

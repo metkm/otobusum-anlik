@@ -1,15 +1,44 @@
 import { useTranslation } from 'react-i18next'
 import { Dimensions, View } from 'react-native'
 
-import { GroupCardItems } from '@/components/group/GroupCardItems'
+import { LineCard } from '@/components/line/card/LineCard'
 import { LineTimetable } from '@/components/line/LineTimetable'
+import { CarouselCardHeightProvider } from '@/components/provider/CarouselCardHeightProvider'
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
+import { StopCard } from '@/components/stop/card/StopCard'
+import { StopCardArrivals } from '@/components/stop/card/StopCardArrivals'
 import { UButton, UCarousel, UEmpty } from '@/components/u'
-import { UCarouselRoot } from '@/components/u/carousel/UCarousel'
 import { useLineGroup } from '@/composables'
 import { GroupItemContext } from '@/composables/useGroupItem'
+import type { GroupItem } from '@/stores/groups'
+import type { OnLayoutFunction } from '@/types/shared'
 
-const LineTimetables = () => {
+const RenderItem = ({ item }: { item: GroupItem }, onLayout: OnLayoutFunction) => {
+  if (item.type === 'line') {
+    return (
+      <GroupItemContext value={item.code}>
+        <ThemeProvider>
+          <View
+            onLayout={onLayout}
+            className="grow gap-2"
+          >
+            <LineCard />
+            <LineTimetable />
+          </View>
+        </ThemeProvider>
+      </GroupItemContext>
+    )
+  }
+
+  return (
+    <GroupItemContext value={item.code}>
+      <StopCard className="shrink" />
+      <StopCardArrivals />
+    </GroupItemContext>
+  )
+}
+
+export const TimetableScreen = () => {
   const { items } = useLineGroup()
   const { t } = useTranslation()
 
@@ -33,42 +62,22 @@ const LineTimetables = () => {
     )
   }
 
-  const codes = items.filter((x) => x.type === 'line')
-
   return (
-    <UCarousel
-      data={codes}
-      keyExtractor={(item) => item.code}
-      renderItem={({ item }, onLayout) => (
-        <GroupItemContext
-          key={item.code}
-          value={item.code}
-        >
-          <ThemeProvider>
-            <LineTimetable onLayout={onLayout} />
-          </ThemeProvider>
-        </GroupItemContext>
-      )}
-      ui={{ container: 'flex-1', item: 'top-0 bottom-0', viewport: 'flex-1 mt-2' }}
-      initialRenderCount={2}
-      drawDistance={8}
-      getFixedItemSize={() => cardWidth}
-      enabled={items.length > 1}
-    />
+    <View className="pt-safe-offset-2 pb-nav-offset-2 px-safe grow">
+      <CarouselCardHeightProvider>
+        <UCarousel
+          data={items}
+          keyExtractor={(item) => item.code}
+          renderItem={RenderItem}
+          ui={{ container: 'grow', viewport: 'grow' }}
+          initialRenderCount={2}
+          drawDistance={8}
+          getFixedItemSize={() => cardWidth}
+          enabled={items.length > 1}
+        />
+      </CarouselCardHeightProvider>
+    </View>
   )
 }
-
-export const TimetableScreen = () => (
-  <View className="pt-safe-offset-2 pb-nav-offset-2 px-safe grow">
-    <UCarouselRoot>
-      <GroupCardItems
-        filter="line"
-        drawDistance={8}
-      />
-
-      <LineTimetables />
-    </UCarouselRoot>
-  </View>
-)
 
 export default TimetableScreen
