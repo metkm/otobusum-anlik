@@ -11,13 +11,7 @@ import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { ScopedVariables, useCSSVariable } from 'uniwind'
 
-import {
-  UBadge,
-  UButton,
-  UActivityIndicator,
-  UEmpty,
-  UQueryState,
-} from '@/components/u'
+import { UBadge, UButton, UActivityIndicator, UEmpty, UQueryState } from '@/components/u'
 import { useMapCollection, useMap } from '@/composables'
 import { useTransitNearby } from '@/composables/query'
 import { getLatLngBounds } from '@/utils/bounds'
@@ -223,7 +217,12 @@ export const NearbyScreen = () => {
           {query.data && query.data.stops.length > 0 && (
             <View className="gap-2">
               <TrueSheetPeek>
-                <UBadge label={t('stops')} icon="map-pin" variant="ghost" color="neutral" />
+                <UBadge
+                  label={t('stops')}
+                  icon="map-pin"
+                  variant="ghost"
+                  color="neutral"
+                />
               </TrueSheetPeek>
 
               {query.data.stops.map((stop) => (
@@ -235,7 +234,7 @@ export const NearbyScreen = () => {
                   color="neutral"
                   trailingIcon="chevron-right"
                 >
-                  <UBadge icon="map-pin"  />
+                  <UBadge icon="map-pin" />
                   <UButton.Text>{stop.name}</UButton.Text>
                 </UButton>
               ))}
@@ -246,10 +245,20 @@ export const NearbyScreen = () => {
             <View className="gap-2">
               {query.data.stops.length === 0 ? (
                 <TrueSheetPeek>
-                  <UBadge label={t('routes')} icon="route" variant="ghost" color="neutral" />
+                  <UBadge
+                    label={t('routes')}
+                    icon="route"
+                    variant="ghost"
+                    color="neutral"
+                  />
                 </TrueSheetPeek>
               ) : (
-                <UBadge label={t('routes')} icon="route" variant="ghost" color="neutral" />
+                <UBadge
+                  label={t('routes')}
+                  icon="route"
+                  variant="ghost"
+                  color="neutral"
+                />
               )}
 
               {query.data.routes.map((route, index) => (
@@ -266,7 +275,7 @@ export const NearbyScreen = () => {
                   <View className="shrink flex-row items-center gap-2">
                     <ScopedVariables
                       variables={{
-                        '--color-primary': colors?.at(index)?.schemes.dark.primary ?? ''
+                        '--color-primary': colors?.at(index)?.schemes.dark.primary ?? '',
                       }}
                     >
                       <UBadge label={route.line_code} />
