@@ -45,9 +45,7 @@ export const LineCard = ({ className, onLayout }: LineCardProps) => {
 
       {(showLineCardStops || hideMap) && <LineCardStops />}
 
-      <Animated.View layout={LayoutAnimationTransition}>
-        <LineCardRoutes />
-      </Animated.View>
+      <LineCardRoutes />
     </Animated.View>
   )
 }

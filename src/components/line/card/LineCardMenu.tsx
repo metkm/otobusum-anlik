@@ -1,5 +1,6 @@
 import { LegendList, type LegendListRef } from '@legendapp/list/react-native'
 import type { TrueSheet } from '@lodev09/react-native-true-sheet'
+import { Link } from 'expo-router'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
@@ -50,7 +51,7 @@ export const LineCardMenu = () => {
   }
 
   return (
-    <View className="flex-row">
+    <>
       {!hideMap && (
         <>
           <UButton
@@ -132,20 +133,24 @@ export const LineCardMenu = () => {
         detents={['auto']}
         contentContainerClassName="gap-2 px-2"
       >
-        <UButton
-          label={t('addToGroup')}
-          icon="circle-plus"
-          size="lg"
-          block
-          variant="soft"
-          to={{
+        <Link
+          href={{
             params: {
               code,
               type: 'line',
             },
             pathname: '/(sheet)/groups',
           }}
-        />
+          asChild
+        >
+          <UButton
+            label={t('addToGroup')}
+            icon="circle-plus"
+            size="lg"
+            block
+            variant="soft"
+          />
+        </Link>
 
         <View className="flex-row gap-2">
           <UButton
@@ -183,6 +188,6 @@ export const LineCardMenu = () => {
           variant="soft"
         />
       </USheet>
-    </View>
+    </>
   )
 }

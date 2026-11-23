@@ -1,9 +1,8 @@
 import { LegendList } from '@legendapp/list/react-native'
-import { router } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { type TextInputInstance, View } from 'react-native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useDebounce } from 'use-debounce'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -63,41 +62,53 @@ const RenderItemLine = ({ item }: { item: Line }) => {
         <UButton.Text>{item.name}</UButton.Text>
       </UButton>
 
-      <UButton
-        icon="circle-plus"
-        to={{
+      <Link
+        href={{
           params: { code: item.code, type: 'line' },
           pathname: '/(sheet)/groups',
         }}
-        variant="soft"
-        size="lg"
-      />
+        asChild
+      >
+        <UButton
+          icon="circle-plus"
+          variant="soft"
+          size="lg"
+        />
+      </Link>
     </View>
   )
 }
 
 const RenderItemStop = ({ item }: { item: Stop }) => (
   <View className="shrink flex-row items-center gap-2">
-    <UButton
-      variant="ghost"
-      color="neutral"
-      label={item.name}
-      to={{ params: { stopCode: item.code }, pathname: `/(sheet)/stop/[stopCode]` }}
-      className="flex-1"
+    <Link
+      href={{ params: { stopCode: item.code }, pathname: `/(sheet)/stop/[stopCode]` }}
+      asChild
     >
-      <UBadge icon="map-pin" />
-      <UButton.Text>{item.name}</UButton.Text>
-    </UButton>
+      <UButton
+        variant="ghost"
+        color="neutral"
+        label={item.name}
+        className="flex-1"
+      >
+        <UBadge icon="map-pin" />
+        <UButton.Text>{item.name}</UButton.Text>
+      </UButton>
+    </Link>
 
-    <UButton
-      icon="circle-plus"
-      to={{
+    <Link
+      href={{
         params: { code: item.code, type: 'stop' },
         pathname: '/(sheet)/groups',
       }}
-      variant="soft"
-      size="lg"
-    />
+      asChild
+    >
+      <UButton
+        icon="circle-plus"
+        variant="soft"
+        size="lg"
+      />
+    </Link>
   </View>
 )
 
@@ -141,14 +152,13 @@ export const SearchScreen = () => {
           containerClassName="grow"
         >
           {query.length > MIN_CHARACTER_LIMIT && (
-            <GestureHandlerRootView style={{ position: 'absolute', right: 4 }}>
-              <UButton
-                icon="x"
-                variant="ghost"
-                color="neutral"
-                onPress={clearQuery}
-              />
-            </GestureHandlerRootView>
+            <UButton
+              icon="x"
+              variant="ghost"
+              color="neutral"
+              onPress={clearQuery}
+              className="absolute right-1"
+            />
           )}
         </UInput>
       </View>

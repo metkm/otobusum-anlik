@@ -6,13 +6,13 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router'
 import { type Theme } from 'expo-router/react-navigation'
 import { StatusBar } from 'expo-status-bar'
 import { I18nextProvider } from 'react-i18next'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaListener } from 'react-native-safe-area-context'
 import { Uniwind, useCSSVariable } from 'uniwind'
 
 import { persister, queryClient } from '@/api/client'
 import { CarouselProvider } from '@/components/provider/CarouselProvider'
 import { MapProvider } from '@/components/provider/MapProvider'
+import { UNativeGestureHandlerRootView } from '@/components/u/native/UNativeGestureHandlerRootView'
 import { useColorScheme } from '@/composables'
 import { useSettingsStore } from '@/stores'
 import i18n from '@/translations/i18n'
@@ -88,31 +88,27 @@ const RootContent = () => {
   )
 }
 
-export const RootLayout = () => {
-  const background = useCSSVariable('--background-color-default')?.toString()
-
-  return (
-    <I18nextProvider
-      i18n={i18n}
-      defaultNS="translation"
+export const RootLayout = () => (
+  <I18nextProvider
+    i18n={i18n}
+    defaultNS="translation"
+  >
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{
+        dehydrateOptions: {
+          shouldDehydrateQuery: (query) => Boolean(query.meta?.persist),
+        },
+        persister,
+      }}
     >
-      <PersistQueryClientProvider
-        client={queryClient}
-        persistOptions={{
-          dehydrateOptions: {
-            shouldDehydrateQuery: (query) => Boolean(query.meta?.persist),
-          },
-          persister,
-        }}
-      >
-        <StatusBar style="auto" />
+      <StatusBar style="auto" />
 
-        <GestureHandlerRootView style={{ backgroundColor: background as string, flexGrow: 1 }}>
-          <RootContent />
-        </GestureHandlerRootView>
-      </PersistQueryClientProvider>
-    </I18nextProvider>
-  )
-}
+      <UNativeGestureHandlerRootView>
+        <RootContent />
+      </UNativeGestureHandlerRootView>
+    </PersistQueryClientProvider>
+  </I18nextProvider>
+)
 
 export default RootLayout

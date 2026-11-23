@@ -1,13 +1,13 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
-import { router, useLocalSearchParams } from 'expo-router'
+import { Link, router, useLocalSearchParams } from 'expo-router'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View, type TextInputInstance } from 'react-native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Sortable from 'react-native-sortables'
 
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
 import { UBadge, UButton, UEmpty, UIcon, UInput, UText } from '@/components/u'
+import { UNativeGestureHandlerRootView } from '@/components/u/native/UNativeGestureHandlerRootView'
 import { useLineGroup } from '@/composables'
 import { GROUP_ITEM_TYPE_LIMIT } from '@/constants/app'
 import { useTransitStore } from '@/stores'
@@ -34,37 +34,35 @@ export const GroupIdScreen = () => {
   useEffect(() => {
     navigation.setOptions({
       footer: (
-        <GestureHandlerRootView style={{ flexShrink: 0 }}>
-          <View className="gap-2 px-2">
+        <UNativeGestureHandlerRootView className="gap-2 p-2">
+          <UButton
+            label={t('save')}
+            size="lg"
+            icon="save"
+            onPress={handleSave}
+            variant="soft"
+            block
+          />
+
+          {groups.length > 1 && (
             <UButton
-              label={t('save')}
+              label={t('deleteGroup')}
+              icon="trash-2"
+              onPress={() => {
+                if (!group) {
+                  return
+                }
+
+                useTransitStore.getState().deleteGroup(group.id)
+                router.back()
+              }}
               size="lg"
-              icon="save"
-              onPress={handleSave}
               variant="soft"
+              color="error"
               block
             />
-
-            {groups.length > 1 && (
-              <UButton
-                label={t('deleteGroup')}
-                icon="trash-2"
-                onPress={() => {
-                  if (!group) {
-                    return
-                  }
-
-                  useTransitStore.getState().deleteGroup(group.id)
-                  router.back()
-                }}
-                size="lg"
-                variant="soft"
-                color="error"
-                block
-              />
-            )}
-          </View>
-        </GestureHandlerRootView>
+          )}
+        </UNativeGestureHandlerRootView>
       ),
     })
   }, [group, groups.length, handleSave, navigation, t])
@@ -128,7 +126,7 @@ export const GroupIdScreen = () => {
         </View>
 
         {group && group.items.length > 0 ? (
-          <GestureHandlerRootView style={{ flexShrink: 0 }}>
+          <UNativeGestureHandlerRootView>
             <Sortable.Grid
               data={group.items}
               onDragStart={() => setIsSorting(true)}
@@ -165,21 +163,25 @@ export const GroupIdScreen = () => {
               keyExtractor={(item) => item.code}
               strategy="swap"
             />
-          </GestureHandlerRootView>
+          </UNativeGestureHandlerRootView>
         ) : (
           <UEmpty
             title={t('emptyGroup')}
             icon="bus-front"
           >
-            <GestureHandlerRootView style={{ flexShrink: 0 }}>
-              <UButton
-                label={t('goToSearch')}
-                icon="search"
-                variant="soft"
-                color="neutral"
-                to={{ pathname: '/search' }}
-              />
-            </GestureHandlerRootView>
+            <UNativeGestureHandlerRootView>
+              <Link
+                href={{ pathname: '/search' }}
+                asChild
+              >
+                <UButton
+                  label={t('goToSearch')}
+                  icon="search"
+                  variant="soft"
+                  color="neutral"
+                />
+              </Link>
+            </UNativeGestureHandlerRootView>
           </UEmpty>
         )}
       </View>

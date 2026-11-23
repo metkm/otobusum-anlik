@@ -3,6 +3,7 @@ import { TrueSheet } from '@lodev09/react-native-true-sheet'
 import { t } from 'i18next'
 import { useRef } from 'react'
 import { View } from 'react-native'
+import Animated from 'react-native-reanimated'
 import { Path, Svg } from 'react-native-svg'
 import { useCSSVariable } from 'uniwind'
 import { useShallow } from 'zustand/react/shallow'
@@ -10,6 +11,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { UBadge, UButton, USheet } from '@/components/u'
 import { useGroupItem } from '@/composables'
 import { useLineBuses, useLineRoutes } from '@/composables/query'
+import { LayoutAnimationTransition } from '@/constants/animation'
 import { useTransitStore } from '@/stores'
 import type { Route } from '@/types/route'
 import { latLngToSvgPath } from '@/utils/latLngToSvgPath'
@@ -51,37 +53,35 @@ const RouteItem = ({
       color={color}
       className="shrink"
     >
-      <View className="shrink grow flex-row items-center justify-between gap-2">
-        <View className="shrink">
-          <View className="flex-row items-center">
-            <UButton.Text>{from}</UButton.Text>
-            <UButton.Icon name="arrow-right" />
-            <UButton.Text>{to}</UButton.Text>
-          </View>
-
-          <UButton.Text className="text-xs opacity-75">
-            {item.code.split('_').slice(1).join('_')}
-          </UButton.Text>
+      <View className="shrink grow">
+        <View className="flex-row items-center">
+          <UButton.Text>{from}</UButton.Text>
+          <UButton.Icon name="arrow-right" />
+          <UButton.Text>{to}</UButton.Text>
         </View>
 
-        <UBadge
-          icon="bus-front"
-          label={busCount.toString()}
-          variant={badgeVariant}
-          color={color}
-        />
-
-        <Svg
-          width={ROUTE_PATH_WIDTH}
-          height={ROUTE_PATH_HEIGHT}
-        >
-          <Path
-            d={d}
-            stroke={colorPrimary}
-            fill="transparent"
-          />
-        </Svg>
+        <UButton.Text className="text-xs opacity-75">
+          {item.code.split('_').slice(1).join('_')}
+        </UButton.Text>
       </View>
+
+      <UBadge
+        icon="bus-front"
+        label={busCount.toString()}
+        variant={badgeVariant}
+        color={color}
+      />
+
+      <Svg
+        width={ROUTE_PATH_WIDTH}
+        height={ROUTE_PATH_HEIGHT}
+      >
+        <Path
+          d={d}
+          stroke={colorPrimary}
+          fill="transparent"
+        />
+      </Svg>
     </UButton>
   )
 }
@@ -126,7 +126,10 @@ export const LineCardRoutes = () => {
   })
 
   return (
-    <View className="flex-row items-center gap-2 p-2">
+    <Animated.View
+      layout={LayoutAnimationTransition}
+      className="flex-row items-center gap-2 p-2"
+    >
       <UBadge
         icon="bus-front"
         label={buses.length.toString()}
@@ -183,6 +186,6 @@ export const LineCardRoutes = () => {
           />
         </USheet>
       )}
-    </View>
+    </Animated.View>
   )
 }

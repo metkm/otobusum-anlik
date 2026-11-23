@@ -1,11 +1,10 @@
 import { TrueSheet, type TrueSheetProps } from '@lodev09/react-native-true-sheet'
 import type { RefObject } from 'react'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { useCSSVariable, withUniwind } from 'uniwind'
+import { useCSSVariable } from 'uniwind'
 
 import { cn } from '@/utils/cn'
 
-const StyledGestureHandlerRootView = withUniwind(GestureHandlerRootView)
+import { UNativeGestureHandlerRootView } from './native/UNativeGestureHandlerRootView'
 
 interface USheetProps extends TrueSheetProps {
   ref: RefObject<TrueSheet | null>
@@ -26,11 +25,11 @@ export const USheet = ({ ref, contentContainerClassName, children, ...props }: U
       }}
       {...props}
     >
-      <StyledGestureHandlerRootView
+      <UNativeGestureHandlerRootView
         className={cn('flex-1 pb-2', props.header ? 'p-0' : 'pt-9', contentContainerClassName)}
       >
         {children}
-      </StyledGestureHandlerRootView>
+      </UNativeGestureHandlerRootView>
     </TrueSheet>
   )
 }

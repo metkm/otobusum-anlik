@@ -1,7 +1,6 @@
 import { UserLocation } from '@maplibre/maplibre-react-native'
 import { useFocusEffect } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { View } from 'react-native'
 import { LayoutAnimationConfig } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
@@ -28,7 +27,7 @@ export const HomeScreen = () => {
   })
 
   return (
-    <View className="flex-1">
+    <>
       {!hideMap && (
         <UMap>
           <MapTemporaryMarkers />
@@ -44,7 +43,7 @@ export const HomeScreen = () => {
           <GroupCardItems shouldGrow={hideMap} />
         </Overlay>
       </LayoutAnimationConfig>
-    </View>
+    </>
   )
 }
 

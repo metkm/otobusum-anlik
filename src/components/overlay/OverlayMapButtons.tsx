@@ -1,4 +1,5 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
+import { Link } from 'expo-router'
 import { type ViewProps } from 'react-native'
 import { createAnimatedComponent } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
@@ -46,17 +47,21 @@ export const OverlayMapButtonsGroup = () => {
   const { backgroundColor } = useGroupItemColorCarouselOffset()
 
   return (
-    <AnimatedUButton
-      layout={LayoutAnimationTransition}
-      className="max-w-lg overflow-hidden"
-      icon="component"
-      color="neutral"
-      size="lg"
-      variant="subtle"
-      to={{ pathname: '/(sheet)/groups' }}
-      label={group?.name}
-      style={{ backgroundColor, elevation: 1 }}
-    />
+    <Link
+      href={{ pathname: '/(sheet)/groups' }}
+      asChild
+    >
+      <AnimatedUButton
+        layout={LayoutAnimationTransition}
+        className="max-w-lg overflow-hidden"
+        icon="component"
+        color="neutral"
+        size="lg"
+        variant="subtle"
+        label={group?.name}
+        style={{ backgroundColor, elevation: 1 }}
+      />
+    </Link>
   )
 }
 

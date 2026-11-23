@@ -2,16 +2,17 @@ import { TrueSheetPeek } from '@lodev09/react-native-true-sheet'
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import type { LngLatBounds } from '@maplibre/maplibre-react-native'
 import { hexFromArgb } from '@material/material-color-utilities'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { Link, useLocalSearchParams, useRouter } from 'expo-router'
 import type { FeatureCollection } from 'geojson'
 import { t } from 'i18next'
 import { useEffect, useMemo, useRef } from 'react'
 import { Dimensions, View, type ScrollViewInstance } from 'react-native'
-import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
+import { ScrollView } from 'react-native-gesture-handler'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { ScopedVariables, useCSSVariable } from 'uniwind'
 
 import { UBadge, UButton, UActivityIndicator, UEmpty, UQueryState } from '@/components/u'
+import { UNativeGestureHandlerRootView } from '@/components/u/native/UNativeGestureHandlerRootView'
 import { useMapCollection, useMap } from '@/composables'
 import { useTransitNearby } from '@/composables/query'
 import { getLatLngBounds } from '@/utils/bounds'
@@ -173,7 +174,7 @@ export const NearbyScreen = () => {
   useEffect(() => {
     navigation.setOptions({
       header: (
-        <GestureHandlerRootView style={{ flexShrink: 0 }}>
+        <UNativeGestureHandlerRootView className="shrink-0">
           <UButton
             icon="x"
             variant="soft"
@@ -181,7 +182,7 @@ export const NearbyScreen = () => {
             className="m-2 ml-auto"
             onPress={() => router.back()}
           />
-        </GestureHandlerRootView>
+        </UNativeGestureHandlerRootView>
       ),
       scrollableRef,
     })
@@ -213,7 +214,7 @@ export const NearbyScreen = () => {
           </TrueSheetPeek>
         )}
       >
-        <GestureHandlerRootView style={{ flexGrow: 1, gap: 8 }}>
+        <UNativeGestureHandlerRootView className="grow gap-2">
           {query.data && query.data.stops.length > 0 && (
             <View className="gap-2">
               <TrueSheetPeek>
@@ -226,17 +227,21 @@ export const NearbyScreen = () => {
               </TrueSheetPeek>
 
               {query.data.stops.map((stop) => (
-                <UButton
+                <Link
                   key={stop.id}
-                  label={stop.name}
-                  to={{ params: { stopCode: stop.code }, pathname: `/(sheet)/stop/[stopCode]` }}
-                  variant="ghost"
-                  color="neutral"
-                  trailingIcon="chevron-right"
+                  href={{ params: { stopCode: stop.code }, pathname: `/(sheet)/stop/[stopCode]` }}
+                  asChild
                 >
-                  <UBadge icon="map-pin" />
-                  <UButton.Text>{stop.name}</UButton.Text>
-                </UButton>
+                  <UButton
+                    label={stop.name}
+                    variant="ghost"
+                    color="neutral"
+                    trailingIcon="chevron-right"
+                  >
+                    <UBadge icon="map-pin" />
+                    <UButton.Text>{stop.name}</UButton.Text>
+                  </UButton>
+                </Link>
               ))}
             </View>
           )}
@@ -262,37 +267,41 @@ export const NearbyScreen = () => {
               )}
 
               {query.data.routes.map((route, index) => (
-                <UButton
+                <Link
                   key={route.id}
-                  to={{
+                  href={{
                     params: { code: route.line_code, type: 'line' },
                     pathname: '/(sheet)/groups',
                   }}
-                  variant="ghost"
-                  color="neutral"
-                  trailingIcon="chevron-right"
+                  asChild
                 >
-                  <View className="shrink flex-row items-center gap-2">
-                    <ScopedVariables
-                      variables={{
-                        '--color-primary': colors?.at(index)?.schemes.dark.primary ?? '',
-                      }}
-                    >
-                      <UBadge label={route.line_code} />
-                    </ScopedVariables>
+                  <UButton
+                    variant="ghost"
+                    color="neutral"
+                    trailingIcon="chevron-right"
+                  >
+                    <View className="shrink flex-row items-center gap-2">
+                      <ScopedVariables
+                        variables={{
+                          '--color-primary': colors?.at(index)?.schemes.dark.primary ?? '',
+                        }}
+                      >
+                        <UBadge label={route.line_code} />
+                      </ScopedVariables>
 
-                    <UButton.Text
-                      className="font-inter-medium shrink text-sm"
-                      numberOfLines={1}
-                    >
-                      {route.name}
-                    </UButton.Text>
-                  </View>
-                </UButton>
+                      <UButton.Text
+                        className="font-inter-medium shrink text-sm"
+                        numberOfLines={1}
+                      >
+                        {route.name}
+                      </UButton.Text>
+                    </View>
+                  </UButton>
+                </Link>
               ))}
             </View>
           )}
-        </GestureHandlerRootView>
+        </UNativeGestureHandlerRootView>
       </UQueryState>
     </ScrollView>
   )

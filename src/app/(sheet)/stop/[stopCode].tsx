@@ -1,16 +1,17 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { Camera, GeoJSONSource } from '@maplibre/maplibre-react-native'
-import { useLocalSearchParams } from 'expo-router'
+import { Link, useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking, View, type ScrollViewInstance } from 'react-native'
-import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
+import { ScrollView } from 'react-native-gesture-handler'
 import { useCSSVariable } from 'uniwind'
 
 import { MarkerStopLayer } from '@/components/marker/MarkerStopLayer'
 import { MapProvider } from '@/components/provider/MapProvider'
 import { StopCardArrivals } from '@/components/stop/card/StopCardArrivals'
 import { UButton, UQueryState, UText, UMap } from '@/components/u'
+import { UNativeGestureHandlerRootView } from '@/components/u/native/UNativeGestureHandlerRootView'
 import { SkeletonStop } from '@/components/u/skeleton/SkeletonStop'
 import { useCountdown, useMap } from '@/composables'
 import { useStopArrivals, useStop } from '@/composables/query'
@@ -62,7 +63,7 @@ export const StopScreen = () => {
         fetching={SkeletonStop}
       >
         {stopQuery.data && (
-          <View className="gap-2">
+          <>
             <View className="h-48 overflow-hidden rounded-md">
               <MapProvider>
                 <UMap
@@ -93,32 +94,34 @@ export const StopScreen = () => {
               </MapProvider>
             </View>
 
-            <GestureHandlerRootView style={{ flexGrow: 1, flexShrink: 0 }}>
-              <View className="grow flex-row flex-wrap gap-2">
-                <UButton
-                  label={t('directionToStop')}
-                  onPress={openDirectionsToStop}
-                  icon="droplet"
-                  block
-                  className="flex-1"
-                />
-                <UButton
-                  label={t('zoomStopOnMap')}
-                  onPress={zoomStopOnMap}
-                  icon="locate-fixed"
-                  block
-                  className="flex-1"
-                />
+            <UNativeGestureHandlerRootView className="flex-row flex-wrap gap-2">
+              <UButton
+                label={t('directionToStop')}
+                onPress={openDirectionsToStop}
+                icon="droplet"
+                block
+                className="flex-1"
+              />
+              <UButton
+                label={t('zoomStopOnMap')}
+                onPress={zoomStopOnMap}
+                icon="locate-fixed"
+                block
+                className="flex-1"
+              />
+              <Link
+                href={{
+                  params: { code: stopCode, type: 'stop' },
+                  pathname: '/(sheet)/groups',
+                }}
+                asChild
+              >
                 <UButton
                   label={t('addToGroup')}
                   icon="circle-plus"
-                  to={{
-                    params: { code: stopCode, type: 'stop' },
-                    pathname: '/(sheet)/groups',
-                  }}
                 />
-              </View>
-            </GestureHandlerRootView>
+              </Link>
+            </UNativeGestureHandlerRootView>
 
             <View>
               <UText className="text-muted text-sm">{stopQuery.data?.stop.code}</UText>
@@ -129,28 +132,32 @@ export const StopScreen = () => {
             </View>
 
             {stopQuery.data.buses.length > 0 && (
-              <GestureHandlerRootView style={{ flexShrink: 0 }}>
+              <UNativeGestureHandlerRootView>
                 <UText className="text-muted text-sm">{t('linesThatUseStop')}</UText>
 
                 <View className="mt-1 flex-row flex-wrap gap-2">
                   {stopQuery.data.buses.map((bus) => (
-                    <UButton
+                    <Link
                       key={bus}
-                      label={bus}
-                      variant="soft"
-                      to={{
+                      href={{
                         params: {
                           code: bus,
                           type: 'line',
                         },
                         pathname: '/(sheet)/groups',
                       }}
-                    />
+                      asChild
+                    >
+                      <UButton
+                        label={bus}
+                        variant="soft"
+                      />
+                    </Link>
                   ))}
                 </View>
-              </GestureHandlerRootView>
+              </UNativeGestureHandlerRootView>
             )}
-          </View>
+          </>
         )}
       </UQueryState>
 

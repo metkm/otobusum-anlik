@@ -1,4 +1,5 @@
 import type { TrueSheet } from '@lodev09/react-native-true-sheet'
+import { Link } from 'expo-router'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
@@ -43,34 +44,42 @@ export const StopCardMenu = () => {
         detents={['auto']}
         contentContainerClassName="px-2 gap-2"
       >
-        <UButton
-          label={t('addToGroup')}
-          icon="circle-plus"
-          size="lg"
-          block
-          variant="soft"
-          to={{
+        <Link
+          href={{
             params: {
               code,
               type: 'stop',
             },
             pathname: '/(sheet)/groups',
           }}
-        />
+          asChild
+        >
+          <UButton
+            label={t('addToGroup')}
+            icon="circle-plus"
+            size="lg"
+            block
+            variant="soft"
+          />
+        </Link>
 
-        <UButton
-          label={t('stopDetails')}
-          icon="arrow-up-right"
-          variant="soft"
-          block
-          size="lg"
-          to={{
+        <Link
+          href={{
             params: {
               stopCode: code,
             },
             pathname: '/(sheet)/stop/[stopCode]',
           }}
-        />
+          asChild
+        >
+          <UButton
+            label={t('stopDetails')}
+            icon="arrow-up-right"
+            variant="soft"
+            block
+            size="lg"
+          />
+        </Link>
 
         <UButton
           label={t('deleteLine')}

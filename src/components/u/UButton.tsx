@@ -1,4 +1,4 @@
-import { useRouter, type Href } from 'expo-router'
+import { type Href } from 'expo-router'
 import { createContext, use, type ComponentProps } from 'react'
 import { Touchable } from 'react-native-gesture-handler'
 import { type VariantProps } from 'tailwind-variants'
@@ -73,7 +73,7 @@ const ui = tv({
     {
       className: {
         base: 'bg-error',
-        icon: 'text-inverted',
+        icon: 'accent-inverted',
         label: 'text-inverted',
       },
       color: 'error',
@@ -174,7 +174,6 @@ export const UButton = ({
   className,
   icon,
   trailingIcon,
-  to,
   color,
   variant,
   size,
@@ -185,21 +184,11 @@ export const UButton = ({
   loading,
   ...props
 }: UButtonProps) => {
-  const router = useRouter()
-
   const {
     base: uiBase,
     label: uiLabel,
     icon: uiIcon,
   } = ui({ block, color, disabled, size, variant })
-
-  const handlePress: TouchableProps['onPress'] = () => {
-    if (!to) {
-      return
-    }
-
-    router.push(to)
-  }
 
   const content = () => {
     if (children) {
@@ -223,7 +212,6 @@ export const UButton = ({
     <UButtonContext value={{ iconClassName: uiIcon(), labelClassName: uiLabel() }}>
       <StyledTouchable
         className={cn(uiBase(), className)}
-        onPress={handlePress}
         style={style}
         underlayColor="black"
         animationDuration={0}

@@ -1,3 +1,4 @@
+import { Link } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { Dimensions, View } from 'react-native'
 import { LayoutAnimationConfig } from 'react-native-reanimated'
@@ -57,13 +58,17 @@ export const TimetableScreen = () => {
         title={t('timetableEmpty')}
         className="m-2 grow"
       >
-        <UButton
-          label={t('goToSearch')}
-          icon="search"
-          variant="soft"
-          color="neutral"
-          to={{ pathname: '/search' }}
-        />
+        <Link
+          href={{ pathname: '/search' }}
+          asChild
+        >
+          <UButton
+            label={t('goToSearch')}
+            icon="search"
+            variant="soft"
+            color="neutral"
+          />
+        </Link>
       </UEmpty>
     )
   }

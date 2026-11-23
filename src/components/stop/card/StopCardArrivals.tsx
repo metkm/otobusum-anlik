@@ -1,7 +1,7 @@
 import { AnimatedLegendList } from '@legendapp/list/reanimated'
+import { Link } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
 
 import { useGroupItem, useExpandableCardHeight } from '@/composables'
@@ -72,16 +72,18 @@ const StopCardArrivalsItem = ({ item }: { item: StopArrival }) => {
           <UText className="text-muted font-inter-medium text-sm">{t('arrivingIn')}</UText>
         </View>
 
-        <GestureHandlerRootView style={{ flexShrink: 1 }}>
+        <Link
+          href={{
+            params: { code: item.line_code, type: 'line' },
+            pathname: '/(sheet)/groups',
+          }}
+          asChild
+        >
           <UButton
             icon="plus-circle"
             variant="soft"
-            to={{
-              params: { code: item.line_code, type: 'line' },
-              pathname: '/(sheet)/groups',
-            }}
           />
-        </GestureHandlerRootView>
+        </Link>
       </ThemeProvider>
     </Animated.View>
   )

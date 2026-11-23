@@ -1,9 +1,9 @@
 import type { DefaultError, UseQueryResult } from '@tanstack/react-query'
 import { View } from 'react-native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import { cn } from '@/utils/cn'
 
+import { UNativeGestureHandlerRootView } from './native/UNativeGestureHandlerRootView'
 import { UActivityIndicator } from './UActivityIndicator'
 import { UButton } from './UButton'
 import { UText } from './UText'
@@ -43,10 +43,10 @@ export const UQueryState = <T,>({
           )}
         >
           <UText className="text-error font-inter-medium shrink truncate text-center text-sm">
-            {errorMessage ?? query.error.message}
+            {errorMessage ?? query.error?.message}
           </UText>
 
-          <GestureHandlerRootView style={{ flexShrink: 0 }}>
+          <UNativeGestureHandlerRootView className="shrink-0">
             <UButton
               label="Retry"
               color="error"
@@ -57,7 +57,7 @@ export const UQueryState = <T,>({
               }}
               icon="repeat"
             />
-          </GestureHandlerRootView>
+          </UNativeGestureHandlerRootView>
         </View>
       )
     )

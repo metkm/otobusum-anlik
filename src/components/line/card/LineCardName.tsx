@@ -20,6 +20,7 @@ export const LineCardName = () => {
 
   return (
     <View className="shrink grow flex-row flex-wrap items-center gap-2 overflow-hidden">
+      {/* <View className="shrink grow flex-row flex-wrap items-center gap-2 overflow-hidden"> */}
       <UBadge
         label={code}
         variant="soft"

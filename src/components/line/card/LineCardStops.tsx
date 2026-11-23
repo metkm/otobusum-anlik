@@ -1,5 +1,6 @@
 import { AnimatedLegendList } from '@legendapp/list/reanimated'
 import { type LocationObject, getCurrentPositionAsync } from 'expo-location'
+import { Link } from 'expo-router'
 import { t } from 'i18next'
 import { useEffect, useState } from 'react'
 import { View } from 'react-native'
@@ -46,43 +47,47 @@ const StopItem = ({
 
   return (
     <View className="shrink flex-row items-center gap-2">
-      <UButton
-        className="flex-1"
-        to={{ params: { stopCode: item.code }, pathname: `/(sheet)/stop/[stopCode]` }}
-        variant="ghost"
-        trailingIcon="chevron-right"
+      <Link
+        href={{ params: { stopCode: item.code }, pathname: `/(sheet)/stop/[stopCode]` }}
+        asChild
       >
-        <UText className="font-inter-medium text-muted w-6.5 text-center">{index + 1}</UText>
+        <UButton
+          className="flex-1"
+          variant="ghost"
+          trailingIcon="chevron-right"
+        >
+          <UText className="font-inter-medium text-muted w-6.5 text-center">{index + 1}</UText>
 
-        <View className="outline-muted mx-1 size-7 items-center justify-center rounded-full outline-2 outline-offset-2">
-          <UIcon
-            name={closestBus ? 'bus-front' : 'map-pin'}
-            colorClassName={closestBus ? 'accent-primary' : 'accent-muted/15'}
-            sizeClassName="size-4"
-          />
-        </View>
+          <View className="outline-muted mx-1 size-7 items-center justify-center rounded-full outline-2 outline-offset-2">
+            <UIcon
+              name={closestBus ? 'bus-front' : 'map-pin'}
+              colorClassName={closestBus ? 'accent-primary' : 'accent-muted/15'}
+              sizeClassName="size-4"
+            />
+          </View>
 
-        <View className="shrink">
-          <UText
-            className="font-inter-medium shrink text-sm"
-            numberOfLines={1}
-          >
-            {item.name}
-          </UText>
-
-          {closestToUser && (
+          <View className="shrink">
             <UText
-              className="text-primary shrink text-xs"
+              className="font-inter-medium shrink text-sm"
               numberOfLines={1}
             >
-              {t('userClosestToThisStop')}
+              {item.name}
             </UText>
-          )}
-        </View>
-      </UButton>
+
+            {closestToUser && (
+              <UText
+                className="text-primary shrink text-xs"
+                numberOfLines={1}
+              >
+                {t('userClosestToThisStop')}
+              </UText>
+            )}
+          </View>
+        </UButton>
+      </Link>
 
       {closestBus && (
-        <View className="flex-row gap-2 pr-2">
+        <>
           {!hideMap && (
             <UButton
               icon="locate-fixed"
@@ -91,17 +96,22 @@ const StopItem = ({
             />
           )}
 
-          <UButton
-            icon="info"
-            to={{
+          <Link
+            href={{
               params: {
                 doorNo: closestBus.bus_id,
               },
               pathname: '/(sheet)/bus-info/[doorNo]',
             }}
-            variant="soft"
-          />
-        </View>
+            asChild
+          >
+            <UButton
+              icon="info"
+              variant="soft"
+              className="mr-2"
+            />
+          </Link>
+        </>
       )}
     </View>
   )
@@ -161,14 +171,12 @@ export const LineCardStops = () => {
           />
         )}
         ItemSeparatorComponent={() => (
-          // <View className="absolute left-14.75 -bottom-1.5 h-3 bg-(--ui-border) w-0.5">
-          <View className="absolute -bottom-1.5 left-13.25 items-center justify-center opacity-50">
-            <UIcon
-              name="chevron-down"
-              colorClassName="accent-muted"
-              sizeClassName="size-3.5"
-            />
-          </View>
+          <UIcon
+            name="chevron-down"
+            colorClassName="accent-(--ui-border)"
+            sizeClassName="size-3.5"
+            className="absolute -bottom-1.5 left-13.25"
+          />
         )}
         className="border-b-hairline border-b-muted flex-1"
         keyExtractor={(item) => item.id.toString()}

@@ -1,13 +1,14 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { Link, useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { type ScrollViewInstance, View } from 'react-native'
-import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
+import { ScrollView } from 'react-native-gesture-handler'
 import Animated from 'react-native-reanimated'
 
 import { ThemeProvider } from '@/components/provider/ThemeProvider'
 import { UBadge, UButton, UText } from '@/components/u'
+import { UNativeGestureHandlerRootView } from '@/components/u/native/UNativeGestureHandlerRootView'
 import { useLineGroup } from '@/composables'
 import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import { useTransitStore } from '@/stores'
@@ -37,50 +38,57 @@ const GroupItem = ({ group, selected }: { group: Group; selected?: boolean }) =>
   const color = selected ? 'primary' : 'neutral'
 
   return (
-    <View className="flex-row gap-2">
+    <Animated.View
+      exiting={ExitScaleOut}
+      entering={EnterScaleIn}
+      layout={LayoutAnimationTransition}
+      className="flex-row gap-2"
+    >
       <UButton
         variant={variant}
-        className="flex-1 items-center gap-2"
+        className="flex-1 shrink flex-col items-start"
         onPress={handlePress}
         color={color}
       >
-        <View className="flex-1 shrink gap-1">
-          <UButton.Text
-            numberOfLines={1}
-            className="shrink"
-          >
-            {group.name}
-          </UButton.Text>
+        <UButton.Text
+          numberOfLines={1}
+          className="shrink"
+        >
+          {group.name}
+        </UButton.Text>
 
-          <View className="flex-row flex-wrap gap-1">
-            {group.items.length < 1 ? (
-              <UText className="font-inter-medium text-muted text-sm">{t('emptyGroup')}</UText>
-            ) : (
-              group.items.map((item) => (
-                <ThemeProvider
-                  value={selected ? item.code : undefined}
-                  key={item.code}
-                >
-                  <UBadge
-                    label={item.code}
-                    variant="soft"
-                    // oxlint-disable-next-line no-nested-ternary
-                    color={code ? 'primary' : selected ? 'primary' : 'neutral'}
-                    icon={item.type === 'line' ? 'bus-front' : 'map-pin'}
-                  />
-                </ThemeProvider>
-              ))
-            )}
-          </View>
+        <View className="flex-row flex-wrap gap-1">
+          {group.items.length < 1 ? (
+            <UText className="font-inter-medium text-muted text-sm">{t('emptyGroup')}</UText>
+          ) : (
+            group.items.map((item) => (
+              <ThemeProvider
+                value={selected ? item.code : undefined}
+                key={item.code}
+              >
+                <UBadge
+                  label={item.code}
+                  variant="soft"
+                  // oxlint-disable-next-line no-nested-ternary
+                  color={code ? 'primary' : selected ? 'primary' : 'neutral'}
+                  icon={item.type === 'line' ? 'bus-front' : 'map-pin'}
+                />
+              </ThemeProvider>
+            ))
+          )}
         </View>
       </UButton>
 
-      <UButton
-        icon="chevron-right"
-        variant={variant}
-        to={{ params: { groupId: group.id }, pathname: '/(sheet)/groups/[groupId]' }}
-      />
-    </View>
+      <Link
+        href={{ params: { groupId: group.id }, pathname: '/(sheet)/groups/[groupId]' }}
+        asChild
+      >
+        <UButton
+          icon="chevron-right"
+          variant={variant}
+        />
+      </Link>
+    </Animated.View>
   )
 }
 
@@ -99,7 +107,7 @@ export const GroupsScreen = () => {
     navigation.setOptions({
       footer: (
         <ThemeProvider value={code}>
-          <GestureHandlerRootView style={{ alignSelf: 'flex-end' }}>
+          <UNativeGestureHandlerRootView className="self-end p-2">
             <UButton
               icon="plus-circle"
               size="xl"
@@ -107,9 +115,8 @@ export const GroupsScreen = () => {
               onPress={() => {
                 useTransitStore.getState().createGroup()
               }}
-              className="mr-2 mb-2"
             />
-          </GestureHandlerRootView>
+          </UNativeGestureHandlerRootView>
         </ThemeProvider>
       ),
       footerOptions: {
@@ -121,7 +128,7 @@ export const GroupsScreen = () => {
 
   return (
     <ThemeProvider value={code}>
-      <GestureHandlerRootView>
+      <UNativeGestureHandlerRootView>
         <ScrollView
           ref={scrollableRef}
           className="flex-1"
@@ -149,21 +156,15 @@ export const GroupsScreen = () => {
 
           <Animated.View layout={LayoutAnimationTransition}>
             {groups.map((group) => (
-              <Animated.View
+              <GroupItem
                 key={group.id}
-                exiting={ExitScaleOut}
-                entering={EnterScaleIn}
-                layout={LayoutAnimationTransition}
-              >
-                <GroupItem
-                  group={group}
-                  selected={group.id === groupId}
-                />
-              </Animated.View>
+                group={group}
+                selected={group.id === groupId}
+              />
             ))}
           </Animated.View>
         </ScrollView>
-      </GestureHandlerRootView>
+      </UNativeGestureHandlerRootView>
     </ThemeProvider>
   )
 }

@@ -31,48 +31,45 @@ export const LineColorPicker = () => {
         size="lg"
         variant="soft"
       >
-        <View className="flex-row items-center gap-2">
-          <View className="bg-primary size-4 rounded-md" />
-          <UButton.Text>{t('colorPicker')}</UButton.Text>
-        </View>
+        <View className="bg-primary size-4 rounded-md" />
+        <UButton.Text>{t('colorPicker')}</UButton.Text>
       </UButton>
 
       <USheet
         ref={colorPickerRef}
         detents={['auto']}
+        contentContainerClassName="max-w-xs mx-auto w-full gap-2"
       >
-        <View className="mx-auto w-full max-w-xs gap-2">
-          <StyledColorPicker
-            className="mx-auto w-full gap-2"
-            onCompleteJS={onSelectColor}
-            value={primaryColor}
-          >
-            <Preview
-              hideInitialColor
-              textStyle={{ fontFamily: 'Inter-Medium', fontWeight: 'medium' }}
-            />
+        <StyledColorPicker
+          className="mx-auto w-full gap-2"
+          onCompleteJS={onSelectColor}
+          value={primaryColor}
+        >
+          <Preview
+            hideInitialColor
+            textStyle={{ fontFamily: 'Inter-Medium', fontWeight: 'medium' }}
+          />
 
-            <Panel2 />
-          </StyledColorPicker>
+          <Panel2 />
+        </StyledColorPicker>
 
-          <View className="flex-row justify-center gap-2">
-            <UBadge
-              icon="bus-front"
-              label={code}
-            />
+        <View className="flex-row justify-center gap-2">
+          <UBadge
+            icon="bus-front"
+            label={code}
+          />
 
-            <UBadge
-              variant="soft"
-              icon="bus-front"
-              label={code}
-            />
+          <UBadge
+            variant="soft"
+            icon="bus-front"
+            label={code}
+          />
 
-            <UBadge
-              variant="ghost"
-              icon="bus-front"
-              label={code}
-            />
-          </View>
+          <UBadge
+            variant="ghost"
+            icon="bus-front"
+            label={code}
+          />
         </View>
       </USheet>
     </>
