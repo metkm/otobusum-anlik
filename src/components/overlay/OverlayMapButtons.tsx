@@ -1,6 +1,6 @@
 import { useTrueSheetNavigation } from '@lodev09/react-native-true-sheet/navigation/expo-router'
 import { type ViewProps } from 'react-native'
-import Animated, { createAnimatedComponent } from 'react-native-reanimated'
+import { createAnimatedComponent } from 'react-native-reanimated'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useLineGroup, useMap } from '@/composables'
@@ -12,7 +12,7 @@ import { cn } from '@/utils/cn'
 import { UNativeGestureHandlerRootView } from '../u/native/UNativeGestureHandlerRootView'
 import { UButton } from '../u/UButton'
 
-// const AnimatedGestureHandlerRootView = createAnimatedComponent(GestureHandlerRootView)
+const AnimatedGestureHandlerRootView = createAnimatedComponent(UNativeGestureHandlerRootView)
 const AnimatedUButton = createAnimatedComponent(UButton)
 
 export const OverlayMapButtonsChangeDirection = () => {
@@ -28,17 +28,16 @@ export const OverlayMapButtonsChangeDirection = () => {
   }
 
   return (
-    <UNativeGestureHandlerRootView className="shrink-0">
-      <AnimatedUButton
-        icon="repeat"
-        color="neutral"
-        style={{ backgroundColor, elevation: 1 }}
-        size="lg"
-        variant="subtle"
-        className="ml-auto flex"
-        onPress={onPress}
-      />
-    </UNativeGestureHandlerRootView>
+    <AnimatedUButton
+      layout={LayoutAnimationTransition}
+      icon="repeat"
+      color="neutral"
+      style={{ backgroundColor, elevation: 1 }}
+      size="lg"
+      variant="subtle"
+      className="ml-auto flex"
+      onPress={onPress}
+    />
   )
 }
 
@@ -47,18 +46,17 @@ export const OverlayMapButtonsGroup = () => {
   const { backgroundColor } = useGroupItemColorCarouselOffset()
 
   return (
-    <UNativeGestureHandlerRootView className="max-w-lg shrink-0">
-      <AnimatedUButton
-        className="overflow-hidden"
-        icon="component"
-        color="neutral"
-        size="lg"
-        variant="subtle"
-        to={{ pathname: '/(sheet)/groups' }}
-        label={group?.name}
-        style={{ backgroundColor, elevation: 1 }}
-      />
-    </UNativeGestureHandlerRootView>
+    <AnimatedUButton
+      layout={LayoutAnimationTransition}
+      className="max-w-lg overflow-hidden"
+      icon="component"
+      color="neutral"
+      size="lg"
+      variant="subtle"
+      to={{ pathname: '/(sheet)/groups' }}
+      label={group?.name}
+      style={{ backgroundColor, elevation: 1 }}
+    />
   )
 }
 
@@ -86,7 +84,7 @@ export const OverlayMapButtons = (props: ViewProps) => {
   }
 
   return (
-    <Animated.View
+    <AnimatedGestureHandlerRootView
       layout={LayoutAnimationTransition}
       className={cn(
         'gap-2 flex-wrap p-2 mt-auto',
@@ -97,44 +95,42 @@ export const OverlayMapButtons = (props: ViewProps) => {
       {...props}
     >
       {(bearing !== 0 || pitch !== 0) && (
-        <UNativeGestureHandlerRootView className="shrink-0">
-          <AnimatedUButton
-            icon="compass"
-            size="lg"
-            color="neutral"
-            variant="subtle"
-            style={{ backgroundColor, elevation: 1 }}
-            onPress={async () => {
-              const center = await map.current?.getCenter()
-              if (!center) {
-                return
-              }
+        <AnimatedUButton
+          layout={LayoutAnimationTransition}
+          icon="compass"
+          size="lg"
+          color="neutral"
+          variant="subtle"
+          style={{ backgroundColor, elevation: 1 }}
+          onPress={async () => {
+            const center = await map.current?.getCenter()
+            if (!center) {
+              return
+            }
 
-              camera.current?.easeTo({
-                bearing: 0,
-                center,
-                pitch: 0,
-              })
-            }}
-          />
-        </UNativeGestureHandlerRootView>
+            camera.current?.easeTo({
+              bearing: 0,
+              center,
+              pitch: 0,
+            })
+          }}
+        />
       )}
 
       {!hideMap && (
-        <UNativeGestureHandlerRootView className="shrink-0">
-          <AnimatedUButton
-            icon="radar"
-            onPress={queryArea}
-            size="lg"
-            color="neutral"
-            variant="subtle"
-            style={{ backgroundColor, elevation: 1 }}
-          />
-        </UNativeGestureHandlerRootView>
+        <AnimatedUButton
+          layout={LayoutAnimationTransition}
+          icon="radar"
+          onPress={queryArea}
+          size="lg"
+          color="neutral"
+          variant="subtle"
+          style={{ backgroundColor, elevation: 1 }}
+        />
       )}
 
       <OverlayMapButtonsChangeDirection />
       <OverlayMapButtonsGroup />
-    </Animated.View>
+    </AnimatedGestureHandlerRootView>
   )
 }
