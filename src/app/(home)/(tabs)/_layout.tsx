@@ -124,7 +124,7 @@ export const CustomTabBar = ({
       <Animated.View
         layout={LayoutAnimationTransition}
         className="grow flex-row rounded-t-md p-1.5"
-        style={{ backgroundColor, borderColor, paddingBottom: insets.bottom }}
+        style={{ backgroundColor, borderColor, paddingBottom: insets.bottom + 6 }}
       >
         {state.routes.map(({ key }, index) => (
           <PressTrigger
