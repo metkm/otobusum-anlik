@@ -32,9 +32,7 @@ export const StopCard = ({ onLayout, className, showArrivals = true }: StopCardP
         <StopCardMenu />
       </View>
 
-      {showArrivals && (
-        <StopCardArrivals />
-      )}
+      {showArrivals && <StopCardArrivals />}
     </Animated.View>
   )
 }
