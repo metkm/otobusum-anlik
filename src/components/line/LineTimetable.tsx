@@ -165,11 +165,12 @@ export const LineTimetable = ({ className, onLayout }: LineTimetableProps) => {
         className,
       )}
     >
-      <View className="m-2 mb-0">
+      <View className="m-2 mb-0 gap-2">
         <UBadge
           label={routeCode}
           icon="bus-front"
           variant="soft"
+          className="self-start"
         />
 
         {route?.name && <UText className="font-inter-medium leading-tight">{route.name}</UText>}
