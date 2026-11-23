@@ -36,7 +36,7 @@ const RenderItem = ({ item }: { item: GroupItem }, onLayout: OnLayoutFunction) =
         className="flex-1"
         onLayout={onLayout}
       >
-        <StopCard />
+        <StopCard showArrivals={false} />
         <StopCardArrivals />
       </View>
     </GroupItemContext>

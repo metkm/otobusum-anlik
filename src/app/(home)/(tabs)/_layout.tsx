@@ -87,7 +87,7 @@ const PressTrigger = ({
       animationDuration={0}
       androidRipple={{}}
       onPress={onPress}
-      className="flex-1 flex-row items-center justify-center gap-2 overflow-hidden rounded-full p-2"
+      className="flex-1 flex-row items-center justify-center gap-2 overflow-hidden rounded-full p-2.5"
       style={style}
     >
       <StyledIonicons

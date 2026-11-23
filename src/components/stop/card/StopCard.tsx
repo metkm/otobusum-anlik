@@ -1,4 +1,3 @@
-import { usePathname } from 'expo-router'
 import { View } from 'react-native'
 import Animated from 'react-native-reanimated'
 
@@ -13,13 +12,11 @@ import { StopCardName } from './StopCardName'
 interface StopCardProps {
   onLayout?: OnLayoutFunction
   className?: string
+  showArrivals?: boolean
 }
 
-export const StopCard = ({ onLayout, className }: StopCardProps) => {
+export const StopCard = ({ onLayout, className, showArrivals = true }: StopCardProps) => {
   const { style } = useExpandableCardHeight()
-  const pathname = usePathname()
-
-  const showArrivals = pathname === '/'
 
   return (
     <Animated.View
@@ -35,7 +32,9 @@ export const StopCard = ({ onLayout, className }: StopCardProps) => {
         <StopCardMenu />
       </View>
 
-      {showArrivals && <StopCardArrivals />}
+      {showArrivals && (
+        <StopCardArrivals />
+      )}
     </Animated.View>
   )
 }
