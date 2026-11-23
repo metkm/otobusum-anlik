@@ -20,7 +20,7 @@ const RenderItem = ({ item }: { item: GroupItem }, onLayout: OnLayoutFunction) =
         <ThemeProvider>
           <View
             onLayout={onLayout}
-            className="flex-1 gap-2 pb-2"
+            className="flex-1 gap-2"
           >
             <LineCard />
             <LineTimetable />
@@ -68,7 +68,7 @@ export const TimetableScreen = () => {
   }
 
   return (
-    <View className="pt-safe-offset-2 pb-nav px-safe grow">
+    <View className="pt-safe-offset-2 pb-nav-offset-2 px-safe grow">
       <CarouselCardHeightProvider>
         <UCarousel
           data={items}
