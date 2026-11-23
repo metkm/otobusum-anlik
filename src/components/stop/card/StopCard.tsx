@@ -2,6 +2,7 @@ import { View } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 import { useExpandableCardHeight } from '@/composables'
+import { EnterScaleIn, ExitScaleOut, LayoutAnimationTransition } from '@/constants/animation'
 import type { OnLayoutFunction } from '@/types/shared'
 import { cn } from '@/utils/cn'
 
@@ -22,10 +23,13 @@ export const StopCard = ({ onLayout, className, showArrivals = true }: StopCardP
     <Animated.View
       onLayout={onLayout}
       style={showArrivals ? style : undefined}
+      layout={LayoutAnimationTransition}
       className={cn(
         'border-hairline border-muted bg-default overflow-hidden rounded-md',
         className,
       )}
+      exiting={ExitScaleOut}
+      entering={EnterScaleIn}
     >
       <View className="border-b-hairline border-muted flex-row items-center gap-2 p-2">
         <StopCardName />

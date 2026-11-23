@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Dimensions, View } from 'react-native'
+import { LayoutAnimationConfig } from 'react-native-reanimated'
 
 import { LineCard } from '@/components/line/card/LineCard'
 import { LineTimetable } from '@/components/line/LineTimetable'
@@ -69,18 +70,20 @@ export const TimetableScreen = () => {
 
   return (
     <View className="pt-safe-offset-2 pb-nav-offset-2 px-safe grow">
-      <CarouselCardHeightProvider>
-        <UCarousel
-          data={items}
-          keyExtractor={(item) => item.code}
-          renderItem={RenderItem}
-          ui={{ container: 'grow', viewport: 'grow' }}
-          initialRenderCount={2}
-          drawDistance={8}
-          getFixedItemSize={() => cardWidth}
-          enabled={items.length > 1}
-        />
-      </CarouselCardHeightProvider>
+      <LayoutAnimationConfig skipEntering>
+        <CarouselCardHeightProvider>
+          <UCarousel
+            data={items}
+            keyExtractor={(item) => item.code}
+            renderItem={RenderItem}
+            ui={{ container: 'grow', viewport: 'grow' }}
+            initialRenderCount={2}
+            drawDistance={8}
+            getFixedItemSize={() => cardWidth}
+            enabled={items.length > 1}
+          />
+        </CarouselCardHeightProvider>
+      </LayoutAnimationConfig>
     </View>
   )
 }
