@@ -6,7 +6,6 @@ import type {
 } from 'expo-router/build/layouts/TabsClient.js'
 import { type ComponentProps } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
 import { Touchable } from 'react-native-gesture-handler'
 import Animated, {
   createAnimatedComponent,
@@ -64,7 +63,6 @@ const AnimatedTouchable = createAnimatedComponent(StyledTouchable)
 
 const PressTrigger = ({
   index,
-  // options,
   isFocused,
   onPress,
 }: {
@@ -112,8 +110,10 @@ export const CustomTabBar = ({
   const { theme } = useUniwind()
 
   return (
-    <View
-      className="absolute bottom-0 flex-row justify-center gap-2"
+    <Animated.View
+      layout={LayoutAnimationTransition}
+      className="absolute bottom-0 flex-row rounded-t-md p-1.5"
+      style={{ backgroundColor, borderColor, paddingBottom: insets.bottom + 6 }}
       onLayout={(event) => {
         Uniwind.updateCSSVariables(theme, {
           '--navigation-height': event.nativeEvent.layout.height,
@@ -121,31 +121,25 @@ export const CustomTabBar = ({
         onLayout(event)
       }}
     >
-      <Animated.View
-        layout={LayoutAnimationTransition}
-        className="grow flex-row rounded-t-md p-1.5"
-        style={{ backgroundColor, borderColor, paddingBottom: insets.bottom + 6 }}
-      >
-        {state.routes.map(({ key }, index) => (
-          <PressTrigger
-            key={key}
-            index={index}
-            options={descriptors[key]?.options}
-            isFocused={state.index === index}
-            onPress={() => {
-              const event = emitter.emit({
-                canPreventDefault: true,
-                type: 'tabPress',
-              })
+      {state.routes.map(({ key }, index) => (
+        <PressTrigger
+          key={key}
+          index={index}
+          options={descriptors[key]?.options}
+          isFocused={state.index === index}
+          onPress={() => {
+            const event = emitter.emit({
+              canPreventDefault: true,
+              type: 'tabPress',
+            })
 
-              if (!event.defaultPrevented) {
-                navigateToTab(key)
-              }
-            }}
-          />
-        ))}
-      </Animated.View>
-    </View>
+            if (!event.defaultPrevented) {
+              navigateToTab(key)
+            }
+          }}
+        />
+      ))}
+    </Animated.View>
   )
 }
 
