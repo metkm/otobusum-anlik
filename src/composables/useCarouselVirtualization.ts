@@ -64,24 +64,32 @@ export const useCarouselVirtualization = <T>({
     }),
   )
 
-  const [displayItems, setDisplayItems] = useState(() =>
-    getVisibleRange({
-      dataLength: data.length,
-      offsetIndex: 0,
-      viewportWidth: Dimensions.get('screen').width,
-      visibleItemCount: initialRenderCount,
-    }),
-  )
+  const initialRange = getVisibleRange({
+    dataLength: data.length,
+    offsetIndex: 0,
+    viewportWidth: Dimensions.get('screen').width,
+    visibleItemCount: initialRenderCount,
+  })
+
+  const [displayRange, setDisplayRange] = useState(() => ({
+    data,
+    range: initialRange,
+  }))
 
   const updateDisplayItems = (range: VisibleRange) => {
     requestIdleCallback(() => {
-      setDisplayItems(range)
+      setDisplayRange({
+        data,
+        range,
+      })
     })
   }
 
   useAnimatedReaction(
     () => range.value,
     (current, previous) => {
+      console.log('reaction', current, previous)
+
       if (viewportWidth.value === 0) {
         return
       }
@@ -93,6 +101,8 @@ export const useCarouselVirtualization = <T>({
       scheduleOnRN(updateDisplayItems, current)
     },
   )
+
+  const displayItems = displayRange.data === data ? displayRange.range : initialRange
 
   return {
     displayItems,
