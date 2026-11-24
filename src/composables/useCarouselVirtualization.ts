@@ -88,8 +88,6 @@ export const useCarouselVirtualization = <T>({
   useAnimatedReaction(
     () => range.value,
     (current, previous) => {
-      console.log('reaction', current, previous)
-
       if (viewportWidth.value === 0) {
         return
       }
