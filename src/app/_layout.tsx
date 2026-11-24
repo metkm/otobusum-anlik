@@ -104,7 +104,7 @@ export const RootLayout = () => (
     >
       <StatusBar style="auto" />
 
-      <UNativeGestureHandlerRootView className="grow shrink-0 bg-default">
+      <UNativeGestureHandlerRootView className="bg-default shrink-0 grow">
         <RootContent />
       </UNativeGestureHandlerRootView>
     </PersistQueryClientProvider>
