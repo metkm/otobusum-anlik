@@ -64,14 +64,14 @@ export const useCarouselVirtualization = <T>({
     }),
   )
 
-  const initialRange = getVisibleRange({
-    dataLength: data.length,
-    offsetIndex: 0,
-    viewportWidth: Dimensions.get('screen').width,
-    visibleItemCount: initialRenderCount,
-  })
-
-  const [displayItems, setDisplayItems] = useState(initialRange)
+  const [displayItems, setDisplayItems] = useState(() =>
+    getVisibleRange({
+      dataLength: data.length,
+      offsetIndex: 0,
+      viewportWidth: Dimensions.get('screen').width,
+      visibleItemCount: initialRenderCount,
+    }),
+  )
 
   const updateDisplayItems = (range: VisibleRange) => {
     requestIdleCallback(() => {
